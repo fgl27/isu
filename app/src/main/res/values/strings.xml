@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- main -->
+    <string name="app_name">iSu</string>
+    <string name="isu">Isu</string>
+    <string name="su_switch">Click to activate or deactivate SU</string>
+    <string name="su_state">Current SU state:</string>
+
+    <!-- about -->
+    <string name="about">About iSu</string>
+    <string name="dev_info">Developer information:</string>
+    <string name="git_summary">This is a open source app check it on my github\ngithub.com/bhb27/isu</string>
+    <string name="version">Version:</string>
+    <string name="version_number">1.1</string>
+    <string name="version_summary">A simple app to hide SU and pass safety net verification, today it works only on SU binary of CM base ROM\'s</string>
+    <string name="xda_summary">XDA support forum site (place holder)</string>
+
+</resources>

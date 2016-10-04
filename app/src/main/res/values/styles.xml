@@ -1,0 +1,16 @@
+<resources>
+    <color name="windowBackground">#FAFAFA</color>
+    <color name="text">#000000</color>
+    <color name="button_text">#EAEAEA</color>
+    <color name="colorPrimary">#7F0000</color>
+    <color name="colorPrimaryDark">#660000</color>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:style/Theme.Material.Light.DarkActionBar">
+        <item name="android:textColorPrimary">@color/text</item>
+        <item name="android:textColorSecondary">@color/text</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorAccent">#800000</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+    </style>
+</resources>
