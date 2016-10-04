@@ -1,18 +1,4 @@
-# TurboToast
-
-Simple app to display a toast when a Turbo Charger (Qualcomm QuickCharge 2.0 (QC 2.0) or rebranded QC 2.0 Turbo charger by Motorola) is connected and recognized as the Turbo charger + it can display on a toast the final charge after remove the charger.
-
-![turbotoast_Screenshot](https://raw.githubusercontent.com/bhb27/turbotoast/master/screenshots/turbotoast.png) ![finaltoast_Screenshot](https://raw.githubusercontent.com/bhb27/turbotoast/master/screenshots/finaltoast.png)
-
-
-## Report a bug request device support
-
-You can report a bug or a request by [opening an issue](https://github.com/bhb27/turbotoast/issues/new) or
-mention @baybutcher27 with the request/bug in  [XDA thread](http://forum.xda-developers.com/moto-maxx/themes-apps/app-turbo-toast-t3427981)
-
-## Download
-
- [Download](https://www.androidfilehost.com/?w=files&flid=85655)
+# Isu
 
 ## Build
 
