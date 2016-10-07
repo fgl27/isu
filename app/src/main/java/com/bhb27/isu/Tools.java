@@ -27,36 +27,14 @@ import java.io.IOException;
 import java.io.FileReader;
 
 import com.bhb27.isu.root.RootFile;
-import com.bhb27.isu.root.IRootFile;
 import com.bhb27.isu.root.RootUtils;
-import com.bhb27.isu.Constants;
 
-public class Tools implements Constants {
+public class Tools {
 
     /**
      * Debugging TAG
      */
-    public final static String TAG = "isu";
-
-    public static boolean getBoolean(String name, boolean defaults, Context context) {
-        try {
-            return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getBoolean(name, defaults);
-        } catch (Exception ignored) {
-            return false;
-        }
-    }
-
-    /**
-     * Not as Root = N at the end
-     */
-
-    public static String getChargingTypeN() {
-        return StringreadFileN(BATTERY_CHARGING_TYPE);
-    }
-
-    public static String getChargeCapacityN() {
-        return StringreadFileN(BATTERY_CAPACITY);
-    }
+    public final static String TAG = "iSu";
 
     public static String StringreadFileN(String file) {
         return readFileN(file, true);
@@ -92,14 +70,6 @@ public class Tools implements Constants {
     /**
      * as Root
      */
-    public static String getChargingType() {
-        return StringreadFile(BATTERY_CHARGING_TYPE);
-    }
-
-    public static String getChargeCapacity() {
-        return StringreadFile(BATTERY_CAPACITY);
-    }
-
     public static String StringreadFile(String file) {
         return readFile(file, true);
     }
@@ -110,7 +80,7 @@ public class Tools implements Constants {
     }
 
     public static boolean IexistFile(String file, boolean asRoot) {
-        if (asRoot) return new IRootFile(file).exists();
+        if (asRoot) return new RootFile(file).Iexists();
         return new File(file).exists();
     }
 

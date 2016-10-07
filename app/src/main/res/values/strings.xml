@@ -5,6 +5,7 @@
     <string name="isu">Isu</string>
     <string name="su_switch">Click to activate or deactivate SU</string>
     <string name="su_state">Current SU state:</string>
+    <string name="su_not_cm">Current SU not supported.\nThe app only works with CM-SU\nDevice current SU version is:</string>
 
     <!-- about -->
     <string name="about">About iSu</string>
@@ -12,7 +13,7 @@
     <string name="git_summary">This is a open source app check it on my github\ngithub.com/bhb27/isu</string>
     <string name="version">Version:</string>
     <string name="version_number">1.1</string>
-    <string name="version_summary">A simple app to hide SU and pass safety net verification, today it works only on SU binary of CM base ROM\'s</string>
+    <string name="version_summary">A simple app to deactivate SU at will and pass safety net verification, today it works only on SU binary of CM base ROM\'s</string>
     <string name="xda_summary">XDA support forum site</string>
 
 </resources>

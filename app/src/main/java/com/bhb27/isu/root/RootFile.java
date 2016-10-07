@@ -105,6 +105,11 @@ public class RootFile {
         return output != null && output.contains("true");
     }
 
+    public boolean Iexists() {
+        String output = RootUtils.runICommand("[ -e '" + file + "' ] && echo true");
+        return output != null && output.contains("true");
+    }
+
     public String readFile() {
         return RootUtils.runCommand("cat '" + file + "'");
     }
