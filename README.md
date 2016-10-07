@@ -1,4 +1,19 @@
-# Isu
+# iSu
+
+A simple app to hide SU and pass safety net verification, today it works only on SU binary of CM base ROM's
+
+![isu_Screenshot](https://raw.githubusercontent.com/bhb27/turbotoast/master/screenshots/isu.png)
+
+
+## Report a bug request device support
+
+You can report a bug or a request by [opening an issue](https://github.com/bhb27/isu/issues/new) or
+mention @bhb27 with the request/bug in  [XDA thread](forum.xda-developers.com/moto-maxx/development/kernel-bhb27-kernel-t3207526/)
+
+## Download
+
+ [Download APK](https://www.androidfilehost.com/?w=files&flid=120360)
+
 
 ## Build
 
@@ -12,7 +27,7 @@ $ ./gradlew build
 
 ## Credits
 
-* I use some function of Kernel adiutor original from [Grarak](https://github.com/Grarak/KernelAdiutor) and Mod [yoinx](https://github.com/yoinx/kernel_adiutor/)
+* I use some ROOT function of Kernel adiutor original from [Grarak](https://github.com/Grarak/KernelAdiutor)
 
 ## License
 
