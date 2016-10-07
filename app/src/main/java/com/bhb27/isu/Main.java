@@ -49,7 +49,10 @@ public class Main extends Activity {
         else if (Tools.IexistFile("/system/bin/isu", true) && Tools.IexistFile("/system/xbin/isu", true))
             su_version = RootUtils.runICommand("isu --version") + "";
         else
-            su_version = RootUtils.runICommand("isu --version") + "";
+            su_version = RootUtils.runCommand("su --version") + "";
+
+        if (su_version.contains("null"))
+            su_version = getString(R.string.device_not_root);
 
         //Set layout base on SU version
         if (su_version.contains("cm-su"))

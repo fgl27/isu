@@ -6,6 +6,7 @@
     <string name="su_switch">Click to activate or deactivate SU</string>
     <string name="su_state">Current SU state:</string>
     <string name="su_not_cm">Current SU not supported.\nThe app only works with CM-SU\nDevice current SU version is:</string>
+    <string name="device_not_root">Empty... Device appears not to be Rooted</string>
 
     <!-- about -->
     <string name="about">About iSu</string>
