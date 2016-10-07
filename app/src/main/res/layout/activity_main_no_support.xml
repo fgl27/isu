@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context=".Main"
     android:padding="5dp">
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -16,7 +16,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_alignParentTop="true"
                 android:layout_marginTop="20dp"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
             <TextView
@@ -24,7 +23,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_below="@+id/mySwitch"
                 android:layout_marginTop="22dp"
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -33,7 +31,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_below="@+id/switchStatus"
                 android:layout_marginTop="10dp"
                 android:text=""
                 android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -43,7 +40,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
 		android:background="@drawable/button"
-                android:layout_below="@+id/switchStatus"
                 android:layout_marginTop="80dp"
                 android:text="@string/about"
                 android:textStyle="bold"
@@ -51,7 +47,6 @@
                 android:textAppearance="?android:attr/textAppearanceMedium" />
             <ImageView
                 android:id="@+id/ic_launcher"
-                android:layout_below="@+id/buttonAbout"
                 android:layout_marginTop="70dp"
                 android:contentDescription="turbotoast_icon"
                 android:layout_width="190dp"

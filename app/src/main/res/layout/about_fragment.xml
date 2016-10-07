@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AboutActivity">
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:id="@+id/faqScroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -24,16 +24,14 @@
                 android:layout_gravity="center|top" />
             <ImageView
                 android:id="@+id/ic_launcher"
-                android:layout_below="@+id/about"
                 android:layout_marginTop="-55dp"
-                android:contentDescription="turbotoast_icon"
+                android:contentDescription="isu_icon"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_gravity="start"
                 android:src="@drawable/ic_launcher" />
             <TextView
                 android:id="@+id/version"
-                android:layout_below="@+id/ic_launcher"
                 android:layout_marginTop="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,7 +41,6 @@
                 android:layout_gravity="center"/>
             <TextView
                 android:id="@+id/version_number"
-                android:layout_below="@+id/version"
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,7 +50,6 @@
                 android:layout_gravity="center" />
             <TextView
                 android:id="@+id/version_summary"
-                android:layout_below="@+id/version_number"
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -62,7 +58,6 @@
                 android:layout_gravity="center" />
             <TextView
                 android:id="@+id/dev_info"
-                android:layout_below="@+id/version_summary"
                 android:layout_marginTop="45dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -72,7 +67,6 @@
                 android:layout_gravity="center" />
             <TextView
                 android:id="@+id/email"
-                android:layout_below="@+id/dev_info"
                 android:layout_marginTop="25dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -82,7 +76,6 @@
                 android:layout_gravity="center" />
             <ImageView
                 android:id="@+id/gmail"
-                android:layout_below="@+id/email"
                 android:contentDescription="Gmail_icon"
                 android:layout_marginTop="-30dp"
                 android:layout_width="50dp"
@@ -91,7 +84,6 @@
                 android:src="@drawable/googlemail" />
             <TextView
                 android:id="@+id/email_summary"
-                android:layout_below="@+id/email"
                 android:layout_marginTop="-10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -100,7 +92,6 @@
                 android:layout_gravity="center" />
             <TextView
                 android:id="@+id/xda"
-                android:layout_below="@+id/email_summary"
                 android:layout_marginTop="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -110,7 +101,6 @@
                 android:layout_gravity="center" />
             <ImageView
                 android:id="@+id/ic_xda"
-                android:layout_below="@+id/xda"
                 android:contentDescription="Xda_icon"
                 android:layout_marginTop="-37dp"
                 android:layout_width="50dp"
@@ -119,7 +109,6 @@
                 android:src="@drawable/ic_xda" />
             <TextView
                 android:id="@+id/git"
-                android:layout_below="@+id/xda"
                 android:layout_marginTop="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -129,7 +118,6 @@
                 android:layout_gravity="center" />
             <ImageView
                 android:id="@+id/ic_git"
-                android:layout_below="@+id/git"
                 android:contentDescription="GitHub_icon"
                 android:layout_marginTop="-40dp"
                 android:layout_width="50dp"
@@ -138,7 +126,6 @@
                 android:src="@drawable/ic_github" />
             <TextView
                 android:id="@+id/git_summary"
-                android:layout_below="@+id/git"
                 android:layout_marginTop="-10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -146,7 +133,6 @@
                 android:textColor="#FFFFFF"
                 android:layout_gravity="center" />
             <TextView
-                android:layout_below="@+id/git_summary"
                 android:layout_marginTop="350dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

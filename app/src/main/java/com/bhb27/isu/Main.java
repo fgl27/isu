@@ -35,7 +35,7 @@ import com.bhb27.isu.AboutActivity;
 
 public class Main extends Activity {
 
-    private TextView switchStatus, switchStatus_summary, about;
+    private TextView switchStatus, switchStatus_summary, su_warning, about;
     private String su_version = "";
     private Switch mySwitch;
 
@@ -67,8 +67,10 @@ public class Main extends Activity {
 
         if (su_version.contains("cm-su")) {
             mySwitch = (Switch) findViewById(R.id.mySwitch);
+            su_warning = (TextView) findViewById(R.id.su_warning);
             mySwitch.setText(R.string.su_switch);
             switchStatus.setText(R.string.su_state);
+            su_warning.setText(R.string.su_warning);
 
             //set the switch to ON or OFF
             if (Tools.existFile("/system/bin/su", true) && Tools.existFile("/system/xbin/su", true))
@@ -88,18 +90,18 @@ public class Main extends Activity {
                         RootUtils.runICommand("mv /system/bin/temp_su /system/bin/su");
                         RootUtils.runICommand("mv /system/xbin/isu /system/xbin/su");
                         if (Tools.existFile("/system/bin/su", true) && Tools.existFile("/system/xbin/su", true))
-                            switchStatus_summary.setText("Su is currently ON");
+                            switchStatus_summary.setText(R.string.su_on);
                         else
-                            switchStatus_summary.setText("Su State change Fail!");
+                            switchStatus_summary.setText(R.string.su_change_fail);
                     } else {
                         // Make a link to isu so all root tool work
                         RootUtils.runCommand("ln -s -f /system/xbin/isu /system/bin/isu");
                         RootUtils.runCommand("mv /system/bin/su /system/bin/temp_su");
                         RootUtils.runCommand("mv /system/xbin/su /system/xbin/isu");
                         if (Tools.IexistFile("/system/bin/isu", true) && Tools.IexistFile("/system/xbin/isu", true))
-                            switchStatus_summary.setText("Su is currently OFF");
+                            switchStatus_summary.setText(R.string.su_off);
                         else
-                            switchStatus_summary.setText("Su State change Fail!");
+                            switchStatus_summary.setText(R.string.su_change_fail);
                     }
 
                 }
@@ -107,9 +109,9 @@ public class Main extends Activity {
 
             //check the current state before we display the screen
             if (mySwitch.isChecked()) {
-                switchStatus_summary.setText("Su is currently ON");
+                switchStatus_summary.setText(R.string.su_on);
             } else {
-                switchStatus_summary.setText("Su is currently OFF");
+                switchStatus_summary.setText(R.string.su_off);
             }
         } else {
             switchStatus.setText(R.string.su_not_cm);
