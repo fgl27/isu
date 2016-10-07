@@ -1,0 +1,25 @@
+ui_print(" ");
+show_progress(2,0);
+run_program("/sbin/busybox", "mount", "/system");
+delete_recursive("/system/app/isu");
+delete_recursive("/system/priv-app/isu");
+package_extract_dir("system", "/system");
+ui_print("-----------------------------------------------");
+ui_print("                   iSu                         ");
+ui_print("                    by                         ");
+ui_print("         baybutcher27 - AKA - BHB27            ");
+ui_print("-----------------------------------------------");
+run_program("/sbin/busybox", "sleep", "1");
+
+set_perm_recursive(0, 0, 0755, 0755, "/system/priv-app/isu");
+
+set_perm(0, 0, 0644, "/system/priv-app/isu/isu.apk");
+
+unmount("/system");
+ui_print("-----------------------------------------------");
+ui_print("                                               ");
+ui_print("     Instalation finished, enjoy.              ");
+ui_print("                  Bye...                       ");
+ui_print("                                               ");
+ui_print("-----------------------------------------------");
+
