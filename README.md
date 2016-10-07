@@ -2,7 +2,7 @@
 
 A simple app to hide SU and pass safety net verification, today it works only on SU binary of CM base ROM's
 
-![isu_Screenshot](https://raw.githubusercontent.com/bhb27/turbotoast/master/screenshots/isu.png)
+![isu_Screenshot](https://raw.githubusercontent.com/bhb27/isu/master/screenshots/isu.png)
 
 
 ## Report a bug request device support
@@ -20,8 +20,8 @@ mention @bhb27 with the request/bug in  [XDA thread](forum.xda-developers.com/mo
 Clone the project and come in:
 
 ``` bash
-$ git clone git://github.com/bhb27/turbotoast.git
-$ cd KernelAdiutor
+$ git clone git://github.com/bhb27/isu.git
+$ cd isu
 $ ./gradlew build
 ```
 
