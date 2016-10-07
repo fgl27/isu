@@ -60,6 +60,8 @@ public class Main extends Activity {
                 boolean isChecked) {
 
                 if (isChecked) {
+                    // Make shore system is unmount if it is not no safety net verification pass
+                    RootUtils.runICommand("umount /system");
                     RootUtils.runICommand("mv /system/bin/isu /system/bin/su");
                     RootUtils.runICommand("mv /system/xbin/isu /system/xbin/su");
                     if (Tools.existFile("/system/bin/su", true) && Tools.existFile("/system/xbin/su", true))
