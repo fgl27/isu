@@ -1,10 +1,8 @@
 #!/system/bin/sh
 # simple service to make shore SU is in place after a reboot that the user has disable it without this no SU after boot
 
-# service example
+# service example do it on boot to reboot and mv works
 #on boot 
-#or 
-#on property:sys.boot_completed=1
 #    start isu
 #service isu /sbin/isu.sh
 #    class main
@@ -15,20 +13,27 @@
 mount -o rw,remount /system
 
 # Make tmp folder
-if [ -e /data/tmp ]; then
-	echo "data/tmp already exist"
+if [ ! -e /data/tmp ]; then
+	mkdir /data/tmp;
+	echo "boot start $(date)" > /data/tmp/bootcheck.txt;
 else
-mkdir /data/tmp
-fi
+	echo "boot start $(date)" > /data/tmp/bootcheck.txt;
+fi;
 
 # Move bin and xbin back
-if [ -e /system/bin/isu ]; then
-	mv /system/bin/isu /system/bin/su
+# Isu support
+if [ -e /system/bin/temp_su ]; then
+	mv /system/bin/temp_su /system/bin/su
 fi
 
 if [ -e /system/xbin/isu ]; then
 	mv /system/xbin/isu /system/xbin/su
+	if [ ! -e /system/bin/su ]; then
+		ln -s -f /system/xbin/su /system/bin/su
+	fi
+reboot
 fi
+# Isu end
 
 # give su root:root to adb su work optional/recommended
 if [ -e /system/xbin/su ]; then
