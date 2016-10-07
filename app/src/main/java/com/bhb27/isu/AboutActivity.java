@@ -80,7 +80,7 @@ public class AboutActivity extends Activity {
         xda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://forum.xda-developers.com/member.php?u=5747496")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://forum.xda-developers.com/moto-maxx/development/kernel-bhb27-kernel-t3207526/")));
             }
         });
 

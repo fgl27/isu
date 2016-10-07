@@ -13,6 +13,6 @@
     <string name="version">Version:</string>
     <string name="version_number">1.1</string>
     <string name="version_summary">A simple app to hide SU and pass safety net verification, today it works only on SU binary of CM base ROM\'s</string>
-    <string name="xda_summary">XDA support forum site (place holder)</string>
+    <string name="xda_summary">XDA support forum site</string>
 
 </resources>
