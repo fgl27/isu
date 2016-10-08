@@ -35,8 +35,9 @@ import com.bhb27.isu.AboutActivity;
 
 public class Main extends Activity {
 
-    private TextView switchStatus, switchStatus_summary, su_warning, about;
+    private TextView switchStatus, switchStatus_summary, su_warning, kernel_check, about;
     private String su_version = "";
+    private String kernel_support = "";
     private Switch mySwitch;
 
     @Override
@@ -68,9 +69,9 @@ public class Main extends Activity {
         if (su_version.contains("cm-su")) {
             mySwitch = (Switch) findViewById(R.id.mySwitch);
             su_warning = (TextView) findViewById(R.id.su_warning);
+            kernel_check = (TextView) findViewById(R.id.kernel_check);
             mySwitch.setText(R.string.su_switch);
             switchStatus.setText(R.string.su_state);
-            su_warning.setText(R.string.su_warning);
 
             //set the switch to ON or OFF
             if (Tools.existFile("/system/bin/su", true) && Tools.existFile("/system/xbin/su", true))
@@ -108,10 +109,32 @@ public class Main extends Activity {
             });
 
             //check the current state before we display the screen
-            if (mySwitch.isChecked()) {
+            if (mySwitch.isChecked())
                 switchStatus_summary.setText(R.string.su_on);
-            } else {
+            else
                 switchStatus_summary.setText(R.string.su_off);
+
+            //Kernel support check
+            if (Tools.existFile("/system/bin/su", true) && Tools.existFile("/system/xbin/su", true)) {
+                kernel_support = RootUtils.runCommand("grep -r -i temp_su *.sh ") + RootUtils.runCommand("grep -r -i isu *.sh ") +
+                    RootUtils.runCommand("grep -r -i /sbin/temp_su *.sh ") + RootUtils.runCommand("grep -r -i /sbin/isu *.sh ") + "";
+                if (kernel_support.contains("/system/bin/temp_su") && kernel_support.contains("/system/xbin/isu")) {
+                    kernel_check.setText(R.string.isu_kernel_good);
+                    su_warning.setText(R.string.su_warning);
+                } else {
+                    kernel_check.setTextColor(this.getResources().getColor(R.color.text_red));
+                    kernel_check.setText(R.string.isu_kernel_bad);
+                }
+            } else {
+                kernel_support = RootUtils.runICommand("grep -r -i temp_su *.sh ") + RootUtils.runICommand("grep -r -i isu *.sh ") +
+                    RootUtils.runICommand("grep -r -i /sbin/temp_su *.sh ") + RootUtils.runICommand("grep -r -i /sbin/isu *.sh ") + "";
+                if (kernel_support.contains("/system/bin/temp_su") && kernel_support.contains("/system/xbin/isu")) {
+                    kernel_check.setText(R.string.isu_kernel_good);
+                    su_warning.setText(R.string.su_warning);
+                } else {
+                    kernel_check.setTextColor(this.getResources().getColor(R.color.text_red));
+                    kernel_check.setText(R.string.isu_kernel_bad);
+                }
             }
         } else {
             switchStatus.setText(R.string.su_not_cm);

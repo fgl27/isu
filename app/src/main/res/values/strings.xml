@@ -10,6 +10,8 @@
     <string name="su_on">Su is currently ON</string>
     <string name="su_off">Su is currently OFF</string>
     <string name="su_warning">When rebooting with SU turned off, will cause one extra reboot during bootup it happens in bootlogo screen.\nThis is need to have SU working.</string>
+    <string name="isu_kernel_good">Kernel Support to V1.2 OK.\nYou can reboot with SU turned off.</string>
+    <string name="isu_kernel_bad">No Kernel Support to V1.2!!! You can\'t reboot with SU turned off or SU access will be gone.</string>
     <!-- about -->
     <string name="about">About iSu</string>
     <string name="dev_info">Developer information:</string>

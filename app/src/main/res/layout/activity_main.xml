@@ -15,6 +15,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_marginTop="20dp"
+            android:textColor="@color/text_black"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
         <TextView
             android:id="@+id/switchStatus"
@@ -24,6 +25,7 @@
             android:gravity="center"
             android:layout_marginTop="22dp"
             android:textStyle="bold"
+            android:textColor="@color/text_black"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
         <TextView
             android:id="@+id/switchStatus_summary"
@@ -33,6 +35,18 @@
             android:gravity="center"
             android:layout_marginTop="10dp"
             android:text=""
+            android:textColor="@color/text_black"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+        <TextView
+            android:id="@+id/kernel_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:text=""
+            android:textColor="@color/text_black"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
         <TextView
             android:id="@+id/su_warning"
@@ -40,9 +54,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:layout_marginTop="10dp"
             android:text=""
-            android:textStyle="bold"
+            android:textColor="@color/text_black"
             android:textSize="16sp"/>
         <Button
             android:id="@+id/buttonAbout"
@@ -51,7 +64,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:background="@drawable/button"
-            android:layout_marginTop="65dp"
+            android:layout_marginTop="40dp"
             android:text="@string/about"
             android:textStyle="bold"
             android:textColor="@color/button_text"
