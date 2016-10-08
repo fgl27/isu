@@ -63,13 +63,13 @@ public class Main extends Activity {
 
 
         suSwitch = (Switch) findViewById(R.id.suSwitch);
+        suSwitch.setText(R.string.su_switch);
         switchStatus = (TextView) findViewById(R.id.switchStatus);
         switchStatus_summary = (TextView) findViewById(R.id.switchStatus_summary);
         // about button
         about = (Button) findViewById(R.id.buttonAbout);
 
         if (su_version.contains("cm-su")) {
-            suSwitch.setText(R.string.su_switch);
             su_warning = (TextView) findViewById(R.id.su_warning);
             kernel_check = (TextView) findViewById(R.id.kernel_check);
             switchStatus.setText(R.string.su_state);
@@ -138,7 +138,6 @@ public class Main extends Activity {
                 }
             }
         } else {
-            suSwitch.setText(R.string.su_switch);
             suSwitch.setEnabled(false);
             suSwitch.setTextColor(this.getResources().getColor(R.color.text_gray));
             suSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
