@@ -49,16 +49,16 @@ public class AboutActivity extends Activity {
         dev_info.setText(R.string.dev_info);
 
         email = (TextView) findViewById(R.id.email);
-        email.setText("Email");
+        email.setText(R.string.email);
 
         email_summary = (TextView) findViewById(R.id.email_summary);
-        email_summary.setText("fglfgl27@gmail.com");
+        email_summary.setText(R.string.email_summary);
 
         xda = (TextView) findViewById(R.id.xda);
         xda.setText(R.string.xda_summary);
 
         git = (TextView) findViewById(R.id.git);
-        git.setText("GitHub");
+        git.setText(R.string.github);
 
         git_summary = (TextView) findViewById(R.id.git_summary);
         git_summary.setText(R.string.git_summary);

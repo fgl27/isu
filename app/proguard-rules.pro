@@ -15,4 +15,13 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
--keep class !android.support.v7.internal.view.menu.**,** {*;}
+
+#error : Note: the configuration refers to the unknown class 'com.google.vending.licensing.ILicensingService'
+#solution : @link http://stackoverflow.com/a/14463528
+-dontnote com.google.vending.licensing.ILicensingService
+-dontnote **ILicensingService
+
+# http://stackoverflow.com/questions/33047806/proguard-duplicate-definition-of-library-class
+-dontnote android.support.annotation.Keep
+-dontnote org.apache.http.**
+-dontnote android.net.http.**

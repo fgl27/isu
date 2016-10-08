@@ -9,7 +9,7 @@
     <string name="su_change_fail">Su State change Fail!</string>
     <string name="su_on">Su is currently ON</string>
     <string name="su_off">Su is currently OFF</string>
-    <string name="su_warning">If the device is reboot with SU off it will do one reboot during boot in bootlogo screen. This is need to have SU working.</string>
+    <string name="su_warning">When rebooting with SU turned off, will cause one extra reboot during bootup it happens in bootlogo screen.\nThis is need to have SU working.</string>
     <!-- about -->
     <string name="about">About iSu</string>
     <string name="dev_info">Developer information:</string>
@@ -17,5 +17,14 @@
     <string name="version">Version:</string>
     <string name="version_summary">A simple app to deactivate SU at will and pass safety net verification, today it works only on SU binary of CM base ROM\'s</string>
     <string name="xda_summary">XDA support forum site</string>
+    <string name="email">Email</string>
+    <string name="email_summary">fglfgl27@gmail.com</string>
+    <string name="github">GitHub</string>
+    <!-- about images-->
+    <string name="github_icon">Git hub Icon</string>
+    <string name="xda_icon">XDA Icon</string>
+    <string name="gmail_icon">Gmail Icon</string>
+    <string name="isu_icon">iSu Icon</string>
+    <!-- version always in the bottom -->
     <string name="version_number">1.2</string>
 </resources>
