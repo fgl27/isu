@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.graphics.Paint;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Switch;
@@ -38,11 +39,12 @@ public class Main extends Activity {
     private TextView switchStatus, switchStatus_summary, su_warning, kernel_check, about;
     private String su_version = "";
     private String kernel_support = "";
-    private Switch mySwitch;
+    private Switch suSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         // Check if is CM-SU
         if (Tools.existFile("/system/bin/su", true) && Tools.existFile("/system/xbin/su", true))
@@ -55,31 +57,26 @@ public class Main extends Activity {
         if (su_version.contains("null"))
             su_version = getString(R.string.device_not_root);
 
-        //Set layout base on SU version
-        if (su_version.contains("cm-su"))
-            setContentView(R.layout.activity_main);
-        else
-            setContentView(R.layout.activity_main_no_support);
 
+        suSwitch = (Switch) findViewById(R.id.suSwitch);
         switchStatus = (TextView) findViewById(R.id.switchStatus);
         switchStatus_summary = (TextView) findViewById(R.id.switchStatus_summary);
         // about button
         about = (Button) findViewById(R.id.buttonAbout);
 
         if (su_version.contains("cm-su")) {
-            mySwitch = (Switch) findViewById(R.id.mySwitch);
+            suSwitch.setText(R.string.su_switch);
             su_warning = (TextView) findViewById(R.id.su_warning);
             kernel_check = (TextView) findViewById(R.id.kernel_check);
-            mySwitch.setText(R.string.su_switch);
             switchStatus.setText(R.string.su_state);
 
             //set the switch to ON or OFF
             if (Tools.existFile("/system/bin/su", true) && Tools.existFile("/system/xbin/su", true))
-                mySwitch.setChecked(true);
+                suSwitch.setChecked(true);
             else
-                mySwitch.setChecked(false);
+                suSwitch.setChecked(false);
             //attach a listener to check for changes in state
-            mySwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            suSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView,
@@ -109,7 +106,7 @@ public class Main extends Activity {
             });
 
             //check the current state before we display the screen
-            if (mySwitch.isChecked())
+            if (suSwitch.isChecked())
                 switchStatus_summary.setText(R.string.su_on);
             else
                 switchStatus_summary.setText(R.string.su_off);
@@ -137,6 +134,10 @@ public class Main extends Activity {
                 }
             }
         } else {
+            suSwitch.setText(R.string.su_switch);
+            suSwitch.setEnabled(false);
+            suSwitch.setTextColor(this.getResources().getColor(R.color.text_gray));
+            suSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             switchStatus.setText(R.string.su_not_cm);
             switchStatus_summary.setText(su_version);
         }
