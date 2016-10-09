@@ -21,15 +21,18 @@ package com.bhb27.isu;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.ActivityNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class AboutActivity extends Activity {
     // in order of appearance
     TextView about, version, version_number, version_summary, dev_info, email, email_summary, xda, git, git_summary;
+    ImageView ic_gmail, ic_xda, ic_git;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,7 @@ public class AboutActivity extends Activity {
 
         View frameLayout = findViewById(R.id.aboutLayout);
 
+	//textview
         about = (TextView) findViewById(R.id.about);
         about.setText(R.string.about);
 
@@ -73,7 +77,7 @@ public class AboutActivity extends Activity {
             public void onClick(View v) {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com")));
-                } catch (android.content.ActivityNotFoundException ex) {
+                } catch (ActivityNotFoundException ex) {
                     Toast.makeText(AboutActivity.this, R.string.no_email_client, Toast.LENGTH_SHORT).show();
                 }
             }
@@ -84,7 +88,7 @@ public class AboutActivity extends Activity {
             public void onClick(View v) {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com")));
-                } catch (android.content.ActivityNotFoundException ex) {
+                } catch (ActivityNotFoundException ex) {
                     Toast.makeText(AboutActivity.this, R.string.no_email_client, Toast.LENGTH_SHORT).show();
                 }
             }
@@ -95,7 +99,7 @@ public class AboutActivity extends Activity {
             public void onClick(View v) {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://forum.xda-developers.com/moto-maxx/development/kernel-bhb27-kernel-t3207526/")));
-                } catch (android.content.ActivityNotFoundException ex) {
+                } catch (ActivityNotFoundException ex) {
                     Toast.makeText(AboutActivity.this, R.string.no_browser, Toast.LENGTH_SHORT).show();
                 }
             }
@@ -106,7 +110,7 @@ public class AboutActivity extends Activity {
             public void onClick(View v) {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/bhb27/isu")));
-                } catch (android.content.ActivityNotFoundException ex) {
+                } catch (ActivityNotFoundException ex) {
                     Toast.makeText(AboutActivity.this, R.string.no_browser, Toast.LENGTH_SHORT).show();
                 }
             }
@@ -117,7 +121,45 @@ public class AboutActivity extends Activity {
             public void onClick(View v) {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/bhb27/isu")));
-                } catch (android.content.ActivityNotFoundException ex) {
+                } catch (ActivityNotFoundException ex) {
+                    Toast.makeText(AboutActivity.this, R.string.no_browser, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+	//imageview
+	ic_gmail = (ImageView) findViewById(R.id.ic_gmail);
+	ic_xda = (ImageView) findViewById(R.id.ic_xda);
+	ic_git = (ImageView) findViewById(R.id.ic_git);
+
+        ic_gmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com")));
+                } catch (ActivityNotFoundException ex) {
+                    Toast.makeText(AboutActivity.this, R.string.no_email_client, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        ic_xda.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://forum.xda-developers.com/moto-maxx/development/kernel-bhb27-kernel-t3207526/")));
+                } catch (ActivityNotFoundException ex) {
+                    Toast.makeText(AboutActivity.this, R.string.no_browser, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        ic_git.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/bhb27/isu")));
+                } catch (ActivityNotFoundException ex) {
                     Toast.makeText(AboutActivity.this, R.string.no_browser, Toast.LENGTH_SHORT).show();
                 }
             }

@@ -64,7 +64,7 @@
             android:layout_gravity="center"
             android:gravity="center"/>
         <ImageView
-            android:id="@+id/gmail"
+            android:id="@+id/ic_gmail"
             android:contentDescription="@string/gmail_icon"
             android:layout_marginTop="15dp"
             android:layout_width="50dp"
