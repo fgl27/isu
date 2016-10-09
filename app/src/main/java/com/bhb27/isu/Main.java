@@ -49,9 +49,16 @@ public class Main extends Activity {
     private String kernel_support = "";
     private Switch suSwitch;
 
+    public String bin_su = "/system/bin/su";
+    public String xbin_su = "/system/xbin/su";
+    public String bin_isu = "/system/bin/isu";
+    public String xbin_isu = "/system/xbin/isu";
+    public String bin_temp_su = "/system/bin/temp_su";
+
     ImageView ic_launcher;
 
     private String[] pokemonstrings;
+    private String pokemon_app = "com.nianticlabs.pokemongo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +69,14 @@ public class Main extends Activity {
             getString(R.string.pokemongo_1), getString(R.string.pokemongo_2), getString(R.string.pokemongo_3),
                 getString(R.string.pokemongo_4), getString(R.string.pokemongo_5), getString(R.string.pokemongo_6),
                 getString(R.string.pokemongo_7), getString(R.string.pokemongo_8), getString(R.string.pokemongo_9),
-                getString(R.string.pokemongo_10), getString(R.string.pokemongo_11), getString(R.string.pokemongo_12), 
+                getString(R.string.pokemongo_10), getString(R.string.pokemongo_11), getString(R.string.pokemongo_12),
                 getString(R.string.isu_by)
         };
 
         // Check if is CM-SU
-        if (Tools.existFile("/system/bin/su", true) && Tools.existFile("/system/xbin/su", true))
+        if (Tools.existFile(bin_su, true) && Tools.existFile(xbin_su, true))
             su_version = RootUtils.runCommand("su --version") + "";
-        else if (Tools.IexistFile("/system/bin/isu", true) && Tools.IexistFile("/system/xbin/isu", true))
+        else if (Tools.IexistFile(bin_isu, true) && Tools.IexistFile(xbin_isu, true))
             su_version = RootUtils.runICommand("isu --version") + "";
         else
             su_version = RootUtils.runCommand("su --version") + "";
@@ -91,7 +98,7 @@ public class Main extends Activity {
             switchStatus.setText(getString(R.string.su_state));
 
             //set the switch to ON or OFF
-            if (Tools.existFile("/system/bin/su", true) && Tools.existFile("/system/xbin/su", true))
+            if (Tools.existFile(bin_su, true) && Tools.existFile(xbin_su, true))
                 suSwitch.setChecked(true);
             else
                 suSwitch.setChecked(false);
@@ -105,23 +112,23 @@ public class Main extends Activity {
                     if (isChecked) {
                         // Make shore system is unmount if it is not no safety net verification pass
                         RootUtils.runICommand("umount /system");
-                        RootUtils.runICommand("mv /system/bin/temp_su /system/bin/su");
-                        RootUtils.runICommand("mv /system/xbin/isu /system/xbin/su");
-                        if (Tools.existFile("/system/bin/su", true) && Tools.existFile("/system/xbin/su", true)) {
+                        RootUtils.runICommand("mv " + bin_temp_su + " " + bin_su);
+                        RootUtils.runICommand("mv " + xbin_isu + " " + xbin_su);
+                        if (Tools.existFile(bin_su, true) && Tools.existFile(xbin_su, true)) {
                             switchStatus_summary.setText(getString(R.string.su_on));
-                            if (isAppInstalled("com.nianticlabs.pokemongo")) {
+                            if (isAppInstalled(pokemon_app)) {
                                 DoAToast(getString(R.string.pokemongo_stop));
                             }
                         } else
                             switchStatus_summary.setText(getString(R.string.su_change_fail));
                     } else {
                         // Make a link to isu so all root tool work
-                        RootUtils.runCommand("ln -s -f /system/xbin/isu /system/bin/isu");
-                        RootUtils.runCommand("mv /system/bin/su /system/bin/temp_su");
-                        RootUtils.runCommand("mv /system/xbin/su /system/xbin/isu");
-                        if (Tools.IexistFile("/system/bin/isu", true) && Tools.IexistFile("/system/xbin/isu", true)) {
+                        RootUtils.runCommand("ln -s -f " + xbin_isu + " " + bin_isu);
+                        RootUtils.runCommand("mv " + bin_su + " " + bin_temp_su);
+                        RootUtils.runCommand("mv " + xbin_su + " " + xbin_isu);
+                        if (Tools.IexistFile(bin_isu, true) && Tools.IexistFile(xbin_isu, true)) {
                             switchStatus_summary.setText(getString(R.string.su_off));
-                            if (isAppInstalled("com.nianticlabs.pokemongo")) {
+                            if (isAppInstalled(pokemon_app)) {
                                 DoAToast(getString(R.string.pokemongo_start));
                                 //repeat two times long toast is too short
                                 int Randon_number = RandomInt(pokemonstrings);
@@ -142,10 +149,10 @@ public class Main extends Activity {
                 switchStatus_summary.setText(getString(R.string.su_off));
 
             //Kernel support check
-            if (Tools.existFile("/system/bin/su", true) && Tools.existFile("/system/xbin/su", true)) {
+            if (Tools.existFile(bin_su, true) && Tools.existFile(xbin_su, true)) {
                 kernel_support = RootUtils.runCommand("grep -r -i temp_su *.sh ") + RootUtils.runCommand("grep -r -i isu *.sh ") +
                     RootUtils.runCommand("grep -r -i /sbin/temp_su *.sh ") + RootUtils.runCommand("grep -r -i /sbin/isu *.sh ") + "";
-                if (kernel_support.contains("/system/bin/temp_su") && kernel_support.contains("/system/xbin/isu")) {
+                if (kernel_support.contains(bin_temp_su) && kernel_support.contains(xbin_isu)) {
                     kernel_check.setText(getString(R.string.isu_kernel_good));
                     su_warning.setText(getString(R.string.su_warning));
                 } else {
@@ -155,7 +162,7 @@ public class Main extends Activity {
             } else {
                 kernel_support = RootUtils.runICommand("grep -r -i temp_su *.sh ") + RootUtils.runICommand("grep -r -i isu *.sh ") +
                     RootUtils.runICommand("grep -r -i /sbin/temp_su *.sh ") + RootUtils.runICommand("grep -r -i /sbin/isu *.sh ") + "";
-                if (kernel_support.contains("/system/bin/temp_su") && kernel_support.contains("/system/xbin/isu")) {
+                if (kernel_support.contains(bin_temp_su) && kernel_support.contains(xbin_isu)) {
                     kernel_check.setText(getString(R.string.isu_kernel_good));
                     su_warning.setText(getString(R.string.su_warning));
                 } else {
@@ -184,7 +191,7 @@ public class Main extends Activity {
         ic_launcher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isAppInstalled("com.nianticlabs.pokemongo")) {
+                if (isAppInstalled(pokemon_app)) {
                     //repeat two times long toast is too short
                     int Randon_number = RandomInt(pokemonstrings);
                     DoAToast(pokemonstrings[Randon_number]);
