@@ -22,6 +22,8 @@
     <string name="email">Email</string>
     <string name="email_summary">fglfgl27@gmail.com</string>
     <string name="github">GitHub</string>
+    <string name="no_email_client">There are no email clients installed on the device.</string>
+    <string name="no_browser">There are no web browser installed on the device.</string>
     <!-- about images-->
     <string name="github_icon">Git hub Icon</string>
     <string name="xda_icon">XDA Icon</string>
