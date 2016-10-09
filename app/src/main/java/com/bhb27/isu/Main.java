@@ -28,6 +28,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.view.View;
 import android.view.Gravity;
 import android.content.Intent;
@@ -48,6 +49,8 @@ public class Main extends Activity {
     private String kernel_support = "";
     private Switch suSwitch;
 
+    ImageView ic_launcher;
+
     private String[] pokemonstrings;
 
     @Override
@@ -59,7 +62,8 @@ public class Main extends Activity {
             getString(R.string.pokemongo_1), getString(R.string.pokemongo_2), getString(R.string.pokemongo_3),
                 getString(R.string.pokemongo_4), getString(R.string.pokemongo_5), getString(R.string.pokemongo_6),
                 getString(R.string.pokemongo_7), getString(R.string.pokemongo_8), getString(R.string.pokemongo_9),
-                getString(R.string.pokemongo_10), getString(R.string.pokemongo_11)
+                getString(R.string.pokemongo_10), getString(R.string.pokemongo_11), getString(R.string.pokemongo_12), 
+                getString(R.string.isu_by)
         };
 
         // Check if is CM-SU
@@ -173,6 +177,20 @@ public class Main extends Activity {
             @Override
             public void onClick(View v) {
                 startActivity(myIntent);
+            }
+        });
+
+        ic_launcher = (ImageView) findViewById(R.id.ic_launcher);
+        ic_launcher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isAppInstalled("com.nianticlabs.pokemongo")) {
+                    //repeat two times long toast is too short
+                    int Randon_number = RandomInt(pokemonstrings);
+                    DoAToast(pokemonstrings[Randon_number]);
+                    DoAToast(pokemonstrings[Randon_number]);
+                } else
+                    DoAToast(getString(R.string.isu_by));
             }
         });
     }

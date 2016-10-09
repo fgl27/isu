@@ -17,7 +17,7 @@
     <string name="pokemongo_start">hey ho let\'s go play Pokemon!!!</string>
     <string name="pokemongo_stop">SU ON\n\nPokemon Go Mod signing out</string>
     <string name="pokemongo_1">Lets Grab that Pikachu today</string>
-    <string name="pokemongo_2">I smell something there may be a Pokemon near by\n\nHumm or maybe is just you -_-</string>
+    <string name="pokemongo_2">I smell something there may be a Pokemon near by\n\nHumm or maybe is just you -_- maybe is time to go home</string>
     <string name="pokemongo_3">How many miles we are going today?</string>
     <string name="pokemongo_4">Don\'t you have home works to do?</string>
     <string name="pokemongo_5">Have you??? tie your phone to the ceiling fan to try and get yours Pokemon eggs to hatch faster</string>
@@ -26,7 +26,9 @@
     <string name="pokemongo_8">Alakazam: Alakazam, Alakazam, Alakazam!\nAsh: Pokedex, what Pokemon is that?!\nPokedex: -_- That is an Alakazam!\nAsh: No way</string>
     <string name="pokemongo_9">Chuck Norris won the World Series of Poker using Pokemon cards.</string>
     <string name="pokemongo_10">Chuck Noris caught all 150 pokemon in 2.7 seconds.</string>
-    <string name="pokemongo_11">How long will it be, before people start naming their kids after Pokemon</string>
+    <string name="pokemongo_11">How long will it be? before people start naming their kids after Pokemon</string>
+    <string name="pokemongo_12">Are you? Activating and deactivating SU just to read my Jokes? Just click iSu icon below :)</string>
+    <string name="isu_by">iSu by bhb27</string>
 
     <!-- about -->
     <string name="about">About iSu</string>
