@@ -22,6 +22,7 @@ package com.bhb27.isu.root;
 import android.util.Log;
 
 import com.bhb27.isu.Tools;
+import com.bhb27.isu.Constants;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -113,13 +114,13 @@ public class RootUtils {
         public SU(boolean root) {
             this.root = root;
             try {
-                Log.i(Tools.TAG, root ? "SU initialized" : "SH initialized");
+                Log.i(Constants.TAG, root ? "SU initialized" : "SH initialized");
                 firstTry = true;
                 process = Runtime.getRuntime().exec(root ? "su" : "sh");
                 bufferedWriter = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
                 bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             } catch (IOException e) {
-                Log.e(Tools.TAG, root ? "Failed to run shell as su" : "Failed to run shell as sh");
+                Log.e(Constants.TAG, root ? "Failed to run shell as su" : "Failed to run shell as sh");
                 denied = true;
                 closed = true;
             }
@@ -162,7 +163,7 @@ public class RootUtils {
                 bufferedWriter.flush();
 
                 process.waitFor();
-                Log.i(Tools.TAG, root ? "SU closed: " + process.exitValue() : "SH closed: " + process.exitValue());
+                Log.i(Constants.TAG, root ? "SU closed: " + process.exitValue() : "SH closed: " + process.exitValue());
                 closed = true;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -199,13 +200,13 @@ public class RootUtils {
         public ISU(boolean root) {
             this.root = root;
             try {
-                Log.i(Tools.TAG, root ? "ISU initialized" : "SH initialized");
+                Log.i(Constants.TAG, root ? "ISU initialized" : "SH initialized");
                 firstTry = true;
                 process = Runtime.getRuntime().exec(root ? "isu" : "sh");
                 bufferedWriter = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
                 bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             } catch (IOException e) {
-                Log.e(Tools.TAG, root ? "Failed to run shell as isu" : "Failed to run shell as sh");
+                Log.e(Constants.TAG, root ? "Failed to run shell as isu" : "Failed to run shell as sh");
                 denied = true;
                 closed = true;
             }
@@ -248,7 +249,7 @@ public class RootUtils {
                 bufferedWriter.flush();
 
                 process.waitFor();
-                Log.i(Tools.TAG, root ? "ISU closed: " + process.exitValue() : "SH closed: " + process.exitValue());
+                Log.i(Constants.TAG, root ? "ISU closed: " + process.exitValue() : "SH closed: " + process.exitValue());
                 closed = true;
             } catch (Exception e) {
                 e.printStackTrace();

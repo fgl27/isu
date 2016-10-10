@@ -3,6 +3,7 @@
     <color name="text_black">#000000</color>
     <color name="text_red">#FF0000</color>
     <color name="text_gray">#7D7D7D</color>
+    <color name="Separator">#AA0000</color>
     <color name="button_text">#EAEAEA</color>
     <color name="colorPrimary">#7F0000</color>
     <color name="colorPrimaryDark">#660000</color>

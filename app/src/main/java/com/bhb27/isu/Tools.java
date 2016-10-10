@@ -31,13 +31,21 @@ import java.io.FileReader;
 
 import com.bhb27.isu.root.RootFile;
 import com.bhb27.isu.root.RootUtils;
+import com.bhb27.isu.Constants;
 
 public class Tools {
 
-    /**
-     * Debugging TAG
-     */
-    public final static String TAG = "iSu";
+    public static boolean getBoolean(String name, boolean defaults, Context context) {
+        try {
+            return context.getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE).getBoolean(name, defaults);
+        } catch (Exception ignored) {
+            return false;
+        }
+    }
+
+    public static void saveBoolean(String name, boolean value, Context context) {
+        context.getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE).edit().putBoolean(name, value).apply();
+    }
 
     public static String StringreadFileN(String file) {
         return readFileN(file, true);
@@ -56,9 +64,9 @@ public class Tools {
             s = new StringBuilder();
             while ((line = buf.readLine()) != null) s.append(line).append("\n");
         } catch (FileNotFoundException ignored) {
-            Log.e(TAG, "File does not exist " + file);
+            Log.e(Constants.TAG, "File does not exist " + file);
         } catch (IOException e) {
-            Log.e(TAG, "Failed to read " + file);
+            Log.e(Constants.TAG, "Failed to read " + file);
         } finally {
             try {
                 if (fileReader != null) fileReader.close();
@@ -101,9 +109,9 @@ public class Tools {
             s = new StringBuilder();
             while ((line = buf.readLine()) != null) s.append(line).append("\n");
         } catch (FileNotFoundException ignored) {
-            Log.e(TAG, "File does not exist " + file);
+            Log.e(Constants.TAG, "File does not exist " + file);
         } catch (IOException e) {
-            Log.e(TAG, "Failed to read " + file);
+            Log.e(Constants.TAG, "Failed to read " + file);
         } finally {
             try {
                 if (fileReader != null) fileReader.close();

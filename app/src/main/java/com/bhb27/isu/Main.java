@@ -38,22 +38,23 @@ import android.net.Uri;
 
 import java.util.Random;
 
+import com.bhb27.isu.Constants;
 import com.bhb27.isu.Tools;
 import com.bhb27.isu.root.RootUtils;
 import com.bhb27.isu.AboutActivity;
 
 public class Main extends Activity {
 
-    private TextView switchStatus, switchStatus_summary, su_warning, kernel_check, about;
+    private TextView switchStatus, switchStatus_summary, kernel_check, about, BootSwitch_summary;
     private String su_version = "";
     private String kernel_support = "";
-    private Switch suSwitch;
+    private Switch suSwitch, BootSwitch;
 
-    public String bin_su = "/system/bin/su";
-    public String xbin_su = "/system/xbin/su";
-    public String bin_isu = "/system/bin/isu";
-    public String xbin_isu = "/system/xbin/isu";
-    public String bin_temp_su = "/system/bin/temp_su";
+    public String bin_su = Constants.bin_su;
+    public String xbin_su = Constants.xbin_su;
+    public String bin_isu = Constants.bin_isu;
+    public String xbin_isu = Constants.xbin_isu;
+    public String bin_temp_su = Constants.bin_temp_su;
 
     ImageView ic_launcher;
 
@@ -69,8 +70,7 @@ public class Main extends Activity {
             getString(R.string.pokemongo_1), getString(R.string.pokemongo_2), getString(R.string.pokemongo_3),
                 getString(R.string.pokemongo_4), getString(R.string.pokemongo_5), getString(R.string.pokemongo_6),
                 getString(R.string.pokemongo_7), getString(R.string.pokemongo_8), getString(R.string.pokemongo_9),
-                getString(R.string.pokemongo_10), getString(R.string.pokemongo_11), getString(R.string.pokemongo_12),
-                getString(R.string.isu_by)
+                getString(R.string.pokemongo_10), getString(R.string.isu_by)
         };
 
         // Check if is CM-SU
@@ -84,16 +84,21 @@ public class Main extends Activity {
         if (su_version.contains("null"))
             su_version = getString(R.string.device_not_root);
 
-
         suSwitch = (Switch) findViewById(R.id.suSwitch);
         suSwitch.setText(getString(R.string.su_switch));
+
+        BootSwitch = (Switch) findViewById(R.id.BootSwitch);
+        BootSwitch.setText(getString(R.string.boot_switch));
+
+        BootSwitch_summary = (TextView) findViewById(R.id.BootSwitch_summary);
+        BootSwitch_summary.setText(getString(R.string.boot_switch_summary));
+
         switchStatus = (TextView) findViewById(R.id.switchStatus);
         switchStatus_summary = (TextView) findViewById(R.id.switchStatus_summary);
         // about button
         about = (Button) findViewById(R.id.buttonAbout);
 
-        if (su_version.contains("cm-su")) {
-            su_warning = (TextView) findViewById(R.id.su_warning);
+        if (su_version.contains("cm-su") || su_version.contains("SUPERSU")) {
             kernel_check = (TextView) findViewById(R.id.kernel_check);
             switchStatus.setText(getString(R.string.su_state));
 
@@ -123,6 +128,7 @@ public class Main extends Activity {
                             switchStatus_summary.setText(getString(R.string.su_change_fail));
                     } else {
                         // Make a link to isu so all root tool work
+                        RootUtils.runCommand("umount /system");
                         RootUtils.runCommand("ln -s -f " + xbin_isu + " " + bin_isu);
                         RootUtils.runCommand("mv " + bin_su + " " + bin_temp_su);
                         RootUtils.runCommand("mv " + xbin_su + " " + xbin_isu);
@@ -142,6 +148,7 @@ public class Main extends Activity {
                 }
             });
 
+
             //check the current state before we display the screen
             if (suSwitch.isChecked())
                 switchStatus_summary.setText(getString(R.string.su_on));
@@ -150,26 +157,43 @@ public class Main extends Activity {
 
             //Kernel support check
             if (Tools.existFile(bin_su, true) && Tools.existFile(xbin_su, true)) {
-                kernel_support = RootUtils.runCommand("grep -r -i temp_su *.sh ") + RootUtils.runCommand("grep -r -i isu *.sh ") +
-                    RootUtils.runCommand("grep -r -i /sbin/temp_su *.sh ") + RootUtils.runCommand("grep -r -i /sbin/isu *.sh ") + "";
-                if (kernel_support.contains(bin_temp_su) && kernel_support.contains(xbin_isu)) {
+                kernel_support = RootUtils.runCommand("grep -r -i isu_daemon *.rc ") + "";
+                if (kernel_support.contains("isu_daemon"))
                     kernel_check.setText(getString(R.string.isu_kernel_good));
-                    su_warning.setText(getString(R.string.su_warning));
-                } else {
+                else {
+
+                    BootSwitch.setEnabled(false);
+                    BootSwitch.setTextColor(this.getResources().getColor(R.color.text_gray));
+                    BootSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    BootSwitch_summary.setVisibility(View.GONE);
                     kernel_check.setTextColor(this.getResources().getColor(R.color.text_red));
                     kernel_check.setText(getString(R.string.isu_kernel_bad));
                 }
             } else {
-                kernel_support = RootUtils.runICommand("grep -r -i temp_su *.sh ") + RootUtils.runICommand("grep -r -i isu *.sh ") +
-                    RootUtils.runICommand("grep -r -i /sbin/temp_su *.sh ") + RootUtils.runICommand("grep -r -i /sbin/isu *.sh ") + "";
-                if (kernel_support.contains(bin_temp_su) && kernel_support.contains(xbin_isu)) {
+                kernel_support = RootUtils.runICommand("grep -r -i isu_daemon *.rc ") + "";
+                if (kernel_support.contains("isu_daemon"))
                     kernel_check.setText(getString(R.string.isu_kernel_good));
-                    su_warning.setText(getString(R.string.su_warning));
-                } else {
+                 else {
+                    BootSwitch.setEnabled(false);
+                    BootSwitch.setTextColor(this.getResources().getColor(R.color.text_gray));
+                    BootSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    BootSwitch_summary.setVisibility(View.GONE);
                     kernel_check.setTextColor(this.getResources().getColor(R.color.text_red));
                     kernel_check.setText(getString(R.string.isu_kernel_bad));
                 }
             }
+
+            // Boot switch
+            BootSwitch.setChecked(Tools.getBoolean("enable_su_on_boot", false, Main.this));
+
+            BootSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
+                    Tools.saveBoolean("enable_su_on_boot", isChecked, Main.this);
+                }
+            });
         } else {
             suSwitch.setEnabled(false);
             suSwitch.setTextColor(this.getResources().getColor(R.color.text_gray));

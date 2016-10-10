@@ -26,11 +26,12 @@ import android.util.Log;
 
 public class BootBroadcastReceiver extends BroadcastReceiver {
 
-    private static final String TAG = "iSu_BootBroadcastReceiver";
+    private static final String TAG = "iSu_BReceiver";
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        context.startService(new Intent(context, BootService.class));
-        Log.d(TAG, "started");
+        if (Tools.getBoolean("enable_su_on_boot", false, context))
+            context.startService(new Intent(context, BootService.class));
+        Log.d(TAG, " Started");
     }
 }

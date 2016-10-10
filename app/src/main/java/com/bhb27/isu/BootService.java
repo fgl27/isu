@@ -25,6 +25,10 @@ import android.widget.Toast;
 import android.util.Log;
 import android.content.Intent;
 
+import com.bhb27.isu.Tools;
+import com.bhb27.isu.root.RootUtils;
+import com.bhb27.isu.Constants;
+
 public class BootService extends Service {
 
     private static final String TAG = "iSu_Boot";
@@ -37,13 +41,18 @@ public class BootService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        log("initialize");
         init();
     }
 
-    @Override
     private void init() {
-        Toast.makeText(this, "My Service Started", Toast.LENGTH_LONG).show();
-        Log.d(TAG, "onStart");
+        RootUtils.runICommand("umount /system");
+        RootUtils.runICommand("mv " + Constants.bin_temp_su + " " + Constants.bin_su);
+        RootUtils.runICommand("mv " + Constants.xbin_isu + " " + Constants.xbin_su);
+        if (RootUtils.rooted() && RootUtils.rootAccess())
+            Toast.makeText(this, getString(R.string.isu_boot_service_ok), Toast.LENGTH_LONG).show();
+        else
+            Toast.makeText(this, getString(R.string.isu_boot_service_nok), Toast.LENGTH_LONG).show();
+        Log.d(TAG, " Start");
     }
+
 }
