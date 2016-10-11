@@ -2,22 +2,26 @@
 
 A simple app to hide SU and pass safety net verification, today it works only on SU binary of CM base ROM's
 
-![isu_Screenshot](https://raw.githubusercontent.com/bhb27/isu/master/screenshots/isu.png)
+![isu_Main_Screenshot](https://raw.githubusercontent.com/bhb27/isu/master/screenshots/main.png)
+![isu_Test_Screenshot](https://raw.githubusercontent.com/bhb27/isu/master/screenshots/test.png)
 
 
 ## Report a bug request device support
 
 You can report a bug or a request by [opening an issue](https://github.com/bhb27/isu/issues/new) or
-mention @bhb27 with the request/bug in  [XDA thread](forum.xda-developers.com/moto-maxx/development/kernel-bhb27-kernel-t3207526/)
+mention @bhb27 with the request/bug in [XDA support forum](http://forum.xda-developers.com/android/apps-games/isu-simple-app-to-deactivate-activate-t3478348)
 
 ## Download
 
- [Download APK](https://www.androidfilehost.com/?w=files&flid=120360)
+ [Download Link](https://www.androidfilehost.com/?w=files&flid=120360)
 
 ## Changelog
 
  [iSu Changelog](https://github.com/bhb27/isu/wiki/Changelog)
 
+## XDA
+
+ [XDA support forum](http://forum.xda-developers.com/android/apps-games/isu-simple-app-to-deactivate-activate-t3478348)
 
 ## Build
 
@@ -31,9 +35,11 @@ $ ./gradlew build
 
 I particularly prefer to use this .sh to build all in one shot
  [iSu Build Script](https://github.com/bhb27/scripts/blob/master/build_scripts/build_Isu.sh)
+
 ## Credits
 
 * I use some ROOT function of Kernel adiutor original from [Grarak](https://github.com/Grarak/KernelAdiutor)
+* I use AnyKernel2 to implemented Reboot Service Support [AnyKernel2](https://github.com/osm0sis/AnyKernel2)
 
 ## License
 
