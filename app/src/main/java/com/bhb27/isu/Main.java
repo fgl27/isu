@@ -119,9 +119,10 @@ public class Main extends Activity {
 
                     if (isChecked) {
                         // Make shore system is unmount if it is not no safety net verification pass
-                        RootUtils.runICommand("umount /system");
+                        RootUtils.runICommand(" mount -o rw,remount /system");
                         RootUtils.runICommand("mv " + bin_temp_su + " " + bin_su);
                         RootUtils.runICommand("mv " + xbin_isu + " " + xbin_su);
+                        RootUtils.runCommand("umount /system");
                         if (Tools.existFile(xbin_su, true)) {
                             switchStatus_summary.setText(getString(R.string.su_on));
                             if (isAppInstalled(pokemon_app)) {
@@ -131,10 +132,11 @@ public class Main extends Activity {
                             switchStatus_summary.setText(getString(R.string.su_change_fail));
                     } else {
                         // Make a link to isu so all root tool work
-                        RootUtils.runCommand("umount /system");
+                        RootUtils.runCommand(" mount -o rw,remount /system");
                         RootUtils.runCommand("ln -s -f " + xbin_isu + " " + bin_isu);
                         RootUtils.runCommand("mv " + bin_su + " " + bin_temp_su);
                         RootUtils.runCommand("mv " + xbin_su + " " + xbin_isu);
+                        RootUtils.runICommand("umount /system");
                         if (Tools.IexistFile(xbin_isu, true)) {
                             switchStatus_summary.setText(getString(R.string.su_off));
                             if (isAppInstalled(pokemon_app)) {
