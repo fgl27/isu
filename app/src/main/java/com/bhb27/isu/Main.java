@@ -101,7 +101,7 @@ public class Main extends Activity {
         // about button
         about = (Button) findViewById(R.id.buttonAbout);
 
-        if (su_version.contains("cm-su") || su_version.contains("SUPERSU")) {
+        if (su_version.contains("cm-su")) {
             kernel_check = (TextView) findViewById(R.id.kernel_check);
             switchStatus.setText(getString(R.string.su_state));
 
@@ -119,7 +119,6 @@ public class Main extends Activity {
 
                     if (isChecked) {
                         // Make shore system is unmount if it is not no safety net verification pass
-                        RootUtils.runICommand(" mount -o rw,remount /system");
                         RootUtils.runICommand("mv " + bin_temp_su + " " + bin_su);
                         RootUtils.runICommand("mv " + xbin_isu + " " + xbin_su);
                         RootUtils.runCommand("umount /system");
@@ -132,7 +131,6 @@ public class Main extends Activity {
                             switchStatus_summary.setText(getString(R.string.su_change_fail));
                     } else {
                         // Make a link to isu so all root tool work
-                        RootUtils.runCommand(" mount -o rw,remount /system");
                         RootUtils.runCommand("ln -s -f " + xbin_isu + " " + bin_isu);
                         RootUtils.runCommand("mv " + bin_su + " " + bin_temp_su);
                         RootUtils.runCommand("mv " + xbin_su + " " + xbin_isu);

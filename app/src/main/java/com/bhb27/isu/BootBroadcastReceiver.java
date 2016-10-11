@@ -24,13 +24,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.bhb27.isu.root.RootUtils;
+
 public class BootBroadcastReceiver extends BroadcastReceiver {
 
     private static final String TAG = "iSu_BReceiver";
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (Tools.getBoolean("enable_su_on_boot", false, context))
+        if (Tools.getBoolean("enable_su_on_boot", false, context) && !RootUtils.rooted())
             context.startService(new Intent(context, BootService.class));
         Log.d(TAG, " Started");
     }

@@ -7,11 +7,11 @@
     <string name="su_state">Current SU state:</string>
     <string name="su_not_cm">Current SU not supported.\nThe app only works with CM-SU\nDevice current SU version is:</string>
     <string name="device_not_root">Empty&#8230; Device appears not to be Rooted</string>
-    <string name="su_change_fail">Su State change Fail!</string>
-    <string name="su_on">Su is currently Activated</string>
-    <string name="su_off">Su is currently Deactivated</string>
+    <string name="su_change_fail">Su State change Fail!\nSu version is:</string>
+    <string name="su_on">Su is currently Activated\nSu version is:</string>
+    <string name="su_off">Su is currently Deactivated\nSu version is:</string>
     <string name="boot_switch">Click to activate SU on Boot</string>
-    <string name="boot_switch_summary">Some apps need SU access after boot this helps to give app access, this will enable SU at boot helps but doesn\’t guarantee because there is the chance a particularly app start on Boot before iSu can enable SU</string>
+    <string name="boot_switch_summary">Only run if SU is deactivated. Some apps need SU access after boot this helps to give app access, this will enable SU at boot helps but doesn\'t guarantee because there is the chance a particularly app start on Boot before iSu can enable SU</string>
     <string name="isu_kernel_good">Kernel Reboot Support OK.</string>
     <string name="isu_kernel_bad">No Kernel Reboot Support!!!\nYou can\'t reboot with SU turned off or SU access will be gone.</string>
     <string name="isu_boot_service_ok">iSu Boot service enable SU OK</string>

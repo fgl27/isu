@@ -53,6 +53,7 @@ public class BootService extends Service {
         else
             Toast.makeText(this, getString(R.string.isu_boot_service_nok), Toast.LENGTH_LONG).show();
         Log.d(TAG, " Start");
+        stopSelf();
     }
 
 }
