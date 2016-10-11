@@ -45,7 +45,7 @@ import com.bhb27.isu.AboutActivity;
 
 public class Main extends Activity {
 
-    private TextView switchStatus, switchStatus_summary, kernel_check, about, BootSwitch_summary;
+    private TextView switchStatus, switchStatus_summary, kernel_check, about, BootSwitch_summary, su_version_text;
     private String su_version = "";
     private String kernel_support = "";
     private Switch suSwitch, BootSwitch;
@@ -74,9 +74,9 @@ public class Main extends Activity {
         };
 
         // Check if is CM-SU
-        if (Tools.existFile(bin_su, true) && Tools.existFile(xbin_su, true))
+        if (Tools.existFile(xbin_su, true))
             su_version = RootUtils.runCommand("su --version") + "";
-        else if (Tools.IexistFile(bin_isu, true) && Tools.IexistFile(xbin_isu, true))
+        else if (Tools.IexistFile(xbin_isu, true))
             su_version = RootUtils.runICommand("isu --version") + "";
         else
             su_version = RootUtils.runCommand("su --version") + "";
@@ -86,6 +86,9 @@ public class Main extends Activity {
 
         suSwitch = (Switch) findViewById(R.id.suSwitch);
         suSwitch.setText(getString(R.string.su_switch));
+
+        su_version_text = (TextView) findViewById(R.id.su_version);
+        su_version_text.setText(su_version);
 
         BootSwitch = (Switch) findViewById(R.id.BootSwitch);
         BootSwitch.setText(getString(R.string.boot_switch));
@@ -103,7 +106,7 @@ public class Main extends Activity {
             switchStatus.setText(getString(R.string.su_state));
 
             //set the switch to ON or OFF
-            if (Tools.existFile(bin_su, true) && Tools.existFile(xbin_su, true))
+            if (Tools.existFile(xbin_su, true))
                 suSwitch.setChecked(true);
             else
                 suSwitch.setChecked(false);
@@ -119,7 +122,7 @@ public class Main extends Activity {
                         RootUtils.runICommand("umount /system");
                         RootUtils.runICommand("mv " + bin_temp_su + " " + bin_su);
                         RootUtils.runICommand("mv " + xbin_isu + " " + xbin_su);
-                        if (Tools.existFile(bin_su, true) && Tools.existFile(xbin_su, true)) {
+                        if (Tools.existFile(xbin_su, true)) {
                             switchStatus_summary.setText(getString(R.string.su_on));
                             if (isAppInstalled(pokemon_app)) {
                                 DoAToast(getString(R.string.pokemongo_stop));
@@ -132,7 +135,7 @@ public class Main extends Activity {
                         RootUtils.runCommand("ln -s -f " + xbin_isu + " " + bin_isu);
                         RootUtils.runCommand("mv " + bin_su + " " + bin_temp_su);
                         RootUtils.runCommand("mv " + xbin_su + " " + xbin_isu);
-                        if (Tools.IexistFile(bin_isu, true) && Tools.IexistFile(xbin_isu, true)) {
+                        if (Tools.IexistFile(xbin_isu, true)) {
                             switchStatus_summary.setText(getString(R.string.su_off));
                             if (isAppInstalled(pokemon_app)) {
                                 DoAToast(getString(R.string.pokemongo_start));
@@ -156,12 +159,11 @@ public class Main extends Activity {
                 switchStatus_summary.setText(getString(R.string.su_off));
 
             //Kernel support check
-            if (Tools.existFile(bin_su, true) && Tools.existFile(xbin_su, true)) {
+            if (Tools.existFile(xbin_su, true)) {
                 kernel_support = RootUtils.runCommand("grep -r -i isu_daemon *.rc ") + "";
                 if (kernel_support.contains("isu_daemon"))
                     kernel_check.setText(getString(R.string.isu_kernel_good));
                 else {
-
                     BootSwitch.setEnabled(false);
                     BootSwitch.setTextColor(this.getResources().getColor(R.color.text_gray));
                     BootSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -199,7 +201,7 @@ public class Main extends Activity {
             suSwitch.setTextColor(this.getResources().getColor(R.color.text_gray));
             suSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             switchStatus.setText(getString(R.string.su_not_cm));
-            switchStatus_summary.setText(su_version);
+            switchStatus_summary.setVisibility(View.GONE);
         }
 
         about.setText(getString(R.string.about));
