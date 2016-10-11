@@ -235,7 +235,7 @@ if [ $install_isu == 1 ]; then
 # iSu patch include
 if [ -f init.superuser.rc ]; then
   backup_file init.superuser.rc;
-  prepend_file init.superuser.rc "SuperSU daemonsu" init.superuser;
+  prepend_file init.superuser.rc "isu_daemon" init.superuser;
 else
   replace_file init.superuser.rc 750 init.superuser.rc;
   insert_line init.rc "init.superuser.rc" after "import /init.environ.rc" "import /init.superuser.rc";

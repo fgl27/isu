@@ -201,6 +201,10 @@ public class Main extends Activity {
             suSwitch.setTextColor(this.getResources().getColor(R.color.text_gray));
             suSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             switchStatus.setText(getString(R.string.su_not_cm));
+            BootSwitch.setEnabled(false);
+            BootSwitch.setTextColor(this.getResources().getColor(R.color.text_gray));
+            BootSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            BootSwitch_summary.setVisibility(View.GONE);
             switchStatus_summary.setVisibility(View.GONE);
         }
 
