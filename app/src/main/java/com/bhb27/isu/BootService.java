@@ -45,9 +45,10 @@ public class BootService extends Service {
     }
 
     private void init() {
-        RootUtils.runICommand("umount /system");
+        RootUtils.runICommand("mount -o rw,remount /system");
         RootUtils.runICommand("mv " + Constants.bin_temp_su + " " + Constants.bin_su);
         RootUtils.runICommand("mv " + Constants.xbin_isu + " " + Constants.xbin_su);
+        RootUtils.runCommand("mount -o ro,remount /system");
         if (RootUtils.rooted() && RootUtils.rootAccess())
             Toast.makeText(this, getString(R.string.isu_boot_service_ok), Toast.LENGTH_LONG).show();
         else
