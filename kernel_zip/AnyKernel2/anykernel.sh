@@ -17,7 +17,6 @@ device.name5=
 # shell variables
 # if 1 install if any other clean
 install_isu=1
-block=/dev/block/platform/omap/omap_hsmmc.0/by-name/boot;
 
 ## end setup
 
@@ -42,6 +41,14 @@ contains() { test "${1#*$2}" != "$1" && return 0 || return 1; }
 
 # dump boot and extract ramdisk
 dump_boot() {
+
+  if [ -z "$block" ]; then
+    for PARTITION in kern-a KERN-A android_boot ANDROID_BOOT kernel KERNEL boot BOOT lnx LNX; do
+      block=$(readlink /dev/block/by-name/$PARTITION || readlink /dev/block/platform/*/by-name/$PARTITION || readlink /dev/block/platform/*/*/by-name/$PARTITION)
+      if [ ! -z "$block" ]; then break; fi
+    done
+  fi;
+
   dd if=$block of=/tmp/anykernel/boot.img;
   $bin/unpackbootimg -i /tmp/anykernel/boot.img -o $split_img;
   if [ $? != 0 ]; then
