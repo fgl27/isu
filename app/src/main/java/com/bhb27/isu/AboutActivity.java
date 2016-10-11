@@ -99,7 +99,7 @@ public class AboutActivity extends Activity {
             @Override
             public void onClick(View v) {
                 try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://forum.xda-developers.com/moto-maxx/development/kernel-bhb27-kernel-t3207526/")));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://forum.xda-developers.com/android/apps-games/isu-simple-app-to-deactivate-activate-t3478348")));
                 } catch (ActivityNotFoundException ex) {
                     DoAToast(getString(R.string.no_browser));
                 }
@@ -148,7 +148,7 @@ public class AboutActivity extends Activity {
             @Override
             public void onClick(View v) {
                 try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://forum.xda-developers.com/moto-maxx/development/kernel-bhb27-kernel-t3207526/")));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://forum.xda-developers.com/android/apps-games/isu-simple-app-to-deactivate-activate-t3478348")));
                 } catch (ActivityNotFoundException ex) {
                     DoAToast(getString(R.string.no_browser));
                 }
