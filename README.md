@@ -14,6 +14,10 @@ mention @bhb27 with the request/bug in  [XDA thread](forum.xda-developers.com/mo
 
  [Download APK](https://www.androidfilehost.com/?w=files&flid=120360)
 
+## Changelog
+
+ [iSu Changelog](https://github.com/bhb27/isu/wiki/Changelog)
+
 
 ## Build
 
@@ -25,6 +29,8 @@ $ cd isu
 $ ./gradlew build
 ```
 
+I particularly prefer to use this .sh to build all in one shot
+ [iSu Build Script](https://github.com/bhb27/scripts/blob/master/build_scripts/build_Isu.sh)
 ## Credits
 
 * I use some ROOT function of Kernel adiutor original from [Grarak](https://github.com/Grarak/KernelAdiutor)
