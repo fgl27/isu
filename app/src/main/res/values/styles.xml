@@ -1,6 +1,8 @@
 <resources>
     <color name="windowBackground">#FAFAFA</color>
     <color name="text_black">#000000</color>
+    <color name="text_white">#FFFFFF</color>
+    <color name="text_blue">#3366BB</color>
     <color name="text_red">#FF0000</color>
     <color name="text_gray">#7D7D7D</color>
     <color name="Separator">#AA0000</color>

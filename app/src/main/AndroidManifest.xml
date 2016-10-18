@@ -27,13 +27,5 @@
             android:name=".AboutActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <receiver android:name=".BootBroadcastReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-
-        <service android:enabled="true" android:name=".BootService" />
-
     </application>
 </manifest>

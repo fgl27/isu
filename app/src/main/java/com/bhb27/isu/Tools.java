@@ -35,6 +35,29 @@ import com.bhb27.isu.Constants;
 
 public class Tools {
 
+    public static boolean isSELinuxActive() {
+        String result = "";
+        if (RootUtils.rooted())
+            result = RootUtils.runCommand(Constants.GETENFORCE);
+        else
+            result = RootUtils.runICommand(Constants.GETENFORCE);
+        if (result.equals("Enforcing")) return true;
+        return false;
+    }
+
+    public static String getSELinuxStatus() {
+        String result = "";
+        if (RootUtils.rooted())
+            result = RootUtils.runCommand(Constants.GETENFORCE);
+        else
+            result = RootUtils.runICommand(Constants.GETENFORCE);
+        if (result != null) {
+            if (result.equals("Enforcing")) return "Enforcing";
+            else if (result.equals("Permissive")) return "Permissive";
+        }
+        return "Unknown Status";
+    }
+
     public static boolean getBoolean(String name, boolean defaults, Context context) {
         try {
             return context.getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE).getBoolean(name, defaults);

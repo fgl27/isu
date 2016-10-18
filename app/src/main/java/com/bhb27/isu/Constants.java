@@ -24,4 +24,7 @@ public interface Constants {
     String bin_isu = "/system/bin/isu";
     String xbin_isu = "/system/xbin/isu";
     String bin_temp_su = "/system/bin/temp_su";
+
+    String GETENFORCE = "getenforce";
+    String SETENFORCE = "setenforce";
 }
