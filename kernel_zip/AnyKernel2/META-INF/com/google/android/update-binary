@@ -68,7 +68,7 @@ if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.initd)" == 1 ]; then
   mount -o remount,ro /system;
 fi;
 
-ui_print "Installing iSu Reboot Service support...";
+ui_print "Installing iSu Kernel Service support...";
 for i in $($bb --list); do
   $bb ln -s $bb /tmp/anykernel/bin/$i;
 done;

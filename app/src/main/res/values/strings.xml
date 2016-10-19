@@ -4,7 +4,7 @@
     <!-- main -->
     <string name="app_name">iSu</string>
     <string name="su_switch">Click to activate or deactivate SU</string>
-    <string name="su_state">Current SU state:</string>
+    <string name="su_state">Current SU State:</string>
     <string name="su_not_cm">Current SU not supported.\nThe app only works with CM-SU\nDevice current SU version is:</string>
     <string name="device_not_root">Empty&#8230; Device appears not to be Rooted</string>
     <string name="su_change_fail">Su State change Fail!</string>
@@ -12,11 +12,11 @@
     <string name="su_off">Su is currently Deactivated</string>
     <string name="su_version">Su version:</string>
     <string name="selinux_switch">Click to activate or deactivate Selinux</string>
-    <string name="selinux_state">Current SU state:</string>
-    <string name="selinux_toast_ok">Selinux Set to Enforcing\n This Is Need For Safety Net Pass Success</string>
+    <string name="selinux_state">Current Selinux State:</string>
+    <string name="selinux_toast_ok">Selinux Set to Enforcing\n This Is Need For Some Spp Safety Check</string>
     <string name="selinux_toast_nok">Problem setting Selinux to enforcing!</string>
     <string name="isu_kernel_good">iSu Kernel Support OK.</string>
-    <string name="isu_kernel_bad">No iSu Kernel Support!!!\nPlease flash the kernel support .zip or you may loose SU access + it helps with the Safety Net Pass</string>
+    <string name="isu_kernel_bad">No iSu Kernel Support!!!\nPlease flash the kernel support .zip or you may loose SU access + it helps with Safety verification</string>
     <string name="isu_kernel_folder_link">Click here to go to iSu Download folder</string>
 
     <!-- Main pokemonstrings -->
@@ -39,7 +39,7 @@
     <string name="dev_info">Developer information:</string>
     <string name="git_summary">This is a open source app check it on my github\ngithub.com/bhb27/isu</string>
     <string name="version">Version:</string>
-    <string name="version_summary">A simple app to deactivate SU at will and pass safety net verification, today it works only on SU binary of CM base ROM\'s</string>
+    <string name="version_summary">A simple app to deactivate SU at will and pass safety verification for some apps, today it works only on SU binary of CM base ROM\'s</string>
     <string name="xda_summary">XDA support forum site</string>
     <string name="email">Email</string>
     <string name="email_summary">fglfgl27@gmail.com</string>
@@ -55,5 +55,5 @@
     <string name="isu_icon">iSu Icon</string>
 
     <!-- version always in the bottom -->
-    <string name="version_number">1.2</string>
+    <string name="version_number">1.3</string>
 </resources>

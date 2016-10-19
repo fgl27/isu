@@ -1,0 +1,9 @@
+# service example do it on boot to reboot and mv works
+on property:sys.boot_completed=1
+    start isu
+
+service isu /sbin/isu.sh
+    class main
+    user root
+    disabled
+    oneshot

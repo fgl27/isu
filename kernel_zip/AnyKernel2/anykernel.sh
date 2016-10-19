@@ -16,8 +16,9 @@ device.name5=
 
 # shell variables
 # if 1 install if any other clean
-install_isu=1
-
+install_isu=1;
+#Boot in permissive function
+dopermissive=1;
 ## end setup
 
 
@@ -67,6 +68,12 @@ dump_boot() {
 # repack ramdisk then build and write image
 write_boot() {
   cd $split_img;
+  # do permissive
+  if [ $dopermissive == 1 ]; then
+    sed -ri 's/ enforcing=[0-1]//g' boot.img-cmdline
+    sed -ri 's/ androidboot.selinux=permissive|androidboot.selinux=enforcing|androidboot.selinux=disabled//g' boot.img-cmdline
+    echo $(cat boot.img-cmdline) androidboot.selinux=permissive > boot.img-cmdline
+  fi;
   cmdline=`cat *-cmdline`;
   board=`cat *-board`;
   base=`cat *-base`;
@@ -225,24 +232,22 @@ patch_fstab() {
 ## AnyKernel permissions
 # set permissions for included files
 chmod -R 755 $ramdisk
-chmod 644 $ramdisk/sbin/media_profiles.xml
-
 
 ## AnyKernel install
 dump_boot;
 
 if [ $install_isu == 1 ]; then
-# iSu patch include
-if [ -f init.superuser.rc ]; then
-  backup_file init.superuser.rc;
-  prepend_file init.superuser.rc "isu_daemon" init.superuser;
+	# iSu patch include
+	if [ -f init.superuser.rc ]; then
+	  prepend_file init.superuser.rc "isu_daemon" init.superuser;
+	  prepend_file init.superuser.rc "/sbin/isu.sh" init.isu;
+	else
+	  replace_file init.superuser.rc 750 init.superuser.rc;
+	  insert_line init.rc "init.superuser.rc" after "import /init.environ.rc" "import /init.superuser.rc";
+	fi;
 else
-  replace_file init.superuser.rc 750 init.superuser.rc;
-  insert_line init.rc "init.superuser.rc" after "import /init.environ.rc" "import /init.superuser.rc";
-fi;
-else
-# iSu patch remover
-remove_section init.superuser.rc "# isu daemon" "# isu daemon end"
+	# iSu patch remover
+	remove_section init.superuser.rc "# isu daemon" "# isu daemon end"
 fi;
 
 # end ramdisk changes
