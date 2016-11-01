@@ -20,7 +20,7 @@ else
 	echo "boot start $(date)" > /data/tmp/bootcheck.txt;
 fi;
 
-# Move bin and xbin back
+
 # Isu support
 if [ -e /system/bin/temp_su ]; then
 	mv /system/bin/temp_su /system/bin/su
@@ -31,9 +31,8 @@ if [ -e /system/xbin/isu ]; then
 	if [ ! -e /system/bin/su ]; then
 		ln -s -f /system/xbin/su /system/bin/su
 	fi
-reboot
-fi
 # Isu end
+fi
 
 # give su root:root to adb su work optional/recommended
 if [ -e /system/xbin/su ]; then
