@@ -2,7 +2,7 @@
 on property:sys.boot_completed=1
     start isu
 
-service isu /sbin/isu.sh
+service isu  /system/bin/sh /sbin/isu.sh
     class main
     user root
     disabled
