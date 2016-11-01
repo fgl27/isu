@@ -143,16 +143,6 @@ public class Main extends Activity {
                             SuStatus.setText(getString(R.string.su_change_fail));
                     } else {
                         // Make a link to isu so all root tool work
-                        if (!Tools.isSELinuxActive()) {
-                            DoAToast(getString(R.string.selinux_toast_ok));
-                            RootUtils.runCommand(Constants.SETENFORCE + " 1");
-                            if (Tools.isSELinuxActive())
-                                DoAToast(getString(R.string.selinux_toast_ok));
-                            else
-                                DoAToast(getString(R.string.selinux_toast_nok));
-                            Selinux_State.setText(Tools.getSELinuxStatus());
-                            SelinuxSwitch.setChecked(Tools.isSELinuxActive());
-                        }
                         RootUtils.runCommand("mount -o rw,remount /system");
                         RootUtils.runCommand("ln -s -f " + xbin_isu + " " + bin_isu);
                         RootUtils.runCommand("mv " + bin_su + " " + bin_temp_su);
@@ -167,6 +157,16 @@ public class Main extends Activity {
                                 DoAToast(pokemonstrings[Randon_number]);
                                 DoAToast(pokemonstrings[Randon_number]);
                             }
+                        if (!Tools.isSELinuxActive()) {
+                            DoAToast(getString(R.string.selinux_toast_ok));
+                            RootUtils.runICommand(Constants.SETENFORCE + " 1");
+                            if (Tools.isSELinuxActive())
+                                DoAToast(getString(R.string.selinux_toast_ok));
+                            else
+                                DoAToast(getString(R.string.selinux_toast_nok));
+                            Selinux_State.setText(Tools.getSELinuxStatus());
+                            SelinuxSwitch.setChecked(Tools.isSELinuxActive());
+                        }
                         } else
                             SuStatus.setText(getString(R.string.su_change_fail));
                     }
