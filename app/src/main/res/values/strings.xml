@@ -55,5 +55,5 @@
     <string name="isu_icon">iSu Icon</string>
 
     <!-- version always in the bottom -->
-    <string name="version_number">1.3</string>
+    <string name="version_number">1.4</string>
 </resources>
