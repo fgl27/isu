@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <!-- main -->
+    <string name="app_name">iSu</string>
+    <string name="su_switch">Toque para ativar ou desativar o SU</string>
+    <string name="su_state">Estado atual do SU:</string>
+    <string name="su_not_cm">Estado atual do SU não é suportado.\nO aplicativo funciona somente com o CM-SU\nA versão atual do SU é:</string>
+    <string name="device_not_root">Sem&#8230; Dispositivo sem acesso ROOT</string>
+    <string name="su_change_fail">Troca de estado do SU sem sucesso!</string>
+    <string name="su_on">Su Esta ativado</string>
+    <string name="su_off">Su esta desativado</string>
+    <string name="su_version">Versão do SU:</string>
+    <string name="selinux_switch">Toque para ativar ou desativar o Selinux</string>
+    <string name="selinux_state">Estado atual do Selinux:</string>
+    <string name="selinux_toast_ok">Selinux setado para Enforcing\n Isto é necessário para o funcionamento de alguns app com Safety Check</string>
+    <string name="selinux_toast_nok">Não foi possível mudar o estado do selinux!</string>
+    <string name="isu_kernel_good">Support de Kernel iSu OK.</string>
+    <string name="isu_kernel_bad">Sem suporte de Kernel iSu!!!\nFavor usar o .zip via TWRP ou poderá perder acesso SU apos um reboot</string>
+    <string name="isu_kernel_folder_link">Toque aqui para ir a pasta de Download do iSu</string>
+
+    <!-- Main pokemonstrings -->
+    <string name="pokemongo_start">hey ho let\'s go play Pokemon!!!</string>
+    <string name="pokemongo_stop">SU ON\n\nPokemon Go Mod signing out</string>
+    <string name="pokemongo_1">Lets Grab that Pikachu today</string>
+    <string name="pokemongo_2">How many miles we are going today?</string>
+    <string name="pokemongo_3">Don\'t you have home works to do? Ooo I see you are a grownup, grownup I see -_-</string>
+    <string name="pokemongo_4">Have you??? tie your phone to the ceiling fan to try and get yours Pokemon eggs to hatch faster</string>
+    <string name="pokemongo_5">Presidents and Prime Ministers are playing Pokemon Go around the world, I guess you can just say you are just practicing to be a politician -_-</string>
+    <string name="pokemongo_6">Alakazam: Alakazam, Alakazam, Alakazam!\nAsh: Pokedex, what Pokemon is that?!\nPokedex: -_- That is an Alakazam!\nAsh: No way!</string>
+    <string name="pokemongo_7">Chuck Norris won the World Series of Poker using Pokemon cards.</string>
+    <string name="pokemongo_8">Chuck Noris caught all 150 Pokemon in 2.7 seconds.</string>
+    <string name="pokemongo_9">How long will it be? before people start naming their kids after Pokemon</string>
+    <string name="pokemongo_10">Are you? Activating and deactivating SU just to read my Jokes? Just click iSu icon below :)</string>
+    <string name="isu_by">iSu por bhb27</string>
+
+    <!-- about -->
+    <string name="about">Sobre iSu</string>
+    <string name="dev_info">Informação do desenvolvedor:</string>
+    <string name="git_summary">Este app é open source confira no meu github\ngithub.com/bhb27/isu</string>
+    <string name="version">Versão:</string>
+    <string name="version_summary">Um app simples para desativar ou ativar SU a vontade, e passar a verificação de segurança de alguns aplicativos, Hoje só funciona com o binário SU de ROM CM\'s</string>
+    <string name="xda_summary">XDA forum de suporte</string>
+    <string name="email">Email</string>
+    <string name="email_summary">fglfgl27@gmail.com</string>
+    <string name="github">GitHub</string>
+    <string name="no_email_client">Não há nenhum cliente de email instalado no dispositivo.</string>
+    <string name="no_browser">Não há nenhum navegador de web instalado no dispositivo.</string>
+
+    <!--About images-->
+    <string name="github_icon">Git hub Icon</string>
+    <string name="xda_icon">XDA Icon</string>
+    <string name="gmail_icon">Gmail Icon</string>
+    <!--Main image-->
+    <string name="isu_icon">iSu Icon</string>
+
+</resources>

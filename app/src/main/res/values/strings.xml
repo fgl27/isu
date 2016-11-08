@@ -13,10 +13,10 @@
     <string name="su_version">Su version:</string>
     <string name="selinux_switch">Click to activate or deactivate Selinux</string>
     <string name="selinux_state">Current Selinux State:</string>
-    <string name="selinux_toast_ok">Selinux Set to Enforcing\n This Is Need For Some Spp Safety Check</string>
-    <string name="selinux_toast_nok">Problem setting Selinux to enforcing!</string>
+    <string name="selinux_toast_ok">Selinux Set to Enforcing\n This Is Need For Some App Safety Check</string>
+    <string name="selinux_toast_nok">Can\'t changing Selinux State!</string>
     <string name="isu_kernel_good">iSu Kernel Support OK.</string>
-    <string name="isu_kernel_bad">No iSu Kernel Support!!!\nPlease flash the kernel support .zip or you may loose SU access + it helps with Safety verification</string>
+    <string name="isu_kernel_bad">No iSu Kernel Support!!!\nPlease flash the kernel support .zip or you may loose SU access</string>
     <string name="isu_kernel_folder_link">Click here to go to iSu Download folder</string>
 
     <!-- Main pokemonstrings -->
@@ -55,5 +55,5 @@
     <string name="isu_icon">iSu Icon</string>
 
     <!-- version always in the bottom -->
-    <string name="version_number">1.4</string>
+    <string name="version_number">1.5</string>
 </resources>
