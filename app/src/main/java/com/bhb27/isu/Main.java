@@ -19,30 +19,37 @@
  */
 package com.bhb27.isu;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.graphics.Paint;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.view.View;
-import android.view.Gravity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Random;
 
-import com.bhb27.isu.Constants;
-import com.bhb27.isu.Tools;
-import com.bhb27.isu.root.RootUtils;
 import com.bhb27.isu.AboutActivity;
+import com.bhb27.isu.Constants;
+import com.bhb27.isu.root.RootUtils;
+import com.bhb27.isu.Tools;
 
 public class Main extends Activity {
 
@@ -64,6 +71,11 @@ public class Main extends Activity {
     private String[] pokemonstrings;
     private String pokemon_app = "com.nianticlabs.pokemongo";
 
+    private String TAG = Constants.TAG;
+
+    private final String sepolicy = "/supolicy --live \"allow priv_app su_exec:file { execute write getattr setattr }\" \"allow priv_app system_data_file:file { getattr open read }\" \"allow untrusted_app system_data_file:file { getattr open read }\" \"allow untrusted_app su_exec:file { execute write getattr setattr }\";";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,9 +89,20 @@ public class Main extends Activity {
         };
 
         // Check if is CM-SU
-        if (Tools.existFile(xbin_su, true))
+        if (Tools.existFile(xbin_su, true)) {
             su_bin_version = RootUtils.runCommand("su --version") + "";
-        else if (Tools.IexistFile(xbin_isu, true))
+            copyAssets("libsupol.so");
+            copyAssets("supolicy");
+            if (Tools.existFile("/system/lib/libsupol.so", true)) {
+                RootUtils.runCommand(getFilesDir().getPath() + sepolicy);
+            } else {
+                RootUtils.runCommand("mount -o rw,remount /system");
+                RootUtils.runCommand("cp -rf " + getFilesDir().getPath() + "/libsupol.so " + " /system/lib/libsupol.so");
+                RootUtils.runCommand(getFilesDir().getPath() + sepolicy);
+                RootUtils.runCommand("rm -rf " + "/system/lib/libsupol.so");
+                RootUtils.runCommand("mount -o ro,remount /system");
+            }
+        } else if (Tools.IexistFile(xbin_isu, true))
             su_bin_version = RootUtils.runICommand("isu --version") + "";
         else
             su_bin_version = RootUtils.runCommand("su --version") + "";
@@ -307,6 +330,38 @@ public class Main extends Activity {
         int generate = 0;
         generate = rand.nextInt(max_size.length);
         return generate;
+    }
+
+    private void copyAssets(String filename) {
+
+        String executableFilePath = getFilesDir().getPath() + "/" + filename;
+        AssetManager assetManager = getAssets();
+
+        InputStream inStream = null;
+        OutputStream outStream = null;
+
+        try {
+
+            inStream = assetManager.open(filename);
+            outStream = new FileOutputStream(executableFilePath); // for override file content
+            //outStream = new FileOutputStream(out,true); // for append file content
+
+            byte[] buffer = new byte[1024];
+
+            int length;
+            while ((length = inStream.read(buffer)) > 0) {
+                outStream.write(buffer, 0, length);
+            }
+
+            if (inStream != null) inStream.close();
+            if (outStream != null) outStream.close();
+
+        } catch (IOException e) {
+            Log.e(TAG, "Failed to copy asset file: " + filename, e);
+        }
+        File execFile = new File(executableFilePath);
+        execFile.setExecutable(true);
+        Log.e(TAG, "Copy success: " + filename);
     }
 
 }
