@@ -124,11 +124,12 @@ public class Main extends Activity {
         SuStatus = (TextView) findViewById(R.id.SuStatus);
 
         folder_link = (TextView) findViewById(R.id.folder_link);
+        kernel_check = (TextView) findViewById(R.id.kernel_check);
         // about button
         about = (Button) findViewById(R.id.buttonAbout);
 
         if (su_bin_version.contains("cm-su") || su_bin_version.contains("mk-su")) {
-            kernel_check = (TextView) findViewById(R.id.kernel_check);
+
             SuSwitchSummary.setText(getString(R.string.su_state));
 
             //set the switch to ON or OFF
@@ -267,6 +268,8 @@ public class Main extends Activity {
             SelinuxSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             Selinux_State.setVisibility(View.GONE);
             SuStatus.setVisibility(View.GONE);
+            kernel_check.setTextColor(this.getResources().getColor(R.color.text_red));
+            kernel_check.setText(getString(R.string.isu_kernel_no_su));
         }
 
         about.setText(getString(R.string.about));
