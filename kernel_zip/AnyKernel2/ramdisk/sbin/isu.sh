@@ -11,7 +11,7 @@
 #    oneshot
 
 mount -o rw,remount /system
-
+if [ "$1" = "boot" ]; then
 # Make tmp folder
 if [ ! -e /data/tmp ]; then
 	mkdir /data/tmp;
@@ -41,8 +41,11 @@ fi
 
 echo "iSu.sh initiated on $(date)" >> /data/tmp/bootcheck.txt
 umount /system;
-/system/bin/log -t isu_init -p i "isu init.sh start ok"
+/system/bin/log -t isu_init -p i "isu init.sh start boot ok"
 # enforce selinux need to pass safety net
+elif [ "$1" = "boot_completed" ]; then
+/system/bin/log -t isu_init -p i "isu init.sh start boot_completed ok"
 setenforce 1
+fi
 exit
 
