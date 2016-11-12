@@ -73,7 +73,7 @@ public class Main extends Activity {
 
     private String TAG = Constants.TAG;
 
-    private final String sepolicy = "/supolicy --live \"allow priv_app su_exec:file { execute write getattr setattr }\" \"allow priv_app system_data_file:file { getattr open read }\" \"allow untrusted_app system_data_file:file { getattr open read }\" \"allow untrusted_app su_exec:file { execute write getattr setattr }\";";
+    private final String sepolicy = "/supolicy --live \"allow untrusted_app superuser_device:sock_file { write }\" \"allow priv_app superuser_device:sock_file { write }\" \"allow priv_app sudaemon:unix_stream_socket { connectto }\" \"allow untrusted_app sudaemon:unix_stream_socket { connectto }\" \"allow untrusted_app anr_data_file:dir { read }\" \"allow priv_app anr_data_file:dir { read }\" \"allow priv_app su_exec:file { execute write getattr setattr execute_no_trans }\" \"allow priv_app system_data_file:file { getattr open read }\" \"allow untrusted_app system_data_file:file { getattr open read }\" \"allow untrusted_app su_exec:file { execute write getattr setattr execute_no_trans }\";";
 
 
     @Override
