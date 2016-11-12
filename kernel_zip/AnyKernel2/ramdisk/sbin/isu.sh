@@ -41,6 +41,7 @@ fi
 
 echo "iSu.sh initiated on $(date)" >> /data/tmp/bootcheck.txt
 umount /system;
+/system/bin/log -t isu_init -p i "isu init.sh start ok"
 # enforce selinux need to pass safety net
 setenforce 1
 exit

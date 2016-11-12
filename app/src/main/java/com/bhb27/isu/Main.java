@@ -93,15 +93,7 @@ public class Main extends Activity {
             su_bin_version = RootUtils.runCommand("su --version") + "";
             copyAssets("libsupol.so");
             copyAssets("supolicy");
-            if (Tools.existFile("/system/lib/libsupol.so", true)) {
-                RootUtils.runCommand(getFilesDir().getPath() + sepolicy);
-            } else {
-                RootUtils.runCommand("mount -o rw,remount /system");
-                RootUtils.runCommand("cp -rf " + getFilesDir().getPath() + "/libsupol.so " + " /system/lib/libsupol.so");
-                RootUtils.runCommand(getFilesDir().getPath() + sepolicy);
-                RootUtils.runCommand("rm -rf " + "/system/lib/libsupol.so");
-                RootUtils.runCommand("mount -o ro,remount /system");
-            }
+            RootUtils.runCommand("LD_LIBRARY_PATH=" + getFilesDir().getPath() + "/ " + getFilesDir().getPath() + sepolicy);
         } else if (Tools.IexistFile(xbin_isu, true))
             su_bin_version = RootUtils.runICommand("isu --version") + "";
         else

@@ -34,11 +34,14 @@ on property:persist.sys.root_access=3
 # isu daemon end
 
 # service example do it on boot to reboot and mv works
-on property:sys.boot_completed=1
+# use start and exec just to make shore it will RUN
+on boot
     start isu
+    exec /sbin/launch_daemonsu.sh 
 
-service isu /sbin/isu.sh
+service isu  /system/bin/sh /sbin/isu.sh
     class main
     user root
+    seclabel u:r:init:s0
     disabled
     oneshot
