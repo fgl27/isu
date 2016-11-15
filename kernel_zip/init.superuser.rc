@@ -31,3 +31,28 @@ on property:persist.sys.root_access=1
 
 on property:persist.sys.root_access=3
     start isu_daemon
+# isu daemon end
+
+# service example do it on boot to reboot and mv works
+# use start and exec just to make shore it will RUN
+on boot
+    start isub
+    exec u:r:init:s0 root root -- /sbin/isu.sh boot
+
+on property:sys.boot_completed=1
+    start isubc
+    exec u:r:init:s0 root root -- /sbin/isu.sh boot_completed
+
+service isubc  /system/bin/sh /sbin/isu.sh boot_completed
+    class main
+    user root
+    seclabel u:r:init:s0
+    disabled
+    oneshot
+
+service isub  /system/bin/sh /sbin/isu.sh boot
+    class main
+    user root
+    seclabel u:r:init:s0
+    disabled
+    oneshot
