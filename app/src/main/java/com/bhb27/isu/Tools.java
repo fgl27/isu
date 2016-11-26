@@ -22,6 +22,9 @@ package com.bhb27.isu;
 import android.content.Context;
 
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,26 +34,51 @@ import java.io.FileReader;
 
 import com.bhb27.isu.root.RootFile;
 import com.bhb27.isu.root.RootUtils;
-import com.bhb27.isu.Constants;
 
-public class Tools {
+public class Tools implements Constants {
+
+    private String kernel_support_rc = "";
+    private String kernel_support_sh = "";
+
+    public boolean KernelSupport() {
+        if (existFile(xbin_su, true)) {
+            kernel_support_rc = RootUtils.runCommand("grep -r -i isu_daemon *.rc ") + "";
+            kernel_support_sh = RootUtils.runCommand("grep -r -i isu_daemon *.sh ") + "" +
+                RootUtils.runCommand("grep -r -i /system/xbin/isu /sbin/*.sh ");
+            if (kernel_support_rc.contains("isu_daemon") && kernel_support_sh.contains("/system/xbin/isu")) {
+                return true;
+            } else
+                return false;
+        } else {
+            kernel_support_rc = RootUtils.runICommand("grep -r -i isu_daemon *.rc ") + "";
+            kernel_support_sh = RootUtils.runICommand("grep -r -i isu_daemon *.sh ") + "" +
+                RootUtils.runICommand("grep -r -i /system/xbin/isu /sbin/*.sh ");
+            if (kernel_support_rc.contains("isu_daemon") && kernel_support_sh.contains("/system/xbin/isu")) {
+                return true;
+            } else
+                return false;
+        }
+    }
+
+    // simple toast function to center the message Main.this
+    public void DoAToast(String message, Context context) {
+        Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
+        TextView view = (TextView) toast.getView().findViewById(android.R.id.message);
+        if (view != null) view.setGravity(Gravity.CENTER);
+        toast.show();
+    }
 
     public static boolean isSELinuxActive() {
-        String result = "";
-        if (RootUtils.rooted())
-            result = RootUtils.runCommand(Constants.GETENFORCE);
-        else
-            result = RootUtils.runICommand(Constants.GETENFORCE);
-        if (result.equals("Enforcing")) return true;
+        if (getSELinuxStatus().equals("Enforcing")) return true;
         return false;
     }
 
     public static String getSELinuxStatus() {
         String result = "";
-        if (RootUtils.rooted())
-            result = RootUtils.runCommand(Constants.GETENFORCE);
+        if (existFile(xbin_su, true))
+            result = RootUtils.runCommand(GETENFORCE);
         else
-            result = RootUtils.runICommand(Constants.GETENFORCE);
+            result = RootUtils.runICommand(GETENFORCE);
         if (result != null) {
             if (result.equals("Enforcing")) return "Enforcing";
             else if (result.equals("Permissive")) return "Permissive";
@@ -60,14 +88,14 @@ public class Tools {
 
     public static boolean getBoolean(String name, boolean defaults, Context context) {
         try {
-            return context.getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE).getBoolean(name, defaults);
+            return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getBoolean(name, defaults);
         } catch (Exception ignored) {
             return false;
         }
     }
 
     public static void saveBoolean(String name, boolean value, Context context) {
-        context.getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE).edit().putBoolean(name, value).apply();
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit().putBoolean(name, value).apply();
     }
 
     public static String StringreadFileN(String file) {
@@ -87,9 +115,9 @@ public class Tools {
             s = new StringBuilder();
             while ((line = buf.readLine()) != null) s.append(line).append("\n");
         } catch (FileNotFoundException ignored) {
-            Log.e(Constants.TAG, "File does not exist " + file);
+            Log.e(TAG, "File does not exist " + file);
         } catch (IOException e) {
-            Log.e(Constants.TAG, "Failed to read " + file);
+            Log.e(TAG, "Failed to read " + file);
         } finally {
             try {
                 if (fileReader != null) fileReader.close();
@@ -132,9 +160,9 @@ public class Tools {
             s = new StringBuilder();
             while ((line = buf.readLine()) != null) s.append(line).append("\n");
         } catch (FileNotFoundException ignored) {
-            Log.e(Constants.TAG, "File does not exist " + file);
+            Log.e(TAG, "File does not exist " + file);
         } catch (IOException e) {
-            Log.e(Constants.TAG, "Failed to read " + file);
+            Log.e(TAG, "Failed to read " + file);
         } finally {
             try {
                 if (fileReader != null) fileReader.close();
@@ -144,5 +172,17 @@ public class Tools {
             }
         }
         return s == null ? null : s.toString().trim();
+    }
+
+    public static boolean SuBinary(String binary) {
+        if (binary.equals(xbin_su)) {
+            if (existFile(binary, true))
+                return true;
+        }
+        if (binary.equals(xbin_isu)) {
+            if (IexistFile(binary, true))
+                return true;
+        }
+        return false;
     }
 }

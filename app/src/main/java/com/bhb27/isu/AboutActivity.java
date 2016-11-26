@@ -20,25 +20,30 @@
 package com.bhb27.isu;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ActivityNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.bhb27.isu.Tools;
 
 public class AboutActivity extends Activity {
     // in order of appearance
     TextView about, version, version_number, version_summary, dev_info, email, email_summary, xda, git, git_summary;
     ImageView ic_gmail, ic_xda, ic_git;
 
+    private final Tools tools_class = new Tools();
+    private Context AboutContext = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_fragment);
+        AboutContext = this;
 
         View frameLayout = findViewById(R.id.aboutLayout);
 
@@ -79,7 +84,7 @@ public class AboutActivity extends Activity {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com")));
                 } catch (ActivityNotFoundException ex) {
-                    DoAToast(getString(R.string.no_email_client));
+                    tools_class.DoAToast(getString(R.string.no_email_client), AboutContext);
                 }
             }
         });
@@ -90,7 +95,7 @@ public class AboutActivity extends Activity {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com")));
                 } catch (ActivityNotFoundException ex) {
-                    DoAToast(getString(R.string.no_email_client));
+                    tools_class.DoAToast(getString(R.string.no_email_client), AboutContext);
                 }
             }
         });
@@ -101,7 +106,7 @@ public class AboutActivity extends Activity {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://forum.xda-developers.com/android/apps-games/isu-simple-app-to-deactivate-activate-t3478348")));
                 } catch (ActivityNotFoundException ex) {
-                    DoAToast(getString(R.string.no_browser));
+                    tools_class.DoAToast(getString(R.string.no_browser), AboutContext);
                 }
             }
         });
@@ -112,7 +117,7 @@ public class AboutActivity extends Activity {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/bhb27/isu")));
                 } catch (ActivityNotFoundException ex) {
-                    DoAToast(getString(R.string.no_browser));
+                    tools_class.DoAToast(getString(R.string.no_browser), AboutContext);
                 }
             }
         });
@@ -123,7 +128,7 @@ public class AboutActivity extends Activity {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/bhb27/isu")));
                 } catch (ActivityNotFoundException ex) {
-                    DoAToast(getString(R.string.no_browser));
+                    tools_class.DoAToast(getString(R.string.no_browser), AboutContext);
                 }
             }
         });
@@ -139,7 +144,7 @@ public class AboutActivity extends Activity {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com")));
                 } catch (ActivityNotFoundException ex) {
-                    DoAToast(getString(R.string.no_email_client));
+                    tools_class.DoAToast(getString(R.string.no_email_client), AboutContext);
                 }
             }
         });
@@ -150,7 +155,7 @@ public class AboutActivity extends Activity {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://forum.xda-developers.com/android/apps-games/isu-simple-app-to-deactivate-activate-t3478348")));
                 } catch (ActivityNotFoundException ex) {
-                    DoAToast(getString(R.string.no_browser));
+                    tools_class.DoAToast(getString(R.string.no_browser), AboutContext);
                 }
             }
         });
@@ -161,17 +166,10 @@ public class AboutActivity extends Activity {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/bhb27/isu")));
                 } catch (ActivityNotFoundException ex) {
-                    DoAToast(getString(R.string.no_browser));
+                    tools_class.DoAToast(getString(R.string.no_browser), AboutContext);
                 }
             }
         });
     }
 
-    // simple toast function to center the message
-    public void DoAToast(String message) {
-        Toast toast = Toast.makeText(AboutActivity.this, message, Toast.LENGTH_SHORT);
-        TextView view = (TextView) toast.getView().findViewById(android.R.id.message);
-        if (view != null) view.setGravity(Gravity.CENTER);
-        toast.show();
-    }
 }

@@ -18,7 +18,7 @@
     <string name="isu_kernel_good">Support de Kernel iSu OK.</string>
     <string name="isu_kernel_bad">Sem suporte de Kernel iSu!!!\nFavor usar o .zip via TWRP ou poderá perder acesso SU apos um reboot</string>
     <string name="isu_kernel_no_su">Se usou o iSu pra desativar o SU tente um reboot to aparelho se você tiver support de kernel iSU, sem SU o app não consegue saber se o aparelho tem o suporte de kernel, e duvida verifique o site de suporte no sobre... XDA forum de suporte</string>
-    <string name="isu_kernel_folder_link">Toque aqui para ir a pasta de Download do iSu</string>
+    <string name="download_folder_link">Toque aqui para ir a pasta de Download do iSu</string>
 
     <!-- Main pokemonstrings -->
     <string name="pokemongo_start">hey ho let\'s go play Pokemon!!!</string>

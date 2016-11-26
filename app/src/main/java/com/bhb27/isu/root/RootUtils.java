@@ -59,7 +59,7 @@ public class RootUtils {
     }
 
     private static boolean existBinary(String binary) {
-        for (String path : System.getenv("PATH").split(":")) {
+        for (String path: System.getenv("PATH").split(":")) {
             if (!path.endsWith("/")) path += "/";
             if (new File(path + binary).exists() || Tools.existFile(path + binary, true))
                 return true;
@@ -73,9 +73,9 @@ public class RootUtils {
 
     public static void mount(boolean writeable, String mountpoint) {
         runCommand(writeable ? "mount -o remount,rw " + mountpoint + " " + mountpoint :
-                "mount -o remount,ro " + mountpoint + " " + mountpoint);
+            "mount -o remount,ro " + mountpoint + " " + mountpoint);
         runCommand(writeable ? "mount -o remount,rw " + mountpoint :
-                "mount -o remount,ro " + mountpoint);
+            "mount -o remount,ro " + mountpoint);
     }
 
     public static void closeSU() {
@@ -144,6 +144,8 @@ public class RootUtils {
                 }
                 firstTry = false;
                 return sb.toString().trim();
+            } catch (NullPointerException e) {
+                Log.e(Constants.TAG, "catch NullPointerException running as Su");
             } catch (IOException e) {
                 closed = true;
                 e.printStackTrace();
@@ -165,6 +167,8 @@ public class RootUtils {
                 process.waitFor();
                 Log.i(Constants.TAG, root ? "SU closed: " + process.exitValue() : "SH closed: " + process.exitValue());
                 closed = true;
+            } catch (NullPointerException e) {
+                Log.e(Constants.TAG, "catch NullPointerException close Su");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -230,6 +234,8 @@ public class RootUtils {
                 }
                 firstTry = false;
                 return sb.toString().trim();
+            } catch (NullPointerException e) {
+                Log.e(Constants.TAG, "catch NullPointerException running as iSu");
             } catch (IOException e) {
                 closed = true;
                 e.printStackTrace();
@@ -251,6 +257,8 @@ public class RootUtils {
                 process.waitFor();
                 Log.i(Constants.TAG, root ? "ISU closed: " + process.exitValue() : "SH closed: " + process.exitValue());
                 closed = true;
+            } catch (NullPointerException e) {
+                Log.e(Constants.TAG, "catch NullPointerException close iSu");
             } catch (Exception e) {
                 e.printStackTrace();
             }
