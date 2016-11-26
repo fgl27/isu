@@ -15,6 +15,7 @@ device.name4=
 device.name5=
 
 # shell variables
+is_slot_device=0;
 # if 1 install if any other clean
 install_isu=1;
 #Boot in permissive function
@@ -31,6 +32,15 @@ patch=/tmp/anykernel/patch;
 
 chmod -R 755 $bin;
 mkdir -p $ramdisk $split_img;
+
+if [ "$is_slot_device" == 1 ]; then
+  slot=$(getprop ro.boot.slot_suffix 2>/dev/null);
+  test ! "$slot" && slot=$(grep -o 'androidboot.slot_suffix=.*$' /proc/cmdline | cut -d\  -f1 | cut -d= -f2);
+  test "$slot" && block=$block$slot;
+  if [ $? != 0 -o ! -e "$block" ]; then
+    ui_print " "; ui_print "Unable to determine active boot slot. Aborting..."; exit 1;
+  fi;
+fi;
 
 OUTFD=/proc/self/fd/$1;
 
@@ -81,6 +91,8 @@ write_boot() {
   kerneloff=`cat *-kerneloff`;
   ramdiskoff=`cat *-ramdiskoff`;
   tagsoff=`cat *-tagsoff`;
+  osver=`cat *-osversion`;
+  oslvl=`cat *-oslevel`;
   if [ -f *-second ]; then
     second=`ls *-second`;
     second="--second $split_img/$second";
@@ -110,7 +122,7 @@ write_boot() {
   if [ $? != 0 ]; then
     ui_print " "; ui_print "Repacking ramdisk failed. Aborting..."; exit 1;
   fi;
-  $bin/mkbootimg --kernel $kernel --ramdisk /tmp/anykernel/ramdisk-new.cpio.gz $second --cmdline "$cmdline" --board "$board" --base $base --pagesize $pagesize --kernel_offset $kerneloff --ramdisk_offset $ramdiskoff $secondoff --tags_offset $tagsoff $dtb --output /tmp/anykernel/boot-new.img;
+  $bin/mkbootimg --kernel $kernel --ramdisk /tmp/anykernel/ramdisk-new.cpio.gz $second --cmdline "$cmdline" --board "$board" --base $base --pagesize $pagesize --kernel_offset $kerneloff --ramdisk_offset $ramdiskoff $secondoff --tags_offset $tagsoff --os_version "$osver" --os_patch_level "$oslvl" $dtb --output /tmp/anykernel/boot-new.img;
   if [ $? != 0 ]; then
     ui_print " "; ui_print "Repacking image failed. Aborting..."; exit 1;
   elif [ `wc -c < /tmp/anykernel/boot-new.img` -gt `wc -c < /tmp/anykernel/boot.img` ]; then
@@ -137,14 +149,25 @@ replace_string() {
 
 # replace_section <file> <begin search string> <end search string> <replacement string>
 replace_section() {
-  line=`grep -n "$2" $1 | head -n1 | cut -d: -f1`;
-  sed -i "/${2//\//\\/}/,/${3//\//\\/}/d" $1;
-  sed -i "${line}s;^;${4}\n;" $1;
+  begin=`grep -n "$2" $1 | head -n1 | cut -d: -f1`;
+  for end in `grep -n "$3" $1 | cut -d: -f1`; do
+    if [ "$begin" -lt "$end" ]; then
+      sed -i "/${2//\//\\/}/,/${3//\//\\/}/d" $1;
+      sed -i "${begin}s;^;${4}\n;" $1;
+      break;
+    fi;
+  done;
 }
 
 # remove_section <file> <begin search string> <end search string>
 remove_section() {
-  sed -i "/${2//\//\\/}/,/${3//\//\\/}/d" $1;
+  begin=`grep -n "$2" $1 | head -n1 | cut -d: -f1`;
+  for end in `grep -n "$3" $1 | cut -d: -f1`; do
+    if [ "$begin" -lt "$end" ]; then
+      sed -i "/${2//\//\\/}/,/${3//\//\\/}/d" $1;
+      break;
+    fi;
+  done;
 }
 
 # insert_line <file> <if search string> <before|after> <line match string> <inserted line>
