@@ -6,7 +6,7 @@
     <string name="su_switch">Click to activate or deactivate SU</string>
     <string name="su_state">Current SU State:</string>
     <string name="su_not_cm">Current SU not supported.\nThe app only works with CM-SU\nDevice current SU version is:</string>
-    <string name="device_not_root">Empty&#8230; Device appears not to be Rooted</string>
+    <string name="device_not_root">Device appears not to be Rooted</string>
     <string name="su_change_fail">Su State change Fail!</string>
     <string name="su_on">Su is currently Activated</string>
     <string name="su_off">Su is currently Deactivated</string>
@@ -17,7 +17,7 @@
     <string name="selinux_toast_nok">Can\'t changing Selinux State!</string>
     <string name="isu_kernel_good">iSu Kernel Support OK.</string>
     <string name="isu_kernel_bad">No iSu Kernel Support!!!\nPlease flash the kernel support .zip or you may loose SU access</string>
-    <string name="isu_kernel_no_su">If you use iSu to deactivate SU and lost SU support try a reboot if you have iSu kernel support, without SU the app can\'t tell if you have reboot support in doubt check XDA thread link in about... XDA support forun site</string>
+    <string name="isu_kernel_no_su">If you use iSu to deactivate SU and lost SU support try a reboot if you have iSu kernel support, without SU the app can\'t tell if you have reboot support in doubt check XDA thread link in About iSu&#8230; XDA support forun site</string>
     <string name="download_folder_link">Click here to go to iSu Download folder</string>
 
     <!-- Main pokemonstrings -->
@@ -56,5 +56,5 @@
     <string name="isu_icon">iSu Icon</string>
 
     <!-- version always in the bottom -->
-    <string name="version_number">1.5</string>
+    <string name="version_number">1.6</string>
 </resources>

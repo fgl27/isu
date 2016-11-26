@@ -6,7 +6,7 @@
     <string name="su_switch">Toque para ativar ou desativar o SU</string>
     <string name="su_state">Estado atual do SU:</string>
     <string name="su_not_cm">Estado atual do SU não é suportado.\nO aplicativo funciona somente com o CM-SU\nA versão atual do SU é:</string>
-    <string name="device_not_root">Sem&#8230; Dispositivo sem acesso ROOT</string>
+    <string name="device_not_root">Dispositivo sem acesso ROOT</string>
     <string name="su_change_fail">Troca de estado do SU sem sucesso!</string>
     <string name="su_on">Su Esta ativado</string>
     <string name="su_off">Su esta desativado</string>
@@ -17,7 +17,7 @@
     <string name="selinux_toast_nok">Não foi possível mudar o estado do selinux!</string>
     <string name="isu_kernel_good">Support de Kernel iSu OK.</string>
     <string name="isu_kernel_bad">Sem suporte de Kernel iSu!!!\nFavor usar o .zip via TWRP ou poderá perder acesso SU apos um reboot</string>
-    <string name="isu_kernel_no_su">Se usou o iSu pra desativar o SU tente um reboot to aparelho se você tiver support de kernel iSU, sem SU o app não consegue saber se o aparelho tem o suporte de kernel, e duvida verifique o site de suporte no sobre... XDA forum de suporte</string>
+    <string name="isu_kernel_no_su">Se usou o iSu pra desativar o SU tente um reboot to aparelho se você tiver support de kernel iSU, sem SU o app não consegue saber se o aparelho tem o suporte de kernel, e duvida verifique o site de suporte no Sobre iSU&#8230; XDA forum de suporte</string>
     <string name="download_folder_link">Toque aqui para ir a pasta de Download do iSu</string>
 
     <!-- Main pokemonstrings -->

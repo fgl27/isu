@@ -8,8 +8,8 @@ android {
         applicationId "com.bhb27.isu"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 5
-        versionName "1.5"
+        versionCode 6
+        versionName "1.6"
     }
     buildTypes {
         release {
@@ -20,6 +20,9 @@ android {
     }
     lintOptions {
         abortOnError false
+	disable 'UnsafeNativeCodeLocation', //UnsafeNativeCodeLocation: Native code outside library directory libsupol and supolicy
+		'GoogleAppIndexingWarning', //GoogleAppIndexingWarning: Missing support for Firebase App Indexing
+		'IconMissingDensityFolder' //IconMissingDensityFolder: Missing density folder
     }
     productFlavors {
     }
