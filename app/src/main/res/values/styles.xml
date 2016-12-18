@@ -10,12 +10,13 @@
     <color name="colorPrimary">#7F0000</color>
     <color name="colorPrimaryDark">#660000</color>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:style/Theme.Material.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:textColorPrimary">@color/text_black</item>
         <item name="android:textColorSecondary">@color/text_black</item>
-        <item name="android:colorPrimary">@color/colorPrimary</item>
-        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:colorAccent">#800000</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">#800000</item>
         <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 </resources>
