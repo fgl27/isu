@@ -54,7 +54,4 @@
     <string name="gmail_icon">Gmail Icon</string>
     <!--Main image-->
     <string name="isu_icon">iSu Icon</string>
-
-    <!-- version always in the bottom -->
-    <string name="version_number">1.6</string>
 </resources>

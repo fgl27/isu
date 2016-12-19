@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bhb27.isu.Tools;
+import com.bhb27.isu.BuildConfig;
 
 public class AboutActivity extends Activity {
     // in order of appearance
@@ -55,7 +56,7 @@ public class AboutActivity extends Activity {
         version.setText(getString(R.string.version));
 
         version_number = (TextView) findViewById(R.id.version_number);
-        version_number.setText(getString(R.string.version_number));
+        version_number.setText(BuildConfig.VERSION_NAME);
 
         version_summary = (TextView) findViewById(R.id.version_summary);
         version_summary.setText(getString(R.string.version_summary));
@@ -82,7 +83,8 @@ public class AboutActivity extends Activity {
             @Override
             public void onClick(View v) {
                 try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com")));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com"))
+                        .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME));
                 } catch (ActivityNotFoundException ex) {
                     tools_class.DoAToast(getString(R.string.no_email_client), AboutContext);
                 }
@@ -93,7 +95,8 @@ public class AboutActivity extends Activity {
             @Override
             public void onClick(View v) {
                 try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com")));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com"))
+                        .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME));
                 } catch (ActivityNotFoundException ex) {
                     tools_class.DoAToast(getString(R.string.no_email_client), AboutContext);
                 }
@@ -142,7 +145,8 @@ public class AboutActivity extends Activity {
             @Override
             public void onClick(View v) {
                 try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com")));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com"))
+                        .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME));
                 } catch (ActivityNotFoundException ex) {
                     tools_class.DoAToast(getString(R.string.no_email_client), AboutContext);
                 }
