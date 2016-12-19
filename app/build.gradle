@@ -2,11 +2,11 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25"
+    buildToolsVersion "25.0.1"
 
     defaultConfig {
         applicationId "com.bhb27.isu"
-        minSdkVersion 21
+        minSdkVersion 14
         targetSdkVersion 25
         versionCode 6
         versionName "1.6"
@@ -25,6 +25,11 @@ android {
 		'IconMissingDensityFolder' //IconMissingDensityFolder: Missing density folder
     }
     productFlavors {
+    }
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
     }
 }
 

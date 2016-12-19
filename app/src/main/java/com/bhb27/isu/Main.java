@@ -27,7 +27,7 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Paint;
 import android.net.Uri;
-import android.os.Bundle;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -148,7 +148,7 @@ public class Main extends Activity {
                 kernel_check.setText(getString(R.string.isu_kernel_good));
                 download_folder_link.setVisibility(View.GONE);
             } else {
-                kernel_check.setTextColor(this.getResources().getColor(R.color.text_red));
+                kernel_check.setTextColor(getColorWrapper(MainContext, R.color.text_red));
                 kernel_check.setText(getString(R.string.isu_kernel_bad));
                 download_folder_link.setText(getString(R.string.download_folder_link));
             }
@@ -175,15 +175,15 @@ public class Main extends Activity {
             });
         } else {
             suSwitch.setEnabled(false);
-            suSwitch.setTextColor(this.getResources().getColor(R.color.text_gray));
+            suSwitch.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
             suSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             SuSwitchSummary.setText(getString(R.string.su_not_cm));
             SelinuxSwitch.setEnabled(false);
-            SelinuxSwitch.setTextColor(this.getResources().getColor(R.color.text_gray));
+            SelinuxSwitch.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
             SelinuxSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             Selinux_State.setVisibility(View.GONE);
             SuStatus.setVisibility(View.GONE);
-            kernel_check.setTextColor(this.getResources().getColor(R.color.text_red));
+            kernel_check.setTextColor(getColorWrapper(MainContext, R.color.text_red));
             kernel_check.setText(getString(R.string.isu_kernel_no_su));
         }
 
@@ -349,5 +349,14 @@ public class Main extends Activity {
             su_bin_version = getString(R.string.device_not_root);
 
         return su_bin_version;
+    }
+
+    public static int getColorWrapper(Context context, int id) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return context.getColor(id);
+        } else {
+            //noinspection deprecation
+            return context.getResources().getColor(id);
+        }
     }
 }
