@@ -57,11 +57,11 @@ public class Main extends Activity {
     private String su_bin_version = "";
     private Switch suSwitch, SelinuxSwitch;
 
-    public String bin_su = Constants.bin_su;
-    public String xbin_su = Constants.xbin_su;
-    public String bin_isu = Constants.bin_isu;
-    public String xbin_isu = Constants.xbin_isu;
-    public String bin_temp_su = Constants.bin_temp_su;
+    private String bin_su = Constants.bin_su;
+    private String xbin_su = Constants.xbin_su;
+    private String bin_isu = Constants.bin_isu;
+    private String xbin_isu = Constants.xbin_isu;
+    private String bin_temp_su = Constants.bin_temp_su;
 
     ImageView ic_launcher;
 
@@ -79,7 +79,7 @@ public class Main extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+	String suVersion = SuVersion();
         PatchSepolicy();
 
         MainContext = this;
@@ -99,7 +99,7 @@ public class Main extends Activity {
         su_version.setText(getString(R.string.su_version));
 
         su_version_summary = (TextView) findViewById(R.id.su_version_summary);
-        su_version_summary.setText(SuVersion());
+        su_version_summary.setText(suVersion);
 
         SelinuxSwitch = (Switch) findViewById(R.id.SelinuxSwitch);
         SelinuxSwitch.setText(getString(R.string.selinux_switch));
@@ -118,7 +118,7 @@ public class Main extends Activity {
         // about button
         about = (Button) findViewById(R.id.buttonAbout);
 
-        if (SuVersion().contains("cm-su") || SuVersion().contains("mk-su")) {
+        if (SuVersionBool(suVersion)) {
 
             SuSwitchSummary.setText(getString(R.string.su_state));
 
@@ -351,12 +351,19 @@ public class Main extends Activity {
         return su_bin_version;
     }
 
-    public static int getColorWrapper(Context context, int id) {
+    private static int getColorWrapper(Context context, int id) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return context.getColor(id);
         } else {
             //noinspection deprecation
             return context.getResources().getColor(id);
         }
+    }
+
+    private boolean SuVersionBool(String suVersion) {
+        if (suVersion.contains("cm-su") || suVersion.contains("mk-su") ||
+            suVersion.contains("16 com.android.settings"))
+            return true;
+        else return false;
     }
 }
