@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.content.ActivityNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Build;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,6 +46,8 @@ public class AboutActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_fragment);
         AboutContext = this;
+        final String SUBJECT = getString(R.string.app_name) + " " +
+            BuildConfig.VERSION_NAME + " (" + Build.MODEL + " " + Build.VERSION.RELEASE + ")";
 
         View frameLayout = findViewById(R.id.aboutLayout);
 
@@ -84,7 +87,7 @@ public class AboutActivity extends Activity {
             public void onClick(View v) {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com"))
-                        .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME));
+                        .putExtra(Intent.EXTRA_SUBJECT, SUBJECT));
                 } catch (ActivityNotFoundException ex) {
                     tools_class.DoAToast(getString(R.string.no_email_client), AboutContext);
                 }
@@ -96,7 +99,7 @@ public class AboutActivity extends Activity {
             public void onClick(View v) {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com"))
-                        .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME));
+                        .putExtra(Intent.EXTRA_SUBJECT, SUBJECT));
                 } catch (ActivityNotFoundException ex) {
                     tools_class.DoAToast(getString(R.string.no_email_client), AboutContext);
                 }
@@ -146,7 +149,7 @@ public class AboutActivity extends Activity {
             public void onClick(View v) {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com"))
-                        .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name) + " " + BuildConfig.VERSION_NAME));
+                        .putExtra(Intent.EXTRA_SUBJECT, SUBJECT));
                 } catch (ActivityNotFoundException ex) {
                     tools_class.DoAToast(getString(R.string.no_email_client), AboutContext);
                 }
