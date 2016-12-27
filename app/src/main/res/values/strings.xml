@@ -54,4 +54,17 @@
     <string name="gmail_icon">Gmail Icon</string>
     <!--Main image-->
     <string name="isu_icon">iSu Icon</string>
+    <!--Per app-->
+   <string name="set_per_app">iSu App Monitor</string>
+    <string name="per_app_title_isu">Select Apps that will deactivate SU:</string>
+    <string name="per_app_title_su">Select Apps that will activate SU:</string>
+    <string name="accessibility_service_label">iSu App Monitor</string>
+    <string name="accessibility_service_desc">A Service to monitor when foreground app start and activate or deactivate SU base on user choice</string>
+    <string name="per_app_active">Activate SU</string>
+    <string name="per_app_active_summary">Click to select the apps that will make iSu activate SU when started</string>
+    <string name="per_app_deactive">Deactivate SU</string>
+    <string name="per_app_deactive_summary">Click to select the apps that will make iSu deactivate SU when started\n(Deactivate also set selinux to enforcing)</string>
+    <string name="per_app_restart">Restart the app after Activate SU</string>
+    <string name="per_app_restart_summary">There is a chance that the app you choose start before iSu can activate SU and it will fail because missing SU acess, so iSu can restart the app after activating SU to make shore it has ROOT access.\nThe restart may not work with all apps or is not need in all devices</string>
+
 </resources>

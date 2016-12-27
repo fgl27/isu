@@ -30,7 +30,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bhb27.isu.Tools;
+import com.bhb27.isu.tools.Tools;
 import com.bhb27.isu.BuildConfig;
 
 public class AboutActivity extends Activity {

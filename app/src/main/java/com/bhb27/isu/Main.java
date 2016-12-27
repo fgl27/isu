@@ -46,14 +46,15 @@ import java.io.OutputStream;
 import java.util.Random;
 
 import com.bhb27.isu.AboutActivity;
-import com.bhb27.isu.Constants;
-import com.bhb27.isu.root.RootUtils;
-import com.bhb27.isu.Tools;
+import com.bhb27.isu.PerAppActivity;
+import com.bhb27.isu.tools.Constants;
+import com.bhb27.isu.tools.RootUtils;
+import com.bhb27.isu.tools.Tools;
 
 public class Main extends Activity {
 
     private TextView SuSwitchSummary, SuStatus, kernel_check, about, Selinux_State, su_version, su_version_summary,
-    SelinuxStatus, download_folder_link;
+    SelinuxStatus, download_folder_link, per_app, per_app_summary;
     private String su_bin_version = "";
     private Switch suSwitch, SelinuxSwitch;
 
@@ -113,6 +114,9 @@ public class Main extends Activity {
         SuSwitchSummary = (TextView) findViewById(R.id.SuSwitchSummary);
         SuStatus = (TextView) findViewById(R.id.SuStatus);
 
+        per_app = (Button) findViewById(R.id.buttonPer_app);
+        per_app_summary = (TextView) findViewById(R.id.per_app);
+
         download_folder_link = (TextView) findViewById(R.id.download_folder_link);
         kernel_check = (TextView) findViewById(R.id.kernel_check);
         // about button
@@ -136,6 +140,15 @@ public class Main extends Activity {
                 }
             });
 
+	    per_app_summary.setText(getString(R.string.accessibility_service_desc));
+	    per_app.setText(getString(R.string.set_per_app));
+            per_app.setOnClickListener(new View.OnClickListener() {
+		Intent myIntent = new Intent(getApplicationContext(), PerAppActivity.class);
+                @Override
+                public void onClick(View v) {
+                    startActivity(myIntent);
+                }
+            });
 
             //check the current state before we display the screen
             if (suSwitch.isChecked())
@@ -234,7 +247,7 @@ public class Main extends Activity {
         return generate;
     }
 
-    private void PatchSepolicy() {
+    public void PatchSepolicy() {
         copyAssets("libsupol.so");
         copyAssets("supolicy");
         if (Tools.SuBinary(xbin_su))
@@ -243,7 +256,7 @@ public class Main extends Activity {
             RootUtils.runICommand("LD_LIBRARY_PATH=" + getFilesDir().getPath() + "/ " + getFilesDir().getPath() + sepolicy);
     }
 
-    private void copyAssets(String filename) {
+    public void copyAssets(String filename) {
 
         String executableFilePath = getFilesDir().getPath() + "/" + filename;
         AssetManager assetManager = getAssets();
@@ -366,4 +379,5 @@ public class Main extends Activity {
             return true;
         else return false;
     }
+
 }

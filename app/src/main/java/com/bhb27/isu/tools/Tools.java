@@ -17,7 +17,7 @@
  * along with Kernel Adiutor.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.bhb27.isu;
+package com.bhb27.isu.tools;
 
 import android.content.Context;
 
@@ -31,9 +31,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.FileReader;
+import java.io.FileWriter;
 
-import com.bhb27.isu.root.RootFile;
-import com.bhb27.isu.root.RootUtils;
+import com.bhb27.isu.tools.RootFile;
+import com.bhb27.isu.tools.RootUtils;
 
 public class Tools implements Constants {
 
@@ -184,5 +185,35 @@ public class Tools implements Constants {
                 return true;
         }
         return false;
+    }
+
+    /**
+     * Write a string to any file
+     *
+     * @param path   path to file
+     * @param text   your text
+     * @param append append your text to file
+     * @param asRoot write as root
+     */
+    public static void writeFile(String path, String text, boolean append, boolean asRoot) {
+        if (asRoot) {
+            new RootFile(path).write(text, append);
+            return;
+        }
+
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(path, append);
+            writer.write(text);
+            writer.flush();
+        } catch (IOException e) {
+            Log.e(TAG, "Failed to write " + path);
+        } finally {
+            try {
+                if (writer != null) writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

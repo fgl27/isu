@@ -17,12 +17,12 @@
  * along with Kernel Adiutor.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.bhb27.isu.root;
+package com.bhb27.isu.tools;
 
 import android.util.Log;
 
-import com.bhb27.isu.Tools;
-import com.bhb27.isu.Constants;
+import com.bhb27.isu.tools.Tools;
+import com.bhb27.isu.tools.Constants;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
