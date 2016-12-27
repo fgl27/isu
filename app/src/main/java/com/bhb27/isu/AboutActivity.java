@@ -179,4 +179,10 @@ public class AboutActivity extends Activity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.onCreate(null);
+    }
+
 }

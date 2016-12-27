@@ -91,10 +91,10 @@ public class PerAppMonitor extends AccessibilityService {
             time = System.currentTimeMillis();
             //run su
             if (last_profile.equals("iSu") && Tools.SuBinary(xbin_su)) {
-                tools_class.DoAToast("iSu " + getString(R.string.per_app_deactive), this);
+                tools_class.DoAToast("iSu " + getString(R.string.per_app_deactive) + "!", this);
                 iSuSwitch(false, packageName);
             } else if (last_profile.equals("Su") && Tools.SuBinary(xbin_isu)) {
-                tools_class.DoAToast("iSu " + getString(R.string.per_app_active), this);
+                tools_class.DoAToast("iSu " + getString(R.string.per_app_active) + "!", this);
                 iSuSwitch(true, packageName);
             }
 

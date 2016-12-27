@@ -230,6 +230,12 @@ public class Main extends Activity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.onCreate(null);
+    }
+
     // Poke fun simple function to see if Pokemon go is installed and call a fun toast base on a random number
     // http://stackoverflow.com/a/27156435/6645820 + http://stackoverflow.com/a/424548/6645820
     //package is installed function
