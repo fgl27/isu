@@ -148,7 +148,12 @@ public class Tools implements Constants {
     }
 
     public static String readFile(String file, boolean asRoot) {
-        if (asRoot) return new RootFile(file).readFile();
+        if (asRoot) {
+            if (SuBinary(xbin_su))
+                return new RootFile(file).readFile();
+            else if (SuBinary(xbin_isu))
+                return new RootFile(file).IreadFile();
+        }
 
         StringBuilder s = null;
         FileReader fileReader = null;
@@ -197,7 +202,10 @@ public class Tools implements Constants {
      */
     public static void writeFile(String path, String text, boolean append, boolean asRoot) {
         if (asRoot) {
-            new RootFile(path).write(text, append);
+            if (SuBinary(xbin_su))
+                new RootFile(path).write(text, append);
+            else if (SuBinary(xbin_isu))
+                new RootFile(path).Iwrite(text, append);
             return;
         }
 

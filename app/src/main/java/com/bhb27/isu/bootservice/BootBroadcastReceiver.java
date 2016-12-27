@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.bhb27.isu.tools.RootUtils;
+import com.bhb27.isu.tools.Tools;
 
 public class BootBroadcastReceiver extends BroadcastReceiver {
 
@@ -33,9 +34,11 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
+        boolean run_boot = Tools.getBoolean("run_boot", false, context);
+        if (Intent.ACTION_BOOT_COMPLETED.equals(action) && run_boot) {
             context.startService(new Intent(context, BootService.class));
-            Log.d(TAG, " Started");
-        }
+            Log.d(TAG, " Started action " + action + " run_boot " + run_boot);
+        } else
+            Log.d(TAG, "Not Started action " + action + " run_boot " + run_boot);
     }
 }

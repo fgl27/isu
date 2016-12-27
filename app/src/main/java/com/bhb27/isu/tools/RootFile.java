@@ -62,6 +62,14 @@ public class RootFile {
                 RootUtils.runCommand("echo '" + textarray[i] + "' >> " + file);
     }
 
+    public void Iwrite(String text, boolean append) {
+        String[] textarray = text.split("\\r?\\n");
+        RootUtils.runICommand(append ? "echo '" + textarray[0] + "' >> " + file : "echo '" + textarray[0] + "' > " + file);
+        if (textarray.length > 1)
+            for (int i = 1; i < textarray.length; i++)
+                RootUtils.runICommand("echo '" + textarray[i] + "' >> " + file);
+    }
+
     public void delete() {
         RootUtils.runCommand("rm -r '" + file + "'");
     }
@@ -116,6 +124,10 @@ public class RootFile {
 
     public String readFile() {
         return RootUtils.runCommand("cat '" + file + "'");
+    }
+
+    public String IreadFile() {
+        return RootUtils.runICommand("cat '" + file + "'");
     }
 
     public String toString() {

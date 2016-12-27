@@ -80,7 +80,7 @@ public class Main extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-	String suVersion = SuVersion();
+        String suVersion = SuVersion();
         PatchSepolicy();
 
         MainContext = this;
@@ -115,7 +115,9 @@ public class Main extends Activity {
         SuStatus = (TextView) findViewById(R.id.SuStatus);
 
         per_app = (Button) findViewById(R.id.buttonPer_app);
+        per_app.setText(getString(R.string.set_per_app));
         per_app_summary = (TextView) findViewById(R.id.per_app);
+        per_app_summary.setText(getString(R.string.accessibility_service_desc));
 
         download_folder_link = (TextView) findViewById(R.id.download_folder_link);
         kernel_check = (TextView) findViewById(R.id.kernel_check);
@@ -123,6 +125,8 @@ public class Main extends Activity {
         about = (Button) findViewById(R.id.buttonAbout);
 
         if (SuVersionBool(suVersion)) {
+            // Only run boot service if app was used and is CM SU
+            Tools.saveBoolean("run_boot", true, MainContext);
 
             SuSwitchSummary.setText(getString(R.string.su_state));
 
@@ -140,10 +144,8 @@ public class Main extends Activity {
                 }
             });
 
-	    per_app_summary.setText(getString(R.string.accessibility_service_desc));
-	    per_app.setText(getString(R.string.set_per_app));
             per_app.setOnClickListener(new View.OnClickListener() {
-		Intent myIntent = new Intent(getApplicationContext(), PerAppActivity.class);
+                Intent myIntent = new Intent(getApplicationContext(), PerAppActivity.class);
                 @Override
                 public void onClick(View v) {
                     startActivity(myIntent);
@@ -191,10 +193,14 @@ public class Main extends Activity {
             suSwitch.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
             suSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             SuSwitchSummary.setText(getString(R.string.su_not_cm));
+            su_version.setVisibility(View.GONE);
             SelinuxSwitch.setEnabled(false);
             SelinuxSwitch.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
             SelinuxSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            Selinux_State.setVisibility(View.GONE);
+            per_app.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
+            per_app.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            per_app.setEnabled(false);
+            per_app_summary.setText(getString(R.string.not_available));
             SuStatus.setVisibility(View.GONE);
             kernel_check.setTextColor(getColorWrapper(MainContext, R.color.text_red));
             kernel_check.setText(getString(R.string.isu_kernel_no_su));
@@ -248,17 +254,24 @@ public class Main extends Activity {
     }
 
     public void PatchSepolicy() {
-        copyAssets("libsupol.so");
-        copyAssets("supolicy");
-        if (Tools.SuBinary(xbin_su))
+        String executableFilePath = getFilesDir().getPath() + "/";
+        if (Tools.SuBinary(xbin_su)) {
+            if (!Tools.existFile(executableFilePath + "libsupol.so", true))
+                extractAssets(executableFilePath + "libsupol.so", "libsupol.so");
+            if (!Tools.existFile(executableFilePath + "supolicy", true))
+                extractAssets(executableFilePath + "supolicy", "supolicy");
             RootUtils.runCommand("LD_LIBRARY_PATH=" + getFilesDir().getPath() + "/ " + getFilesDir().getPath() + sepolicy);
-        else if (Tools.SuBinary(xbin_isu))
+        } else if (Tools.SuBinary(xbin_isu)) {
+            if (!Tools.IexistFile(executableFilePath + "libsupol.so", true))
+                extractAssets(executableFilePath + "libsupol.so", "libsupol.so");
+            if (!Tools.IexistFile(executableFilePath + "supolicy", true))
+                extractAssets(executableFilePath + "supolicy", "supolicy");
             RootUtils.runICommand("LD_LIBRARY_PATH=" + getFilesDir().getPath() + "/ " + getFilesDir().getPath() + sepolicy);
+        }
     }
 
-    public void copyAssets(String filename) {
+    public void extractAssets(String executableFilePath, String filename) {
 
-        String executableFilePath = getFilesDir().getPath() + "/" + filename;
         AssetManager assetManager = getAssets();
 
         InputStream inStream = null;

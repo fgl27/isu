@@ -107,7 +107,7 @@
             android:gravity="center"
             android:background="@drawable/button"
             android:layout_marginTop="10dp"
-            android:text="@string/about"
+            android:text="@string/set_per_app"
             android:textStyle="bold"
             android:textColor="@color/button_text"
             android:textAppearance="?android:attr/textAppearanceMedium"/>

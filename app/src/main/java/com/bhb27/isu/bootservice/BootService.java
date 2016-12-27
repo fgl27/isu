@@ -30,7 +30,7 @@ import com.bhb27.isu.tools.Constants;
 
 public class BootService extends Service {
 
-    private static final String TAG = "iSu_Boot";
+    private static final String TAG = "iSu_BootService";
     private final String sepolicy = Constants.sepolicy;
     private String xbin_su = Constants.xbin_su;
     private String xbin_isu = Constants.xbin_isu;
@@ -51,7 +51,7 @@ public class BootService extends Service {
             RootUtils.runCommand("LD_LIBRARY_PATH=" + getFilesDir().getPath() + "/ " + getFilesDir().getPath() + sepolicy);
         else if (Tools.SuBinary(xbin_isu))
             RootUtils.runICommand("LD_LIBRARY_PATH=" + getFilesDir().getPath() + "/ " + getFilesDir().getPath() + sepolicy);
-        Log.d(TAG, " Start");
+        Log.d(TAG, " Run");
         stopSelf();
     }
 
