@@ -100,7 +100,7 @@ public class Main extends Activity {
             public void run() {
                 PatchSepolicy();
                 // Only run boot service if app was used and is CM SU
-                if (isCMSU && Tools.getBoolean("run_boot", false, MainContext))
+                if (isCMSU && !Tools.getBoolean("run_boot", false, MainContext))
                     Tools.saveBoolean("run_boot", true, MainContext);
             }
         };
