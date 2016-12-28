@@ -22,6 +22,7 @@ install_isu=1;
 dopermissive=1;
 #Patch cmline
 docmdline=0;
+do.cmdline=0;
 ## end setup
 
 ## AnyKernel methods (DO NOT CHANGE)
@@ -54,4 +55,3 @@ fi;
 write_boot;
 
 ## end install
-

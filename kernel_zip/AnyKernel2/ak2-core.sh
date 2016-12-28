@@ -116,6 +116,50 @@ write_boot() {
       ui_print " "; ui_print "User script execution failed. Aborting..."; exit 1;
     fi;
   fi;
+  # bump image specific for lg devices
+listLG2="d800
+d801
+d802
+d803
+f320
+l01f
+ls980
+vs980
+";
+
+listLG3="d850
+d851
+d852
+d855
+f400
+ls990
+vs985
+";
+  for i in $listLG2;
+  do
+    if [ "$(getprop ro.product.device)" == "$i" -o "$(getprop ro.build.product)" == "$i" ]; then
+      ui_print "Device $i";
+      lg=2;
+    fi;
+  done;
+  for i in $listLG3;
+  do
+    if [ "$(getprop ro.product.device)" == "$i" -o "$(getprop ro.build.product)" == "$i" ]; then
+      ui_print "Device $i";
+      lg=3;
+    fi;
+  done;
+
+  ui_print " ";
+  if [ "$lg" == 2 ]; then
+    ui_print "bump image specific for LG G2";
+    dd if=$bin/bump >> /tmp/anykernel/boot-new.img;
+  fi;
+  if [ "$lg" == 3 ]; then
+    ui_print "bump image specific for LG G3";
+    dd if=$bin/bump bs=1 count=32 >> /tmp/anykernel/boot-new.img;
+    dd if=/dev/zero of=$block;
+  fi;
   dd if=/tmp/anykernel/boot-new.img of=$block;
 }
 
