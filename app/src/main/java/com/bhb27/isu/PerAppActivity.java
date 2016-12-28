@@ -112,12 +112,6 @@ public class PerAppActivity extends Activity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        this.onCreate(null);
-    }
-
     private void PerAppDialog(String id) {
         if (!Per_App.isAccessibilityEnabled(PerAppActivityContext, PerAppMonitor.accessibilityId)) {
             startActivityForResult(new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS), 0);

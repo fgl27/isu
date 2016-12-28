@@ -73,6 +73,10 @@ public class Main extends Activity {
 
     private final String sepolicy = Constants.sepolicy;
 
+    final private String suVersion = SuVersion();
+    final private boolean isCMSU = SuVersionBool(suVersion);
+    private boolean upMain = false;
+
     private final Tools tools_class = new Tools();
     private Context MainContext = null;
 
@@ -80,7 +84,7 @@ public class Main extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String suVersion = SuVersion();
+
         PatchSepolicy();
 
         MainContext = this;
@@ -124,12 +128,65 @@ public class Main extends Activity {
         // about button
         about = (Button) findViewById(R.id.buttonAbout);
 
-        if (SuVersionBool(suVersion)) {
-            // Only run boot service if app was used and is CM SU
+        about.setText(getString(R.string.about));
+        about.setOnClickListener(new View.OnClickListener() {
+            Intent myIntent = new Intent(getApplicationContext(), AboutActivity.class);
+            @Override
+            public void onClick(View v) {
+                startActivity(myIntent);
+            }
+        });
+
+        ic_launcher = (ImageView) findViewById(R.id.ic_launcher);
+        ic_launcher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isAppInstalled(pokemon_app)) {
+                    //repeat two times long toast is too short
+                    int Randon_number = RandomInt(pokemonstrings);
+                    tools_class.DoAToast(pokemonstrings[Randon_number], MainContext);
+                    tools_class.DoAToast(pokemonstrings[Randon_number], MainContext);
+                } else
+                    tools_class.DoAToast(getString(R.string.isu_by), MainContext);
+            }
+        });
+
+        //Kernel support check
+        if (tools_class.KernelSupport()) {
+            kernel_check.setText(getString(R.string.isu_kernel_good));
+            download_folder_link.setVisibility(View.GONE);
+        } else {
+            kernel_check.setTextColor(getColorWrapper(MainContext, R.color.text_red));
+            kernel_check.setText(getString(R.string.isu_kernel_bad));
+            download_folder_link.setText(getString(R.string.download_folder_link));
+            download_folder_link.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.androidfilehost.com/?w=files&flid=120360")));
+                    } catch (ActivityNotFoundException ex) {
+                        tools_class.DoAToast(getString(R.string.no_browser), MainContext);
+                    }
+                }
+            });
+        }
+        UpdateMain(isCMSU);
+        // Only run boot service if app was used and is CM SU
+        if (isCMSU)
             Tools.saveBoolean("run_boot", true, MainContext);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (upMain)
+            UpdateMain(isCMSU);
+    }
+
+    protected void UpdateMain(boolean SU) {
+        if (SU) {
 
             SuSwitchSummary.setText(getString(R.string.su_state));
-
             //set the switch to ON or OFF
             if (Tools.SuBinary(xbin_su))
                 suSwitch.setChecked(true);
@@ -158,27 +215,6 @@ public class Main extends Activity {
             else
                 SuStatus.setText(getString(R.string.su_off));
 
-            //Kernel support check
-            if (tools_class.KernelSupport()) {
-                kernel_check.setText(getString(R.string.isu_kernel_good));
-                download_folder_link.setVisibility(View.GONE);
-            } else {
-                kernel_check.setTextColor(getColorWrapper(MainContext, R.color.text_red));
-                kernel_check.setText(getString(R.string.isu_kernel_bad));
-                download_folder_link.setText(getString(R.string.download_folder_link));
-            }
-
-            download_folder_link.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.androidfilehost.com/?w=files&flid=120360")));
-                    } catch (ActivityNotFoundException ex) {
-                        tools_class.DoAToast(getString(R.string.no_browser), MainContext);
-                    }
-                }
-            });
-
             // Selinux switch
             SelinuxSwitch.setChecked(Tools.isSELinuxActive());
             SelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -188,6 +224,7 @@ public class Main extends Activity {
                     SelinuxSwitch(isChecked);
                 }
             });
+            upMain = true;
         } else {
             suSwitch.setEnabled(false);
             suSwitch.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
@@ -205,35 +242,6 @@ public class Main extends Activity {
             kernel_check.setTextColor(getColorWrapper(MainContext, R.color.text_red));
             kernel_check.setText(getString(R.string.isu_kernel_no_su));
         }
-
-        about.setText(getString(R.string.about));
-        about.setOnClickListener(new View.OnClickListener() {
-            Intent myIntent = new Intent(getApplicationContext(), AboutActivity.class);
-            @Override
-            public void onClick(View v) {
-                startActivity(myIntent);
-            }
-        });
-
-        ic_launcher = (ImageView) findViewById(R.id.ic_launcher);
-        ic_launcher.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isAppInstalled(pokemon_app)) {
-                    //repeat two times long toast is too short
-                    int Randon_number = RandomInt(pokemonstrings);
-                    tools_class.DoAToast(pokemonstrings[Randon_number], MainContext);
-                    tools_class.DoAToast(pokemonstrings[Randon_number], MainContext);
-                } else
-                    tools_class.DoAToast(getString(R.string.isu_by), MainContext);
-            }
-        });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        this.onCreate(null);
     }
 
     // Poke fun simple function to see if Pokemon go is installed and call a fun toast base on a random number
