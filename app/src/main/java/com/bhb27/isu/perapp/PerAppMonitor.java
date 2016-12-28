@@ -89,13 +89,19 @@ public class PerAppMonitor extends AccessibilityService {
 
             last_profile = info.get(1);
             time = System.currentTimeMillis();
-            //run su
+            //active deactive su
             if (last_profile.equals("iSu") && Tools.SuBinary(xbin_su)) {
                 tools_class.DoAToast("iSu " + getString(R.string.per_app_deactive) + "!", this);
                 iSuSwitch(false, packageName);
             } else if (last_profile.equals("Su") && Tools.SuBinary(xbin_isu)) {
                 tools_class.DoAToast("iSu " + getString(R.string.per_app_active) + "!", this);
                 iSuSwitch(true, packageName);
+            } else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_isu) && !Tools.isSELinuxActive()) {
+                RootUtils.runICommand(Constants.SETENFORCE + " 1");
+                if (Tools.isSELinuxActive())
+                    tools_class.DoAToast(getString(R.string.selinux_toast_ok), this);
+                else
+                    tools_class.DoAToast(getString(R.string.selinux_toast_nok), this);
             }
 
         }
@@ -119,14 +125,13 @@ public class PerAppMonitor extends AccessibilityService {
             RootUtils.runCommand("mv " + bin_su + " " + bin_temp_su);
             RootUtils.runCommand("mv " + xbin_su + " " + xbin_isu);
             RootUtils.runICommand("mount -o ro,remount /system");
-            if (Tools.SuBinary(xbin_isu)) {
-                if (!Tools.isSELinuxActive()) {
-                    RootUtils.runICommand(Constants.SETENFORCE + " 1");
-                    if (Tools.isSELinuxActive())
-                        tools_class.DoAToast(getString(R.string.selinux_toast_ok), this);
-                    else
-                        tools_class.DoAToast(getString(R.string.selinux_toast_nok), this);
-                }
+            if (!Tools.isSELinuxActive()) {
+                RootUtils.runICommand(Constants.SETENFORCE + " 1");
+                if (Tools.isSELinuxActive())
+                    tools_class.DoAToast(getString(R.string.selinux_toast_ok), this);
+                else
+                    tools_class.DoAToast(getString(R.string.selinux_toast_nok), this);
+
             }
         }
     }

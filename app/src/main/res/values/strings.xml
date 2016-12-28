@@ -13,7 +13,7 @@
     <string name="su_version">Su version:</string>
     <string name="selinux_switch">Click to activate or deactivate Selinux</string>
     <string name="selinux_state">Current Selinux State:</string>
-    <string name="selinux_toast_ok">Selinux Set to Enforcing\n This Is Need For Some App Safety Check</string>
+    <string name="selinux_toast_ok">iSu: Selinux Set to Enforcing\n This Is Need For Some App Safety Check</string>
     <string name="selinux_toast_nok">Can\'t changing Selinux State!</string>
     <string name="isu_kernel_good">iSu Kernel Support OK.</string>
     <string name="isu_kernel_bad">No iSu Kernel Support!!!\nPlease flash the kernel support .zip or you may loose SU access</string>
