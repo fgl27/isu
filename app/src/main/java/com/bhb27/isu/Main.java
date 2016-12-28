@@ -85,9 +85,17 @@ public class Main extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        PatchSepolicy();
-
         MainContext = this;
+
+        Runnable runSepolicy = new Runnable() {
+            public void run() {
+                PatchSepolicy();
+                // Only run boot service if app was used and is CM SU
+                if (isCMSU && Tools.getBoolean("run_boot", false, MainContext))
+                    Tools.saveBoolean("run_boot", true, MainContext);
+            }
+        };
+        new Thread(runSepolicy).start();
 
         // random poke toast
         pokemonstrings = new String[] {
@@ -98,37 +106,25 @@ public class Main extends Activity {
         };
 
         suSwitch = (Switch) findViewById(R.id.suSwitch);
-        suSwitch.setText(getString(R.string.su_switch));
-
+        SuSwitchSummary = (TextView) findViewById(R.id.SuSwitchSummary);
+        SuStatus = (TextView) findViewById(R.id.SuStatus);
         su_version = (TextView) findViewById(R.id.su_version);
-        su_version.setText(getString(R.string.su_version));
-
         su_version_summary = (TextView) findViewById(R.id.su_version_summary);
         su_version_summary.setText(suVersion);
 
         SelinuxSwitch = (Switch) findViewById(R.id.SelinuxSwitch);
-        SelinuxSwitch.setText(getString(R.string.selinux_switch));
-
         SelinuxStatus = (TextView) findViewById(R.id.SelinuxStatus);
-        SelinuxStatus.setText(getString(R.string.selinux_state));
-
         Selinux_State = (TextView) findViewById(R.id.Selinux_State);
         Selinux_State.setText(Tools.getSELinuxStatus());
 
-        SuSwitchSummary = (TextView) findViewById(R.id.SuSwitchSummary);
-        SuStatus = (TextView) findViewById(R.id.SuStatus);
 
         per_app = (Button) findViewById(R.id.buttonPer_app);
-        per_app.setText(getString(R.string.set_per_app));
         per_app_summary = (TextView) findViewById(R.id.per_app);
-        per_app_summary.setText(getString(R.string.accessibility_service_desc));
 
         download_folder_link = (TextView) findViewById(R.id.download_folder_link);
         kernel_check = (TextView) findViewById(R.id.kernel_check);
         // about button
         about = (Button) findViewById(R.id.buttonAbout);
-
-        about.setText(getString(R.string.about));
         about.setOnClickListener(new View.OnClickListener() {
             Intent myIntent = new Intent(getApplicationContext(), AboutActivity.class);
             @Override
@@ -170,34 +166,43 @@ public class Main extends Activity {
                 }
             });
         }
-        UpdateMain(isCMSU);
-        // Only run boot service if app was used and is CM SU
-        if (isCMSU)
-            Tools.saveBoolean("run_boot", true, MainContext);
+        UpdateMain();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if (upMain)
-            UpdateMain(isCMSU);
+            UpdateMain();
     }
 
-    protected void UpdateMain(boolean SU) {
-        if (SU) {
+    protected void UpdateMain() {
+        if (isCMSU) {
 
-            SuSwitchSummary.setText(getString(R.string.su_state));
             //set the switch to ON or OFF
-            if (Tools.SuBinary(xbin_su))
-                suSwitch.setChecked(true);
+            suSwitch.setChecked(Tools.SuBinary(xbin_su));
+            //check the current state before we display the screen
+            if (suSwitch.isChecked())
+                SuStatus.setText(getString(R.string.su_on));
             else
-                suSwitch.setChecked(false);
+                SuStatus.setText(getString(R.string.su_off));
             //attach a listener to check for changes in state
             suSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView,
                     boolean isChecked) {
                     iSuSwitch(isChecked);
+                }
+            });
+            SuSwitchSummary.setText(getString(R.string.su_state));
+
+            // Selinux switch
+            SelinuxSwitch.setChecked(Tools.isSELinuxActive());
+            SelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
+                    SelinuxSwitch(isChecked);
                 }
             });
 
@@ -209,21 +214,6 @@ public class Main extends Activity {
                 }
             });
 
-            //check the current state before we display the screen
-            if (suSwitch.isChecked())
-                SuStatus.setText(getString(R.string.su_on));
-            else
-                SuStatus.setText(getString(R.string.su_off));
-
-            // Selinux switch
-            SelinuxSwitch.setChecked(Tools.isSELinuxActive());
-            SelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                    boolean isChecked) {
-                    SelinuxSwitch(isChecked);
-                }
-            });
             upMain = true;
         } else {
             suSwitch.setEnabled(false);
@@ -346,7 +336,6 @@ public class Main extends Activity {
                     tools_class.DoAToast(pokemonstrings[Randon_number], MainContext);
                 }
                 if (!Tools.isSELinuxActive()) {
-                    tools_class.DoAToast(getString(R.string.selinux_toast_ok), MainContext);
                     RootUtils.runICommand(Constants.SETENFORCE + " 1");
                     if (Tools.isSELinuxActive())
                         tools_class.DoAToast(getString(R.string.selinux_toast_ok), MainContext);

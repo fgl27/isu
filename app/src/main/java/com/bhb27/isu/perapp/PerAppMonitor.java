@@ -121,7 +121,6 @@ public class PerAppMonitor extends AccessibilityService {
             RootUtils.runICommand("mount -o ro,remount /system");
             if (Tools.SuBinary(xbin_isu)) {
                 if (!Tools.isSELinuxActive()) {
-                    tools_class.DoAToast(getString(R.string.selinux_toast_ok), this);
                     RootUtils.runICommand(Constants.SETENFORCE + " 1");
                     if (Tools.isSELinuxActive())
                         tools_class.DoAToast(getString(R.string.selinux_toast_ok), this);
