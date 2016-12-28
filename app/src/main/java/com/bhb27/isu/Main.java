@@ -30,11 +30,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -86,6 +89,12 @@ public class Main extends Activity {
         setContentView(R.layout.activity_main);
 
         MainContext = this;
+
+        LinearLayout layout = (LinearLayout) findViewById(R.id.MainLayout);
+        AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
+        animation.setFillAfter(true);
+        animation.setDuration(750);
+        layout.startAnimation(animation);
 
         Runnable runSepolicy = new Runnable() {
             public void run() {
@@ -177,6 +186,7 @@ public class Main extends Activity {
     }
 
     protected void UpdateMain() {
+
         if (isCMSU) {
 
             //set the switch to ON or OFF

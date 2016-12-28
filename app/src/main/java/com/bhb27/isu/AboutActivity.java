@@ -26,8 +26,11 @@ import android.content.ActivityNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Build;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bhb27.isu.tools.Tools;
@@ -50,6 +53,12 @@ public class AboutActivity extends Activity {
             BuildConfig.VERSION_NAME + " (" + Build.MODEL + " " + Build.VERSION.RELEASE + ")";
 
         View frameLayout = findViewById(R.id.aboutLayout);
+
+        LinearLayout layout = (LinearLayout) findViewById(R.id.aboutLayout);
+        AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
+        animation.setFillAfter(true);
+        animation.setDuration(500);
+        layout.startAnimation(animation);
 
         //textview
         about = (TextView) findViewById(R.id.about);
