@@ -117,6 +117,7 @@ write_boot() {
     fi;
   fi;
   # bump image specific for lg devices
+lg=0
 listLG2="d800
 d801
 d802

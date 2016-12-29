@@ -52,8 +52,6 @@ public class AboutActivity extends Activity {
         final String SUBJECT = getString(R.string.app_name) + " " +
             BuildConfig.VERSION_NAME + " (" + Build.MODEL + " " + Build.VERSION.RELEASE + ")";
 
-        View frameLayout = findViewById(R.id.aboutLayout);
-
         LinearLayout layout = (LinearLayout) findViewById(R.id.aboutLayout);
         AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
         animation.setFillAfter(true);
