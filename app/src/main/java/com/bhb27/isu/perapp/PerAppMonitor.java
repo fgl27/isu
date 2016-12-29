@@ -89,13 +89,13 @@ public class PerAppMonitor extends AccessibilityService {
 
             last_profile = info.get(1);
             time = System.currentTimeMillis();
-            //active deactive su
-            if (last_profile.equals("iSu") && Tools.SuBinary(xbin_su)) {
-                tools_class.DoAToast("iSu " + getString(R.string.per_app_deactive) + "!", this);
-                iSuSwitch(false, packageName);
-            } else if (last_profile.equals("Su") && Tools.SuBinary(xbin_isu)) {
+            //active deactive su selinux
+            if (last_profile.equals("Su") && Tools.SuBinary(xbin_isu)) {
                 tools_class.DoAToast("iSu " + getString(R.string.per_app_active) + "!", this);
                 iSuSwitch(true, packageName);
+            } else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_su)) {
+                tools_class.DoAToast("iSu " + getString(R.string.per_app_deactive) + "!", this);
+                iSuSwitch(false, packageName);
             } else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_isu) && !Tools.isSELinuxActive()) {
                 RootUtils.runICommand(Constants.SETENFORCE + " 1");
                 if (Tools.isSELinuxActive())
@@ -112,15 +112,22 @@ public class PerAppMonitor extends AccessibilityService {
             // Mount rw to change mount ro after
             RootUtils.runICommand("mount -o rw,remount /system");
             RootUtils.runICommand("mv " + xbin_isu + " " + xbin_su);
+            RootUtils.runCommand("mv " + bin_temp_su + " " + bin_su);
             RootUtils.runCommand("mount -o ro,remount /system");
             if (Tools.getBoolean("restart_su", false, this)) {
                 RootUtils.runCommand("am force-stop " + packageName);
                 RootUtils.runCommand("am start " + packageName);
             }
+            if (Tools.getBoolean("restart_selinux", false, this) && !Tools.isSELinuxActive()) {
+                RootUtils.runCommand(Constants.SETENFORCE + " 1");
+                tools_class.DoAToast(getString(R.string.activate_selinux), this);
+            } else if (!Tools.getBoolean("restart_selinux", false, this) && Tools.isSELinuxActive()) {
+                RootUtils.runCommand(Constants.SETENFORCE + " 0");
+                tools_class.DoAToast(getString(R.string.deactivate_selinux), this);
+            }
         } else {
             // Make a link to isu so all root tool work
             RootUtils.runCommand("mount -o rw,remount /system");
-            RootUtils.runCommand("ln -s -f " + xbin_isu + " " + bin_isu);
             RootUtils.runCommand("ln -s -f " + xbin_isu + " " + bin_isu);
             RootUtils.runCommand("mv " + bin_su + " " + bin_temp_su);
             RootUtils.runCommand("mv " + xbin_su + " " + xbin_isu);

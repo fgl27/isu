@@ -56,8 +56,9 @@ import com.bhb27.isu.tools.Tools;
 
 public class Main extends Activity {
 
-    private TextView SuSwitchSummary, SuStatus, kernel_check, about, Selinux_State, su_version, su_version_summary,
-    SelinuxStatus, download_folder_link, per_app, per_app_summary;
+    private TextView SuSwitchSummary, SuStatus, kernel_check, Selinux_State, su_version, su_version_summary,
+    SelinuxStatus, download_folder_link, per_app_summary;
+    private Button about, per_app;
     private String su_bin_version = "";
     private Switch suSwitch, SelinuxSwitch;
 
@@ -67,7 +68,7 @@ public class Main extends Activity {
     private String xbin_isu = Constants.xbin_isu;
     private String bin_temp_su = Constants.bin_temp_su;
 
-    ImageView ic_launcher;
+    private ImageView ic_launcher;
 
     private String[] pokemonstrings;
     private String pokemon_app = "com.nianticlabs.pokemongo";
@@ -125,7 +126,6 @@ public class Main extends Activity {
         SelinuxStatus = (TextView) findViewById(R.id.SelinuxStatus);
         Selinux_State = (TextView) findViewById(R.id.Selinux_State);
         Selinux_State.setText(Tools.getSELinuxStatus());
-
 
         per_app = (Button) findViewById(R.id.buttonPer_app);
         per_app_summary = (TextView) findViewById(R.id.per_app);
@@ -319,8 +319,8 @@ public class Main extends Activity {
         if (isChecked) {
             // Mount rw to change mount ro after
             RootUtils.runICommand("mount -o rw,remount /system");
-            RootUtils.runICommand("mv " + bin_temp_su + " " + bin_su);
             RootUtils.runICommand("mv " + xbin_isu + " " + xbin_su);
+            RootUtils.runCommand("mv " + bin_temp_su + " " + bin_su);
             RootUtils.runCommand("mount -o ro,remount /system");
             if (Tools.SuBinary(xbin_su)) {
                 SuStatus.setText(getString(R.string.su_on));

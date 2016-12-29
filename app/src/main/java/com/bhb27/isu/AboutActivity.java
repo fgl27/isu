@@ -38,7 +38,7 @@ import com.bhb27.isu.BuildConfig;
 
 public class AboutActivity extends Activity {
     // in order of appearance
-    TextView about, version, version_number, version_summary, dev_info, email, email_summary, xda, git, git_summary;
+    TextView version_number, email, email_summary, xda, git, git_summary;
     ImageView ic_gmail, ic_xda, ic_git;
 
     private final Tools tools_class = new Tools();
@@ -60,36 +60,16 @@ public class AboutActivity extends Activity {
         animation.setDuration(500);
         layout.startAnimation(animation);
 
-        //textview
-        about = (TextView) findViewById(R.id.about);
-        about.setText(getString(R.string.about));
-
-        version = (TextView) findViewById(R.id.version);
-        version.setText(getString(R.string.version));
-
         version_number = (TextView) findViewById(R.id.version_number);
         version_number.setText(BuildConfig.VERSION_NAME);
 
-        version_summary = (TextView) findViewById(R.id.version_summary);
-        version_summary.setText(getString(R.string.version_summary));
-
-        dev_info = (TextView) findViewById(R.id.dev_info);
-        dev_info.setText(getString(R.string.dev_info));
-
         email = (TextView) findViewById(R.id.email);
-        email.setText(getString(R.string.email));
-
         email_summary = (TextView) findViewById(R.id.email_summary);
-        email_summary.setText(getString(R.string.email_summary));
 
         xda = (TextView) findViewById(R.id.xda);
-        xda.setText(getString(R.string.xda_summary));
 
         git = (TextView) findViewById(R.id.git);
-        git.setText(getString(R.string.github));
-
         git_summary = (TextView) findViewById(R.id.git_summary);
-        git_summary.setText(getString(R.string.git_summary));
 
         email.setOnClickListener(new View.OnClickListener() {
             @Override

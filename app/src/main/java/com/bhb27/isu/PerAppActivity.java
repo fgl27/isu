@@ -29,7 +29,6 @@ import android.os.Build;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Switch;
 import android.util.Log;
 import android.widget.CompoundButton;
@@ -47,9 +46,9 @@ import android.content.DialogInterface;
 
 public class PerAppActivity extends Activity {
 
-    TextView perapp_isu, perapp_isu_summary, perapp_su, perapp_su_summary, restartSwitchSummary;
-    private Switch restartSwitch;
-    ImageView ic_launcher;
+    private Button perapp_isu, perapp_su;
+    private Switch restartSwitch, SuSelinuxSwitch;
+    private ImageView ic_launcher;
     private AlertDialog.Builder mPerAppDialog;
     private final Tools tools_class = new Tools();
     private Context PerAppActivityContext = null;
@@ -62,22 +61,12 @@ public class PerAppActivity extends Activity {
         PerAppActivityContext = this;
 
         perapp_isu = (Button) findViewById(R.id.buttonIsu);
-        perapp_isu.setText(getString(R.string.per_app_deactive));
-
-        perapp_isu_summary = (TextView) findViewById(R.id.perapp_isu_summary);
-        perapp_isu_summary.setText(getString(R.string.per_app_deactive_summary));
 
         perapp_su = (Button) findViewById(R.id.buttonSu);
-        perapp_su.setText(getString(R.string.per_app_active));
-
-        perapp_su_summary = (TextView) findViewById(R.id.perapp_su_summary);
-        perapp_su_summary.setText(getString(R.string.per_app_active_summary));
 
         restartSwitch = (Switch) findViewById(R.id.restartSwitch);
-        restartSwitch.setText(getString(R.string.per_app_restart));
 
-        restartSwitchSummary = (TextView) findViewById(R.id.restartSwitchSummary);
-        restartSwitchSummary.setText(getString(R.string.per_app_restart_summary));
+        SuSelinuxSwitch = (Switch) findViewById(R.id.SuSelinuxSwitch);
 
         perapp_isu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +88,15 @@ public class PerAppActivity extends Activity {
             @Override
             public void onClick(View v) {
                 tools_class.DoAToast(getString(R.string.isu_by), PerAppActivityContext);
+            }
+        });
+
+        SuSelinuxSwitch.setChecked(Tools.getBoolean("restart_selinux", false, PerAppActivityContext));
+        SuSelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                boolean isChecked) {
+                Tools.saveBoolean("restart_selinux", isChecked, PerAppActivityContext);
             }
         });
 

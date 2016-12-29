@@ -24,6 +24,7 @@
             android:textStyle="bold"
             android:textSize="30sp"
             android:textColor="@color/text_white"
+            android:text="@string/about"
             android:layout_gravity="center|top"
             android:gravity="center"/>
         <TextView
@@ -33,6 +34,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="20sp"
+            android:text="@string/version"
             android:textColor="@color/text_white"
             android:layout_gravity="center"
             android:gravity="center"/>
@@ -51,6 +53,7 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textColor="@color/text_white"
+            android:text="@string/version_summary"
             android:layout_gravity="center"
             android:gravity="center"/>
         <TextView
@@ -61,6 +64,7 @@
             android:textStyle="bold"
             android:textSize="20sp"
             android:textColor="@color/text_white"
+            android:text="@string/dev_info"
             android:layout_gravity="center"
             android:gravity="center"/>
         <ImageView
@@ -79,6 +83,7 @@
             android:textStyle="bold"
             android:textSize="20sp"
             android:textColor="@color/text_white"
+            android:text="@string/email"
             android:layout_gravity="center"
             android:gravity="center"/>
         <TextView
@@ -87,6 +92,7 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textColor="@color/text_white"
+            android:text="@string/email_summary"
             android:layout_gravity="center"
             android:gravity="center"/>
         <ImageView
@@ -105,6 +111,7 @@
             android:textStyle="bold"
             android:textSize="20sp"
             android:textColor="@color/text_white"
+            android:text="@string/xda_summary"
             android:layout_gravity="center"
             android:gravity="center"/>
         <ImageView
@@ -123,6 +130,7 @@
             android:textStyle="bold"
             android:textSize="20sp"
             android:textColor="@color/text_white"
+            android:text="@string/github"
             android:layout_gravity="center"
             android:gravity="center"/>
         <TextView
@@ -131,6 +139,7 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textColor="@color/text_white"
+            android:text="@string/git_summary"
             android:layout_gravity="center"
             android:gravity="center"/>
         <TextView
