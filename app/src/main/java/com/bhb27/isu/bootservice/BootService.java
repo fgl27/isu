@@ -47,10 +47,11 @@ public class BootService extends Service {
     }
 
     private void init() {
+        String executableFilePath = getFilesDir().getPath() + "/";
         if (Tools.SuBinary(xbin_su))
-            RootUtils.runCommand("LD_LIBRARY_PATH=" + getFilesDir().getPath() + "/ " + getFilesDir().getPath() + sepolicy);
+            RootUtils.runCommand("LD_LIBRARY_PATH=" + executableFilePath + " " + executableFilePath + sepolicy);
         else if (Tools.SuBinary(xbin_isu))
-            RootUtils.runICommand("LD_LIBRARY_PATH=" + getFilesDir().getPath() + "/ " + getFilesDir().getPath() + sepolicy);
+            RootUtils.runICommand("LD_LIBRARY_PATH=" + executableFilePath + " " + executableFilePath + sepolicy);
         Log.d(TAG, " Run");
         stopSelf();
     }
