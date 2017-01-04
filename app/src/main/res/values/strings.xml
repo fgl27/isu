@@ -15,7 +15,6 @@
     <string name="selinux_state">Current Selinux State:</string>
     <string name="selinux_toast_ok">iSu Selinux Set to Enforcing!\n This Is Need For Some App Safety Check</string>
     <string name="selinux_toast_nok">Can\'t changing Selinux State!</string>
-    <string name="isu_reboot">iSu 7.1.1 Reboot Support OK.</string>
     <string name="isu_kernel_good">iSu Kernel Support OK.</string>
     <string name="isu_kernel_bad">No iSu Kernel Support!!!\nPlease flash the kernel support .zip or you may loose SU access</string>
     <string name="isu_kernel_no_su">If you use iSu to deactivate SU and lost SU support try a reboot if you have iSu kernel support, if you don\'t have kernel support reflash yours current ROM .zip, without SU the app can\'t tell if you have reboot support in doubt check XDA thread link in About iSu&#8230; XDA support forun site</string>

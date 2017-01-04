@@ -162,10 +162,7 @@ public class Main extends Activity {
         });
 
         //reboot support check
-        if (RebootSupport()) {
-            kernel_check.setText(getString(R.string.isu_reboot));
-            download_folder_link.setVisibility(View.GONE);
-        } else if (tools_class.KernelSupport()) {
+        if (tools_class.KernelSupport()) {
             kernel_check.setText(getString(R.string.isu_kernel_good));
             download_folder_link.setVisibility(View.GONE);
         } else {
@@ -414,84 +411,4 @@ public class Main extends Activity {
         else return false;
     }
 
-    private boolean RebootSupport() {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            String executableFilePath = getFilesDir().getPath() + "/";
-            if (Tools.SuBinary(xbin_su)) {
-                if (Tools.existFile(executableFilePath + "isu.sh", true) && Tools.existFile(executableFilePath + "superuser.rc", true)) {
-                    if (ReadSystemPatch(true))
-                        return true;
-                } else {
-                    extractAssets(executableFilePath + "isu.sh", "isu.sh");
-                    extractAssets(executableFilePath + "superuser.rc", "superuser.rc");
-                }
-                if (!Tools.existFile(executableFilePath + "libsupol.so", true))
-                    extractAssets(executableFilePath + "libsupol.so", "libsupol.so");
-                if (!Tools.existFile(executableFilePath + "supolicy", true))
-                    extractAssets(executableFilePath + "supolicy", "supolicy");
-                SystemPatch(true, executableFilePath);
-                if (ReadSystemPatch(true))
-                    return true;
-            } else if (Tools.SuBinary(xbin_isu)) {
-                if (Tools.IexistFile(executableFilePath + "isu.sh", true) &&
-                    Tools.IexistFile(executableFilePath + "superuser.rc", true)) {
-                    if (ReadSystemPatch(false))
-                        return true;
-                } else {
-                    extractAssets(executableFilePath + "isu.sh", "isu.sh");
-                    extractAssets(executableFilePath + "superuser.rc", "superuser.rc");
-                }
-
-                if (!Tools.IexistFile(executableFilePath + "libsupol.so", true))
-                    extractAssets(executableFilePath + "libsupol.so", "libsupol.so");
-                if (!Tools.IexistFile(executableFilePath + "supolicy", true))
-                    extractAssets(executableFilePath + "supolicy", "supolicy");
-                SystemPatch(false, executableFilePath);
-                if (ReadSystemPatch(false))
-                    return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean ReadSystemPatch(boolean supersubin) {
-        if (supersubin) {
-            reboot_support_rc = RootUtils.runCommand("grep -i isu_daemon system/etc/init/superuser.rc") + "";
-            reboot_support_sh = RootUtils.runCommand("grep -i /system/xbin/isu system/bin/isu.sh") + "";
-            if (reboot_support_rc.contains("isu_daemon") && reboot_support_sh.contains("/system/xbin/isu"))
-                return true;
-        } else {
-            reboot_support_rc = RootUtils.runICommand("grep -i isu_daemon system/etc/init/superuser.rc") + "";
-            reboot_support_sh = RootUtils.runICommand("grep -i /system/xbin/isu system/bin/isu.sh") + "";
-            if (reboot_support_rc.contains("isu_daemon") && reboot_support_sh.contains("/system/xbin/isu"))
-                return true;
-        }
-        return false;
-    }
-
-    private void SystemPatch(boolean supersubin, String executableFilePath) {
-        if (supersubin) {
-            RootUtils.runCommand("mount -o rw,remount /system");
-            RootUtils.runCommand("cp -f " + executableFilePath + "isu.sh" + " /system/bin/");
-            RootUtils.runCommand("chmod 0755" + " /system/bin/isu.sh");
-            RootUtils.runCommand("cp -f " + executableFilePath + "superuser.rc" + " /system/etc/init/");
-            RootUtils.runCommand("chmod 0644" + " /system/etc/init/superuser.rc");
-            RootUtils.runCommand("cp -f " + executableFilePath + "libsupol.so" + " /system/lib/");
-            RootUtils.runCommand("chmod 0644" + " /system/lib/libsupol.so");
-            RootUtils.runCommand("cp -f " + executableFilePath + "supolicy" + " /system/xbin/");
-            RootUtils.runCommand("chmod 0755" + " /system/xbin/supolicy");
-            RootUtils.runCommand("mount -o ro,remount /system");
-        } else {
-            RootUtils.runICommand("mount -o rw,remount /system");
-            RootUtils.runICommand("cp -f " + executableFilePath + "isu.sh" + " /system/bin/");
-            RootUtils.runICommand("chmod 0755" + " /system/bin/isu.sh");
-            RootUtils.runICommand("cp -f " + executableFilePath + "superuser.rc" + " /system/etc/init/");
-            RootUtils.runICommand("chmod 0644" + " /system/etc/init/superuser.rc");
-            RootUtils.runICommand("cp -f " + executableFilePath + "libsupol.so" + " /system/lib/");
-            RootUtils.runICommand("chmod 0644" + " /system/lib/libsupol.so");
-	    RootUtils.runICommand("cp -f " + executableFilePath + "supolicy" + " /system/xbin/");
-            RootUtils.runICommand("chmod 0755" + " /system/xbin/supolicy");
-            RootUtils.runICommand("mount -o ro,remount /system");
-        }
-    }
 }
