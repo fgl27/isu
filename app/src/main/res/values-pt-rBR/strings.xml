@@ -19,6 +19,7 @@
     <string name="isu_kernel_bad">Sem suporte de Kernel iSu!!!\nFavor usar o .zip via TWRP ou poderá perder acesso SU apos um reboot</string>
     <string name="isu_kernel_no_su">Se usou o iSu pra desativar o SU tente reiniciar o aparelho se você tiver support de kernel iSu, caso não tenha o suporte de kernel reinstale o .zip da sua ROM atual, sem SU o app não consegue saber se o aparelho tem o suporte de kernel, e duvida verifique o site de suporte no Sobre iSu&#8230; XDA forum de suporte</string>
     <string name="download_folder_link">Toque aqui para ir a pasta de Download do iSu</string>
+    <string name="isu_reboot">iSu Nougat Reboot Suporte OK</string>
 
     <!-- Main pokemonstrings -->
     <string name="pokemongo_start">hey ho let\'s go play Pokemon!!!</string>

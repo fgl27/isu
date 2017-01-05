@@ -162,7 +162,10 @@ public class Main extends Activity {
         });
 
         //reboot support check
-        if (tools_class.KernelSupport()) {
+        if (RebootSupport()) {
+            kernel_check.setText(getString(R.string.isu_reboot));
+            download_folder_link.setVisibility(View.GONE);
+        } else if (tools_class.KernelSupport()) {
             kernel_check.setText(getString(R.string.isu_kernel_good));
             download_folder_link.setVisibility(View.GONE);
         } else {
@@ -411,4 +414,66 @@ public class Main extends Activity {
         else return false;
     }
 
+    private boolean RebootSupport() {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
+            String executableFilePath = getFilesDir().getPath() + "/";
+            if (Tools.SuBinary(xbin_su)) {
+                if (ReadSystemPatch(true))
+                    return true;
+                if (!Tools.existFile(executableFilePath + "isush", true) ||
+                    !Tools.existFile(executableFilePath + "superuser.rc", true)) {
+                    extractAssets(executableFilePath + "isush", "isush");
+                    extractAssets(executableFilePath + "superuser.rc", "superuser.rc");
+                }
+                SystemPatch(true, executableFilePath);
+                if (ReadSystemPatch(true))
+                    return true;
+            } else if (Tools.SuBinary(xbin_isu)) {
+                if (ReadSystemPatch(false))
+                    return true;
+                if (!Tools.IexistFile(executableFilePath + "isush", true) ||
+                    !Tools.IexistFile(executableFilePath + "superuser.rc", true)) {
+                    extractAssets(executableFilePath + "isush", "isush");
+                    extractAssets(executableFilePath + "superuser.rc", "superuser.rc");
+                }
+                SystemPatch(false, executableFilePath);
+                if (ReadSystemPatch(false))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean ReadSystemPatch(boolean supersubin) {
+        if (supersubin) {
+            reboot_support_rc = RootUtils.runCommand("grep -i isu_daemon system/etc/init/superuser.rc") + "";
+            reboot_support_sh = RootUtils.runCommand("grep -i /system/xbin/isu system/xbin/isush") + "";
+            if (reboot_support_rc.contains("isu_daemon") && reboot_support_sh.contains("/system/xbin/isu"))
+                return true;
+        } else {
+            reboot_support_rc = RootUtils.runICommand("grep -i isu_daemon system/etc/init/superuser.rc") + "";
+            reboot_support_sh = RootUtils.runICommand("grep -i /system/xbin/isu system/xbin/isush") + "";
+            if (reboot_support_rc.contains("isu_daemon") && reboot_support_sh.contains("/system/xbin/isu"))
+                return true;
+        }
+        return false;
+    }
+
+    private void SystemPatch(boolean supersubin, String executableFilePath) {
+        if (supersubin) {
+            RootUtils.runCommand("mount -o rw,remount /system");
+            RootUtils.runCommand("cp -f " + executableFilePath + "isush" + " /system/xbin/");
+            RootUtils.runCommand("chmod 0755" + " /system/xbin/isush");
+            RootUtils.runCommand("cp -f " + executableFilePath + "superuser.rc" + " /system/etc/init/");
+            RootUtils.runCommand("chmod 0644" + " /system/etc/init/superuser.rc");
+            RootUtils.runCommand("mount -o ro,remount /system");
+        } else {
+            RootUtils.runICommand("mount -o rw,remount /system");
+            RootUtils.runICommand("cp -f " + executableFilePath + "isush" + " /system/xbin/");
+            RootUtils.runICommand("chmod 0755" + " /system/xbin/isush");
+            RootUtils.runICommand("cp -f " + executableFilePath + "superuser.rc" + " /system/etc/init/");
+            RootUtils.runICommand("chmod 0644" + " /system/etc/init/superuser.rc");
+            RootUtils.runICommand("mount -o ro,remount /system");
+        }
+    }
 }

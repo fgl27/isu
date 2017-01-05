@@ -19,6 +19,7 @@
     <string name="isu_kernel_bad">No iSu Kernel Support!!!\nPlease flash the kernel support .zip or you may loose SU access</string>
     <string name="isu_kernel_no_su">If you use iSu to deactivate SU and lost SU support try a reboot if you have iSu kernel support, if you don\'t have kernel support reflash yours current ROM .zip, without SU the app can\'t tell if you have reboot support in doubt check XDA thread link in About iSu&#8230; XDA support forun site</string>
     <string name="download_folder_link">Click here to go to iSu Download folder</string>
+    <string name="isu_reboot">iSu Nougat Reboot Support OK</string>
 
     <!-- Main pokemonstrings -->
     <string name="pokemongo_start">hey ho let\'s go play Pokemon!!!</string>
