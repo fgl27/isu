@@ -24,7 +24,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.bhb27.isu.tools.RootUtils;
 import com.bhb27.isu.tools.Tools;
 
 public class BootBroadcastReceiver extends BroadcastReceiver {

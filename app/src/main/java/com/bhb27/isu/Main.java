@@ -51,7 +51,6 @@ import java.util.Random;
 import com.bhb27.isu.AboutActivity;
 import com.bhb27.isu.PerAppActivity;
 import com.bhb27.isu.tools.Constants;
-import com.bhb27.isu.tools.RootUtils;
 import com.bhb27.isu.tools.Tools;
 
 public class Main extends Activity {
@@ -59,7 +58,6 @@ public class Main extends Activity {
     private TextView SuSwitchSummary, SuStatus, kernel_check, Selinux_State, su_version, su_version_summary,
     SelinuxStatus, download_folder_link, per_app_summary;
     private Button about, per_app;
-    private String su_bin_version = "";
     private Switch suSwitch, SelinuxSwitch;
 
     private String bin_su = Constants.bin_su;
@@ -67,7 +65,6 @@ public class Main extends Activity {
     private String bin_isu = Constants.bin_isu;
     private String xbin_isu = Constants.xbin_isu;
     private String bin_temp_su = Constants.bin_temp_su;
-    private String reboot_support_rc, reboot_support_sh;
 
     private ImageView ic_launcher;
 
@@ -83,7 +80,6 @@ public class Main extends Activity {
     private String suVersion;
     private boolean isCMSU;
 
-    private final Tools tools_class = new Tools();
     private Context MainContext = null;
 
     @Override
@@ -99,12 +95,12 @@ public class Main extends Activity {
         animation.setDuration(750);
         layout.startAnimation(animation);
 
-        suVersion = SuVersion();
+        suVersion = Tools.SuVersion(MainContext);
         isCMSU = SuVersionBool(suVersion);
 
         Runnable runSepolicy = new Runnable() {
             public void run() {
-                PatchSepolicy();
+                Sepolicy();
                 // Only run boot service if app was used and is CM SU
                 if (isCMSU && !Tools.getBoolean("run_boot", false, MainContext))
                     Tools.saveBoolean("run_boot", true, MainContext);
@@ -154,10 +150,10 @@ public class Main extends Activity {
                 if (isAppInstalled(pokemon_app)) {
                     //repeat two times long toast is too short
                     int Randon_number = RandomInt(pokemonstrings);
-                    tools_class.DoAToast(pokemonstrings[Randon_number], MainContext);
-                    tools_class.DoAToast(pokemonstrings[Randon_number], MainContext);
+                    Tools.DoAToast(pokemonstrings[Randon_number], MainContext);
+                    Tools.DoAToast(pokemonstrings[Randon_number], MainContext);
                 } else
-                    tools_class.DoAToast(getString(R.string.isu_by), MainContext);
+                    Tools.DoAToast(getString(R.string.isu_by), MainContext);
             }
         });
 
@@ -165,7 +161,7 @@ public class Main extends Activity {
         if (RebootSupport()) {
             kernel_check.setText(getString(R.string.isu_reboot));
             download_folder_link.setVisibility(View.GONE);
-        } else if (tools_class.KernelSupport()) {
+        } else if (Tools.KernelSupport()) {
             kernel_check.setText(getString(R.string.isu_kernel_good));
             download_folder_link.setVisibility(View.GONE);
         } else {
@@ -178,7 +174,7 @@ public class Main extends Activity {
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.androidfilehost.com/?w=files&flid=120360")));
                     } catch (ActivityNotFoundException ex) {
-                        tools_class.DoAToast(getString(R.string.no_browser), MainContext);
+                        Tools.DoAToast(getString(R.string.no_browser), MainContext);
                     }
                 }
             });
@@ -194,7 +190,7 @@ public class Main extends Activity {
     }
 
     protected void UpdateMain() {
-        isCMSU = SuVersionBool(SuVersion());
+        isCMSU = SuVersionBool(Tools.SuVersion(MainContext));
         if (isCMSU) {
 
             //set the switch to ON or OFF
@@ -275,20 +271,20 @@ public class Main extends Activity {
         return generate;
     }
 
-    public void PatchSepolicy() {
+    public void Sepolicy() {
         String executableFilePath = getFilesDir().getPath() + "/";
         if (Tools.SuBinary(xbin_su)) {
             if (!Tools.existFile(executableFilePath + "libsupol.so", true))
                 extractAssets(executableFilePath + "libsupol.so", "libsupol.so");
             if (!Tools.existFile(executableFilePath + "supolicy", true))
                 extractAssets(executableFilePath + "supolicy", "supolicy");
-            RootUtils.runCommand("LD_LIBRARY_PATH=" + executableFilePath + " " + executableFilePath + sepolicy);
+            Tools.PatchSepolicy(true, executableFilePath);
         } else if (Tools.SuBinary(xbin_isu)) {
             if (!Tools.IexistFile(executableFilePath + "libsupol.so", true))
                 extractAssets(executableFilePath + "libsupol.so", "libsupol.so");
             if (!Tools.IexistFile(executableFilePath + "supolicy", true))
                 extractAssets(executableFilePath + "supolicy", "supolicy");
-            RootUtils.runICommand("LD_LIBRARY_PATH=" + executableFilePath + " " + executableFilePath + sepolicy);
+            Tools.PatchSepolicy(false, executableFilePath);
         }
     }
 
@@ -324,41 +320,31 @@ public class Main extends Activity {
     }
 
     private void iSuSwitch(boolean isChecked) {
+        Tools.SwitchSu(isChecked);
         if (isChecked) {
-            // Mount rw to change mount ro after
-            RootUtils.runICommand("mount -o rw,remount /system");
-            RootUtils.runICommand("mv " + xbin_isu + " " + xbin_su);
-            RootUtils.runCommand("mv " + bin_temp_su + " " + bin_su);
-            RootUtils.runCommand("mount -o ro,remount /system");
             if (Tools.SuBinary(xbin_su)) {
                 SuStatus.setText(getString(R.string.su_on));
                 if (isAppInstalled(pokemon_app)) {
-                    tools_class.DoAToast(getString(R.string.pokemongo_stop), MainContext);
+                    Tools.DoAToast(getString(R.string.pokemongo_stop), MainContext);
                 }
             } else
                 SuStatus.setText(getString(R.string.su_change_fail));
         } else {
-            // Make a link to isu so all root tool work
-            RootUtils.runCommand("mount -o rw,remount /system");
-            RootUtils.runCommand("ln -s -f " + xbin_isu + " " + bin_isu);
-            RootUtils.runCommand("mv " + bin_su + " " + bin_temp_su);
-            RootUtils.runCommand("mv " + xbin_su + " " + xbin_isu);
-            RootUtils.runICommand("mount -o ro,remount /system");
             if (Tools.SuBinary(xbin_isu)) {
                 SuStatus.setText(getString(R.string.su_off));
                 if (isAppInstalled(pokemon_app)) {
-                    tools_class.DoAToast(getString(R.string.pokemongo_start), MainContext);
+                    Tools.DoAToast(getString(R.string.pokemongo_start), MainContext);
                     //repeat two times long toast is too short
                     int Randon_number = RandomInt(pokemonstrings);
-                    tools_class.DoAToast(pokemonstrings[Randon_number], MainContext);
-                    tools_class.DoAToast(pokemonstrings[Randon_number], MainContext);
+                    Tools.DoAToast(pokemonstrings[Randon_number], MainContext);
+                    Tools.DoAToast(pokemonstrings[Randon_number], MainContext);
                 }
                 if (!Tools.isSELinuxActive()) {
-                    RootUtils.runICommand(Constants.SETENFORCE + " 1");
+                    Tools.SwitchSelinux(true);
                     if (Tools.isSELinuxActive())
-                        tools_class.DoAToast(getString(R.string.selinux_toast_ok), MainContext);
+                        Tools.DoAToast(getString(R.string.selinux_toast_ok), MainContext);
                     else
-                        tools_class.DoAToast(getString(R.string.selinux_toast_nok), MainContext);
+                        Tools.DoAToast(getString(R.string.selinux_toast_nok), MainContext);
                     Selinux_State.setText(Tools.getSELinuxStatus());
                     SelinuxSwitch.setChecked(Tools.isSELinuxActive());
                 }
@@ -368,34 +354,8 @@ public class Main extends Activity {
     }
 
     private void SelinuxSwitch(boolean isChecked) {
-        if (isChecked) {
-            if (Tools.SuBinary(xbin_su))
-                RootUtils.runCommand(Constants.SETENFORCE + " 1");
-            else if (Tools.SuBinary(xbin_isu))
-                RootUtils.runICommand(Constants.SETENFORCE + " 1");
-            Selinux_State.setText(Tools.getSELinuxStatus());
-        } else {
-            if (Tools.SuBinary(xbin_su))
-                RootUtils.runCommand(Constants.SETENFORCE + " 0");
-            else if (Tools.SuBinary(xbin_isu))
-                RootUtils.runICommand(Constants.SETENFORCE + " 0");
-            Selinux_State.setText(Tools.getSELinuxStatus());
-        }
-    }
-
-    private String SuVersion() {
-        // Check if is CM-SU
-        if (Tools.SuBinary(xbin_su)) {
-            su_bin_version = RootUtils.runCommand("su --version") + "";
-        } else if (Tools.SuBinary(xbin_isu))
-            su_bin_version = RootUtils.runICommand("isu --version") + "";
-        else
-            su_bin_version = RootUtils.runCommand("su --version") + "";
-
-        if (su_bin_version.contains("null"))
-            su_bin_version = getString(R.string.device_not_root);
-
-        return su_bin_version;
+        Tools.SwitchSelinux(isChecked);
+        Selinux_State.setText(Tools.getSELinuxStatus());
     }
 
     private static int getColorWrapper(Context context, int id) {
@@ -418,62 +378,30 @@ public class Main extends Activity {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
             String executableFilePath = getFilesDir().getPath() + "/";
             if (Tools.SuBinary(xbin_su)) {
-                if (ReadSystemPatch(true))
+                if (Tools.ReadSystemPatch(true))
                     return true;
                 if (!Tools.existFile(executableFilePath + "isush", true) ||
                     !Tools.existFile(executableFilePath + "superuser.rc", true)) {
                     extractAssets(executableFilePath + "isush", "isush");
                     extractAssets(executableFilePath + "superuser.rc", "superuser.rc");
                 }
-                SystemPatch(true, executableFilePath);
-                if (ReadSystemPatch(true))
+                Tools.SystemPatch(true, executableFilePath);
+                if (Tools.ReadSystemPatch(true))
                     return true;
             } else if (Tools.SuBinary(xbin_isu)) {
-                if (ReadSystemPatch(false))
+                if (Tools.ReadSystemPatch(false))
                     return true;
                 if (!Tools.IexistFile(executableFilePath + "isush", true) ||
                     !Tools.IexistFile(executableFilePath + "superuser.rc", true)) {
                     extractAssets(executableFilePath + "isush", "isush");
                     extractAssets(executableFilePath + "superuser.rc", "superuser.rc");
                 }
-                SystemPatch(false, executableFilePath);
-                if (ReadSystemPatch(false))
+                Tools.SystemPatch(false, executableFilePath);
+                if (Tools.ReadSystemPatch(false))
                     return true;
             }
         }
         return false;
     }
 
-    private boolean ReadSystemPatch(boolean supersubin) {
-        if (supersubin) {
-            reboot_support_rc = RootUtils.runCommand("grep -i isu_daemon system/etc/init/superuser.rc") + "";
-            reboot_support_sh = RootUtils.runCommand("grep -i /system/xbin/isu system/xbin/isush") + "";
-            if (reboot_support_rc.contains("isu_daemon") && reboot_support_sh.contains("/system/xbin/isu"))
-                return true;
-        } else {
-            reboot_support_rc = RootUtils.runICommand("grep -i isu_daemon system/etc/init/superuser.rc") + "";
-            reboot_support_sh = RootUtils.runICommand("grep -i /system/xbin/isu system/xbin/isush") + "";
-            if (reboot_support_rc.contains("isu_daemon") && reboot_support_sh.contains("/system/xbin/isu"))
-                return true;
-        }
-        return false;
-    }
-
-    private void SystemPatch(boolean supersubin, String executableFilePath) {
-        if (supersubin) {
-            RootUtils.runCommand("mount -o rw,remount /system");
-            RootUtils.runCommand("cp -f " + executableFilePath + "isush" + " /system/xbin/");
-            RootUtils.runCommand("chmod 0755" + " /system/xbin/isush");
-            RootUtils.runCommand("cp -f " + executableFilePath + "superuser.rc" + " /system/etc/init/");
-            RootUtils.runCommand("chmod 0644" + " /system/etc/init/superuser.rc");
-            RootUtils.runCommand("mount -o ro,remount /system");
-        } else {
-            RootUtils.runICommand("mount -o rw,remount /system");
-            RootUtils.runICommand("cp -f " + executableFilePath + "isush" + " /system/xbin/");
-            RootUtils.runICommand("chmod 0755" + " /system/xbin/isush");
-            RootUtils.runICommand("cp -f " + executableFilePath + "superuser.rc" + " /system/etc/init/");
-            RootUtils.runICommand("chmod 0644" + " /system/etc/init/superuser.rc");
-            RootUtils.runICommand("mount -o ro,remount /system");
-        }
-    }
 }

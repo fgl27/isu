@@ -26,7 +26,6 @@ import android.content.pm.PackageManager;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 
-import com.bhb27.isu.tools.RootUtils;
 import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.tools.Tools;
 import com.bhb27.isu.R;
@@ -38,17 +37,18 @@ import java.util.List;
  * Created by joe on 3/2/16.
  */
 public class PerAppMonitor extends AccessibilityService {
+
     private static final String TAG = PerAppMonitor.class.getSimpleName();
     public static String sPackageName;
     public static String accessibilityId;
     String last_profile = "";
     long time = System.currentTimeMillis();
-    private final Tools tools_class = new Tools();
     private String bin_su = Constants.bin_su;
     private String xbin_su = Constants.xbin_su;
     private String bin_isu = Constants.bin_isu;
     private String xbin_isu = Constants.xbin_isu;
     private String bin_temp_su = Constants.bin_temp_su;
+
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         AccessibilityServiceInfo serviceInfo = this.getServiceInfo();
@@ -91,53 +91,43 @@ public class PerAppMonitor extends AccessibilityService {
             time = System.currentTimeMillis();
             //active deactive su selinux
             if (last_profile.equals("Su") && Tools.SuBinary(xbin_isu)) {
-                tools_class.DoAToast("iSu " + getString(R.string.per_app_active) + "!", this);
-                iSuSwitch(true, packageName);
+                Tools.DoAToast("iSu " + getString(R.string.per_app_active) + "!", this);
+                PerAppiSuSwitch(true, packageName);
             } else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_su)) {
-                tools_class.DoAToast("iSu " + getString(R.string.per_app_deactive) + "!", this);
-                iSuSwitch(false, packageName);
+                Tools.DoAToast("iSu " + getString(R.string.per_app_deactive) + "!", this);
+                PerAppiSuSwitch(false, packageName);
             } else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_isu) && !Tools.isSELinuxActive()) {
-                RootUtils.runICommand(Constants.SETENFORCE + " 1");
+                Tools.SwitchSelinux(true);
                 if (Tools.isSELinuxActive())
-                    tools_class.DoAToast(getString(R.string.selinux_toast_ok), this);
+                    Tools.DoAToast(getString(R.string.selinux_toast_ok), this);
                 else
-                    tools_class.DoAToast(getString(R.string.selinux_toast_nok), this);
+                    Tools.DoAToast(getString(R.string.selinux_toast_nok), this);
             }
 
         }
     }
 
-    public void iSuSwitch(boolean isChecked, String packageName) {
+    private void PerAppiSuSwitch(boolean isChecked, String packageName) {
+        Tools.SwitchSu(isChecked);
         if (isChecked) {
             // Mount rw to change mount ro after
-            RootUtils.runICommand("mount -o rw,remount /system");
-            RootUtils.runICommand("mv " + xbin_isu + " " + xbin_su);
-            RootUtils.runCommand("mv " + bin_temp_su + " " + bin_su);
-            RootUtils.runCommand("mount -o ro,remount /system");
-            if (Tools.getBoolean("restart_su", false, this)) {
-                RootUtils.runCommand("am force-stop " + packageName);
-                RootUtils.runCommand("am start " + packageName);
-            }
+            if (Tools.getBoolean("restart_su", false, this))
+		Tools.RestartApp(packageName);
             if (Tools.getBoolean("restart_selinux", false, this) && !Tools.isSELinuxActive()) {
-                RootUtils.runCommand(Constants.SETENFORCE + " 1");
-                tools_class.DoAToast(getString(R.string.activate_selinux), this);
+                Tools.SwitchSelinux(true);
+                Tools.DoAToast(getString(R.string.activate_selinux), this);
             } else if (!Tools.getBoolean("restart_selinux", false, this) && Tools.isSELinuxActive()) {
-                RootUtils.runCommand(Constants.SETENFORCE + " 0");
-                tools_class.DoAToast(getString(R.string.deactivate_selinux), this);
+                Tools.SwitchSelinux(false);
+                Tools.DoAToast(getString(R.string.deactivate_selinux), this);
             }
         } else {
             // Make a link to isu so all root tool work
-            RootUtils.runCommand("mount -o rw,remount /system");
-            RootUtils.runCommand("ln -s -f " + xbin_isu + " " + bin_isu);
-            RootUtils.runCommand("mv " + bin_su + " " + bin_temp_su);
-            RootUtils.runCommand("mv " + xbin_su + " " + xbin_isu);
-            RootUtils.runICommand("mount -o ro,remount /system");
             if (!Tools.isSELinuxActive()) {
-                RootUtils.runICommand(Constants.SETENFORCE + " 1");
+                Tools.SwitchSelinux(true);
                 if (Tools.isSELinuxActive())
-                    tools_class.DoAToast(getString(R.string.selinux_toast_ok), this);
+                    Tools.DoAToast(getString(R.string.selinux_toast_ok), this);
                 else
-                    tools_class.DoAToast(getString(R.string.selinux_toast_nok), this);
+                    Tools.DoAToast(getString(R.string.selinux_toast_nok), this);
 
             }
         }

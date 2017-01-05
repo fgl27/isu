@@ -50,7 +50,6 @@ public class PerAppActivity extends Activity {
     private Switch restartSwitch, SuSelinuxSwitch;
     private ImageView ic_launcher;
     private AlertDialog.Builder mPerAppDialog;
-    private final Tools tools_class = new Tools();
     private Context PerAppActivityContext = null;
     private String TAG = Constants.TAG;
 
@@ -87,7 +86,7 @@ public class PerAppActivity extends Activity {
         ic_launcher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tools_class.DoAToast(getString(R.string.isu_by), PerAppActivityContext);
+                Tools.DoAToast(getString(R.string.isu_by), PerAppActivityContext);
             }
         });
 

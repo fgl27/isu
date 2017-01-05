@@ -41,7 +41,6 @@ public class AboutActivity extends Activity {
     TextView version_number, email, email_summary, xda, git, git_summary;
     ImageView ic_gmail, ic_xda, ic_git;
 
-    private final Tools tools_class = new Tools();
     private Context AboutContext = null;
 
     @Override
@@ -76,7 +75,7 @@ public class AboutActivity extends Activity {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com"))
                         .putExtra(Intent.EXTRA_SUBJECT, SUBJECT));
                 } catch (ActivityNotFoundException ex) {
-                    tools_class.DoAToast(getString(R.string.no_email_client), AboutContext);
+                    Tools.DoAToast(getString(R.string.no_email_client), AboutContext);
                 }
             }
         });
@@ -88,7 +87,7 @@ public class AboutActivity extends Activity {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com"))
                         .putExtra(Intent.EXTRA_SUBJECT, SUBJECT));
                 } catch (ActivityNotFoundException ex) {
-                    tools_class.DoAToast(getString(R.string.no_email_client), AboutContext);
+                    Tools.DoAToast(getString(R.string.no_email_client), AboutContext);
                 }
             }
         });
@@ -99,7 +98,7 @@ public class AboutActivity extends Activity {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://forum.xda-developers.com/android/apps-games/isu-simple-app-to-deactivate-activate-t3478348")));
                 } catch (ActivityNotFoundException ex) {
-                    tools_class.DoAToast(getString(R.string.no_browser), AboutContext);
+                    Tools.DoAToast(getString(R.string.no_browser), AboutContext);
                 }
             }
         });
@@ -110,7 +109,7 @@ public class AboutActivity extends Activity {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/bhb27/isu")));
                 } catch (ActivityNotFoundException ex) {
-                    tools_class.DoAToast(getString(R.string.no_browser), AboutContext);
+                    Tools.DoAToast(getString(R.string.no_browser), AboutContext);
                 }
             }
         });
@@ -121,7 +120,7 @@ public class AboutActivity extends Activity {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/bhb27/isu")));
                 } catch (ActivityNotFoundException ex) {
-                    tools_class.DoAToast(getString(R.string.no_browser), AboutContext);
+                    Tools.DoAToast(getString(R.string.no_browser), AboutContext);
                 }
             }
         });
@@ -138,7 +137,7 @@ public class AboutActivity extends Activity {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com"))
                         .putExtra(Intent.EXTRA_SUBJECT, SUBJECT));
                 } catch (ActivityNotFoundException ex) {
-                    tools_class.DoAToast(getString(R.string.no_email_client), AboutContext);
+                    Tools.DoAToast(getString(R.string.no_email_client), AboutContext);
                 }
             }
         });
@@ -149,7 +148,7 @@ public class AboutActivity extends Activity {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://forum.xda-developers.com/android/apps-games/isu-simple-app-to-deactivate-activate-t3478348")));
                 } catch (ActivityNotFoundException ex) {
-                    tools_class.DoAToast(getString(R.string.no_browser), AboutContext);
+                    Tools.DoAToast(getString(R.string.no_browser), AboutContext);
                 }
             }
         });
@@ -160,7 +159,7 @@ public class AboutActivity extends Activity {
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/bhb27/isu")));
                 } catch (ActivityNotFoundException ex) {
-                    tools_class.DoAToast(getString(R.string.no_browser), AboutContext);
+                    Tools.DoAToast(getString(R.string.no_browser), AboutContext);
                 }
             }
         });

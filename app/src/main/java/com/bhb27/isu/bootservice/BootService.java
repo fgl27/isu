@@ -20,11 +20,11 @@
 package com.bhb27.isu.bootservice;
 
 import android.app.Service;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 import android.content.Intent;
 
-import com.bhb27.isu.tools.RootUtils;
 import com.bhb27.isu.tools.Tools;
 import com.bhb27.isu.tools.Constants;
 
@@ -48,10 +48,17 @@ public class BootService extends Service {
 
     private void init() {
         String executableFilePath = getFilesDir().getPath() + "/";
-        if (Tools.SuBinary(xbin_su))
-            RootUtils.runCommand("LD_LIBRARY_PATH=" + executableFilePath + " " + executableFilePath + sepolicy);
-        else if (Tools.SuBinary(xbin_isu))
-            RootUtils.runICommand("LD_LIBRARY_PATH=" + executableFilePath + " " + executableFilePath + sepolicy);
+        if (Tools.SuBinary(xbin_su)) {
+            Tools.PatchSepolicy(true, executableFilePath);
+            if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && (!Tools.ReadSystemPatch(false))) {
+                Tools.SystemPatch(true, executableFilePath);
+            }
+        } else if (Tools.SuBinary(xbin_isu)) {
+            Tools.PatchSepolicy(false, executableFilePath);
+            if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && (!Tools.ReadSystemPatch(false))) {
+                Tools.SystemPatch(false, executableFilePath);
+            }
+        }
         Log.d(TAG, " Run");
         stopSelf();
     }

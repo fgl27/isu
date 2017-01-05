@@ -33,15 +33,14 @@ import java.io.IOException;
 import java.io.FileReader;
 import java.io.FileWriter;
 
+import com.bhb27.isu.R;
 import com.bhb27.isu.tools.RootFile;
 import com.bhb27.isu.tools.RootUtils;
 
 public class Tools implements Constants {
 
-    private String kernel_support_rc = "";
-    private String kernel_support_sh = "";
-
-    public boolean KernelSupport() {
+    public static boolean KernelSupport() {
+        String kernel_support_rc, kernel_support_sh;
         if (existFile(xbin_su, true)) {
             kernel_support_rc = RootUtils.runCommand("grep -r -i isu_daemon *.rc ") + "";
             kernel_support_sh = RootUtils.runCommand("grep -r -i isu_daemon *.sh ") + "" +
@@ -61,8 +60,89 @@ public class Tools implements Constants {
         }
     }
 
+    public static boolean ReadSystemPatch(boolean supersubin) {
+        String reboot_support_rc, reboot_support_sh;
+        if (supersubin) {
+            reboot_support_rc = RootUtils.runCommand("grep -i isu_daemon system/etc/init/superuser.rc") + "";
+            reboot_support_sh = RootUtils.runCommand("grep -i /system/xbin/isu system/xbin/isush") + "";
+            if (reboot_support_rc.contains("isu_daemon") && reboot_support_sh.contains("/system/xbin/isu"))
+                return true;
+        } else {
+            reboot_support_rc = RootUtils.runICommand("grep -i isu_daemon system/etc/init/superuser.rc") + "";
+            reboot_support_sh = RootUtils.runICommand("grep -i /system/xbin/isu system/xbin/isush") + "";
+            if (reboot_support_rc.contains("isu_daemon") && reboot_support_sh.contains("/system/xbin/isu"))
+                return true;
+        }
+        return false;
+    }
+
+    public static void SystemPatch(boolean supersubin, String executableFilePath) {
+        if (supersubin) {
+            RootUtils.runCommand("mount -o rw,remount /system");
+            RootUtils.runCommand("cp -f " + executableFilePath + "isush" + " /system/xbin/");
+            RootUtils.runCommand("chmod 0755" + " /system/xbin/isush");
+            RootUtils.runCommand("cp -f " + executableFilePath + "superuser.rc" + " /system/etc/init/");
+            RootUtils.runCommand("chmod 0644" + " /system/etc/init/superuser.rc");
+            RootUtils.runCommand("mount -o ro,remount /system");
+        } else {
+            RootUtils.runICommand("mount -o rw,remount /system");
+            RootUtils.runICommand("cp -f " + executableFilePath + "isush" + " /system/xbin/");
+            RootUtils.runICommand("chmod 0755" + " /system/xbin/isush");
+            RootUtils.runICommand("cp -f " + executableFilePath + "superuser.rc" + " /system/etc/init/");
+            RootUtils.runICommand("chmod 0644" + " /system/etc/init/superuser.rc");
+            RootUtils.runICommand("mount -o ro,remount /system");
+        }
+    }
+
+    public static void PatchSepolicy(boolean supersubin, String executableFilePath) {
+        if (supersubin)
+            RootUtils.runCommand("LD_LIBRARY_PATH=" + executableFilePath + " " + executableFilePath + sepolicy);
+        else
+            RootUtils.runICommand("LD_LIBRARY_PATH=" + executableFilePath + " " + executableFilePath + sepolicy);
+    }
+
+    public static void SwitchSu(boolean isChecked) {
+        if (isChecked) {
+            // Mount rw to change mount ro after
+            RootUtils.runICommand("mount -o rw,remount /system");
+            RootUtils.runICommand("mv " + xbin_isu + " " + xbin_su);
+            RootUtils.runCommand("mv " + bin_temp_su + " " + bin_su);
+            RootUtils.runCommand("mount -o ro,remount /system");
+        } else {
+            // Make a link to isu so all root tool work
+            RootUtils.runCommand("mount -o rw,remount /system");
+            RootUtils.runCommand("ln -s -f " + xbin_isu + " " + bin_isu);
+            RootUtils.runCommand("mv " + xbin_su + " " + xbin_isu);
+            RootUtils.runICommand("mv " + bin_su + " " + bin_temp_su);
+            RootUtils.runICommand("mount -o ro,remount /system");
+        }
+    }
+
+    public static void SwitchSelinux(boolean isChecked) {
+        if (SuBinary(xbin_su))
+            RootUtils.runCommand(Constants.SETENFORCE + (isChecked ? " 1" : " 0"));
+        else if (SuBinary(xbin_isu))
+            RootUtils.runCommand(Constants.SETENFORCE + (isChecked ? " 1" : " 0"));
+    }
+
+    public static String SuVersion(Context context) {
+        String su_bin_version = "";
+        // Check if is CM-SU
+        if (SuBinary(xbin_su)) {
+            su_bin_version = RootUtils.runCommand("su --version") + "";
+        } else if (SuBinary(xbin_isu))
+            su_bin_version = RootUtils.runICommand("isu --version") + "";
+        else
+            su_bin_version = RootUtils.runCommand("su --version") + "";
+
+        if (su_bin_version.contains("null"))
+            su_bin_version = context.getString(R.string.device_not_root);
+
+        return su_bin_version;
+    }
+
     // simple toast function to center the message Main.this
-    public void DoAToast(String message, Context context) {
+    public static void DoAToast(String message, Context context) {
         Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
         TextView view = (TextView) toast.getView().findViewById(android.R.id.message);
         if (view != null) view.setGravity(Gravity.CENTER);
@@ -72,6 +152,11 @@ public class Tools implements Constants {
     public static boolean isSELinuxActive() {
         if (getSELinuxStatus().equals("Enforcing")) return true;
         return false;
+    }
+
+    public static void RestartApp(String packageName) {
+        RootUtils.runCommand("am force-stop " + packageName);
+        RootUtils.runCommand("am start " + packageName);
     }
 
     public static String getSELinuxStatus() {
