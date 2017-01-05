@@ -15,9 +15,9 @@
     <string name="selinux_state">Estado atual do Selinux:</string>
     <string name="selinux_toast_ok">iSu Selinux setado para Enforcing!\n Isto é necessário para o funcionamento de alguns app com Safety Check</string>
     <string name="selinux_toast_nok">Não foi possível mudar o estado do selinux!</string>
-    <string name="isu_kernel_good">Support de Kernel iSu OK.</string>
-    <string name="isu_kernel_bad">Sem suporte de Kernel iSu!!!\nFavor usar o .zip via TWRP ou poderá perder acesso SU apos um reboot</string>
-    <string name="isu_kernel_no_su">Se usou o iSu pra desativar o SU tente reiniciar o aparelho se você tiver support de kernel iSu, caso não tenha o suporte de kernel reinstale o .zip da sua ROM atual, sem SU o app não consegue saber se o aparelho tem o suporte de kernel, e duvida verifique o site de suporte no Sobre iSu&#8230; XDA forum de suporte</string>
+    <string name="isu_kernel_good">Reboot Suporte iSu OK.</string>
+    <string name="isu_kernel_bad">Sem suporte de Reboot iSu!!!\nPor favor usar o .zip via TWRP ou poderá perder acesso SU apos um reboot</string>
+    <string name="isu_kernel_no_su">Se usou o iSu pra desativar o SU caso tenha Reboot suporte do iSu tente...\nReiniciar o aparelho, caso não tenha o suporte reinstale o .zip da sua ROM atual, sem acesso SU o app não consegue saber se o aparelho suporte a Reboot também cheque nas configurações Opções de desenvolvedor se o Acesso superusuátio esta ativo para para aplicativos, em duvida verifique o site de suporte no Sobre iSu&#8230; XDA forum de suporte</string>
     <string name="download_folder_link">Toque aqui para ir a pasta de Download do iSu</string>
     <string name="isu_reboot">iSu Nougat Reboot Suporte OK</string>
 
