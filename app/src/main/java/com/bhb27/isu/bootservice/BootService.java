@@ -48,17 +48,9 @@ public class BootService extends Service {
 
     private void init() {
         String executableFilePath = getFilesDir().getPath() + "/";
-        if (Tools.SuBinary(xbin_su)) {
-            Tools.PatchSepolicy(true, executableFilePath);
-            if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && (!Tools.ReadSystemPatch(false))) {
-                Tools.SystemPatch(true, executableFilePath);
-            }
-        } else if (Tools.SuBinary(xbin_isu)) {
-            Tools.PatchSepolicy(false, executableFilePath);
-            if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && (!Tools.ReadSystemPatch(false))) {
-                Tools.SystemPatch(false, executableFilePath);
-            }
-        }
+        Tools.PatchSepolicy(executableFilePath);
+        if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && (!Tools.ReadSystemPatch()))
+            Tools.SystemPatch(executableFilePath);
         Log.d(TAG, " Run");
         stopSelf();
     }

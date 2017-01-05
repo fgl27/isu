@@ -32,6 +32,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        // only run if the app has run before and main has extracted asserts
         String action = intent.getAction();
         boolean run_boot = Tools.getBoolean("run_boot", false, context);
         if (Intent.ACTION_BOOT_COMPLETED.equals(action) && run_boot) {

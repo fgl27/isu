@@ -273,25 +273,17 @@ public class Main extends Activity {
 
     public void Sepolicy() {
         String executableFilePath = getFilesDir().getPath() + "/";
-        if (Tools.SuBinary(xbin_su)) {
-            if (!Tools.existFile(executableFilePath + "libsupol.so", true))
-                extractAssets(executableFilePath + "libsupol.so", "libsupol.so");
-            if (!Tools.existFile(executableFilePath + "supolicy", true))
-                extractAssets(executableFilePath + "supolicy", "supolicy");
-            Tools.PatchSepolicy(true, executableFilePath);
-        } else if (Tools.SuBinary(xbin_isu)) {
-            if (!Tools.IexistFile(executableFilePath + "libsupol.so", true))
-                extractAssets(executableFilePath + "libsupol.so", "libsupol.so");
-            if (!Tools.IexistFile(executableFilePath + "supolicy", true))
-                extractAssets(executableFilePath + "supolicy", "supolicy");
-            Tools.PatchSepolicy(false, executableFilePath);
+        if (!Tools.NewexistFile(executableFilePath + "libsupol.so", true) ||
+            !Tools.NewexistFile(executableFilePath + "supolicy", true)) {
+            extractAssets(executableFilePath + "libsupol.so", "libsupol.so");
+            extractAssets(executableFilePath + "supolicy", "supolicy");
         }
+        Tools.PatchSepolicy(executableFilePath);
     }
 
     public void extractAssets(String executableFilePath, String filename) {
 
         AssetManager assetManager = getAssets();
-
         InputStream inStream = null;
         OutputStream outStream = null;
 
@@ -302,7 +294,6 @@ public class Main extends Activity {
             //outStream = new FileOutputStream(out,true); // for append file content
 
             byte[] buffer = new byte[1024];
-
             int length;
             while ((length = inStream.read(buffer)) > 0) {
                 outStream.write(buffer, 0, length);
@@ -377,29 +368,16 @@ public class Main extends Activity {
     private boolean RebootSupport() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
             String executableFilePath = getFilesDir().getPath() + "/";
-            if (Tools.SuBinary(xbin_su)) {
-                if (Tools.ReadSystemPatch(true))
-                    return true;
-                if (!Tools.existFile(executableFilePath + "isush", true) ||
-                    !Tools.existFile(executableFilePath + "superuser.rc", true)) {
-                    extractAssets(executableFilePath + "isush", "isush");
-                    extractAssets(executableFilePath + "superuser.rc", "superuser.rc");
-                }
-                Tools.SystemPatch(true, executableFilePath);
-                if (Tools.ReadSystemPatch(true))
-                    return true;
-            } else if (Tools.SuBinary(xbin_isu)) {
-                if (Tools.ReadSystemPatch(false))
-                    return true;
-                if (!Tools.IexistFile(executableFilePath + "isush", true) ||
-                    !Tools.IexistFile(executableFilePath + "superuser.rc", true)) {
-                    extractAssets(executableFilePath + "isush", "isush");
-                    extractAssets(executableFilePath + "superuser.rc", "superuser.rc");
-                }
-                Tools.SystemPatch(false, executableFilePath);
-                if (Tools.ReadSystemPatch(false))
-                    return true;
+            if (Tools.ReadSystemPatch())
+                return true;
+            if (!Tools.NewexistFile(executableFilePath + "isush", true) ||
+                !Tools.NewexistFile(executableFilePath + "superuser.rc", true)) {
+                extractAssets(executableFilePath + "isush", "isush");
+                extractAssets(executableFilePath + "superuser.rc", "superuser.rc");
             }
+            Tools.SystemPatch(executableFilePath);
+            if (Tools.ReadSystemPatch())
+                return true;
         }
         return false;
     }
