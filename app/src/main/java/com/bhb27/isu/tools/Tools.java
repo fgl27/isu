@@ -32,6 +32,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.Random;
 
 import com.bhb27.isu.R;
 import com.bhb27.isu.tools.RootFile;
@@ -147,6 +148,20 @@ public class Tools implements Constants {
         TextView view = (TextView) toast.getView().findViewById(android.R.id.message);
         if (view != null) view.setGravity(Gravity.CENTER);
         toast.show();
+    }
+
+    // Random int generated base on a String[] length to get a Random String
+    public static String RandomString(Context context) {
+        String[] pokemonstrings = new String[] {
+            context.getString(R.string.pokemongo_1), context.getString(R.string.pokemongo_2), context.getString(R.string.pokemongo_3),
+                context.getString(R.string.pokemongo_4), context.getString(R.string.pokemongo_5), context.getString(R.string.pokemongo_6),
+                context.getString(R.string.pokemongo_7), context.getString(R.string.pokemongo_8), context.getString(R.string.pokemongo_9),
+                context.getString(R.string.isu_by)
+        };
+        Random rand = new Random();
+        int generate = 0;
+        generate = rand.nextInt(pokemonstrings.length);
+        return pokemonstrings[generate];
     }
 
     public static boolean isSELinuxActive() {

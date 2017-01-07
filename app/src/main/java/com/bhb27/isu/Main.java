@@ -46,7 +46,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Random;
 
 import com.bhb27.isu.AboutActivity;
 import com.bhb27.isu.PerAppActivity;
@@ -67,9 +66,6 @@ public class Main extends Activity {
     private String bin_temp_su = Constants.bin_temp_su;
 
     private ImageView ic_launcher;
-
-    private String[] pokemonstrings;
-    private String pokemon_app = "com.nianticlabs.pokemongo";
 
     private String TAG = Constants.TAG;
 
@@ -108,14 +104,6 @@ public class Main extends Activity {
         };
         new Thread(runSepolicy).start();
 
-        // random poke toast
-        pokemonstrings = new String[] {
-            getString(R.string.pokemongo_1), getString(R.string.pokemongo_2), getString(R.string.pokemongo_3),
-                getString(R.string.pokemongo_4), getString(R.string.pokemongo_5), getString(R.string.pokemongo_6),
-                getString(R.string.pokemongo_7), getString(R.string.pokemongo_8), getString(R.string.pokemongo_9),
-                getString(R.string.pokemongo_10), getString(R.string.isu_by)
-        };
-
         suSwitch = (Switch) findViewById(R.id.suSwitch);
         SuSwitchSummary = (TextView) findViewById(R.id.SuSwitchSummary);
         SuStatus = (TextView) findViewById(R.id.SuStatus);
@@ -147,12 +135,6 @@ public class Main extends Activity {
         ic_launcher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isAppInstalled(pokemon_app)) {
-                    //repeat two times long toast is too short
-                    int Randon_number = RandomInt(pokemonstrings);
-                    Tools.DoAToast(pokemonstrings[Randon_number], MainContext);
-                    Tools.DoAToast(pokemonstrings[Randon_number], MainContext);
-                } else
                     Tools.DoAToast(getString(R.string.isu_by), MainContext);
             }
         });
@@ -185,22 +167,17 @@ public class Main extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (upMain)
-            UpdateMain();
+        if (upMain) UpdateMain();
+        else this.onCreate(null);
     }
 
     protected void UpdateMain() {
         isCMSU = SuVersionBool(Tools.SuVersion(MainContext));
         if (isCMSU) {
 
-            //set the switch to ON or OFF
             suSwitch.setChecked(Tools.SuBinary(xbin_su));
-            //check the current state before we display the screen
-            if (suSwitch.isChecked())
-                SuStatus.setText(getString(R.string.su_on));
-            else
-                SuStatus.setText(getString(R.string.su_off));
-            //attach a listener to check for changes in state
+            SuStatus.setText((suSwitch.isChecked() ? getString(R.string.activated) :
+                getString(R.string.deactivated)));
             suSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView,
@@ -248,29 +225,6 @@ public class Main extends Activity {
         }
     }
 
-    // Poke fun simple function to see if Pokemon go is installed and call a fun toast base on a random number
-    // http://stackoverflow.com/a/27156435/6645820 + http://stackoverflow.com/a/424548/6645820
-    //package is installed function
-    private boolean isAppInstalled(String packageName) {
-        PackageManager pm = getPackageManager();
-        boolean installed = false;
-        try {
-            pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
-            installed = true;
-        } catch (PackageManager.NameNotFoundException e) {
-            installed = false;
-        }
-        return installed;
-    }
-
-    // Random int base on a String[] length
-    public int RandomInt(String[] max_size) {
-        Random rand = new Random();
-        int generate = 0;
-        generate = rand.nextInt(max_size.length);
-        return generate;
-    }
-
     public void Sepolicy() {
         String executableFilePath = getFilesDir().getPath() + "/";
         if (!Tools.NewexistFile(executableFilePath + "libsupol.so", true) ||
@@ -312,38 +266,22 @@ public class Main extends Activity {
 
     private void iSuSwitch(boolean isChecked) {
         Tools.SwitchSu(isChecked);
-        if (isChecked) {
-            if (Tools.SuBinary(xbin_su)) {
-                SuStatus.setText(getString(R.string.su_on));
-                if (isAppInstalled(pokemon_app)) {
-                    Tools.DoAToast(getString(R.string.pokemongo_stop), MainContext);
-                }
-            } else
-                SuStatus.setText(getString(R.string.su_change_fail));
-        } else {
-            if (Tools.SuBinary(xbin_isu)) {
-                SuStatus.setText(getString(R.string.su_off));
-                if (isAppInstalled(pokemon_app)) {
-                    Tools.DoAToast(getString(R.string.pokemongo_start), MainContext);
-                    //repeat two times long toast is too short
-                    int Randon_number = RandomInt(pokemonstrings);
-                    Tools.DoAToast(pokemonstrings[Randon_number], MainContext);
-                    Tools.DoAToast(pokemonstrings[Randon_number], MainContext);
-                }
-                if (!Tools.isSELinuxActive()) {
-                    Tools.SwitchSelinux(true);
-                    if (Tools.isSELinuxActive())
-                        Tools.DoAToast(getString(R.string.selinux_toast_ok), MainContext);
-                    else
-                        Tools.DoAToast(getString(R.string.selinux_toast_nok), MainContext);
-                    Selinux_State.setText(Tools.getSELinuxStatus());
-                    SelinuxSwitch.setChecked(Tools.isSELinuxActive());
-                }
-            } else
-                SuStatus.setText(getString(R.string.su_change_fail));
+        if (isChecked)
+            SuStatus.setText((Tools.SuBinary(xbin_su) ? getString(R.string.activated) :
+                getString(R.string.su_change_fail)));
+        else {
+            SuStatus.setText((Tools.SuBinary(xbin_isu) ? getString(R.string.deactivated) :
+                getString(R.string.su_change_fail)));
+            if (!Tools.isSELinuxActive()) {
+                Tools.SwitchSelinux(true);
+                Tools.DoAToast("iSu " +
+                    (Tools.isSELinuxActive() ? getString(R.string.selinux_toast_ok) :
+                        getString(R.string.selinux_toast_nok)), MainContext);
+                Selinux_State.setText(Tools.getSELinuxStatus());
+                SelinuxSwitch.setChecked(Tools.isSELinuxActive());
+            }
         }
     }
-
     private void SelinuxSwitch(boolean isChecked) {
         Tools.SwitchSelinux(isChecked);
         Selinux_State.setText(Tools.getSELinuxStatus());

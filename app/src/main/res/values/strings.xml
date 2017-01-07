@@ -8,22 +8,21 @@
     <string name="su_not_cm">Current SU not supported.\nThe app only works with CM-SU\nDevice current SU version is:</string>
     <string name="device_not_root">Device appears not to be Rooted</string>
     <string name="su_change_fail">Su State change Fail!</string>
-    <string name="su_on">Su is currently Activated</string>
-    <string name="su_off">Su is currently Deactivated</string>
+    <string name="activated">Activated</string>
+    <string name="deactivated">Deactivated</string>
     <string name="su_version">Su version:</string>
     <string name="selinux_switch">Click to activate or deactivate Selinux</string>
     <string name="selinux_state">Current Selinux State:</string>
-    <string name="selinux_toast_ok">iSu Selinux Set to Enforcing!\n This Is Need For Some App Safety Check</string>
+    <string name="selinux_toast_ok">Selinux Set to Enforcing!\n This Is Need For Some App Safety Check</string>
     <string name="selinux_toast_nok">Can\'t changing Selinux State!</string>
     <string name="isu_kernel_good">iSu Kernel Support OK.</string>
     <string name="isu_kernel_bad">No iSu Kernel Support!!!\nPlease flash the kernel support .zip or you may loose SU access</string>
-    <string name="isu_kernel_no_su">If you use iSu to deactivate SU and lost SU support try...\nA reboot if you have iSu kernel support, if you don\'t have kernel support reflash yours current ROM .zip, without SU access the app can\'t tell if you have reboot support so also check in Setting Developer option if Root accesses is granted to apps, in doubt check XDA thread link in About iSu&#8230; XDA support forun site</string>
+    <string name="isu_kernel_no_su">If you use iSu to deactivate SU and lost SU support try&#8230;\nA reboot if you have iSu kernel support, if you don\'t have kernel support reflash yours current ROM .zip, without SU access the app can\'t tell if you have reboot support so also check in Setting Developer option if Root accesses is granted to apps, in doubt check XDA thread link in About iSu&#8230; XDA support forun site</string>
     <string name="download_folder_link">Click here to go to iSu Download folder</string>
     <string name="isu_reboot">iSu Nougat Reboot Support OK</string>
 
     <!-- Main pokemonstrings -->
     <string name="pokemongo_start">hey ho let\'s go play Pokemon!!!</string>
-    <string name="pokemongo_stop">SU ON\n\nPokemon Go Mod signing out</string>
     <string name="pokemongo_1">Lets Grab that Pikachu today</string>
     <string name="pokemongo_2">How many miles we are going today?</string>
     <string name="pokemongo_3">Don\'t you have home works to do? Ooo I see you are a grownup, grownup I see -_-</string>
@@ -33,7 +32,6 @@
     <string name="pokemongo_7">Chuck Norris won the World Series of Poker using Pokemon cards.</string>
     <string name="pokemongo_8">Chuck Noris caught all 150 Pokemon in 2.7 seconds.</string>
     <string name="pokemongo_9">How long will it be? before people start naming their kids after Pokemon</string>
-    <string name="pokemongo_10">Are you? Activating and deactivating SU just to read my Jokes? Just click iSu icon below :)</string>
     <string name="isu_by">iSu by bhb27</string>
 
     <!-- about -->
@@ -69,7 +67,7 @@
    <string name="not_available">Not Available</string>
    <string name="restart_selinux">Activate Selinux with SU</string>
    <string name="restart_selinux_summary">If ON will always set Selinux to Enforcing when activate SU\nIf OFF will always set Selinux to Permissive when activate SU</string>
-   <string name="activate_selinux">iSu Selinux Set to Enforcing!</string>
-   <string name="deactivate_selinux">iSu Selinux Set to Permissive!</string>
+   <string name="activate_selinux">Selinux Set to Enforcing!</string>
+   <string name="deactivate_selinux">Selinux Set to Permissive!</string>
 
 </resources>

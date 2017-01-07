@@ -90,13 +90,11 @@ public class PerAppMonitor extends AccessibilityService {
             last_profile = info.get(1);
             time = System.currentTimeMillis();
             //active deactive su selinux
-            if (last_profile.equals("Su") && Tools.SuBinary(xbin_isu)) {
-                Tools.DoAToast("iSu " + getString(R.string.per_app_active) + "!", this);
+            if (last_profile.equals("Su") && Tools.SuBinary(xbin_isu))
                 PerAppiSuSwitch(true, packageName);
-            } else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_su)) {
-                Tools.DoAToast("iSu " + getString(R.string.per_app_deactive) + "!", this);
+            else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_su))
                 PerAppiSuSwitch(false, packageName);
-            } else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_isu) && !Tools.isSELinuxActive()) {
+            else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_isu) && !Tools.isSELinuxActive()) {
                 Tools.SwitchSelinux(true);
                 if (Tools.isSELinuxActive())
                     Tools.DoAToast(getString(R.string.selinux_toast_ok), this);
@@ -109,26 +107,27 @@ public class PerAppMonitor extends AccessibilityService {
 
     private void PerAppiSuSwitch(boolean isChecked, String packageName) {
         Tools.SwitchSu(isChecked);
+        String Toast = (isChecked ? getString(R.string.per_app_active) : getString(R.string.per_app_deactive));
         if (isChecked) {
-            // Mount rw to change mount ro after
             if (Tools.getBoolean("restart_su", false, this))
-		Tools.RestartApp(packageName);
+                Tools.RestartApp(packageName);
             if (Tools.getBoolean("restart_selinux", false, this) && !Tools.isSELinuxActive()) {
                 Tools.SwitchSelinux(true);
-                Tools.DoAToast(getString(R.string.activate_selinux), this);
+                Toast = Toast + getString(R.string.activate_selinux);
             } else if (!Tools.getBoolean("restart_selinux", false, this) && Tools.isSELinuxActive()) {
                 Tools.SwitchSelinux(false);
-                Tools.DoAToast(getString(R.string.deactivate_selinux), this);
+                Toast = Toast + "\n" + getString(R.string.deactivate_selinux);
             }
+            Tools.DoAToast("iSu " + Toast + "!", this);
         } else {
-            // Make a link to isu so all root tool work
-            if (!Tools.isSELinuxActive()) {
+            if (!Tools.isSELinuxActive())
                 Tools.SwitchSelinux(true);
-                if (Tools.isSELinuxActive())
-                    Tools.DoAToast(getString(R.string.selinux_toast_ok), this);
-                else
-                    Tools.DoAToast(getString(R.string.selinux_toast_nok), this);
-
+            Tools.DoAToast("iSu " + Toast + "\n" +
+                (Tools.isSELinuxActive() ? getString(R.string.selinux_toast_ok) : getString(R.string.selinux_toast_nok)) + "!", this);
+            if (packageName.contains("com.nianticlabs.pokemongo")) {
+                String poketoast = getString(R.string.pokemongo_start) + "\n\n" + Tools.RandomString(this);
+                Tools.DoAToast(poketoast, this);
+                Tools.DoAToast(poketoast, this);
             }
         }
     }

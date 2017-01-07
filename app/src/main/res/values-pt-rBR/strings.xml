@@ -8,22 +8,21 @@
     <string name="su_not_cm">Estado atual do SU não é suportado.\nO aplicativo funciona somente com o CM-SU\nA versão atual do SU é:</string>
     <string name="device_not_root">Dispositivo sem acesso ROOT</string>
     <string name="su_change_fail">Troca de estado do SU sem sucesso!</string>
-    <string name="su_on">Su Esta ativado</string>
-    <string name="su_off">Su esta desativado</string>
+    <string name="activated">Ativado</string>
+    <string name="deactivated">Desativado</string>
     <string name="su_version">Versão do SU:</string>
     <string name="selinux_switch">Toque para ativar ou desativar o Selinux</string>
     <string name="selinux_state">Estado atual do Selinux:</string>
-    <string name="selinux_toast_ok">iSu Selinux setado para Enforcing!\n Isto é necessário para o funcionamento de alguns app com Safety Check</string>
+    <string name="selinux_toast_ok">Selinux setado para Enforcing!\n Isto é necessário para o funcionamento de alguns app com Safety Check</string>
     <string name="selinux_toast_nok">Não foi possível mudar o estado do selinux!</string>
     <string name="isu_kernel_good">Reboot Suporte iSu OK.</string>
     <string name="isu_kernel_bad">Sem suporte de Reboot iSu!!!\nPor favor usar o .zip via TWRP ou poderá perder acesso SU apos um reboot</string>
-    <string name="isu_kernel_no_su">Se usou o iSu pra desativar o SU caso tenha Reboot suporte do iSu tente...\nReiniciar o aparelho, caso não tenha o suporte reinstale o .zip da sua ROM atual, sem acesso SU o app não consegue saber se o aparelho suporte a Reboot também cheque nas configurações Opções de desenvolvedor se o Acesso superusuátio esta ativo para para aplicativos, em duvida verifique o site de suporte no Sobre iSu&#8230; XDA forum de suporte</string>
+    <string name="isu_kernel_no_su">Se usou o iSu pra desativar o SU caso tenha Reboot suporte do iSu tente&#8230;\nReiniciar o aparelho, caso não tenha o suporte reinstale o .zip da sua ROM atual, sem acesso SU o app não consegue saber se o aparelho suporte a Reboot também cheque nas configurações Opções de desenvolvedor se o Acesso superusuátio esta ativo para aplicativos, em duvida verifique o site de suporte no Sobre iSu&#8230; XDA forum de suporte</string>
     <string name="download_folder_link">Toque aqui para ir a pasta de Download do iSu</string>
     <string name="isu_reboot">iSu Nougat Reboot Suporte OK</string>
 
     <!-- Main pokemonstrings -->
     <string name="pokemongo_start">hey ho let\'s go play Pokemon!!!</string>
-    <string name="pokemongo_stop">SU ON\n\nPokemon Go Mod signing out</string>
     <string name="pokemongo_1">Lets Grab that Pikachu today</string>
     <string name="pokemongo_2">How many miles we are going today?</string>
     <string name="pokemongo_3">Don\'t you have home works to do? Ooo I see you are a grownup, grownup I see -_-</string>
@@ -33,8 +32,6 @@
     <string name="pokemongo_7">Chuck Norris won the World Series of Poker using Pokemon cards.</string>
     <string name="pokemongo_8">Chuck Noris caught all 150 Pokemon in 2.7 seconds.</string>
     <string name="pokemongo_9">How long will it be? before people start naming their kids after Pokemon</string>
-    <string name="pokemongo_10">Are you? Activating and deactivating SU just to read my Jokes? Just click iSu icon below :)</string>
-    <string name="isu_by">iSu por bhb27</string>
 
     <!-- about -->
     <string name="about">Sobre iSu</string>
@@ -69,7 +66,7 @@
    <string name="not_available">Não disponível</string>
    <string name="restart_selinux">Ativar Selinux com o SU</string>
    <string name="restart_selinux_summary">Se ligado esta vai sempre setar o Selinux para Enforcing quando SU for ativado\nSe desligado esta vai sempre setar o Selinux para Permissive quando SU for ativado</string>
-   <string name="activate_selinux">iSu Selinux setado para Enforcing!</string>
-   <string name="deactivate_selinux">iSu Selinux setado para Permissive!</string>
+   <string name="activate_selinux">Selinux setado para Enforcing!</string>
+   <string name="deactivate_selinux">Selinux setado para Permissive!</string>
 
 </resources>
