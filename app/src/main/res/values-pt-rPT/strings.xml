@@ -2,69 +2,49 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <!-- main -->
-    <string name="app_name">iSu</string>
     <string name="su_switch">Toque para ativar ou desativar o SU</string>
     <string name="su_state">Estado atual do SU:</string>
     <string name="su_not_cm">Estado atual do SU não é suportado.\nO aplicativo funciona somente com o CM-SU\nA versão atual do SU é:</string>
-    <string name="device_not_root">Dispositivo sem acesso ROOT</string>
+    <string name="device_not_root">Sem acesso ROOT</string>
     <string name="su_change_fail">Troca de estado do SU sem sucesso!</string>
     <string name="activated">Ativado</string>
     <string name="deactivated">Desativado</string>
     <string name="su_version">Versão do SU:</string>
-    <string name="selinux_switch">Toque para ativar ou desativar o Selinux</string>
-    <string name="selinux_state">Estado atual do Selinux:</string>
-    <string name="selinux_toast_ok">Selinux setado para Enforcing!\n Isto é necessário para o funcionamento de alguns app com Safety Check</string>
-    <string name="selinux_toast_nok">Não foi possível mudar o estado do selinux!</string>
-    <string name="isu_kernel_good">Reboot Suporte iSu OK.</string>
-    <string name="isu_kernel_bad">Sem suporte de Reboot iSu!!!\nPor favor usar o .zip via TWRP ou poderá perder acesso SU apos um reboot</string>
-    <string name="isu_kernel_no_su">Se usou o iSu pra desativar o SU caso tenha Reboot suporte do iSu tente&#8230;\nReiniciar o aparelho, caso não tenha o suporte reinstale o .zip da sua ROM atual, sem acesso SU o app não consegue saber se o aparelho suporte a Reboot também cheque nas configurações Opções de desenvolvedor se o Acesso superusuátio esta ativo para aplicativos, em duvida verifique o site de suporte no Sobre iSu&#8230; XDA forum de suporte</string>
+    <string name="selinux_switch">Toque para ativar ou desativar o SELinux</string>
+    <string name="selinux_state">Estado atual do SELinux:</string>
+    <string name="selinux_toast_ok">SELinux setado para Enforcing!\n Isto é necessário para o funcionamento de alguns app com Safety Check</string>
+    <string name="selinux_toast_nok">Não foi possível mudar o estado do SELinux!</string>
+    <string name="isu_kernel_good">Suporte de reboot iSu OK.</string>
+    <string name="isu_kernel_bad">Sem suporte de reboot iSu!!!\nPor favor usar o .zip via TWRP ou poderá perder acesso SU apos um reboot</string>
+    <string name="isu_kernel_no_su">Se usou o iSu pra desativar o SU caso tenha reboot suporte do iSu tente&#8230;\nReiniciar o aparelho, caso não tenha o suporte reinstale o .zip da sua ROM atual, sem acesso SU o app não consegue saber se o aparelho suporte a Reboot também cheque nas configurações Opções de desenvolvedor se o Acesso superusuátio esta ativo para aplicativos, em duvida verifique o site de suporte no Sobre iSu&#8230; XDA forum de suporte.</string>
+    <string name="download_folder_link">Toque aqui para ir a pasta de Download do iSu</string>
     <string name="isu_reboot">iSu Nougat Reboot Suporte OK</string>
-
-    <!-- Main pokemonstrings -->
-    <string name="pokemongo_start">hey ho let\'s go play Pokemon!!!</string>
-    <string name="pokemongo_1">Lets Grab that Pikachu today</string>
-    <string name="pokemongo_2">How many miles we are going today?</string>
-    <string name="pokemongo_3">Don\'t you have home works to do? Ooo I see you are a grownup, grownup I see -_-</string>
-    <string name="pokemongo_4">Have you??? tie your phone to the ceiling fan to try and get yours Pokemon eggs to hatch faster</string>
-    <string name="pokemongo_5">Presidents and Prime Ministers are playing Pokemon Go around the world, I guess you can just say you are just practicing to be a politician -_-</string>
-    <string name="pokemongo_6">Alakazam: Alakazam, Alakazam, Alakazam!\nAsh: Pokedex, what Pokemon is that?!\nPokedex: -_- That is an Alakazam!\nAsh: No way!</string>
-    <string name="pokemongo_7">Chuck Norris won the World Series of Poker using Pokemon cards.</string>
-    <string name="pokemongo_8">Chuck Noris caught all 150 Pokemon in 2.7 seconds.</string>
-    <string name="pokemongo_9">How long will it be? before people start naming their kids after Pokemon</string>
 
     <!-- about -->
     <string name="about">Sobre iSu</string>
     <string name="dev_info">Informação do desenvolvedor:</string>
     <string name="git_summary">Este app é open source confira no meu github\ngithub.com/bhb27/isu</string>
     <string name="version">Versão:</string>
-    <string name="version_summary">Um app simples para desativar ou ativar SU a vontade, e passar a verificação de segurança de alguns aplicativos, Hoje só funciona com o binário SU de ROM CM\'s</string>
+    <string name="version_summary">Um app simples para desativar ou ativar SU a vontade, e passar a verificação de segurança de alguns aplicativos, Hoje só funciona com o binário SU de ROM CM\'s.</string>
     <string name="xda_summary">XDA forum de suporte</string>
-    <string name="email">Email</string>
-    <string name="email_summary">fglfgl27@gmail.com</string>
-    <string name="github">GitHub</string>
     <string name="no_email_client">Não há nenhum cliente de email instalado no dispositivo.</string>
     <string name="no_browser">Não há nenhum navegador de web instalado no dispositivo.</string>
 
-    <!--About images-->
-    <string name="github_icon">Git hub Icon</string>
-    <string name="xda_icon">XDA Icon</string>
-    <string name="gmail_icon">Gmail Icon</string>
-    <!--Main image-->
-    <string name="isu_icon">iSu Icon</string>
     <!--Per app-->
-   <string name="set_per_app">iSu Monitor de Aplicativos</string>
+   <string name="set_per_app">iSu monitor de aplicativos</string>
     <string name="per_app_title_isu">Selecione os apps que iram desativar SU:</string>
     <string name="per_app_title_su">Selecione os apps que iram ativar SU:</string>
     <string name="accessibility_service_desc">Um serviço para monitorar quando um aplicativo é iniciado e desativar ou ativar o SU</string>
     <string name="per_app_active">Ativando SU</string>
-    <string name="per_app_active_summary">Clique para selecionar os apps que vai fazer o iSu ativar SU quando iniciados</string>
+    <string name="per_app_active_summary">Clique para selecionar os apps que vai fazer o iSu ativar SU quando iniciados.</string>
     <string name="per_app_deactive">Desativando SU</string>
-    <string name="per_app_deactive_summary">Clique para selecionar os apps que vai fazer o iSu desativar SU quando iniciados\n(Desativar o SU também seta o selinux para Enforcing)</string>
+    <string name="per_app_deactive_summary">Clique para selecionar os apps que vai fazer o iSu desativar SU quando iniciados.\n(Desativar o SU também seta o SELinux para Enforcing)</string>
     <string name="per_app_restart">Reiniciar o app apos Ativar o SU</string>
-    <string name="per_app_restart_summary">É possível que o app que escolhei para ativar o SU quando clicado inicie antes que o iSu consiga ativar o SU e isso vai fazer este app falhar por falta de acesso SU, Então o iSu pode reiniciar este app apos ter ativado o SU.\nO reinicio pode não funcionar em todos aplicativos e não é preciso em todos aparelhos</string>
+    <string name="per_app_restart_summary">É possível que o app que escolhei para ativar o SU quando clicado inicie antes que o iSu consiga ativar o SU e isso vai fazer este app falhar por falta de acesso SU, Então o iSu pode reiniciar este app apos ter ativado o SU.\nO reinicio pode não funcionar em todos aplicativos e não é preciso em todos aparelhos.</string>
    <string name="not_available">Não disponível</string>
-   <string name="restart_selinux">Ativar Selinux com o SU</string>
-   <string name="restart_selinux_summary">Se ligado esta vai sempre setar o Selinux para Enforcing quando SU for ativado\nSe desligado esta vai sempre setar o Selinux para Permissive quando SU for ativado</string>
-   <string name="activate_selinux">Selinux setado para Enforcing!</string>
-   <string name="deactivate_selinux">Selinux setado para Permissive!</string>
+   <string name="restart_selinux">Ativar SELinux com o SU</string>
+   <string name="restart_selinux_summary">Se ligado esta vai sempre setar o SELinux para Enforcing quando SU for ativado.\nSe desligado esta vai sempre setar o SELinux para Permissive quando SU for ativado.</string>
+   <string name="activate_selinux">SELinux setado para Enforcing!</string>
+   <string name="deactivate_selinux">SELinux setado para Permissive!</string>
+
 </resources>

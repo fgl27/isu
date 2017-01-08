@@ -161,19 +161,19 @@ public class Main extends Activity {
                 }
             });
         }
-        UpdateMain();
+        UpdateMain(isCMSU);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (upMain) UpdateMain();
+        isCMSU = SuVersionBool(Tools.SuVersion(MainContext));
+        if (upMain && isCMSU) UpdateMain(isCMSU);
         else this.onCreate(null);
     }
 
-    protected void UpdateMain() {
-        isCMSU = SuVersionBool(Tools.SuVersion(MainContext));
-        if (isCMSU) {
+    protected void UpdateMain(boolean CMSU) {
+        if (CMSU) {
 
             suSwitch.setChecked(Tools.SuBinary(xbin_su));
             SuStatus.setText((suSwitch.isChecked() ? getString(R.string.activated) :
@@ -222,6 +222,7 @@ public class Main extends Activity {
             SuStatus.setVisibility(View.GONE);
             kernel_check.setTextColor(getColorWrapper(MainContext, R.color.text_red));
             kernel_check.setText(getString(R.string.isu_kernel_no_su));
+            upMain = false;
         }
     }
 
