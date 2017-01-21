@@ -1,21 +1,20 @@
 <resources>
-    <color name="windowBackground">#F5F5F5</color>
-    <color name="text_black">#000000</color>
-    <color name="text_white">#FFFFFF</color>
-    <color name="text_blue">#3366BB</color>
-    <color name="text_red">#FF0000</color>
-    <color name="text_gray">#7D7D7D</color>
-    <color name="Separator">#AA0000</color>
-    <color name="button_text">#EAEAEA</color>
-    <color name="colorPrimary">#8F0000</color>
-    <color name="colorPrimaryDark">#7F0000</color>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:style/Theme.Material.Light.DarkActionBar">
         <item name="android:textColorPrimary">@color/text_black</item>
         <item name="android:textColorSecondary">@color/text_black</item>
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:colorAccent">#800000</item>
-        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/text_white</item>
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:titleTextStyle">@style/ActionBar.TitleTextStyle</item>
+    </style>
+    <style name="ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/text_white</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

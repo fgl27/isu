@@ -1,0 +1,10 @@
+<resources>
+    <color name="text_black">#000000</color>
+    <color name="text_white">#FFFFFF</color>
+    <color name="text_blue">#3366BB</color>
+    <color name="text_gray">#7D7D7D</color>
+    <color name="button_text">#EAEAEA</color>
+    <color name="colorPrimary">#B00000</color>
+    <color name="colorPrimaryDark">#A00000</color>
+    <color name="colorAccent">#EC0000</color>
+</resources>

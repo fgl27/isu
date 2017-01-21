@@ -147,7 +147,7 @@ public class Main extends Activity {
             kernel_check.setText(getString(R.string.isu_kernel_good));
             download_folder_link.setVisibility(View.GONE);
         } else {
-            kernel_check.setTextColor(getColorWrapper(MainContext, R.color.text_red));
+            kernel_check.setTextColor(getColorWrapper(MainContext, R.color.colorAccent));
             kernel_check.setText(getString(R.string.isu_kernel_bad));
             download_folder_link.setText(getString(R.string.download_folder_link));
             download_folder_link.setOnClickListener(new View.OnClickListener() {
@@ -220,7 +220,7 @@ public class Main extends Activity {
             per_app.setEnabled(false);
             per_app_summary.setText(getString(R.string.not_available));
             SuStatus.setVisibility(View.GONE);
-            kernel_check.setTextColor(getColorWrapper(MainContext, R.color.text_red));
+            kernel_check.setTextColor(getColorWrapper(MainContext, R.color.colorAccent));
             kernel_check.setText(getString(R.string.isu_kernel_no_su));
             upMain = false;
         }
