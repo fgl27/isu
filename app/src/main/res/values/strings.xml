@@ -81,4 +81,7 @@
    <string name="per_app_default_deactivate">Deactivate SU to any app if SU is activated</string>
    <string name="per_app_default_activate">Activated SU to any app if SU is deactivated</string>
 
+    <!--Widget-->
+    <string name="horizontal">Horizontal</string>
+    <string name="vertical">Vertical</string>
 </resources>

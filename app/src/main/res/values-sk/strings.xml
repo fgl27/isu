@@ -73,4 +73,7 @@
    <string name="per_app_default_deactivate">Deaktivovať SU pre ktorúkoľvek aplikáciu ak je SU aktívny</string>
    <string name="per_app_default_activate">Aktivovať SU pre ktorúkoľvek aplikáciu ak je SU neaktívny</string>
 
+    <!--Widget-->
+    <string name="horizontal">Vodorovné</string>
+    <string name="vertical">Zvislé</string>
 </resources>

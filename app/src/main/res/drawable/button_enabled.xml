@@ -4,11 +4,13 @@
         android:centerColor="@color/colorButton"
         android:endColor="@color/colorPrimary"
         android:angle="90"/>
-    <padding 
+    <padding
         android:left="7dp"
-        android:right="7dp" />
+        android:top="7dp"
+        android:right="7dp"
+        android:bottom="7dp" />
     <stroke
         android:width="2dip"
         android:color="@color/text_black" />
-    <corners android:radius= "8dp" />
+    <corners android:radius= "16dp" />
 </shape>

@@ -39,10 +39,10 @@ public class NotificationReceiver extends BroadcastReceiver {
             context.sendBroadcast(MainIntent);
             String Toast = context.getString(R.string.per_app_active);
             if (Tools.getBoolean("main_restart_selinux", false, context) && !Tools.isSELinuxActive()) {
-                Tools.SwitchSelinux(true);
+                Tools.SwitchSelinux(true, context);
                 Toast = Toast + "\n" + context.getString(R.string.activate_selinux);
             } else if (!Tools.getBoolean("main_restart_selinux", false, context) && Tools.isSELinuxActive()) {
-                Tools.SwitchSelinux(false);
+                Tools.SwitchSelinux(false, context);
                 Toast = Toast + "\n" + context.getString(R.string.deactivate_selinux);
             }
             Tools.DoAToast("iSu " + Toast + "!", context);

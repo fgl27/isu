@@ -325,19 +325,17 @@ public class Main extends Activity {
             SuStatus.setText((Tools.SuBinary(xbin_isu) ? getString(R.string.deactivated) :
                 getString(R.string.su_change_fail)));
             if (!Tools.isSELinuxActive()) {
-                Tools.SwitchSelinux(true);
+                Tools.SwitchSelinux(true, MainContext);
                 Tools.DoAToast("iSu " +
                     (Tools.isSELinuxActive() ? getString(R.string.selinux_toast_ok) :
                         getString(R.string.selinux_toast_nok)), MainContext);
                 Selinux_State.setText(Tools.getSELinuxStatus());
                 SelinuxSwitch.setChecked(Tools.isSELinuxActive());
             }
-            if (Tools.getBoolean("isu_notification", false, MainContext))
-                Tools.DoNotification(MainContext);
         }
     }
     private void SelinuxSwitch(boolean isChecked) {
-        Tools.SwitchSelinux(isChecked);
+        Tools.SwitchSelinux(isChecked, MainContext);
         Selinux_State.setText(Tools.getSELinuxStatus());
     }
 

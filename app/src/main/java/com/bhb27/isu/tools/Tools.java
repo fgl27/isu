@@ -23,10 +23,14 @@ import android.content.Context;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Gravity;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +45,8 @@ import java.util.Random;
 import com.bhb27.isu.R;
 import com.bhb27.isu.tools.RootFile;
 import com.bhb27.isu.tools.RootUtils;
+import com.bhb27.isu.widgetservice.Widgeth;
+import com.bhb27.isu.widgetservice.Widgetv;
 
 public class Tools implements Constants {
 
@@ -106,6 +112,18 @@ public class Tools implements Constants {
             RootUtils.runICommand("LD_LIBRARY_PATH=" + executableFilePath + " " + executableFilePath + sepolicy);
     }
 
+    public static void updateAllWidgets(final Context context,
+        final int layoutResourceId,
+        final Class < ? extends AppWidgetProvider > appWidgetClass) {
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), layoutResourceId);
+        remoteViews.setTextViewText(R.id.iSuMain, "SU" + "\n" + (Tools.SuBinary(Constants.xbin_su) ?
+                context.getString(R.string.activated) : context.getString(R.string.deactivated)));
+        remoteViews.setTextViewText(R.id.iSuMonitor, "SELinux" + "\n" + Tools.getSELinuxStatus());
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        final int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, appWidgetClass));
+        appWidgetManager.partiallyUpdateAppWidget(appWidgetIds, remoteViews);
+    }
+
     public static void SwitchSu(boolean isChecked, Context context) {
         if (isChecked) {
             // Mount rw to change mount ro after
@@ -121,14 +139,20 @@ public class Tools implements Constants {
             RootUtils.runCommand("mv " + xbin_su + " " + xbin_isu);
             RootUtils.runICommand("mv " + bin_su + " " + bin_temp_su);
             RootUtils.runICommand("mount -o ro,remount /system");
+            if (getBoolean("isu_notification", false, context))
+                DoNotification(context);
         }
+        updateAllWidgets(context, R.layout.widget_layouth, Widgeth.class);
+        updateAllWidgets(context, R.layout.widget_layoutv, Widgetv.class);
     }
 
-    public static void SwitchSelinux(boolean isChecked) {
+    public static void SwitchSelinux(boolean isChecked, Context context) {
         if (SuBinary(xbin_su))
             RootUtils.runCommand(Constants.SETENFORCE + (isChecked ? " 1" : " 0"));
         else if (SuBinary(xbin_isu))
             RootUtils.runCommand(Constants.SETENFORCE + (isChecked ? " 1" : " 0"));
+        updateAllWidgets(context, R.layout.widget_layouth, Widgeth.class);
+        updateAllWidgets(context, R.layout.widget_layoutv, Widgetv.class);
     }
 
     public static String SuVersion(Context context) {

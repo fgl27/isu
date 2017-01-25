@@ -95,7 +95,7 @@ public class PerAppMonitor extends AccessibilityService {
             else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_su))
                 PerAppiSuSwitch(false, packageName);
             else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_isu) && !Tools.isSELinuxActive()) {
-                Tools.SwitchSelinux(true);
+                Tools.SwitchSelinux(true, this);
                 if (Tools.isSELinuxActive())
                     Tools.DoAToast(getString(R.string.selinux_toast_ok), this);
                 else
@@ -112,18 +112,16 @@ public class PerAppMonitor extends AccessibilityService {
             if (Tools.getBoolean("restart_su", false, this))
                 Tools.RestartApp(packageName);
             if (Tools.getBoolean("restart_selinux", false, this) && !Tools.isSELinuxActive()) {
-                Tools.SwitchSelinux(true);
+                Tools.SwitchSelinux(true, this);
                 Toast = Toast + "\n" + getString(R.string.activate_selinux);
             } else if (!Tools.getBoolean("restart_selinux", false, this) && Tools.isSELinuxActive()) {
-                Tools.SwitchSelinux(false);
+                Tools.SwitchSelinux(false, this);
                 Toast = Toast + "\n" + getString(R.string.deactivate_selinux);
             }
             Tools.DoAToast("iSu " + Toast + "!", this);
         } else {
-            if (Tools.getBoolean("isu_notification", false, this))
-                Tools.DoNotification(this);
             if (!Tools.isSELinuxActive())
-                Tools.SwitchSelinux(true);
+                Tools.SwitchSelinux(true, this);
             Tools.DoAToast("iSu " + Toast + "\n" +
                 (Tools.isSELinuxActive() ? getString(R.string.selinux_toast_ok) : getString(R.string.selinux_toast_nok)) + "!", this);
             if (packageName.contains("com.nianticlabs.pokemongo")) {

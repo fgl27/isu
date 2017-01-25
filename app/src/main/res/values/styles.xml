@@ -5,12 +5,14 @@
         <item name="android:textColorSecondary">@color/text_black</item>
         <item name="android:windowBackground">@color/text_white</item>
         <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="android:buttonStyle">@style/button</item>
     </style>
     <style name="AppThemeMonitor" parent="android:Theme.Holo.Light">
         <item name="android:textColorPrimary">@color/text_black</item>
         <item name="android:textColorSecondary">@color/text_black</item>
         <item name="android:windowBackground">@color/text_white</item>
         <item name="android:actionBarStyle">@style/MyActionBarMonitor</item>
+        <item name="android:buttonStyle">@style/button</item>
     </style>
     <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@color/colorPrimary</item>
@@ -28,6 +30,9 @@
     <style name="button" parent="@android:style/Widget.Button">
         <item name="android:gravity">center_vertical|center_horizontal</item>
         <item name="android:textColor">@color/text_white</item>
+        <item name="android:shadowColor">#FF000000</item>
+        <item name="android:shadowDx">1.0</item>
+        <item name="android:shadowDy">1.0</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/button</item>

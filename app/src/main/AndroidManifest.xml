@@ -32,6 +32,27 @@
             android:label="@string/set_per_app"
             android:theme="@style/AppThemeMonitor" />
 
+        <!-- Profile Widget -->
+        <receiver android:name=".widgetservice.Widgeth"  android:label="@string/horizontal">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widgeth" />
+        </receiver>
+
+        <receiver android:name=".widgetservice.Widgetv"  android:label="@string/vertical">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widgetv" />
+        </receiver>
+
         <service
             android:name=".perapp.PerAppMonitor"
             android:label="@string/service_per_app"
