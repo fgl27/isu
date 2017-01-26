@@ -29,4 +29,7 @@ public interface Constants {
     String SETENFORCE = "setenforce";
 
     String sepolicy = "supolicy --live \"allow untrusted_app superuser_device:sock_file { write }\" \"allow untrusted_app sudaemon:unix_stream_socket { connectto }\" \"allow untrusted_app anr_data_file:dir { read }\" \"allow untrusted_app system_data_file:file { getattr open read }\" \"allow untrusted_app su_exec:file { execute write getattr setattr execute_no_trans }\";";
+
+    String YES_ACTION = "YES_ACTION";
+    String DISSMISS_ACTION = "DISSMISS_ACTION";
 }

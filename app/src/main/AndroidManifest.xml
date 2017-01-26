@@ -14,7 +14,7 @@
 
         <activity
             android:name=".Main"
-            android:label=""
+            android:label="@string/app_name"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,11 +30,11 @@
         <activity
             android:name=".PerAppActivity"
             android:label="@string/set_per_app"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeMonitor" />
 
         <service
             android:name=".perapp.PerAppMonitor"
-            android:label="@string/set_per_app"
+            android:label="@string/service_per_app"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" >
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
@@ -48,6 +48,13 @@
         <receiver android:name=".bootservice.BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".notification.NotificationReceiver" android:exported="false" >
+            <intent-filter>
+                <action android:name="YES_ACTION"/>
+                <action android:name="DISSMISS_ACTION"/>
             </intent-filter>
         </receiver>
 

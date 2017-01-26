@@ -27,6 +27,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 
 import com.bhb27.isu.perapp.PerAppDB;
+import com.bhb27.isu.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -96,12 +97,13 @@ public class Per_App {
         return array;
     }
 
-    public static String[] getAppNames(List < App > apps) {
+    public static String[] getAppNames(List < App > apps, String id, Context context) {
         String[] array = new String[apps.size() + 1];
 
         for (int i = 0; i < apps.size() + 1; i++) {
             if (i == 0) {
-                array[i] = "Default";
+                array[i] = (id.equals("Su") ? context.getString(R.string.per_app_default_activate) :
+                    context.getString(R.string.per_app_default_deactivate));
             } else {
                 array[i] = apps.get(i - 1).name;
             }

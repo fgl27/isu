@@ -103,6 +103,44 @@
             android:layout_marginTop="15dp"
 	    android:layout_height="1dp"
 	    android:background="@color/colorAccent"/>
+        <Switch
+            android:id="@+id/iSuNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/text_black"
+            android:text="@string/notification_switch"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+        <Switch
+            android:id="@+id/SuSelinuxSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/text_black"
+            android:text="@string/notification_restart_selinux"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+        <TextView
+            android:id="@+id/SuSelinuxSwitchSummary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold"
+            android:textColor="@color/text_black"
+            android:text="@string/restart_selinux_summary"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
+	<View
+	    android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+	    android:layout_height="1dp"
+	    android:background="@color/colorAccent"/>
         <Button
             android:id="@+id/buttonPer_app"
             android:layout_width="wrap_content"

@@ -116,15 +116,15 @@ public class PerAppActivity extends Activity {
 
             mPerAppDialog = new AlertDialog.Builder(PerAppActivityContext);
             if (id.equals("iSu"))
-                mPerAppDialog.setTitle(R.string.per_app_title_isu);
+                mPerAppDialog.setTitle(getString(R.string.per_app_title_isu));
             else if (id.equals("Su"))
-                mPerAppDialog.setTitle(R.string.per_app_title_su);
+                mPerAppDialog.setTitle(getString(R.string.per_app_title_su));
             mPerAppDialog.setCancelable(true);
 
             final List < Per_App.App > apps = Per_App.getInstalledApps(PerAppActivityContext);
 
             final String[] packagelist = Per_App.getPackageNames(apps);
-            final String[] mapplist = Per_App.getAppNames(apps);
+            final String[] mapplist = Per_App.getAppNames(apps, id, PerAppActivityContext);
 
             final String profile_id = id;
             final List < Integer > mSelectedApps = new ArrayList < Integer > ();

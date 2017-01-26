@@ -21,14 +21,17 @@ package com.bhb27.isu;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -55,9 +58,9 @@ import com.bhb27.isu.tools.Tools;
 public class Main extends Activity {
 
     private TextView SuSwitchSummary, SuStatus, kernel_check, Selinux_State, su_version, su_version_summary,
-    SelinuxStatus, download_folder_link, per_app_summary;
+    SelinuxStatus, download_folder_link, per_app_summary, SuSelinuxSwitchSummary;
     private Button about, per_app;
-    private Switch suSwitch, SelinuxSwitch;
+    private Switch suSwitch, SelinuxSwitch, iSuNotification, SuSelinuxSwitch;
 
     private String bin_su = Constants.bin_su;
     private String xbin_su = Constants.xbin_su;
@@ -116,6 +119,10 @@ public class Main extends Activity {
         Selinux_State = (TextView) findViewById(R.id.Selinux_State);
         Selinux_State.setText(Tools.getSELinuxStatus());
 
+        iSuNotification = (Switch) findViewById(R.id.iSuNotification);
+        SuSelinuxSwitch = (Switch) findViewById(R.id.SuSelinuxSwitch);
+        SuSelinuxSwitchSummary = (TextView) findViewById(R.id.SuSelinuxSwitchSummary);
+
         per_app = (Button) findViewById(R.id.buttonPer_app);
         per_app_summary = (TextView) findViewById(R.id.per_app);
 
@@ -135,7 +142,7 @@ public class Main extends Activity {
         ic_launcher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Tools.DoAToast(getString(R.string.isu_by), MainContext);
+                Tools.DoAToast(getString(R.string.isu_by), MainContext);
             }
         });
 
@@ -172,6 +179,16 @@ public class Main extends Activity {
         else this.onCreate(null);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (SuVersionBool(Tools.SuVersion(MainContext)) && Tools.getBoolean("isu_notification", false, MainContext)) {
+            try {
+                MainContext.unregisterReceiver(updateMainReceiver);
+            } catch (IllegalArgumentException ignored) {}
+        }
+    }
+
     protected void UpdateMain(boolean CMSU) {
         if (CMSU) {
 
@@ -205,6 +222,28 @@ public class Main extends Activity {
                 }
             });
 
+            iSuNotification.setChecked(Tools.getBoolean("isu_notification", false, MainContext));
+            iSuNotification.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
+                    Tools.saveBoolean("isu_notification", isChecked, MainContext);
+                }
+            });
+
+            SuSelinuxSwitch.setChecked(Tools.getBoolean("main_restart_selinux", false, MainContext));
+            SuSelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
+                    Tools.saveBoolean("main_restart_selinux", isChecked, MainContext);
+                }
+            });
+            if (Tools.getBoolean("isu_notification", false, MainContext)) {
+                try {
+                    MainContext.registerReceiver(updateMainReceiver, new IntentFilter("updateMainReceiver"));
+                } catch (NullPointerException ignored) {}
+            }
             upMain = true;
         } else {
             suSwitch.setEnabled(false);
@@ -215,8 +254,13 @@ public class Main extends Activity {
             SelinuxSwitch.setEnabled(false);
             SelinuxSwitch.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
             SelinuxSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            per_app.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
-            per_app.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            SuSelinuxSwitch.setEnabled(false);
+            SuSelinuxSwitch.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
+            SuSelinuxSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            iSuNotification.setEnabled(false);
+            iSuNotification.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
+            iSuNotification.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            SuSelinuxSwitchSummary.setVisibility(View.GONE);
             per_app.setEnabled(false);
             per_app_summary.setText(getString(R.string.not_available));
             SuStatus.setVisibility(View.GONE);
@@ -225,6 +269,13 @@ public class Main extends Activity {
             upMain = false;
         }
     }
+
+    private final BroadcastReceiver updateMainReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context arg0, Intent intent) {
+            UpdateMain(true);
+        }
+    };
 
     public void Sepolicy() {
         String executableFilePath = getFilesDir().getPath() + "/";
@@ -266,7 +317,7 @@ public class Main extends Activity {
     }
 
     private void iSuSwitch(boolean isChecked) {
-        Tools.SwitchSu(isChecked);
+        Tools.SwitchSu(isChecked, MainContext);
         if (isChecked)
             SuStatus.setText((Tools.SuBinary(xbin_su) ? getString(R.string.activated) :
                 getString(R.string.su_change_fail)));
@@ -281,6 +332,8 @@ public class Main extends Activity {
                 Selinux_State.setText(Tools.getSELinuxStatus());
                 SelinuxSwitch.setChecked(Tools.isSELinuxActive());
             }
+            if (Tools.getBoolean("isu_notification", false, MainContext))
+                Tools.DoNotification(MainContext);
         }
     }
     private void SelinuxSwitch(boolean isChecked) {
@@ -289,12 +342,7 @@ public class Main extends Activity {
     }
 
     private static int getColorWrapper(Context context, int id) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return context.getColor(id);
-        } else {
-            //noinspection deprecation
-            return context.getResources().getColor(id);
-        }
+        return ContextCompat.getColor(context, id);
     }
 
     private boolean SuVersionBool(String suVersion) {

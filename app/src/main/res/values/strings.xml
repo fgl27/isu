@@ -3,7 +3,7 @@
 
     <!-- main -->
     <string name="app_name">iSu</string>
-    <string name="su_switch">Click to activate or deactivate SU</string>
+    <string name="su_switch">Activate or deactivate SU</string>
     <string name="su_state">Current SU state:</string>
     <string name="su_not_cm">Current SU is not supported.\nThe app only works with CM-SU\nDevice current SU version is:</string>
     <string name="device_not_root">Root access not available</string>
@@ -11,7 +11,7 @@
     <string name="activated">Activated</string>
     <string name="deactivated">Deactivated</string>
     <string name="su_version">Su version:</string>
-    <string name="selinux_switch">Click to activate or deactivate SELinux</string>
+    <string name="selinux_switch">Activate or deactivate SELinux</string>
     <string name="selinux_state">Current SELinux state:</string>
     <string name="selinux_toast_ok">SELinux set to Enforcing!\n This is need by some App safety check</string>
     <string name="selinux_toast_nok">Can\'t changing SELinux State!</string>
@@ -20,6 +20,13 @@
     <string name="isu_kernel_no_su">If you use iSu to deactivate SU and lost SU support try&#8230;\nA reboot if you have iSu kernel support, if you don\'t have kernel support reflash yours current ROM .zip, without SU access the app can\'t tell if you have reboot support so also check in Setting Developer option if Root accesses is granted to apps, in doubt check XDA thread link in About iSu&#8230; XDA support forun site.</string>
     <string name="download_folder_link">Click here to go to iSu download folder</string>
     <string name="isu_reboot">iSu Nougat reboot support OK.</string>
+
+    <!-- Notification -->
+    <string name="notification_title">SU is deactivated, activate SU?</string>
+    <string name="notification_switch">Show a notification when SU is deactvated</string>
+    <string name="notification_restart_selinux">Activate SELinux when SU is activated by notification</string>
+    <string name="yes">Yes</string>
+    <string name="dismiss">Dismiss</string>
 
     <!-- Main pokemonstrings -->
     <string name="pokemongo_start">hey ho let\'s go play Pokemon!!!</string>
@@ -54,20 +61,23 @@
     <!--Main image-->
     <string name="isu_icon">iSu icon</string>
     <!--Per app-->
-   <string name="set_per_app">iSu app monitor</string>
+   <string name="set_per_app">App monitor</string>
+   <string name="service_per_app">iSu App monitor</string>
     <string name="per_app_title_isu">Select the apps that will deactivate SU:</string>
     <string name="per_app_title_su">Select the apps that will activate SU:</string>
     <string name="accessibility_service_desc">A Service to monitor when foreground app starts and activate or deactivate SU.</string>
     <string name="per_app_active">Activate SU</string>
-    <string name="per_app_active_summary">Click to select the apps that will make iSu activate SU when started.</string>
+    <string name="per_app_active_summary">Select the apps that will make iSu activate SU when started.</string>
     <string name="per_app_deactive">Deactivate SU</string>
-    <string name="per_app_deactive_summary">Click to select the apps that will make iSu deactivate SU when started.\n(deactivating SU will also set SELinux to enforcing)</string>
+    <string name="per_app_deactive_summary">Select the apps that will make iSu deactivate SU when started.\n(deactivating SU will also set SELinux to enforcing)</string>
     <string name="per_app_restart">Restart the app after Activate SU</string>
     <string name="per_app_restart_summary">There is a chance that the app you choose start before iSu can activate SU and it will fail because missing SU acess, so iSu can restart the app after activating SU to make shore it has ROOT access.\nThe restart may not work with all apps and is not need in all devices.</string>
    <string name="not_available">Not Available</string>
-   <string name="restart_selinux">Activate SELinux with SU</string>
+   <string name="restart_selinux">Activate SELinux when SU is activated by app monitor</string>
    <string name="restart_selinux_summary">If ON will always set SELinux to Enforcing when activate SU.\nIf OFF will always set SELinux to Permissive when activate SU.</string>
    <string name="activate_selinux">SELinux Set to Enforcing!</string>
    <string name="deactivate_selinux">SELinux Set to Permissive!</string>
+   <string name="per_app_default_deactivate">Deactivate SU to any app if SU is activated</string>
+   <string name="per_app_default_activate">Activated SU to any app if SU is deactivated</string>
 
 </resources>

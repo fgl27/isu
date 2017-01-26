@@ -21,6 +21,10 @@ package com.bhb27.isu.tools;
 
 import android.content.Context;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.TextView;
@@ -102,13 +106,14 @@ public class Tools implements Constants {
             RootUtils.runICommand("LD_LIBRARY_PATH=" + executableFilePath + " " + executableFilePath + sepolicy);
     }
 
-    public static void SwitchSu(boolean isChecked) {
+    public static void SwitchSu(boolean isChecked, Context context) {
         if (isChecked) {
             // Mount rw to change mount ro after
             RootUtils.runICommand("mount -o rw,remount /system");
             RootUtils.runICommand("mv " + xbin_isu + " " + xbin_su);
             RootUtils.runCommand("mv " + bin_temp_su + " " + bin_su);
             RootUtils.runCommand("mount -o ro,remount /system");
+            ClearAllNotification(context);
         } else {
             // Make a link to isu so all root tool work
             RootUtils.runCommand("mount -o rw,remount /system");
@@ -142,6 +147,33 @@ public class Tools implements Constants {
         return su_bin_version;
     }
 
+    public static void DoNotification(Context context) {
+
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(context);
+        notification.setSmallIcon(R.drawable.ic_notification);
+        notification.setContentTitle(context.getString(R.string.notification_title));
+        notification.setOngoing(true);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+
+        Intent yesReceiver = new Intent();
+        yesReceiver.setAction(Constants.YES_ACTION);
+        PendingIntent pendingIntentYes = PendingIntent.getBroadcast(context, 12345, yesReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Action actiony = new NotificationCompat.Action.Builder(R.drawable.ic_notification, context.getString(R.string.yes), pendingIntentYes).build();
+        notification.addAction(actiony);
+
+        Intent dismissReceiver = new Intent();
+        dismissReceiver.setAction(Constants.DISSMISS_ACTION);
+        PendingIntent pendingIntentYes2 = PendingIntent.getBroadcast(context, 12345, dismissReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Action actionn = new NotificationCompat.Action.Builder(R.drawable.ic_notification, context.getString(R.string.dismiss), pendingIntentYes2).build();
+        notification.addAction(actionn);
+
+        notificationManager.notify(10, notification.build());
+    }
+
+    public static void ClearAllNotification(Context context) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
+    }
     // simple toast function to center the message Main.this
     public static void DoAToast(String message, Context context) {
         Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);

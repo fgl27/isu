@@ -106,20 +106,22 @@ public class PerAppMonitor extends AccessibilityService {
     }
 
     private void PerAppiSuSwitch(boolean isChecked, String packageName) {
-        Tools.SwitchSu(isChecked);
+        Tools.SwitchSu(isChecked, this);
         String Toast = (isChecked ? getString(R.string.per_app_active) : getString(R.string.per_app_deactive));
         if (isChecked) {
             if (Tools.getBoolean("restart_su", false, this))
                 Tools.RestartApp(packageName);
             if (Tools.getBoolean("restart_selinux", false, this) && !Tools.isSELinuxActive()) {
                 Tools.SwitchSelinux(true);
-                Toast = Toast + getString(R.string.activate_selinux);
+                Toast = Toast + "\n" + getString(R.string.activate_selinux);
             } else if (!Tools.getBoolean("restart_selinux", false, this) && Tools.isSELinuxActive()) {
                 Tools.SwitchSelinux(false);
                 Toast = Toast + "\n" + getString(R.string.deactivate_selinux);
             }
             Tools.DoAToast("iSu " + Toast + "!", this);
         } else {
+            if (Tools.getBoolean("isu_notification", false, this))
+                Tools.DoNotification(this);
             if (!Tools.isSELinuxActive())
                 Tools.SwitchSelinux(true);
             Tools.DoAToast("iSu " + Toast + "\n" +
