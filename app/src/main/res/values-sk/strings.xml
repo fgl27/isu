@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <!-- main -->
-    <string name="app_name">iSu</string>
     <string name="su_switch">Aktivovať alebo deaktivovať SU</string>
     <string name="su_state">Aktuálny stav SU:</string>
     <string name="su_not_cm">Aktuálny SU nie je podporovaný.\nAplikácia funguje iba s CM-SU\nAktuálna verzia SU na zariadení je:</string>
@@ -54,12 +53,6 @@
     <string name="no_email_client">V zariadení nemáte nainštalovú aplikáciu e-mailového klienta.</string>
     <string name="no_browser">V zariadení nemáte nainštalový webový prehliadač.</string>
 
-    <!--About images-->
-    <string name="github_icon">Ikona GitHub</string>
-    <string name="xda_icon">Ikona XDA</string>
-    <string name="gmail_icon">Ikona Gmail</string>
-    <!--Main image-->
-    <string name="isu_icon">Ikona iSu</string>
     <!--Per app-->
    <string name="set_per_app">Monitorovanie aplikácií</string>
    <string name="service_per_app">iSu monitorovanie aplikácií</string>
