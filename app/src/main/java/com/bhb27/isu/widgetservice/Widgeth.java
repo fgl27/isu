@@ -66,11 +66,16 @@ public class Widgeth extends AppWidgetProvider {
         super.onReceive(context, intent);
         if (ACTION_SU.equals(intent.getAction())) {
             Tools.SwitchSu(!Tools.SuBinary(Constants.xbin_su), context);
-            Tools.DoAToast("SU", context);
+            if (!Tools.isSELinuxActive() && !Tools.SuBinary(Constants.xbin_su)) {
+                Tools.SwitchSelinux(true, context);
+                Tools.DoAToast("iSu " +
+                    (Tools.isSELinuxActive() ? context.getString(R.string.selinux_toast_ok) :
+                        context.getString(R.string.selinux_toast_nok)), context);
+            }
         }
         if (ACTION_SELINUX.equals(intent.getAction())) {
             Tools.SwitchSelinux(!Tools.isSELinuxActive(), context);
-            Tools.DoAToast("Selinux", context);
+
         }
     }
 
