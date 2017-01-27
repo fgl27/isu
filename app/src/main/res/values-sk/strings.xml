@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <!-- main -->
+    <string name="app_name">iSu</string>
+    <string name="su_switch">Aktivovať alebo deaktivovať SU</string>
+    <string name="su_state">Aktuálny stav SU:</string>
+    <string name="su_not_cm">Aktuálny SU nie je podporovaný.\nAplikácia funguje iba s CM-SU\nAktuálna verzia SU na zariadení je:</string>
+    <string name="device_not_root">Root prístup nie je dostupný</string>
+    <string name="su_change_fail">Zmena stavu SU zlyhala!</string>
+    <string name="activated">Aktívny</string>
+    <string name="deactivated">Neaktívny</string>
+    <string name="su_version">Verzia SU:</string>
+    <string name="selinux_switch">Aktivovať alebo deaktivovať SELinux</string>
+    <string name="selinux_state">Aktuálny stav SELinux:</string>
+    <string name="selinux_toast_ok">SELinux je v režime Enforcing!\nTo je potrebné pre kontrolu zabezpečenia v niektorých aplikáciách</string>
+    <string name="selinux_toast_nok">Nie je možné zmeniť stav SELinux!</string>
+    <string name="isu_kernel_good">iSu podpora kernelom je OK.</string>
+    <string name="isu_kernel_bad">Nemáte iSu podporu kernelom!!!\nProsím, nahrajte .zip súbor pre podporu kernelom, inak môžete stratiť SU prístup</string>
+    <string name="isu_kernel_no_su">Ak používate iSu pre deaktivovanie SU a prišli ste o SU prístup, skúste&#8230;\nReštertujte zariadenie ak máte iSu podporu kernelom, ak nie, znovu nahrajte .zip vašej aktuálnej ROM. Bez SU prístupu, aplikácia nemôže zistiť, či máte podporu reštartovania, takže tiež skontroľujte v nastaveniach pre vývojárov, či je root prístup povolený aj pre aplikácie. Pri pochybnostiach navštívte XDA fórum, odkaz nájdete v časti O iSu&#8230; Podpora na XDA fóre.</string>
+    <string name="download_folder_link">Kliknite pre zobrazenie priečinka so súbormi na stiahnutie iSu</string>
+    <string name="isu_reboot">iSu Nougat podpora reštartovania je OK.</string>
+
+    <!-- Notification -->
+    <string name="notification_title">SU nie je aktívny, aktivovať SU?</string>
+    <string name="notification_switch">Zobraziť upozornenie keď je SU deaktivované</string>
+    <string name="notification_restart_selinux">Aktivovať SELinux keď je SU aktivované upozornením</string>
+    <string name="yes">Áno</string>
+    <string name="dismiss">Zrušiť</string>
+
+    <!-- Main pokemonstrings -->
+    <string name="pokemongo_start">Poďme si zahrať Pokémonov!!!</string>
+    <string name="pokemongo_1">Chyťme dnes Pikachua</string>
+    <string name="pokemongo_2">Koľko km dnes prejdeme?</string>
+    <string name="pokemongo_3">Nemáš si robiť domáce úlohy? Ooo, vidím, si dospelý, vidím, vidím -_-</string>
+    <string name="pokemongo_4">Have you??? tie your phone to the ceiling fan to try and get yours Pokemon eggs to hatch faster</string>
+    <string name="pokemongo_5">Prezidenti hrajú Pokemon Go po celom svete, myslím, že môžeš kľudne povedať, že trénuješ na poIitika -_-</string>
+    <string name="pokemongo_6">Alakazam: Alakazam, Alakazam, Alakazam!\nAsh: Pokedex, aký je to Pokémon?!\nPokedex: -_- To je Alakazam!\nAsh: To nie!</string>
+    <string name="pokemongo_7">Chuck Norris vyhral svetovú sériu v pokri pomocou Pokémon kariet.</string>
+    <string name="pokemongo_8">Chuck Norris chytil všetkých Pokémonov za 2,7 sekundy.</string>
+    <string name="pokemongo_9">Ako dlho to bude trvať? Kým ľudia začnú dávať deťom mená po Pokémonoch</string>
+    <string name="isu_by">iSu od bhb27</string>
+
+    <!-- about -->
+    <string name="about">O iSu</string>
+    <string name="dev_info">Informácie o vývojárovi:</string>
+    <string name="git_summary">Toto je open source aplikácia, pozrite sa na stránku GitHub\ngithub.com/bhb27/isu</string>
+    <string name="version">Verzia:</string>
+    <string name="version_summary">Jednoduchá aplikácia pre deaktivovanie SU, čo umožní prejsť kontrolou zabezpečenia v niektorých aplikáciách, funguje iba pre SU binárne súbory v na CM založených ROM.</string>
+    <string name="xda_summary">Podpora na XDA fóre</string>
+    <string name="email">E-mail</string>
+    <string name="email_summary">fglfgl27@gmail.com</string>
+    <string name="github">GitHub</string>
+    <string name="no_email_client">V zariadení nemáte nainštalovú aplikáciu e-mailového klienta.</string>
+    <string name="no_browser">V zariadení nemáte nainštalový webový prehliadač.</string>
+
+    <!--About images-->
+    <string name="github_icon">Ikona GitHub</string>
+    <string name="xda_icon">Ikona XDA</string>
+    <string name="gmail_icon">Ikona Gmail</string>
+    <!--Main image-->
+    <string name="isu_icon">Ikona iSu</string>
+    <!--Per app-->
+   <string name="set_per_app">Monitorovanie aplikácií</string>
+   <string name="service_per_app">iSu monitorovanie aplikácií</string>
+    <string name="per_app_title_isu">Vyberte aplikácie, ktoré deaktivujú SU:</string>
+    <string name="per_app_title_su">Vyberte aplikácie, ktoré aktivujú SU:</string>
+    <string name="accessibility_service_desc">Služba pre zisťovanie spustených aplikácií pre aktiváciu alebo deaktiváciu SU.</string>
+    <string name="per_app_active">Aktivovať SU</string>
+    <string name="per_app_active_summary">Vyberte aplikácie, pre ktoré iSu aktivuje SU.</string>
+    <string name="per_app_deactive">Deaktivovať SU</string>
+    <string name="per_app_deactive_summary">Vyberte aplikácie, pre ktoré iSu deaktivuje SU.\n(deaktivovanie SU tiež zmení SELinux na enforcing)</string>
+    <string name="per_app_restart">Reštartovať aplikáciu po aktivovaní SU</string>
+    <string name="per_app_restart_summary">Je šanca, že aplikáciu, ktorú ste si vybrali, sa spustí skôr ako iSu môže aktivovať SU a ukončí sa pre chýbajúci SU prístup. Takže iSu môže reštartovať aplikáciu po aktivovaní SU aby získala ROOT prístup.\nReštartovanie nemusí pre všetky aplikácie a nie je potrebné na všetkých zariadeniach.</string>
+   <string name="not_available">Nedostupné</string>
+   <string name="restart_selinux">Aktivovať SELinux keď je SU aktivovaný monitorom aplikácií</string>
+   <string name="restart_selinux_summary">Ak je POVOLENÉ, vždy zmení SELinux na Enforcing pri aktivovaní SU.\nAk je ZAKÁZANÉ, vždy zmení SELinux na Permissive pri aktivovaní SU.</string>
+   <string name="activate_selinux">SELinux nastavený na Enforcing!</string>
+   <string name="deactivate_selinux">SELinux nastavený na Permissive!</string>
+   <string name="per_app_default_deactivate">Deaktivovať SU pre ktorúkoľvek aplikáciu ak je SU aktívny</string>
+   <string name="per_app_default_activate">Aktivovať SU pre ktorúkoľvek aplikáciu ak je SU neaktívny</string>
+
+</resources>
