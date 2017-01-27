@@ -27,6 +27,19 @@
     <string name="yes">Sim</string>
     <string name="dismiss">Descartar</string>
 
+    <!-- Main pokemonstrings -->
+    <string name="pokemongo_start">Hey ho vamos jogar Pokemon!!!</string>
+    <string name="pokemongo_1">Vamos pegar esse Pikachu hoje</string>
+    <string name="pokemongo_2">Quantas quilômetros vamos fazer hoje?</string>
+    <string name="pokemongo_3">Você não tem lição de casa para fazer? Humm Eu vejo que você é um adulto, sim adulto -_-</string>
+    <string name="pokemongo_4">Você já??? Amarrou o telefone no ventilador de teto para seus ovos Pokemon chocar mais rápido</string>
+    <string name="pokemongo_5">Presidentes e Primeiros Ministros estão jogando Pokemon GO ao redor do mundo, eu acho que você pode dizer que está apenas praticando para ser um político -_-</string>
+    <string name="pokemongo_6">Alakazam: Alakazam, Alakazam, Alakazam!\nAsh: Pokedex, o que é esse Pokemon?!\nPokedex: -_- Este é um Alakazam!\nAsh: Nossa sério!</string>
+    <string name="pokemongo_7">Chuck Norris ganhou as compeonato mundial de Poker usando cartas Pokemon.</string>
+    <string name="pokemongo_8">Chuck Noris pegou todos os 150 Pokemon em 2,7 segundos.</string>
+    <string name="pokemongo_9">Quanto tempo vai levar? Ante que as pessoas comecem nomear seus filhos com nomes de Pokemon</string>
+    <string name="isu_by">iSu por bhb27</string>
+
     <!-- about -->
     <string name="about">Sobre iSu</string>
     <string name="dev_info">Informação do desenvolvedor:</string>
