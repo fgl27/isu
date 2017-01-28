@@ -244,6 +244,8 @@ public class Main extends Activity {
                     MainContext.registerReceiver(updateMainReceiver, new IntentFilter("updateMainReceiver"));
                 } catch (NullPointerException ignored) {}
             }
+            SuStatus.setTextColor((Tools.SuBinary(xbin_su)) ? getColorWrapper(MainContext, R.color.colorAccent) :
+                getColorWrapper(MainContext, R.color.colorButtonGreen));
             upMain = true;
         } else {
             suSwitch.setEnabled(false);
@@ -268,6 +270,10 @@ public class Main extends Activity {
             kernel_check.setText(getString(R.string.isu_kernel_no_su));
             upMain = false;
         }
+        su_version_summary.setTextColor((!CMSU) ? getColorWrapper(MainContext, R.color.colorAccent) :
+                getColorWrapper(MainContext, R.color.colorButtonGreen));
+        Selinux_State.setTextColor((!Tools.isSELinuxActive()) ? getColorWrapper(MainContext, R.color.colorAccent) :
+            getColorWrapper(MainContext, R.color.colorButtonGreen));
     }
 
     private final BroadcastReceiver updateMainReceiver = new BroadcastReceiver() {
@@ -318,10 +324,10 @@ public class Main extends Activity {
 
     private void iSuSwitch(boolean isChecked) {
         Tools.SwitchSu(isChecked, MainContext);
-        if (isChecked)
+        if (isChecked) {
             SuStatus.setText((Tools.SuBinary(xbin_su) ? getString(R.string.activated) :
                 getString(R.string.su_change_fail)));
-        else {
+        } else {
             SuStatus.setText((Tools.SuBinary(xbin_isu) ? getString(R.string.deactivated) :
                 getString(R.string.su_change_fail)));
             if (!Tools.isSELinuxActive()) {
@@ -333,10 +339,15 @@ public class Main extends Activity {
                 SelinuxSwitch.setChecked(Tools.isSELinuxActive());
             }
         }
+        SuStatus.setTextColor((Tools.SuBinary(xbin_su)) ? getColorWrapper(MainContext, R.color.colorAccent) :
+            getColorWrapper(MainContext, R.color.colorButtonGreen));
     }
+
     private void SelinuxSwitch(boolean isChecked) {
         Tools.SwitchSelinux(isChecked, MainContext);
         Selinux_State.setText(Tools.getSELinuxStatus());
+        Selinux_State.setTextColor((!Tools.isSELinuxActive()) ? getColorWrapper(MainContext, R.color.colorAccent) :
+            getColorWrapper(MainContext, R.color.colorButtonGreen));
     }
 
     private static int getColorWrapper(Context context, int id) {

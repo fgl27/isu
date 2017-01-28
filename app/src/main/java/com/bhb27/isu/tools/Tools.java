@@ -116,9 +116,17 @@ public class Tools implements Constants {
         final int layoutResourceId,
         final Class < ? extends AppWidgetProvider > appWidgetClass) {
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), layoutResourceId);
-        remoteViews.setTextViewText(R.id.iSuMain, "SU" + "\n" + (Tools.SuBinary(Constants.xbin_su) ?
-                context.getString(R.string.activated) : context.getString(R.string.deactivated)));
+        remoteViews.setTextViewText(R.id.iSuMain, "SU" + "\n" + (SuBinary(Constants.xbin_su) ?
+            context.getString(R.string.activated) : context.getString(R.string.deactivated)));
         remoteViews.setTextViewText(R.id.iSuMonitor, "SELinux" + "\n" + Tools.getSELinuxStatus());
+        if (SuBinary(Constants.xbin_su))
+            remoteViews.setInt(R.id.iSuMain, "setBackgroundResource", R.drawable.button);
+        else if (SuBinary(Constants.xbin_isu))
+            remoteViews.setInt(R.id.iSuMain, "setBackgroundResource", R.drawable.buttong);
+        if (isSELinuxActive())
+            remoteViews.setInt(R.id.iSuMonitor, "setBackgroundResource", R.drawable.buttong);
+        else
+            remoteViews.setInt(R.id.iSuMonitor, "setBackgroundResource", R.drawable.button);
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         final int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, appWidgetClass));
         appWidgetManager.partiallyUpdateAppWidget(appWidgetIds, remoteViews);

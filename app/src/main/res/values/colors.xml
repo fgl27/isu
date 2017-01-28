@@ -7,5 +7,7 @@
     <color name="colorPrimary">#B00000</color>
     <color name="colorPrimaryDark">#A00000</color>
     <color name="colorAccent">#EC0000</color>
-    <color name="colorButton">#CC0000</color>
+    <color name="colorButtonRed">#CC0000</color>
+    <color name="colorButtonGreen">#00C020</color>
+    <color name="colorButtonGreenDark">#009F1A</color>
 </resources>

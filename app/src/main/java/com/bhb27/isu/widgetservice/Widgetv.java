@@ -47,14 +47,10 @@ public class Widgetv extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-
+        boolean su = Tools.SuVersionBool(Tools.SuVersion(context));
         for (int appWidgetId: appWidgetIds) {
-
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layoutv);
-            if (Tools.SuVersionBool(Tools.SuVersion(context))) {
-                remoteViews.setTextViewText(R.id.iSuMain, "SU" + "\n" + (Tools.SuBinary(Constants.xbin_su) ?
-                    context.getString(R.string.activated) : context.getString(R.string.deactivated)));
-                remoteViews.setTextViewText(R.id.iSuMonitor, "SELinux" + "\n" + Tools.getSELinuxStatus());
+            if (su) {
                 remoteViews.setOnClickPendingIntent(R.id.iSuMain, getPendingSelfIntent(context, ACTION_SU));
                 remoteViews.setOnClickPendingIntent(R.id.iSuMonitor, getPendingSelfIntent(context, ACTION_SELINUX));
             } else {
@@ -62,8 +58,9 @@ public class Widgetv extends AppWidgetProvider {
                 remoteViews.setTextViewText(R.id.iSuMonitor, context.getString(R.string.not_available));
             }
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
-
         }
+        if (su)
+            Tools.updateAllWidgets(context, R.layout.widget_layoutv, Widgetv.class);
     }
 
     @Override
