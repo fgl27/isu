@@ -47,15 +47,20 @@ public class Widgetv extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
+
         for (int appWidgetId: appWidgetIds) {
 
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layoutv);
-            remoteViews.setTextViewText(R.id.iSuMain, "SU" + "\n" + (Tools.SuBinary(Constants.xbin_su) ?
-                context.getString(R.string.activated) : context.getString(R.string.deactivated)));
-            remoteViews.setTextViewText(R.id.iSuMonitor, "SELinux" + "\n" + Tools.getSELinuxStatus());
-            remoteViews.setOnClickPendingIntent(R.id.iSuMain, getPendingSelfIntent(context, ACTION_SU));
-            remoteViews.setOnClickPendingIntent(R.id.iSuMonitor, getPendingSelfIntent(context, ACTION_SELINUX));
-
+            if (Tools.SuVersionBool(Tools.SuVersion(context))) {
+                remoteViews.setTextViewText(R.id.iSuMain, "SU" + "\n" + (Tools.SuBinary(Constants.xbin_su) ?
+                    context.getString(R.string.activated) : context.getString(R.string.deactivated)));
+                remoteViews.setTextViewText(R.id.iSuMonitor, "SELinux" + "\n" + Tools.getSELinuxStatus());
+                remoteViews.setOnClickPendingIntent(R.id.iSuMain, getPendingSelfIntent(context, ACTION_SU));
+                remoteViews.setOnClickPendingIntent(R.id.iSuMonitor, getPendingSelfIntent(context, ACTION_SELINUX));
+            } else {
+                remoteViews.setTextViewText(R.id.iSuMain, context.getString(R.string.not_available));
+                remoteViews.setTextViewText(R.id.iSuMonitor, context.getString(R.string.not_available));
+            }
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
 
         }

@@ -95,7 +95,7 @@ public class Main extends Activity {
         layout.startAnimation(animation);
 
         suVersion = Tools.SuVersion(MainContext);
-        isCMSU = SuVersionBool(suVersion);
+        isCMSU = Tools.SuVersionBool(suVersion);
 
         Runnable runSepolicy = new Runnable() {
             public void run() {
@@ -174,7 +174,7 @@ public class Main extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        isCMSU = SuVersionBool(Tools.SuVersion(MainContext));
+        isCMSU = Tools.SuVersionBool(Tools.SuVersion(MainContext));
         if (upMain && isCMSU) UpdateMain(isCMSU);
         else this.onCreate(null);
     }
@@ -182,7 +182,7 @@ public class Main extends Activity {
     @Override
     public void onPause() {
         super.onPause();
-        if (SuVersionBool(Tools.SuVersion(MainContext)) && Tools.getBoolean("isu_notification", false, MainContext)) {
+        if (Tools.SuVersionBool(Tools.SuVersion(MainContext)) && Tools.getBoolean("isu_notification", false, MainContext)) {
             try {
                 MainContext.unregisterReceiver(updateMainReceiver);
             } catch (IllegalArgumentException ignored) {}
@@ -341,13 +341,6 @@ public class Main extends Activity {
 
     private static int getColorWrapper(Context context, int id) {
         return ContextCompat.getColor(context, id);
-    }
-
-    private boolean SuVersionBool(String suVersion) {
-        if (suVersion.contains("cm-su") || suVersion.contains("mk-su") ||
-            suVersion.contains("16 com.android.settings"))
-            return true;
-        else return false;
     }
 
     private boolean RebootSupport() {

@@ -155,6 +155,13 @@ public class Tools implements Constants {
         updateAllWidgets(context, R.layout.widget_layoutv, Widgetv.class);
     }
 
+    public static boolean SuVersionBool(String suVersion) {
+        if (suVersion.contains("cm-su") || suVersion.contains("mk-su") ||
+            suVersion.contains("16 com.android.settings"))
+            return true;
+        else return false;
+    }
+
     public static String SuVersion(Context context) {
         String su_bin_version = "";
         // Check if is CM-SU
