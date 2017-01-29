@@ -19,6 +19,7 @@
         <item name="android:windowBackground">@color/text_white</item>
         <item name="android:actionBarStyle">@style/MyActionBarMonitor</item>
         <item name="android:buttonStyle">@style/button</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogCustom</item>
     </style>
     <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@color/colorPrimary</item>
@@ -45,5 +46,8 @@
         <item name="android:background">@drawable/button</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
+    </style>
+    <style name="AlertDialogCustom" parent="android:Theme.Material.Light.Dialog.Alert">
+      <item name="android:colorAccent">@color/colorAccent</item>
     </style>
 </resources>
