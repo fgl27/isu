@@ -132,6 +132,12 @@ public class Tools implements Constants {
         appWidgetManager.partiallyUpdateAppWidget(appWidgetIds, remoteViews);
     }
 
+    public static void UpMain(Context context) {
+            final Intent MainIntent = new Intent();
+            MainIntent.setAction("updateMainReceiver");
+            context.sendBroadcast(MainIntent);
+    }
+
     public static void SwitchSu(boolean isChecked, Context context) {
         if (isChecked) {
             // Mount rw to change mount ro after

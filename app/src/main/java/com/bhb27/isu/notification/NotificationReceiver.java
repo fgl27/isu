@@ -34,9 +34,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         String action = intent.getAction();
         if (Constants.YES_ACTION.equals(action)) {
             Tools.SwitchSu(true, context);
-            final Intent MainIntent = new Intent();
-            MainIntent.setAction("updateMainReceiver");
-            context.sendBroadcast(MainIntent);
+            Tools.UpMain(context);
             String Toast = context.getString(R.string.per_app_active);
             if (Tools.getBoolean("main_restart_selinux", false, context) && !Tools.isSELinuxActive()) {
                 Tools.SwitchSelinux(true, context);
