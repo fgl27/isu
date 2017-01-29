@@ -207,6 +207,7 @@ public class Main extends Activity {
 
             // Selinux switch
             SelinuxSwitch.setChecked(Tools.isSELinuxActive());
+            Selinux_State.setText(Tools.getSELinuxStatus());
             SelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView,

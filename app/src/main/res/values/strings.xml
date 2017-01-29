@@ -7,14 +7,12 @@
     <string name="su_state">Current SU state:</string>
     <string name="su_not_cm">Current SU is not supported.\nThe app only works with CM-SU\nDevice current SU version is:</string>
     <string name="device_not_root">Root access not available</string>
-    <string name="su_change_fail">Su State change Fail!</string>
     <string name="activated">Activated</string>
     <string name="deactivated">Deactivated</string>
     <string name="su_version">Su version:</string>
     <string name="selinux_switch">Activate or deactivate SELinux</string>
     <string name="selinux_state">Current SELinux state:</string>
     <string name="selinux_toast_ok">SELinux set to Enforcing!\n This is need by some App safety check</string>
-    <string name="selinux_toast_nok">Can\'t changing SELinux State!</string>
     <string name="restart_selinux">Activate SELinux when SU is activated</string>
    <string name="restart_selinux_summary">If ON will always set SELinux to Enforcing when activate SU.\nIf OFF will always set SELinux to Permissive when activate SU.</string>
     <string name="isu_kernel_good">iSu Kernel Support OK.</string>
@@ -25,7 +23,7 @@
 
     <!-- Notification -->
     <string name="notification_title">SU is deactivated, activate SU?</string>
-    <string name="notification_switch">Show a notification when SU is deactvated</string>
+    <string name="notification_switch">Show a notification when SU is deactivated</string>
     <string name="yes">Yes</string>
     <string name="dismiss">Dismiss</string>
 

@@ -39,7 +39,7 @@ import com.bhb27.isu.tools.Constants;
 
 import android.app.Activity;
 
-public class Widgetv extends AppWidgetProvider {
+public class Widgetsu extends AppWidgetProvider {
 
     private static final String ACTION_SU = "SU";
     private static final String ACTION_SELINUX = "SELinux";
@@ -49,18 +49,15 @@ public class Widgetv extends AppWidgetProvider {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         boolean su = Tools.SuVersionBool(Tools.SuVersion(context));
         for (int appWidgetId: appWidgetIds) {
-            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layoutv);
-            if (su) {
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layoutsu);
+            if (su)
                 remoteViews.setOnClickPendingIntent(R.id.iSuMain, getPendingSelfIntent(context, ACTION_SU));
-                remoteViews.setOnClickPendingIntent(R.id.iSuMonitor, getPendingSelfIntent(context, ACTION_SELINUX));
-            } else {
+            else
                 remoteViews.setTextViewText(R.id.iSuMain, context.getString(R.string.not_available));
-                remoteViews.setTextViewText(R.id.iSuMonitor, context.getString(R.string.not_available));
-            }
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
         if (su)
-            Tools.updateAllWidgets(true, context, R.layout.widget_layoutv, Widgetv.class);
+            Tools.updateAllWidgets(false, context, R.layout.widget_layoutsu, Widgetsu.class);
     }
 
     @Override
@@ -68,9 +65,6 @@ public class Widgetv extends AppWidgetProvider {
         super.onReceive(context, intent);
         if (ACTION_SU.equals(intent.getAction())) {
             Tools.SwitchSu(!Tools.SuBinary(Constants.xbin_su), context);
-        }
-        if (ACTION_SELINUX.equals(intent.getAction())) {
-            Tools.SwitchSelinux(!Tools.isSELinuxActive(), context);
         }
     }
 

@@ -6,14 +6,12 @@
     <string name="su_state">Aktuálny stav SU:</string>
     <string name="su_not_cm">Aktuálny SU nie je podporovaný.\nAplikácia funguje iba s CM-SU\nAktuálna verzia SU na zariadení je:</string>
     <string name="device_not_root">Root prístup nie je dostupný</string>
-    <string name="su_change_fail">Zmena stavu SU zlyhala!</string>
     <string name="activated">Aktívny</string>
     <string name="deactivated">Neaktívny</string>
     <string name="su_version">Verzia SU:</string>
     <string name="selinux_switch">Aktivovať alebo deaktivovať SELinux</string>
     <string name="selinux_state">Aktuálny stav SELinux:</string>
     <string name="selinux_toast_ok">SELinux je v režime Enforcing!\nTo je potrebné pre kontrolu zabezpečenia v niektorých aplikáciách</string>
-    <string name="selinux_toast_nok">Nie je možné zmeniť stav SELinux!</string>
    <string name="restart_selinux">Aktivovať SELinux keď je SU aktivovaný</string>
    <string name="restart_selinux_summary">Ak je POVOLENÉ, vždy zmení SELinux na Enforcing pri aktivovaní SU.\nAk je ZAKÁZANÉ, vždy zmení SELinux na Permissive pri aktivovaní SU.</string>
     <string name="isu_kernel_good">iSu podpora kernelom je OK.</string>

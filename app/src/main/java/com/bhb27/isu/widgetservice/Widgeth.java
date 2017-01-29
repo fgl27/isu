@@ -60,7 +60,7 @@ public class Widgeth extends AppWidgetProvider {
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
         if (su)
-            Tools.updateAllWidgets(context, R.layout.widget_layouth, Widgeth.class);
+            Tools.updateAllWidgets(true, context, R.layout.widget_layouth, Widgeth.class);
     }
 
     @Override

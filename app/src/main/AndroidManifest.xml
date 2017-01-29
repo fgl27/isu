@@ -53,6 +53,16 @@
                 android:resource="@xml/widgetv" />
         </receiver>
 
+        <receiver android:name=".widgetservice.Widgetsu"  android:label="SU">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widgetsu" />
+        </receiver>
+
         <service
             android:name=".perapp.PerAppMonitor"
             android:label="@string/service_per_app"

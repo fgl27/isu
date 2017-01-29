@@ -47,6 +47,7 @@ import com.bhb27.isu.tools.RootFile;
 import com.bhb27.isu.tools.RootUtils;
 import com.bhb27.isu.widgetservice.Widgeth;
 import com.bhb27.isu.widgetservice.Widgetv;
+import com.bhb27.isu.widgetservice.Widgetsu;
 
 public class Tools implements Constants {
 
@@ -112,21 +113,23 @@ public class Tools implements Constants {
             RootUtils.runICommand("LD_LIBRARY_PATH=" + executableFilePath + " " + executableFilePath + sepolicy);
     }
 
-    public static void updateAllWidgets(final Context context,
+    public static void updateAllWidgets(boolean SU_SEL, final Context context,
         final int layoutResourceId,
         final Class < ? extends AppWidgetProvider > appWidgetClass) {
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), layoutResourceId);
         remoteViews.setTextViewText(R.id.iSuMain, "SU" + "\n" + (SuBinary(Constants.xbin_su) ?
             context.getString(R.string.activated) : context.getString(R.string.deactivated)));
-        remoteViews.setTextViewText(R.id.iSuMonitor, "SELinux" + "\n" + Tools.getSELinuxStatus());
         if (SuBinary(Constants.xbin_su))
             remoteViews.setInt(R.id.iSuMain, "setBackgroundResource", R.drawable.button);
         else if (SuBinary(Constants.xbin_isu))
             remoteViews.setInt(R.id.iSuMain, "setBackgroundResource", R.drawable.buttong);
-        if (isSELinuxActive())
-            remoteViews.setInt(R.id.iSuMonitor, "setBackgroundResource", R.drawable.buttong);
-        else
-            remoteViews.setInt(R.id.iSuMonitor, "setBackgroundResource", R.drawable.button);
+        if (SU_SEL) {
+            remoteViews.setTextViewText(R.id.iSuMonitor, "SELinux" + "\n" + Tools.getSELinuxStatus());
+            if (isSELinuxActive())
+                remoteViews.setInt(R.id.iSuMonitor, "setBackgroundResource", R.drawable.buttong);
+            else
+                remoteViews.setInt(R.id.iSuMonitor, "setBackgroundResource", R.drawable.button);
+        }
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         final int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, appWidgetClass));
         appWidgetManager.partiallyUpdateAppWidget(appWidgetIds, remoteViews);
@@ -156,15 +159,16 @@ public class Tools implements Constants {
             RootUtils.runICommand("mount -o ro,remount /system");
             if (getBoolean("isu_notification", false, context))
                 DoNotification(context);
+            String Toast = context.getString(R.string.per_app_deactive);
             if (!isSELinuxActive()) {
                 SwitchSelinux(true, context);
-                Tools.DoAToast("iSu " +
-                    (Tools.isSELinuxActive() ? context.getString(R.string.selinux_toast_ok) :
-                        context.getString(R.string.selinux_toast_nok)), context);
+            Toast = Toast + "\n" + context.getString(R.string.activate_selinux);
             }
+            Tools.DoAToast("iSu " + Toast + "!", context);
         }
-        updateAllWidgets(context, R.layout.widget_layouth, Widgeth.class);
-        updateAllWidgets(context, R.layout.widget_layoutv, Widgetv.class);
+        updateAllWidgets(true, context, R.layout.widget_layouth, Widgeth.class);
+        updateAllWidgets(true, context, R.layout.widget_layoutv, Widgetv.class);
+        updateAllWidgets(false, context, R.layout.widget_layoutsu, Widgetsu.class);
     }
 
     public static void ActiveSUToast(Context context) {
@@ -186,8 +190,9 @@ public class Tools implements Constants {
             RootUtils.runCommand(Constants.SETENFORCE + (isChecked ? " 1" : " 0"));
         else if (SuBinary(xbin_isu))
             RootUtils.runCommand(Constants.SETENFORCE + (isChecked ? " 1" : " 0"));
-        updateAllWidgets(context, R.layout.widget_layouth, Widgeth.class);
-        updateAllWidgets(context, R.layout.widget_layoutv, Widgetv.class);
+        updateAllWidgets(true, context, R.layout.widget_layouth, Widgeth.class);
+        updateAllWidgets(true, context, R.layout.widget_layoutv, Widgetv.class);
+        updateAllWidgets(false, context, R.layout.widget_layoutsu, Widgetsu.class);
     }
 
     public static boolean SuVersionBool(String suVersion) {
