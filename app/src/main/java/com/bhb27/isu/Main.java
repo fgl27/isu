@@ -199,7 +199,8 @@ public class Main extends Activity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView,
                     boolean isChecked) {
-                    iSuSwitch(isChecked);
+                    Tools.SwitchSu(isChecked, MainContext);
+                    Tools.UpMain(MainContext);
                 }
             });
             SuSwitchSummary.setText(getString(R.string.su_state));
@@ -210,7 +211,8 @@ public class Main extends Activity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView,
                     boolean isChecked) {
-                    SelinuxSwitch(isChecked);
+                    Tools.SwitchSelinux(isChecked, MainContext);
+                    Tools.UpMain(MainContext);
                 }
             });
 
@@ -231,12 +233,12 @@ public class Main extends Activity {
                 }
             });
 
-            SuSelinuxSwitch.setChecked(Tools.getBoolean("main_restart_selinux", false, MainContext));
+            SuSelinuxSwitch.setChecked(Tools.getBoolean("restart_selinux", false, MainContext));
             SuSelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView,
                     boolean isChecked) {
-                    Tools.saveBoolean("main_restart_selinux", isChecked, MainContext);
+                    Tools.saveBoolean("restart_selinux", isChecked, MainContext);
                 }
             });
             if (Tools.getBoolean("isu_notification", false, MainContext)) {
@@ -320,34 +322,6 @@ public class Main extends Activity {
         File execFile = new File(executableFilePath);
         execFile.setExecutable(true);
         Log.e(TAG, "Copy success: " + filename);
-    }
-
-    private void iSuSwitch(boolean isChecked) {
-        Tools.SwitchSu(isChecked, MainContext);
-        if (isChecked) {
-            SuStatus.setText((Tools.SuBinary(xbin_su) ? getString(R.string.activated) :
-                getString(R.string.su_change_fail)));
-        } else {
-            SuStatus.setText((Tools.SuBinary(xbin_isu) ? getString(R.string.deactivated) :
-                getString(R.string.su_change_fail)));
-            if (!Tools.isSELinuxActive()) {
-                Tools.SwitchSelinux(true, MainContext);
-                Tools.DoAToast("iSu " +
-                    (Tools.isSELinuxActive() ? getString(R.string.selinux_toast_ok) :
-                        getString(R.string.selinux_toast_nok)), MainContext);
-                Selinux_State.setText(Tools.getSELinuxStatus());
-                SelinuxSwitch.setChecked(Tools.isSELinuxActive());
-            }
-        }
-        SuStatus.setTextColor((Tools.SuBinary(xbin_su)) ? getColorWrapper(MainContext, R.color.colorAccent) :
-            getColorWrapper(MainContext, R.color.colorButtonGreen));
-    }
-
-    private void SelinuxSwitch(boolean isChecked) {
-        Tools.SwitchSelinux(isChecked, MainContext);
-        Selinux_State.setText(Tools.getSELinuxStatus());
-        Selinux_State.setTextColor((!Tools.isSELinuxActive()) ? getColorWrapper(MainContext, R.color.colorAccent) :
-            getColorWrapper(MainContext, R.color.colorButtonGreen));
     }
 
     private static int getColorWrapper(Context context, int id) {

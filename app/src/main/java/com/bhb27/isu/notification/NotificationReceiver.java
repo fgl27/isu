@@ -35,15 +35,6 @@ public class NotificationReceiver extends BroadcastReceiver {
         if (Constants.YES_ACTION.equals(action)) {
             Tools.SwitchSu(true, context);
             Tools.UpMain(context);
-            String Toast = context.getString(R.string.per_app_active);
-            if (Tools.getBoolean("main_restart_selinux", false, context) && !Tools.isSELinuxActive()) {
-                Tools.SwitchSelinux(true, context);
-                Toast = Toast + "\n" + context.getString(R.string.activate_selinux);
-            } else if (!Tools.getBoolean("main_restart_selinux", false, context) && Tools.isSELinuxActive()) {
-                Tools.SwitchSelinux(false, context);
-                Toast = Toast + "\n" + context.getString(R.string.deactivate_selinux);
-            }
-            Tools.DoAToast("iSu " + Toast + "!", context);
         } else if (Constants.DISSMISS_ACTION.equals(action)) {
             Tools.ClearAllNotification(context);
         }

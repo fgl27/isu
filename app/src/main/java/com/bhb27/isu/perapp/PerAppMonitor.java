@@ -96,10 +96,7 @@ public class PerAppMonitor extends AccessibilityService {
                 PerAppiSuSwitch(false, packageName);
             else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_isu) && !Tools.isSELinuxActive()) {
                 Tools.SwitchSelinux(true, this);
-                if (Tools.isSELinuxActive())
-                    Tools.DoAToast(getString(R.string.selinux_toast_ok), this);
-                else
-                    Tools.DoAToast(getString(R.string.selinux_toast_nok), this);
+                Tools.DoAToast(getString(R.string.selinux_toast_ok), this);
             }
 
         }
@@ -107,28 +104,11 @@ public class PerAppMonitor extends AccessibilityService {
 
     private void PerAppiSuSwitch(boolean isChecked, String packageName) {
         Tools.SwitchSu(isChecked, this);
-        String Toast = (isChecked ? getString(R.string.per_app_active) : getString(R.string.per_app_deactive));
-        if (isChecked) {
-            if (Tools.getBoolean("restart_su", false, this))
-                Tools.RestartApp(packageName);
-            if (Tools.getBoolean("restart_selinux", false, this) && !Tools.isSELinuxActive()) {
-                Tools.SwitchSelinux(true, this);
-                Toast = Toast + "\n" + getString(R.string.activate_selinux);
-            } else if (!Tools.getBoolean("restart_selinux", false, this) && Tools.isSELinuxActive()) {
-                Tools.SwitchSelinux(false, this);
-                Toast = Toast + "\n" + getString(R.string.deactivate_selinux);
-            }
-            Tools.DoAToast("iSu " + Toast + "!", this);
-        } else {
-            if (!Tools.isSELinuxActive())
-                Tools.SwitchSelinux(true, this);
-            Tools.DoAToast("iSu " + Toast + "\n" +
-                (Tools.isSELinuxActive() ? getString(R.string.selinux_toast_ok) : getString(R.string.selinux_toast_nok)) + "!", this);
-            if (packageName.contains("com.nianticlabs.pokemongo")) {
-                String poketoast = getString(R.string.pokemongo_start) + "\n\n" + Tools.RandomString(this);
-                Tools.DoAToast(poketoast, this);
-                Tools.DoAToast(poketoast, this);
-            }
+        if (!isChecked && packageName.contains("com.nianticlabs.pokemongo")) {
+            String poketoast = getString(R.string.pokemongo_start) + "\n\n" + Tools.RandomString(this);
+            Tools.DoAToast(poketoast, this);
+            Tools.DoAToast(poketoast, this);
         }
+
     }
 }

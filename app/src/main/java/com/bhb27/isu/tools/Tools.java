@@ -146,6 +146,7 @@ public class Tools implements Constants {
             RootUtils.runCommand("mv " + bin_temp_su + " " + bin_su);
             RootUtils.runCommand("mount -o ro,remount /system");
             ClearAllNotification(context);
+            ActiveSUToast(context);
         } else {
             // Make a link to isu so all root tool work
             RootUtils.runCommand("mount -o rw,remount /system");
@@ -155,9 +156,29 @@ public class Tools implements Constants {
             RootUtils.runICommand("mount -o ro,remount /system");
             if (getBoolean("isu_notification", false, context))
                 DoNotification(context);
+            if (!isSELinuxActive()) {
+                SwitchSelinux(true, context);
+                Tools.DoAToast("iSu " +
+                    (Tools.isSELinuxActive() ? context.getString(R.string.selinux_toast_ok) :
+                        context.getString(R.string.selinux_toast_nok)), context);
+            }
         }
         updateAllWidgets(context, R.layout.widget_layouth, Widgeth.class);
         updateAllWidgets(context, R.layout.widget_layoutv, Widgetv.class);
+    }
+
+    public static void ActiveSUToast(Context context) {
+        String Toast = context.getString(R.string.per_app_active);
+        boolean restart = getBoolean("restart_selinux", false, context);
+        boolean selinux = isSELinuxActive();
+        if (restart && !selinux) {
+            SwitchSelinux(true, context);
+            Toast = Toast + "\n" + context.getString(R.string.activate_selinux);
+        } else if (!restart && selinux) {
+            SwitchSelinux(false, context);
+            Toast = Toast + "\n" + context.getString(R.string.deactivate_selinux);
+        }
+        DoAToast("iSu " + Toast + "!", context);
     }
 
     public static void SwitchSelinux(boolean isChecked, Context context) {

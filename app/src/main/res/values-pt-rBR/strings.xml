@@ -14,6 +14,8 @@
     <string name="selinux_state">Estado atual do SELinux:</string>
     <string name="selinux_toast_ok">SELinux setado para Enforcing!\n Isto é necessário para o funcionamento de alguns app com Safety Check</string>
     <string name="selinux_toast_nok">Não foi possível mudar o estado do SELinux!</string>
+   <string name="restart_selinux">Ativar SELinux quando SU é ativado</string>
+   <string name="restart_selinux_summary">Se ligado esta vai sempre setar o SELinux para Enforcing quando SU for ativado.\nSe desligado esta vai sempre setar o SELinux para Permissive quando SU for ativado.</string>
     <string name="isu_kernel_good">Suporte de reboot iSu OK.</string>
     <string name="isu_kernel_bad">Sem suporte de reboot iSu!!!\nPor favor usar o .zip via TWRP ou poderá perder acesso SU apos um reboot</string>
     <string name="isu_kernel_no_su">Se usou o iSu pra desativar o SU caso tenha reboot suporte do iSu tente&#8230;\nReiniciar o aparelho, caso não tenha o suporte reinstale o .zip da sua ROM atual, sem acesso SU o app não consegue saber se o aparelho suporte a Reboot também cheque nas configurações Opções de desenvolvedor se o Acesso superusuátio esta ativo para aplicativos, em duvida verifique o site de suporte no Sobre iSu&#8230; XDA forum de suporte.</string>
@@ -23,7 +25,6 @@
     <!-- Notification -->
     <string name="notification_title">SU esta desativado, ativar o SU?</string>
     <string name="notification_switch">Mostra uma notificação quando o SU esta desativado</string>
-    <string name="notification_restart_selinux">Ativar SELinux quando o SU é ativado pela notificação</string>
     <string name="yes">Sim</string>
     <string name="dismiss">Descartar</string>
 
@@ -63,8 +64,6 @@
     <string name="per_app_restart">Reiniciar o app apos Ativar o SU</string>
     <string name="per_app_restart_summary">É possível que o app que escolhei para ativar o SU quando clicado inicie antes que o iSu consiga ativar o SU e isso vai fazer este app falhar por falta de acesso SU, Então o iSu pode reiniciar este app apos ter ativado o SU.\nO reinicio pode não funcionar em todos aplicativos e não é preciso em todos aparelhos.</string>
    <string name="not_available">Não disponível</string>
-   <string name="restart_selinux">Ativar SELinux quando SU é ativado pelo monitor de aplicativos</string>
-   <string name="restart_selinux_summary">Se ligado esta vai sempre setar o SELinux para Enforcing quando SU for ativado.\nSe desligado esta vai sempre setar o SELinux para Permissive quando SU for ativado.</string>
    <string name="activate_selinux">SELinux setado para Enforcing!</string>
    <string name="deactivate_selinux">SELinux setado para Permissive!</string>
    <string name="per_app_default_deactivate">Desativa o SU para qualquer app se o SU esta ativado</string>

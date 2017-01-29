@@ -47,7 +47,7 @@ import android.content.DialogInterface;
 public class PerAppActivity extends Activity {
 
     private Button perapp_isu, perapp_su;
-    private Switch restartSwitch, SuSelinuxSwitch;
+    private Switch restartSwitch;
     private ImageView ic_launcher;
     private AlertDialog.Builder mPerAppDialog;
     private Context PerAppActivityContext = null;
@@ -64,8 +64,6 @@ public class PerAppActivity extends Activity {
         perapp_su = (Button) findViewById(R.id.buttonSu);
 
         restartSwitch = (Switch) findViewById(R.id.restartSwitch);
-
-        SuSelinuxSwitch = (Switch) findViewById(R.id.SuSelinuxSwitch);
 
         perapp_isu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,15 +85,6 @@ public class PerAppActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Tools.DoAToast(getString(R.string.isu_by), PerAppActivityContext);
-            }
-        });
-
-        SuSelinuxSwitch.setChecked(Tools.getBoolean("restart_selinux", false, PerAppActivityContext));
-        SuSelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                boolean isChecked) {
-                Tools.saveBoolean("restart_selinux", isChecked, PerAppActivityContext);
             }
         });
 
