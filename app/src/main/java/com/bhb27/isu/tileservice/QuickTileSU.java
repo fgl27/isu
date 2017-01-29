@@ -37,19 +37,26 @@ public class QuickTileSU extends TileService {
     @Override
     public void onStartListening() {
         super.onStartListening();
-        getQsTile().setLabel((Tools.SuBinary(Constants.xbin_su) ?
-            this.getString(R.string.activated) : this.getString(R.string.deactivated)));
+        boolean su = (Tools.SuVersionBool(Tools.SuVersion(this)));
+        if (su) {
+            getQsTile().setLabel((Tools.SuBinary(Constants.xbin_su) ?
+                this.getString(R.string.activated) : this.getString(R.string.deactivated)));
+        } else
+            getQsTile().setLabel(this.getString(R.string.not_available));
         getQsTile().updateTile();
     }
 
     @Override
     public void onClick() {
         super.onClick();
-        Tools.SwitchSu(!Tools.SuBinary(Constants.xbin_su), this);
-        getQsTile().setLabel((Tools.SuBinary(Constants.xbin_su) ?
-            this.getString(R.string.activated) : this.getString(R.string.deactivated)));
-        Tools.UpMain(this);
-        getQsTile().updateTile();
+        boolean su = (Tools.SuVersionBool(Tools.SuVersion(this)));
+        if (su) {
+            Tools.SwitchSu(!Tools.SuBinary(Constants.xbin_su), this);
+            getQsTile().setLabel((Tools.SuBinary(Constants.xbin_su) ?
+                this.getString(R.string.activated) : this.getString(R.string.deactivated)));
+            Tools.UpMain(this);
+            getQsTile().updateTile();
+        }
     }
 
 }
