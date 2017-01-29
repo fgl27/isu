@@ -63,7 +63,7 @@
     <string name="per_app_deactive">Deaktivovať SU</string>
     <string name="per_app_deactive_summary">Vyberte aplikácie, pre ktoré iSu deaktivuje SU.\n(deaktivovanie SU tiež zmení SELinux na enforcing)</string>
     <string name="per_app_restart">Reštartovať aplikáciu po aktivovaní SU</string>
-    <string name="per_app_restart_summary">Je šanca, že aplikáciu, ktorú ste si vybrali, sa spustí skôr ako iSu môže aktivovať SU a ukončí sa pre chýbajúci SU prístup. Takže iSu môže reštartovať aplikáciu po aktivovaní SU aby získala ROOT prístup.\nReštartovanie nemusí pre všetky aplikácie a nie je potrebné na všetkých zariadeniach.</string>
+    <string name="per_app_restart_summary">Je šanca, že aplikáciu, ktorú ste si vybrali, sa spustí skôr ako iSu môže aktivovať SU a ukončí sa pre chýbajúci SU prístup. Takže iSu môže reštartovať aplikáciu po aktivovaní SU aby získala ROOT prístup.\nReštartovanie nemusí fungovať pre všetky aplikácie a nie je potrebné na všetkých zariadeniach.</string>
    <string name="not_available">Nedostupné</string>
    <string name="activate_selinux">SELinux nastavený na Enforcing!</string>
    <string name="deactivate_selinux">SELinux nastavený na Permissive!</string>
