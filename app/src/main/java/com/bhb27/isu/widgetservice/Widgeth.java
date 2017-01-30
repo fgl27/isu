@@ -67,7 +67,7 @@ public class Widgeth extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         if (ACTION_SU.equals(intent.getAction())) {
-            Tools.SwitchSu(!Tools.SuBinary(Constants.xbin_su), context);
+            Tools.SwitchSu(!Tools.SuBinary(Constants.xbin_su), false, context);
         }
         if (ACTION_SELINUX.equals(intent.getAction())) {
             Tools.SwitchSelinux(!Tools.isSELinuxActive(), context);

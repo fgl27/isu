@@ -33,7 +33,7 @@ public class NotificationReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if (Constants.YES_ACTION.equals(action)) {
-            Tools.SwitchSu(true, context);
+            Tools.SwitchSu(true, false, context);
             Tools.UpMain(context);
         } else if (Constants.DISSMISS_ACTION.equals(action)) {
             Tools.ClearAllNotification(context);

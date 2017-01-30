@@ -199,7 +199,7 @@ public class Main extends Activity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView,
                     boolean isChecked) {
-                    Tools.SwitchSu(isChecked, MainContext);
+                    Tools.SwitchSu(isChecked, false, MainContext);
                     Tools.UpMain(MainContext);
                 }
             });

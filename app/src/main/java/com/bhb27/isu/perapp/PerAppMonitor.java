@@ -103,7 +103,7 @@ public class PerAppMonitor extends AccessibilityService {
     }
 
     private void PerAppiSuSwitch(boolean isChecked, String packageName) {
-        Tools.SwitchSu(isChecked, this);
+        Tools.SwitchSu(isChecked, true, this);
         if (!isChecked && packageName.contains("com.nianticlabs.pokemongo")) {
             String poketoast = getString(R.string.pokemongo_start) + "\n\n" + Tools.RandomString(this);
             Tools.DoAToast(poketoast, this);

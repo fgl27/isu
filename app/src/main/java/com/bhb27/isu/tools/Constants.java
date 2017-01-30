@@ -32,4 +32,6 @@ public interface Constants {
 
     String YES_ACTION = "YES_ACTION";
     String DISSMISS_ACTION = "DISSMISS_ACTION";
+
+    String PAY = "com.google.android.apps.walletnfcrel";
 }

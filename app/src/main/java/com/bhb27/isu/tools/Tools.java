@@ -21,6 +21,8 @@ package com.bhb27.isu.tools;
 
 import android.content.Context;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -40,6 +42,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.List;
 import java.util.Random;
 
 import com.bhb27.isu.R;
@@ -141,7 +144,7 @@ public class Tools implements Constants {
             context.sendBroadcast(MainIntent);
     }
 
-    public static void SwitchSu(boolean isChecked, Context context) {
+    public static void SwitchSu(boolean isChecked, boolean AppMonitor, Context context) {
         if (isChecked) {
             // Mount rw to change mount ro after
             RootUtils.runICommand("mount -o rw,remount /system");
@@ -151,6 +154,11 @@ public class Tools implements Constants {
             ClearAllNotification(context);
             ActiveSUToast(context);
         } else {
+            if (!AppMonitor){
+            String androidPay = RootUtils.runCommand("ps | grep " + Constants.PAY);
+            if (androidPay.contains(Constants.PAY))
+                RootUtils.runCommand("am force-stop " + Constants.PAY);
+            }
             // Make a link to isu so all root tool work
             RootUtils.runCommand("mount -o rw,remount /system");
             RootUtils.runCommand("ln -s -f " + xbin_isu + " " + bin_isu);

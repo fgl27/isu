@@ -51,7 +51,7 @@ public class QuickTileSU extends TileService {
         super.onClick();
         boolean su = (Tools.SuVersionBool(Tools.SuVersion(this)));
         if (su) {
-            Tools.SwitchSu(!Tools.SuBinary(Constants.xbin_su), this);
+            Tools.SwitchSu(!Tools.SuBinary(Constants.xbin_su), false, this);
             getQsTile().setLabel((Tools.SuBinary(Constants.xbin_su) ?
                 this.getString(R.string.activated) : this.getString(R.string.deactivated)));
             Tools.UpMain(this);
