@@ -46,6 +46,7 @@ if [ $docmdline == 0 ]; then
 		  replace_file init.superuser.rc 750 init.superuser.rc;
 		  insert_line init.rc "init.superuser.rc" after "import /init.environ.rc" "import /init.superuser.rc";
 		fi;
+		replace_line default.prop "ro.debuggable=1" "ro.debuggable=0"
 	else
 		# iSu patch remover
 		remove_section init.superuser.rc "# isu daemon" "# isu daemon end"
