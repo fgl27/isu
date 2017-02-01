@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <!-- main -->
+    <string name="su_switch">Ενεργοποίηση ή απενεργοποίηση του SU</string>
+    <string name="su_state">Τρέχουσα κατάσταση SU:</string>
+    <string name="su_not_cm">Η υπάρχουσα έκδοση του SU δεν υποστηρίζεται.\nΗ εφαρμγή υποστηρίζει μόνο το CM-SU\nΗ υπάρχουσα έκδοση του SU της συσκευής είναι:</string>
+    <string name="device_not_root">Δεν υπάρχουν δικαιώματα Root</string>
+    <string name="activated">Ενεργοποιήθηκε</string>
+    <string name="deactivated">Απενεργοποιήθηκε</string>
+    <string name="su_version">Έκδοση Su:</string>
+    <string name="selinux_switch">Ενεργοποίηση ή απενεργοποίηση SELinux</string>
+    <string name="selinux_state">Τρέχουσα κατάσταση SELinux:</string>
+    <string name="selinux_toast_ok">Η κατάσταση του SELinux είναι Enforcing!\n Είναι αναγκαία για τους ελέγχους ασφαλείας κάποιων εφαρμογών</string>
+    <string name="restart_selinux">Ενεργοποίηση SELinux όταν το SU ενεργοποιείται</string>
+    <string name="restart_selinux_summary">Όταν είναι στο ON το SELinux πάντα θα γυρνάει σε Enforcing όταν ενεργοποιείται το SU.\Όταν είναι στο OFF το SELinux πάντα θα γυρνάει σε Permissive όταν ενεργοποιείται το SU.</string>
+    <string name="isu_kernel_good">Ο πυρήνας iSu υποστηρίζεται.</string>
+    <string name="isu_kernel_bad">Ο πυρήνας iSu ΔΕΝ υποστηρίζεται!!!\nΠαρακαλώ εγκατέστησε τον υποστηριζόμενο πυρήνα (κernel support) .zip αλλιώς μπορεί να χάσεις την πρόσβασή σου στο SU</string>
+    <string name="isu_kernel_no_su">Αν δοκίμασες να απενεργοποιήσεις το SU με το iSu και έχασες την πρόσβαση στο SU δοκίμασε &#8230;\nμια επανεκκίνηση συσκευής αν έχεις πυρήνας iSu που υποστηρίζεται, αλλιώς χρείαζεται επανεγκατάσταση του ROM σας (rom .zip reflash). Xωρίς δικαιώματα Root, η εφαρμογή δεν μπορεί να καταλάβει αν υπάρχει υποστήριξει για reboot. Γι\'αυτό βεβαιώσου ότι έχεις δώσει δικαιώματα Root στις εφαρμογές από τις Επιλογές για προγραμματιστές Developer. Για περαιτέρω βοήθεια, ακολούθησε τον σύνδεσμο για το XDA στο Σχετικά με το iSu&#8230;.</string>
+    <string name="download_folder_link">Πάτησε εδώ για να μεταφερθείς στον φάκελο με τα downloads</string>
+    <string name="isu_reboot">Το iSu Nougat reboot υποστηρίζεται.</string>
+
+    <!-- Notification -->
+    <string name="notification_title">Το SU είναι απενεργοποιημένο, να γίνει ενεργοποίηση του SU?</string>
+    <string name="notification_switch">Να ειδοποιούμαι όταν το SU απενεργοποιείτε</string>
+    <string name="yes">Ναι</string>
+    <string name="dismiss">Απόκρυψη</string>
+
+    <!-- Main pokemonstrings -->
+    <string name="pokemongo_start">Ας παίξουμε Pokemon δικέ μου!!!</string>
+    <string name="pokemongo_1">Ας βρόυμε τον Pikachu σήμερα</string>
+    <string name="pokemongo_2">Πόσα μίλια θα περπατήσουμε σήμερα?</string>
+    <string name="pokemongo_3">Δεν έχεις διάβασμα σήμερα? Ααα, βλέπω πως είσαι ενήλικος -_-</string>
+    <string name="pokemongo_4">Το δοκίμασες??? Δέσε το τηλέφωνο σου σε ένα ανεμιστήρα οροφής και δές την εκκόλαψη των αυγών Pokemon σου να ολοκληρώνεται γρηγορότερα!</string>
+    <string name="pokemongo_5">Πρόεδροι και πρωθυπουργοί παίζουν Pokemon Go ανά το παγκόσμιο. Θα μπορείς να λές ότι ετοιμάζεσαι για πολιτικός -_-</string>
+    <string name="pokemongo_6">Alakazam: Alakazam, Alakazam, Alakazam!\nAsh: Pokedex, what Pokemon is that?!\nPokedex: -_- That is an Alakazam!\nAsh: No way!</string>
+    <string name="pokemongo_7">Ο Chuck Norris κέρδισε το World Series of Poker χρησιμοποιώντας μόνο Pokemon cards.</string>
+    <string name="pokemongo_8">Ο Chuck Noris κατάφεραι να πιάσει 150 Pokemon σε 2.7 δευτερόλεπτα.</string>
+    <string name="pokemongo_9">Πότε άραγε θα αρχίσουν οι γονεις να ονομάζουν τα παιδιά τους με ονόματα Pokemon?</string>
+    <string name="isu_by">iSu από τον bhb27</string>
+
+    <!-- about -->
+    <string name="about">Σχετικά με το iSu</string>
+    <string name="dev_info">Πληροφορίες προγραμματιστή:</string>
+    <string name="git_summary">Η εφαρμογή είναι ανοιχτού κώδικα και μπορείς να την βρείς στο github\ngithub.com/bhb27/isu</string>
+    <string name="version">Έκδοση:</string>
+    <string name="version_summary">Μια απλή εφαρμογή που επιτρέπει την ανά πάσα στιγμή απενεργοποίηση του SU έτσι ώστε να μπορεί να γίνει χρήση κάποιων εφαρμογών που δεν λειτουργούν με Root. Προς το παρών δουλέυει μόνο με το SU binary των CM ROM\'s.</string>
+    <string name="xda_summary">Υποστήριξη forum XDA</string>
+    <string name="email">Email</string>
+    <string name="email_summary">fglfgl27@gmail.com</string>
+    <string name="github">GitHub</string>
+    <string name="no_email_client">Δεν υπάρχει εφαρμογή email εγκατεστημένη στη συσκευή σου.</string>
+    <string name="no_browser">Δεν υπάρχει εφαρμογή browser εγκατεστημένη στη συσκευή σου.</string>
+
+    <!--Per app-->
+    <string name="set_per_app">Παρακολούθηση εφαρμογών</string>
+    <string name="service_per_app">Παρακολούθηση εφαρμογών iSu</string>
+    <string name="per_app_title_isu">Επίλεξε τις εφαρμογές που θες να απενεργοποιούν το SU:</string>
+    <string name="per_app_title_su">Επίλεξε τις εφαρμογές που θες να ενεργοποιούν το SU:</string>
+    <string name="accessibility_service_desc">Υπηρεσία παρακολούθησης εφαρμογών για ενεργοποίηση ή απενεργοποίηση του SU μόλις ανοίγουν.</string>
+    <string name="per_app_active">Ενεργοποίηση SU</string>
+    <string name="per_app_active_summary">Επίλεξε τις εφαρμογές που όταν ανοίγουν, θες να ενεργοποιούν το SU μέσω του iSu.</string>
+    <string name="per_app_deactive">Απενεργοποίηση SU</string>
+    <string name="per_app_deactive_summary">Επίλεξε τις εφαρμογές που θες να απενεργοποιούν το SU μέσω του iSu όταν ανοίγουν.\n(απενεργοποιώντας το SU, το SELinux θα γυρίσει σε enforcing)</string>
+    <string name="per_app_restart">Επανέναρξη της εφαρμογής αφού ενεργοποιηθεί το SU</string>
+    <string name="per_app_restart_summary">Υπάρχει μια μικρή πιθανότητα η εφαρμογή να ξεκινήσει πρίν το iSu προλάβει να ενεργοποιήσει το SU με αποτέλεσμα να μην έχει πρόσβαση Root. Το iSu μπορεί να επανεκκινήσει την εφαρμογή αφού ενεργοποιήθει το SU για να αποκτήσει σίγουρα πρόσβαση Root.\nΗ επανεκκίνηση μπορεί να μην λειτουργεί για όλες τις εφαρμογές και να μην χρειάζεται για όλες τις συσκευές.</string>
+    <string name="not_available">Μη διαθέσιμο</string>
+    <string name="activate_selinux">Το SELinux έχει γυρίσει σε Enforcing!</string>
+    <string name="deactivate_selinux">Το SELinux έχει γυρίσει σε Permissive!</string>
+    <string name="per_app_default_deactivate">Απενεργοποίηση του SU για όλες τις εφαρμογές όταν το SU ενεργοποιείτε</string>
+    <string name="per_app_default_activate">Ενεργοποίηση του SU για όλες τις εφαρμογές όταν το SU απενεργοποιείτε</string>
+
+    <!--Widget-->
+    <string name="horizontal">Οριζόντια</string>
+    <string name="vertical">Κάθετα</string>
+</resources>
