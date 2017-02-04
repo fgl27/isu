@@ -267,7 +267,7 @@ public class Tools implements Constants {
             context.getString(R.string.pokemongo_1), context.getString(R.string.pokemongo_2), context.getString(R.string.pokemongo_3),
                 context.getString(R.string.pokemongo_4), context.getString(R.string.pokemongo_5), context.getString(R.string.pokemongo_6),
                 context.getString(R.string.pokemongo_7), context.getString(R.string.pokemongo_8), context.getString(R.string.pokemongo_9),
-                context.getString(R.string.isu_by)
+                context.getString(R.string.isu_by), context.getString(R.string.pokemongo_start)
         };
         Random rand = new Random();
         int generate = 0;
