@@ -103,6 +103,16 @@ public class Main extends Activity {
                 // Only run boot service if app was used and is CM SU
                 if (isCMSU && !Tools.getBoolean("run_boot", false, MainContext))
                     Tools.saveBoolean("run_boot", true, MainContext);
+
+                // Create a blank profiles.json to prevent logspam.
+                File file = new File(getFilesDir() + "/per_app.json");
+                if (!file.exists()) {
+                    try {
+                        file.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         };
         new Thread(runSepolicy).start();
@@ -182,7 +192,7 @@ public class Main extends Activity {
     @Override
     public void onPause() {
         super.onPause();
-        if (Tools.SuVersionBool(Tools.SuVersion(MainContext)) && Tools.getBoolean("isu_notification", false, MainContext)) {
+        if (Tools.SuVersionBool(Tools.SuVersion(MainContext))) {
             try {
                 MainContext.unregisterReceiver(updateMainReceiver);
             } catch (IllegalArgumentException ignored) {}
@@ -242,11 +252,9 @@ public class Main extends Activity {
                     Tools.saveBoolean("restart_selinux", isChecked, MainContext);
                 }
             });
-            if (Tools.getBoolean("isu_notification", false, MainContext)) {
-                try {
-                    MainContext.registerReceiver(updateMainReceiver, new IntentFilter("updateMainReceiver"));
-                } catch (NullPointerException ignored) {}
-            }
+            try {
+                MainContext.registerReceiver(updateMainReceiver, new IntentFilter("updateMainReceiver"));
+            } catch (NullPointerException ignored) {}
             SuStatus.setTextColor((Tools.SuBinary(xbin_su)) ? getColorWrapper(MainContext, R.color.colorAccent) :
                 getColorWrapper(MainContext, R.color.colorButtonGreen));
             upMain = true;
@@ -274,7 +282,7 @@ public class Main extends Activity {
             upMain = false;
         }
         su_version_summary.setTextColor((!CMSU) ? getColorWrapper(MainContext, R.color.colorAccent) :
-                getColorWrapper(MainContext, R.color.colorButtonGreen));
+            getColorWrapper(MainContext, R.color.colorButtonGreen));
         Selinux_State.setTextColor((!Tools.isSELinuxActive()) ? getColorWrapper(MainContext, R.color.colorAccent) :
             getColorWrapper(MainContext, R.color.colorButtonGreen));
     }
