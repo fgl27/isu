@@ -57,4 +57,4 @@ I particularly prefer to use this .sh to build all in one shot
     GNU General Public License for more details.
     
     You should have received a copy of the GNU General Public License
-    along with Kernel Adiutor.  If not, see <http://www.gnu.org/licenses/>.
+    along with iSu.  If not, see <http://www.gnu.org/licenses/>.
