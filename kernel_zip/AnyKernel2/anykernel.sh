@@ -8,11 +8,8 @@ do.devicecheck=0
 do.initd=0
 do.modules=0
 do.cleanup=1
+do.buildprop=1
 device.name1=
-device.name2=
-device.name3=
-device.name4=
-device.name5=
 
 # shell variables
 is_slot_device=0;

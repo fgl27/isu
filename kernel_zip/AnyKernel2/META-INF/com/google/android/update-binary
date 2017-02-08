@@ -93,6 +93,101 @@ if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.modules)" == 1 ]; then
   mount -o ro,remount -t auto /system;
 fi;
 
+##Build.prop editor
+## credits for tweakprop @kl3 http://forum.xda-developers.com/showthread.php?t=2664332 | https://notabug.org/kl3/tweakprop
+if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.buildprop)" == 1 ]; then
+mount -o remount,rw /system;
+tweak="/tmp/anykernel/tools/tweak.prop";
+## abort tweak if tweak.prop is not found or is empty
+	if [ -s $tweak ]; then
+
+		build=/system/build.prop;
+		chmod 0666 $build;
+
+		if [ ! -e $build.bak ]; then
+			cp /system/build.prop /system/build.prop.bak;
+		fi
+
+		## only print Patching build.prop if something will be patched
+		sed -r '/(^#|^ *$|^BACKUP=)/d;/(.*=.*|^\!|^\@.*\|.*|^\$.*\|.*)/!d' "$tweak" | while read line
+		do
+			## remove entry
+			if echo "$line" | grep -q '^\!';
+			then
+				echo_Patching=1;
+			elif echo "$line" | grep -q '^\@';
+			then
+				echo_Patching=1;
+			elif echo "$line" | grep -q '^\$';
+			then
+				echo_Patching=1;
+			else
+				var=$(echo "$line" | cut -d= -f1);
+				if grep -q "$var" "$build";
+				then
+					grep -q $(grep "$var" "$tweak") "$build" || echo_Patching=1;
+				else
+					echo_Patching=1;
+				fi;
+			fi;
+		if [ "$echo_Patching" == 1 ]; then
+			ui_print " ";
+			ui_print "Patching build.prop";
+			break;
+		fi;
+		done;
+
+		## read only lines matching valid entry pattern (someVAR=someVAL, !someSTR, @someENTR|someSTR, $someVAR=someVAL)
+		sed -r '/(^#|^ *$|^BACKUP=)/d;/(.*=.*|^\!|^\@.*\|.*|^\$.*\|.*)/!d' "$tweak" | while read line
+		do
+			## remove entry
+			if echo "$line" | grep -q '^\!';
+			then
+				entry=$(echo "${line#?}" | sed -e 's/[\/&]/\\&/g');
+				## remove from $build if present
+				grep -q "$entry" "$build" && (sed "/$entry/d" -i "$build" && ui_print "..all lines containing \"$entry\" removed");
+
+			## append string
+			elif echo "$line" | grep -q '^\@';
+			then
+				entry=$(echo "${line#?}" | sed -e 's/[\/&]/\\&/g');
+				var=$(echo "$entry" | cut -d\| -f1);
+				app=$(echo "$entry" | cut -d\| -f2);
+				## append string to $var's value if present in $build
+				grep -q "$var" "$build" && (sed "s/^$var=.*$/&$app/" -i "$build" && ui_print "..\"$app\" appended to value of \"$var\"");
+
+			## change value only if entry exists
+			elif echo "$line" | grep -q '^\$';
+			then
+				entry=$(echo "${line#?}" | sed -e 's/[\/&]/\\&/g');
+				var=$(echo "$entry" | cut -d\| -f1);
+				new=$(echo "$entry" | cut -d\| -f2);
+				## change $var's value iif $var present in $build
+				grep -q "$var=" "$build" && (sed "s/^$var=.*$/$var=$new/" -i "$build" && ui_print "..value of \"$var\" changed to \"$new\"");
+
+			## add or override entry
+			else
+				var=$(echo "$line" | cut -d= -f1);
+				## if variable already present in $build
+				if grep -q "$var" "$build";
+				then
+					## override value in $build if different
+					grep -q $(grep "$var" "$tweak") "$build" || (sed "s/^$var=.*$/$line/" -i "$build" && ui_print "..value of \"$var\" overridden");
+				## else append entry to $build
+				else
+					echo "
+$line" >> "$build" && ui_print "..entry \"$line\" added";
+				fi;
+			fi;
+		done;
+
+		## trim empty and duplicate lines of $build
+		sed '/^ *$/d' -i "$build";
+
+		chmod 0644 "$build";
+	fi;
+fi;#build prop editor end
+
 if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.cleanup)" == 1 ]; then
   rm -rf /tmp/anykernel;
 fi;

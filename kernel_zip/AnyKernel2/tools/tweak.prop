@@ -1,0 +1,2 @@
+# ena root by default app only
+persist.sys.root_access=1
