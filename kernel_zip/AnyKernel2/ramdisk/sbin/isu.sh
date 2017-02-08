@@ -39,9 +39,9 @@ if [ "$1" = "boot" ]; then
 # enforce selinux need to pass safety net only apply after boot complete
 elif [ "$1" = "boot_completed" ]; then
 	echo 'isu_init: isu init.sh start boot_completed ok' > /dev/kmsg;
-	/system/bin/log -t isu_init -p i "isu init.sh start boot_completed ok"
-	setenforce 1
+	/system/bin/log -t isu_init -p i "isu init.sh start boot_completed ok";
+	setenforce 1;
 fi
 
-exit
+exit;
 
