@@ -8,12 +8,12 @@ do.devicecheck=0
 do.initd=0
 do.modules=0
 do.cleanup=1
-do.buildprop=1
+do.buildprop=0
 device.name1=
 
 # shell variables
 is_slot_device=0;
-# if 1 install if any other clean
+# 0 clean kernel support, 1 kernel support, 2 patch default.prop
 install_isu=1;
 #Boot in permissive function
 dopermissive=1;
@@ -35,7 +35,10 @@ chmod -R 755 $ramdisk
 dump_boot;
 
 if [ $docmdline == 0 ]; then
-	if [ $install_isu == 1 ]; then
+	if [ $install_isu == 0 ]; then
+		# iSu patch remover
+		remove_section init.superuser.rc "# isu daemon" "# isu daemon end"
+	else if [ $install_isu == 1 ]; then
 		# iSu patch include
 		if [ -f init.superuser.rc ]; then
 		  replace_file init.superuser.rc 750 init.superuser.rc;
@@ -43,10 +46,9 @@ if [ $docmdline == 0 ]; then
 		  replace_file init.superuser.rc 750 init.superuser.rc;
 		  insert_line init.rc "init.superuser.rc" after "import /init.environ.rc" "import /init.superuser.rc";
 		fi;
+	else if [ $install_isu == 2 ]; then
+		# iSu patch default.prop
 		replace_line default.prop "ro.debuggable=1" "ro.debuggable=0"
-	else
-		# iSu patch remover
-		remove_section init.superuser.rc "# isu daemon" "# isu daemon end"
 	fi;
 fi;
 # end ramdisk changes
