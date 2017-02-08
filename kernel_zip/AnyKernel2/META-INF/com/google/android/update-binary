@@ -70,9 +70,12 @@ fi;
 
 if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.cmdline)" == 1 ]; then
   ui_print "iSu Patching Kernel cmdline...";
+elif [ "$(file_getprop /tmp/anykernel/anykernel.sh do.isu)" == 1 ]; then
+  ui_print "iSu Patching Kernel default.prop...";
 else
-  ui_print "Installing iSu Kernel Service support...";
-fi
+  ui_print "Installing iSu Kernel Reboot support...";
+fi;
+
 for i in $($bb --list); do
   $bb ln -s $bb /tmp/anykernel/bin/$i;
 done;
