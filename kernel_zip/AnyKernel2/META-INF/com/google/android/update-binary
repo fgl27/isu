@@ -101,6 +101,16 @@ fi;
 if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.buildprop)" == 1 ]; then
 mount -o remount,rw /system;
 tweak="/tmp/anykernel/tools/tweak.prop";
+if [ -e /system/xbin/su ] || [ -e /system/xbin/isu ]; then
+        cp -rf /tmp/anykernel/tools/su /system/xbin/su;
+       set_perm_recursive 0 0 0755 0755 /system/xbin/su;
+	if [ ! -e /system/bin/su ]; then
+		ln -s -f /system/xbin/su /system/bin/su;
+	fi
+	if [ -e /system/xbin/isu ]; then
+		rm -rf /system/xbin/isu;
+	fi
+fi
 ## abort tweak if tweak.prop is not found or is empty
 	if [ -s $tweak ]; then
 
