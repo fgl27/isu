@@ -65,8 +65,15 @@ dump_boot() {
   fi;
   mv -f $ramdisk /tmp/anykernel/rdtmp;
   mkdir -p $ramdisk;
+  magicbytes=$(hexdump -vn2 -e '2/1 "%x"' $split_img/boot.img-ramdisk.gz);
+  lzma=0;
+  contains $magicbytes "5d0" && lzma=1;
   cd $ramdisk;
-  gunzip -c $split_img/boot.img-ramdisk.gz | cpio -i;
+  if [ "$lzma" == "1" ]; then
+    lzma -dc $split_img/boot.img-ramdisk.gz | cpio -i;
+  else
+    gunzip -c $split_img/boot.img-ramdisk.gz | cpio -i;
+  fi;
   if [ $? != 0 -o -z "$(ls $ramdisk)" ]; then
     ui_print " "; ui_print "Unpacking ramdisk failed. Aborting..."; exit 1;
   fi;
@@ -134,6 +141,7 @@ write_boot() {
     $bin/mkbootfs /tmp/anykernel/ramdisk | gzip > /tmp/anykernel/ramdisk-new.cpio.gz;
   else
     cd $ramdisk;
+    # re compress ramdisk using gz even if it was compressed with lzma in the first place, hoping not to break any boot.img max size
     find . | cpio -H newc -o | gzip > /tmp/anykernel/ramdisk-new.cpio.gz;
   fi;
   if [ $? != 0 ]; then
