@@ -1,18 +1,25 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light">
+    <style name="AppTheme" parent="android:style/Theme.Material.Light.DarkActionBar">
         <item name="android:textColorPrimary">@color/text_black</item>
         <item name="android:textColorSecondary">@color/text_black</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/text_white</item>
         <item name="android:actionBarStyle">@style/MyActionBar</item>
         <item name="android:buttonStyle">@style/button</item>
     </style>
-    <style name="AppThemeMonitor" parent="android:Theme.Holo.Light">
+    <style name="AppThemeMonitor" parent="android:style/Theme.Material.Light.DarkActionBar">
         <item name="android:textColorPrimary">@color/text_black</item>
         <item name="android:textColorSecondary">@color/text_black</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/text_white</item>
         <item name="android:actionBarStyle">@style/MyActionBarMonitor</item>
         <item name="android:buttonStyle">@style/button</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogCustom</item>
     </style>
     <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@color/colorPrimary</item>
@@ -33,10 +40,14 @@
         <item name="android:shadowColor">#FF000000</item>
         <item name="android:shadowDx">1.0</item>
         <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">2.0</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/button</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
+    </style>
+    <style name="AlertDialogCustom" parent="android:Theme.Material.Light.Dialog.Alert">
+      <item name="android:colorAccent">@color/colorAccent</item>
     </style>
 </resources>
