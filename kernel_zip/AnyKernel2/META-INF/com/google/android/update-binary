@@ -101,26 +101,13 @@ fi;
 if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.buildprop)" == 1 ]; then
 mount -o remount,rw /system;
 tweak="/tmp/anykernel/tools/tweak.prop";
-# patched SU version that I removed ro.cm.version
-
-ABI="$(cat /system/build.prop /default.prop | grep -m 1 "ro.product.cpu.abi=" | dd bs=1 skip=19 count=3)";
-ABI2=$(cat /system/build.prop /default.prop | grep -m 1 "ro.product.cpu.ABILONG=" | dd bs=1 skip=20 count=3)
-ABILONG="$(cat /system/build.prop /default.prop | grep -m 1 "ro.product.cpu.abi=" | dd bs=1 skip=19)";
-
-if [ "$ABI" == "x86" ] || [ "$ABI2" == "x86" ]; then
-	cp -rf /tmp/anykernel/tools/su_x86 /system/xbin/su;
-elif [ "$ABILONG" == "armeabi-v7a" ]; then
-	cp -rf /tmp/anykernel/tools/su_arm /system/xbin/su;
-elif [ "$ABILONG" == "arm64-v8a" ]; then
-        cp -rf /tmp/anykernel/tools/su_arm64 /system/xbin/su;
-fi;
-
-set_perm_recursive 0 0 0755 0755 /system/xbin/su;
-if [ ! -e /system/bin/su ]; then
-	ln -s -f /system/xbin/su /system/bin/su;
-fi
-if [ -e /system/xbin/isu ]; then
-	rm -rf /system/xbin/isu;
+# patched SU 
+if [ -e /system/xbin/su ]; then
+        sed -i 's/ro.cm.version/ro.no.version/g' /system/xbin/su;
+        set_perm_recursive 0 0 0755 0755 /system/xbin/su;
+elif [ -e /system/xbin/isu ]; then
+        sed -i 's/ro.cm.version/ro.no.version/g' /system/xbin/isu;
+        set_perm_recursive 0 0 0755 0755 /system/xbin/isu;
 fi
 
 ## abort tweak if tweak.prop is not found or is empty
