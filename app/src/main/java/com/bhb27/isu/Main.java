@@ -209,8 +209,10 @@ public class Main extends Activity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView,
                     boolean isChecked) {
-                    Tools.SwitchSu(isChecked, false, MainContext);
-                    Tools.UpMain(MainContext);
+                    if (Tools.SuBinary(xbin_su) != isChecked) {
+                        Tools.SwitchSu(isChecked, false, MainContext);
+                        Tools.UpMain(MainContext);
+                    }
                 }
             });
             SuSwitchSummary.setText(getString(R.string.su_state));
@@ -222,8 +224,10 @@ public class Main extends Activity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView,
                     boolean isChecked) {
-                    Tools.SwitchSelinux(isChecked, MainContext);
-                    Tools.UpMain(MainContext);
+                    if (Tools.isSELinuxActive() != isChecked) {
+                        Tools.SwitchSelinux(isChecked, MainContext);
+                        Tools.UpMain(MainContext);
+                    }
                 }
             });
 
