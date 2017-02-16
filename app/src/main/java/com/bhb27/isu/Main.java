@@ -58,9 +58,9 @@ import com.bhb27.isu.tools.Tools;
 public class Main extends Activity {
 
     private TextView SuSwitchSummary, SuStatus, kernel_check, Selinux_State, su_version, su_version_summary,
-    SelinuxStatus, download_folder_link, per_app_summary, SuSelinuxSwitchSummary;
+    SelinuxStatus, download_folder_link, per_app_summary, SuSelinuxSwitch_summary, AndDebugSwitch_summary, ChangeAndDebugSwitch_summary;
     private Button about, per_app;
-    private Switch suSwitch, SelinuxSwitch, iSuNotification, SuSelinuxSwitch;
+    private Switch suSwitch, SelinuxSwitch, iSuNotification, SuSelinuxSwitch, AndDebugSwitch, ChangeAndDebugSwitch;
 
     private String bin_su = Constants.bin_su;
     private String xbin_su = Constants.xbin_su;
@@ -129,9 +129,14 @@ public class Main extends Activity {
         Selinux_State = (TextView) findViewById(R.id.Selinux_State);
         Selinux_State.setText(Tools.getSELinuxStatus());
 
+        AndDebugSwitch = (Switch) findViewById(R.id.AndDebugSwitch);
+        AndDebugSwitch_summary = (TextView) findViewById(R.id.AndDebugSwitch_summary);
+        ChangeAndDebugSwitch = (Switch) findViewById(R.id.ChangeAndDebugSwitch);
+        ChangeAndDebugSwitch_summary = (TextView) findViewById(R.id.ChangeAndDebugSwitch_summary);
+
         iSuNotification = (Switch) findViewById(R.id.iSuNotification);
         SuSelinuxSwitch = (Switch) findViewById(R.id.SuSelinuxSwitch);
-        SuSelinuxSwitchSummary = (TextView) findViewById(R.id.SuSelinuxSwitchSummary);
+        SuSelinuxSwitch_summary = (TextView) findViewById(R.id.SuSelinuxSwitch_summary);
 
         per_app = (Button) findViewById(R.id.buttonPer_app);
         per_app_summary = (TextView) findViewById(R.id.per_app);
@@ -202,6 +207,7 @@ public class Main extends Activity {
     protected void UpdateMain(boolean CMSU) {
         if (CMSU) {
 
+            Tools.WriteSettings(MainContext);
             suSwitch.setChecked(Tools.SuBinary(xbin_su));
             SuStatus.setText((suSwitch.isChecked() ? getString(R.string.activated) :
                 getString(R.string.deactivated)));
@@ -228,6 +234,27 @@ public class Main extends Activity {
                         Tools.SwitchSelinux(isChecked, MainContext);
                         Tools.UpMain(MainContext);
                     }
+                }
+            });
+
+            AndDebugSwitch.setChecked(Tools.AndroidDebugState(MainContext));
+            AndDebugSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
+                    if (Tools.AndroidDebugState(MainContext) != isChecked) {
+                        Tools.AndroidDebugSet(isChecked, MainContext);
+                        Tools.UpMain(MainContext);
+                    }
+                }
+            });
+
+            ChangeAndDebugSwitch.setChecked(Tools.getBoolean("adb_change", false, MainContext));
+            ChangeAndDebugSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
+                    Tools.saveBoolean("adb_change", isChecked, MainContext);
                 }
             });
 
@@ -274,10 +301,16 @@ public class Main extends Activity {
             SuSelinuxSwitch.setEnabled(false);
             SuSelinuxSwitch.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
             SuSelinuxSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            AndDebugSwitch.setEnabled(false);
+            AndDebugSwitch.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
+            AndDebugSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            AndDebugSwitch_summary.setVisibility(View.GONE);
+            ChangeAndDebugSwitch.setVisibility(View.GONE);
+            ChangeAndDebugSwitch_summary.setVisibility(View.GONE);
             iSuNotification.setEnabled(false);
             iSuNotification.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
             iSuNotification.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            SuSelinuxSwitchSummary.setVisibility(View.GONE);
+            SuSelinuxSwitch_summary.setVisibility(View.GONE);
             per_app.setEnabled(false);
             per_app_summary.setText(getString(R.string.not_available));
             SuStatus.setVisibility(View.GONE);

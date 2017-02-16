@@ -19,8 +19,6 @@
  */
 package com.bhb27.isu.tools;
 
-import android.content.Context;
-
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.NotificationManager;
@@ -28,7 +26,9 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Gravity;
@@ -151,13 +151,13 @@ public class Tools implements Constants {
             RootUtils.runICommand("mv " + xbin_isu + " " + xbin_su);
             RootUtils.runCommand("mv " + bin_temp_su + " " + bin_su);
             RootUtils.runCommand("mount -o ro,remount /system");
-            ClearAllNotification(context);
             ActiveSUToast(context);
+            ClearAllNotification(context);
         } else {
-            if (!AppMonitor){
-            String androidPay = RootUtils.runCommand("ps | grep " + Constants.PAY);
-            if (androidPay.contains(Constants.PAY))
-                RootUtils.runCommand("am force-stop " + Constants.PAY);
+            if (!AppMonitor) {
+                String androidPay = RootUtils.runCommand("ps | grep " + Constants.PAY);
+                if (androidPay.contains(Constants.PAY))
+                    RootUtils.runCommand("am force-stop " + Constants.PAY);
             }
             // Make a link to isu so all root tool work
             RootUtils.runCommand("mount -o rw,remount /system");
@@ -170,7 +170,11 @@ public class Tools implements Constants {
             String Toast = context.getString(R.string.per_app_deactive);
             if (!isSELinuxActive()) {
                 SwitchSelinux(true, context);
-            Toast = Toast + "\n" + context.getString(R.string.activate_selinux);
+                Toast = Toast + "\n" + context.getString(R.string.activate_selinux);
+            }
+            if (getBoolean("adb_change", false, context) && AndroidDebugState(context)) {
+                AndroidDebugSet(isChecked, context);
+                Toast = Toast + "\n" + context.getString(R.string.deactivate_anddebug);
             }
             Tools.DoAToast("iSu " + Toast + "!", context);
         }
@@ -181,16 +185,46 @@ public class Tools implements Constants {
 
     public static void ActiveSUToast(Context context) {
         String Toast = context.getString(R.string.per_app_active);
-        boolean restart = getBoolean("restart_selinux", false, context);
+        boolean restart_selinux = getBoolean("restart_selinux", false, context);
         boolean selinux = isSELinuxActive();
-        if (restart && !selinux) {
+        if (restart_selinux && !selinux) {
             SwitchSelinux(true, context);
             Toast = Toast + "\n" + context.getString(R.string.activate_selinux);
-        } else if (!restart && selinux) {
+        } else if (!restart_selinux && selinux) {
             SwitchSelinux(false, context);
             Toast = Toast + "\n" + context.getString(R.string.deactivate_selinux);
         }
+        if (getBoolean("adb_change", false, context) && SuBinary(xbin_su) && !AndroidDebugState(context)) {
+            AndroidDebugSet(SuBinary(xbin_su), context);
+            Toast = Toast + "\n" + context.getString(R.string.activate_anddebug);
+        }
         DoAToast("iSu " + Toast + "!", context);
+    }
+
+    public static boolean WriteSettings(Context context) {
+        if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == 0)
+            return true;
+        else {
+            if (SuBinary(xbin_su))
+                RootUtils.runCommand("pm grant com.bhb27.isu android.permission.WRITE_SECURE_SETTINGS");
+            else if (SuBinary(xbin_isu))
+                RootUtils.runICommand("pm grant com.bhb27.isu android.permission.WRITE_SECURE_SETTINGS");
+        }
+        if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == 0)
+            return true;
+        return false;
+    }
+
+    public static void AndroidDebugSet(Boolean isChecked, Context context) {
+        if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == 0)
+           Settings.Global.putInt(context.getContentResolver(),
+                Settings.Global.ADB_ENABLED, isChecked ? 1 : 0);
+    }
+
+    public static boolean AndroidDebugState(Context context) {
+        if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == 0)
+           return (Settings.Global.getInt(context.getContentResolver(), Settings.Global.ADB_ENABLED, 0) != 0);
+        return false;
     }
 
     public static void SwitchSelinux(boolean isChecked, Context context) {

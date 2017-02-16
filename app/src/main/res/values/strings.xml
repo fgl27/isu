@@ -21,6 +21,13 @@
     <string name="download_folder_link">Click here to go to iSu download folder</string>
     <string name="isu_reboot">iSu Nougat reboot support OK.</string>
 
+    <string name="anddebug_switch">Android debugging</string>
+    <string name="anddebug_switch_summary">From android Developer options, Enable the Android Debug Bridge(adb) interface</string>
+    <string name="anddebug_change">Change Android debugging with SU</string>
+    <string name="anddebug_change_summary">This featuring is only need for some devices\nIf ON will change Android debugging state if SU state is change, deactivating Android debugging when SU is deactivated and reactivating if SU is activate</string>
+   <string name="activate_anddebug">Activated Android debugging</string>
+   <string name="deactivate_anddebug">Deactivated Android debugging</string>
+
     <!-- Notification -->
     <string name="notification_title">SU is deactivated, activate SU?</string>
     <string name="notification_switch">Show a notification when SU is deactivated</string>
@@ -73,8 +80,8 @@
     <string name="per_app_restart">Restart the app after Activate SU</string>
     <string name="per_app_restart_summary">There is a chance that the app you choose start before iSu can activate SU and it will fail because missing SU acess, so iSu can restart the app after activating SU to make shore it has ROOT access.\nThe restart may not work with all apps and is not need in all devices.</string>
    <string name="not_available">Not Available</string>
-   <string name="activate_selinux">SELinux Set to Enforcing!</string>
-   <string name="deactivate_selinux">SELinux Set to Permissive!</string>
+   <string name="activate_selinux">SELinux Set to Enforcing</string>
+   <string name="deactivate_selinux">SELinux Set to Permissive</string>
    <string name="per_app_default_deactivate">Deactivate SU to any app if SU is activated</string>
    <string name="per_app_default_activate">Activated SU to any app if SU is deactivated</string>
 
