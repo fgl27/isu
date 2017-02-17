@@ -22,7 +22,7 @@
     <string name="isu_reboot">iSu Nougat reboot support OK.</string>
 
     <string name="anddebug_switch">Android debugging</string>
-    <string name="anddebug_switch_summary">From android Developer options, Enable the Android Debug Bridge(adb) interface</string>
+    <string name="anddebug_switch_summary">From android Developer options\nEnable the Android Debug Bridge(adb) interface</string>
     <string name="anddebug_change">Change Android debugging with SU</string>
     <string name="anddebug_change_summary">This featuring is only need for some devices\nIf ON will change Android debugging state if SU state is change, deactivating Android debugging when SU is deactivated and reactivating if SU is activate</string>
    <string name="activate_anddebug">Activated Android debugging</string>
