@@ -20,6 +20,13 @@
     <string name="download_folder_link">Toque aqui para ir a pasta de Download do iSu</string>
     <string name="isu_reboot">iSu Nougat Reboot Suporte OK</string>
 
+    <string name="anddebug_switch">Depuração Android</string>
+    <string name="anddebug_switch_summary">Opções do desemvolvedor\nAtivar a interface Android Debug Bridge (adb)</string>
+    <string name="anddebug_change">Mudar Depuração Android com SU</string>
+    <string name="anddebug_change_summary">Este é apenas necessário para alguns aplicativos\nSe ativado, Se habilitado ao ativar/desativar SU ativara/desativara a Depuração Android</string>
+   <string name="activate_anddebug">Depuração Android ativado</string>
+   <string name="deactivate_anddebug">Depuração Android desativado</string>
+
     <!-- Notification -->
     <string name="notification_title">SU esta desativado, ativar o SU?</string>
     <string name="notification_switch">Mostra uma notificação quando o SU esta desativado</string>
@@ -62,8 +69,8 @@
     <string name="per_app_restart">Reiniciar o app apos Ativar o SU</string>
     <string name="per_app_restart_summary">É possível que o app que escolhei para ativar o SU quando clicado inicie antes que o iSu consiga ativar o SU e isso vai fazer este app falhar por falta de acesso SU, Então o iSu pode reiniciar este app apos ter ativado o SU.\nO reinicio pode não funcionar em todos aplicativos e não é preciso em todos aparelhos.</string>
    <string name="not_available">Não disponível</string>
-   <string name="activate_selinux">SELinux setado para Enforcing!</string>
-   <string name="deactivate_selinux">SELinux setado para Permissive!</string>
+   <string name="activate_selinux">SELinux setado para Enforcing</string>
+   <string name="deactivate_selinux">SELinux setado para Permissive</string>
    <string name="per_app_default_deactivate">Desativa o SU para qualquer app se o SU esta ativado</string>
    <string name="per_app_default_activate">Ativa o SU para qualquer app se o SU esta desativado</string>
 

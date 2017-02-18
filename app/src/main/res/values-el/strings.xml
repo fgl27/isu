@@ -65,8 +65,8 @@
     <string name="per_app_restart">Επανέναρξη της εφαρμογής αφού ενεργοποιηθεί το SU</string>
     <string name="per_app_restart_summary">Υπάρχει μια μικρή πιθανότητα η εφαρμογή να ξεκινήσει πρίν το iSu προλάβει να ενεργοποιήσει το SU με αποτέλεσμα να μην έχει πρόσβαση Root. Το iSu μπορεί να επανεκκινήσει την εφαρμογή αφού ενεργοποιήθει το SU για να αποκτήσει σίγουρα πρόσβαση Root.\nΗ επανεκκίνηση μπορεί να μην λειτουργεί για όλες τις εφαρμογές και να μην χρειάζεται για όλες τις συσκευές.</string>
     <string name="not_available">Μη διαθέσιμο</string>
-    <string name="activate_selinux">Το SELinux έχει γυρίσει σε Enforcing!</string>
-    <string name="deactivate_selinux">Το SELinux έχει γυρίσει σε Permissive!</string>
+    <string name="activate_selinux">Το SELinux έχει γυρίσει σε Enforcing</string>
+    <string name="deactivate_selinux">Το SELinux έχει γυρίσει σε Permissive</string>
     <string name="per_app_default_deactivate">Απενεργοποίηση του SU για όλες τις εφαρμογές όταν το SU ενεργοποιείτε</string>
     <string name="per_app_default_activate">Ενεργοποίηση του SU για όλες τις εφαρμογές όταν το SU απενεργοποιείτε</string>
 
