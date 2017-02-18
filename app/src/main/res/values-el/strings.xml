@@ -44,7 +44,7 @@
     <string name="dev_info">Πληροφορίες προγραμματιστή:</string>
     <string name="git_summary">Η εφαρμογή είναι ανοιχτού κώδικα και μπορείς να την βρείς στο github\ngithub.com/bhb27/isu</string>
     <string name="version">Έκδοση:</string>
-    <string name="version_summary">Μια απλή εφαρμογή που επιτρέπει την ανά πάσα στιγμή απενεργοποίηση του SU έτσι ώστε να μπορεί να γίνει χρήση κάποιων εφαρμογών που δεν λειτουργούν με Root. Προς το παρών δουλέυει μόνο με το SU binary των CM ROM\'s.</string>
+    <string name="version_summary">Μια απλή εφαρμογή που επιτρέπει την ανά πάσα στιγμή απενεργοποίηση του SU έτσι ώστε να μπορεί να γίνει χρήση κάποιων εφαρμογών που δεν λειτουργούν με Root. Προς το παρών δουλέυει μόνο με το SU binary των CM/LOS ROM\'s.</string>
     <string name="xda_summary">Υποστήριξη forum XDA</string>
     <string name="email">Email</string>
     <string name="email_summary">fglfgl27@gmail.com</string>

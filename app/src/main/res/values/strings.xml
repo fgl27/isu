@@ -14,7 +14,7 @@
     <string name="selinux_state">Current SELinux state:</string>
     <string name="selinux_toast_ok">SELinux set to Enforcing!\n This is need by some App safety check</string>
     <string name="restart_selinux">Activate SELinux when SU is activated</string>
-   <string name="restart_selinux_summary">If ON will always set SELinux to Enforcing when activate SU.\nIf OFF will always set SELinux to Permissive when activate SU.</string>
+   <string name="restart_selinux_summary">If ON will set SELinux to Enforcing\nIf OFF will set SELinux to Permissive</string>
     <string name="isu_kernel_good">iSu Kernel Support OK.</string>
     <string name="isu_kernel_bad">No iSu Kernel Support!!!\nPlease flash the kernel support .zip or you may loose SU access</string>
     <string name="isu_kernel_no_su">If you use iSu to deactivate SU and lost SU support try&#8230;\nA reboot if you have iSu kernel support, if you don\'t have kernel support reflash yours current ROM .zip, without SU access the app can\'t tell if you have reboot support so also check in Setting Developer option if Root accesses is granted to apps, in doubt check XDA thread link in About iSu&#8230; XDA support forun site.</string>
@@ -24,7 +24,7 @@
     <string name="anddebug_switch">Android debugging</string>
     <string name="anddebug_switch_summary">From android Developer options\nEnable the Android Debug Bridge (adb) interface</string>
     <string name="anddebug_change">Change Android debugging with SU</string>
-    <string name="anddebug_change_summary">This featuring is only need for some devices\nIf ON will change Android debugging state if SU state is change, deactivating Android debugging when SU is deactivated and reactivating if SU is activate</string>
+    <string name="anddebug_change_summary">This featuring is only need for some devices\nIf ON will activate/deactivate Android debugging</string>
    <string name="activate_anddebug">Activated Android debugging</string>
    <string name="deactivate_anddebug">Deactivated Android debugging</string>
 
@@ -52,7 +52,7 @@
     <string name="dev_info">Developer information:</string>
     <string name="git_summary">This is a open source app check it on my github\ngithub.com/bhb27/isu</string>
     <string name="version">Version:</string>
-    <string name="version_summary">A simple app to deactivate SU at will and pass safety verification for some apps, today it works only on SU binary of CM base ROM\'s.</string>
+    <string name="version_summary">A simple app to deactivate SU at will and pass safety verification for some apps, today it works only on SU binary of CM/LOS base ROM\'s.</string>
     <string name="xda_summary">XDA support forum site</string>
     <string name="email">Email</string>
     <string name="email_summary">fglfgl27@gmail.com</string>

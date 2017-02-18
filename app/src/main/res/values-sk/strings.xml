@@ -44,7 +44,7 @@
     <string name="dev_info">Informácie o vývojárovi:</string>
     <string name="git_summary">Toto je open source aplikácia, pozrite sa na stránku GitHub\ngithub.com/bhb27/isu</string>
     <string name="version">Verzia:</string>
-    <string name="version_summary">Jednoduchá aplikácia pre deaktivovanie SU, čo umožní prejsť kontrolou zabezpečenia v niektorých aplikáciách, funguje iba pre SU binárne súbory v na CM založených ROM.</string>
+    <string name="version_summary">Jednoduchá aplikácia pre deaktivovanie SU, čo umožní prejsť kontrolou zabezpečenia v niektorých aplikáciách, funguje iba pre SU binárne súbory v na CM/LOS založených ROM.</string>
     <string name="xda_summary">Podpora na XDA fóre</string>
     <string name="email">E-mail</string>
     <string name="email_summary">fglfgl27@gmail.com</string>
