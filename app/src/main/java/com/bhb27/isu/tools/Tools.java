@@ -201,18 +201,13 @@ public class Tools implements Constants {
         DoAToast("iSu " + Toast + "!", context);
     }
 
-    public static boolean WriteSettings(Context context) {
-        if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == 0)
-            return true;
-        else {
+    public static void WriteSettings(Context context) {
+        if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") != 0) {
             if (SuBinary(xbin_su))
                 RootUtils.runCommand("pm grant com.bhb27.isu android.permission.WRITE_SECURE_SETTINGS");
             else if (SuBinary(xbin_isu))
                 RootUtils.runICommand("pm grant com.bhb27.isu android.permission.WRITE_SECURE_SETTINGS");
         }
-        if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == 0)
-            return true;
-        return false;
     }
 
     public static void AndroidDebugSet(Boolean isChecked, Context context) {
