@@ -34,12 +34,14 @@ import com.bhb27.isu.tools.Constants;
 @TargetApi(24)
 public class QuickTileSU extends TileService {
 
+    private String xbin_su = Tools.SystemSystem() + Constants.xbin_su;
+
     @Override
     public void onStartListening() {
         super.onStartListening();
         boolean su = (Tools.SuVersionBool(Tools.SuVersion(this)));
         if (su) {
-            getQsTile().setLabel((Tools.SuBinary(Constants.xbin_su) ?
+            getQsTile().setLabel((Tools.SuBinary(xbin_su) ?
                 this.getString(R.string.activated) : this.getString(R.string.deactivated)));
         } else
             getQsTile().setLabel(this.getString(R.string.not_available));
@@ -51,8 +53,8 @@ public class QuickTileSU extends TileService {
         super.onClick();
         boolean su = (Tools.SuVersionBool(Tools.SuVersion(this)));
         if (su) {
-            Tools.SwitchSu(!Tools.SuBinary(Constants.xbin_su), false, this);
-            getQsTile().setLabel((Tools.SuBinary(Constants.xbin_su) ?
+            Tools.SwitchSu(!Tools.SuBinary(xbin_su), false, this);
+            getQsTile().setLabel((Tools.SuBinary(xbin_su) ?
                 this.getString(R.string.activated) : this.getString(R.string.deactivated)));
             Tools.UpMain(this);
             getQsTile().updateTile();

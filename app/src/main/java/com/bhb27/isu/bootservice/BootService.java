@@ -32,8 +32,8 @@ public class BootService extends Service {
 
     private static final String TAG = "iSu_BootService";
     private final String sepolicy = Constants.sepolicy;
-    private String xbin_su = Constants.xbin_su;
-    private String xbin_isu = Constants.xbin_isu;
+    private String xbin_su = Tools.SystemSystem() + Constants.xbin_su;
+    private String xbin_isu = Tools.SystemSystem() + Constants.xbin_isu;
 
     @Override
     public IBinder onBind(Intent intent) {

@@ -56,7 +56,7 @@ public class Tools implements Constants {
 
     public static boolean KernelSupport() {
         String kernel_support_rc, kernel_support_sh;
-        if (existFile(xbin_su, true)) {
+        if (existFile(SystemSystem() + xbin_su, true)) {
             kernel_support_rc = RootUtils.runCommand("grep -r -i isu_daemon *.rc ") + "";
             kernel_support_sh = RootUtils.runCommand("grep -r -i isu_daemon *.sh ") + "" +
                 RootUtils.runCommand("grep -r -i /system/xbin/isu /sbin/*.sh ");
@@ -76,43 +76,89 @@ public class Tools implements Constants {
     }
 
     public static boolean ReadSystemPatch() {
-        String reboot_support_rc, reboot_support_sh;
-        if (SuBinary(xbin_su)) {
+        String reboot_support_rc = "", reboot_support_sh = "";
+        if (SuBinary(SystemSystem() + xbin_su)) {
             reboot_support_rc = RootUtils.runCommand("grep -i isu_daemon system/etc/init/superuser.rc") + "";
+            reboot_support_rc = reboot_support_rc + RootUtils.runCommand("grep -i isu_daemon system/system/etc/init/superuser.rc") + "";
             reboot_support_sh = RootUtils.runCommand("grep -i /system/xbin/isu system/xbin/isush") + "";
-            if (reboot_support_rc.contains("isu_daemon") && reboot_support_sh.contains("/system/xbin/isu"))
-                return true;
-        } else if (SuBinary(xbin_isu)) {
+            reboot_support_sh = reboot_support_sh + RootUtils.runCommand("grep -i /system/xbin/isu system/system/xbin/isush") + "";
+        } else if (SuBinary(SystemSystem() + xbin_isu)) {
             reboot_support_rc = RootUtils.runICommand("grep -i isu_daemon system/etc/init/superuser.rc") + "";
+            reboot_support_rc = reboot_support_rc + RootUtils.runICommand("grep -i isu_daemon system/system/etc/init/superuser.rc") + "";
             reboot_support_sh = RootUtils.runICommand("grep -i /system/xbin/isu system/xbin/isush") + "";
-            if (reboot_support_rc.contains("isu_daemon") && reboot_support_sh.contains("/system/xbin/isu"))
-                return true;
+            reboot_support_sh = reboot_support_sh + RootUtils.runICommand("grep -i /system/xbin/isu system/system/xbin/isush") + "";
         }
+        if (reboot_support_rc.contains("isu_daemon") && reboot_support_sh.contains("/system/xbin/isu"))
+            return true;
         return false;
     }
 
     public static void SystemPatch(String executableFilePath) {
-        if (SuBinary(xbin_su)) {
-            RootUtils.runCommand("mount -o rw,remount /system");
-            RootUtils.runCommand("cp -f " + executableFilePath + "isush" + " /system/xbin/");
+        String system = SystemSystem();
+        mount("rw");
+        if (SuBinary(SystemSystem() + xbin_su)) {
+            RootUtils.runCommand("cp -f " + executableFilePath + "isush " + system + "/xbin/");
             RootUtils.runCommand("chmod 0755" + " /system/xbin/isush");
-            RootUtils.runCommand("cp -f " + executableFilePath + "superuser.rc" + " /system/etc/init/");
-            RootUtils.runCommand("chmod 0644" + " /system/etc/init/superuser.rc");
-            RootUtils.runCommand("mount -o ro,remount /system");
-        } else if (SuBinary(xbin_isu)) {
-            RootUtils.runICommand("mount -o rw,remount /system");
-            RootUtils.runICommand("cp -f " + executableFilePath + "isush" + " /system/xbin/");
+            RootUtils.runCommand("cp -f " + executableFilePath + "superuser.rc " + system + "/etc/init/");
+            RootUtils.runCommand("chmod 0644 " + system + "/etc/init/superuser.rc");
+            if (SystemSystemBoolean()) {
+                RootUtils.runCommand("cp -f " + executableFilePath + "superuser.rc " + "/system/etc/init/");
+                RootUtils.runCommand("chmod 0644 " + "/system/etc/init/superuser.rc");
+            }
+        } else if (SuBinary(SystemSystem() + xbin_isu)) {
+            RootUtils.runICommand("cp -f " + executableFilePath + "isush " + system + "/xbin/");
             RootUtils.runICommand("chmod 0755" + " /system/xbin/isush");
-            RootUtils.runICommand("cp -f " + executableFilePath + "superuser.rc" + " /system/etc/init/");
-            RootUtils.runICommand("chmod 0644" + " /system/etc/init/superuser.rc");
-            RootUtils.runICommand("mount -o ro,remount /system");
+            RootUtils.runICommand("cp -f " + executableFilePath + "superuser.rc " + system + "/etc/init/");
+            RootUtils.runICommand("chmod 0644 " + system + "/etc/init/superuser.rc");
+            if (SystemSystemBoolean()) {
+                RootUtils.runICommand("cp -f " + executableFilePath + "superuser.rc " + "/system/etc/init/");
+                RootUtils.runICommand("chmod 0644 " + "/system/etc/init/superuser.rc");
+            }
+        }
+        mount("ro");
+    }
+
+    public static String SystemSystem() {
+        String system = RootUtils.runCommand("which su");
+        if (system != null) {
+            if (system.contains("su"))
+                return system.substring(0, system.length() - 7);
+        }
+        system = RootUtils.runICommand("which isu");
+        if (system != null) {
+            if (system.contains("su"))
+                return system.substring(0, system.length() - 8);
+        }
+        return system;
+    }
+
+    public static boolean SystemSystemBoolean() {
+        return SystemSystem().contains("/system/system");
+    }
+
+    public static void mount(String rw_ro) {
+        String temp_mount = "";
+        if (SuBinary(SystemSystem() + xbin_su)) {
+            RootUtils.runCommand("mount -o " + rw_ro + ",remount /system");
+            temp_mount = RootUtils.runCommand("cat /proc/mounts | grep /system | grep rw");
+            if (temp_mount != null) {
+                if (!temp_mount.contains("/system"))
+                    RootUtils.runCommand("mount -o " + rw_ro + ",remount /system /system");
+            }
+        } else if (SuBinary(SystemSystem() + xbin_su)) {
+            RootUtils.runICommand("mount -o " + rw_ro + ",remount /system");
+            temp_mount = RootUtils.runICommand("cat /proc/mounts | grep /system | grep rw");
+            if (temp_mount != null) {
+                if (!temp_mount.contains("/system"))
+                    RootUtils.runCommand("mount -o " + rw_ro + ",remount /system /system");
+            }
         }
     }
 
     public static void PatchSepolicy(String executableFilePath) {
-        if (SuBinary(xbin_su))
+        if (SuBinary(SystemSystem() + xbin_su))
             RootUtils.runCommand("LD_LIBRARY_PATH=" + executableFilePath + " " + executableFilePath + sepolicy);
-        else if (SuBinary(xbin_isu))
+        else if (SuBinary(SystemSystem() + xbin_isu))
             RootUtils.runICommand("LD_LIBRARY_PATH=" + executableFilePath + " " + executableFilePath + sepolicy);
     }
 
@@ -120,11 +166,11 @@ public class Tools implements Constants {
         final int layoutResourceId,
         final Class < ? extends AppWidgetProvider > appWidgetClass) {
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), layoutResourceId);
-        remoteViews.setTextViewText(R.id.iSuMain, "SU" + "\n" + (SuBinary(Constants.xbin_su) ?
+        remoteViews.setTextViewText(R.id.iSuMain, "SU" + "\n" + (SuBinary(SystemSystem() + xbin_su) ?
             context.getString(R.string.activated) : context.getString(R.string.deactivated)));
-        if (SuBinary(Constants.xbin_su))
+        if (SuBinary(SystemSystem() + xbin_su))
             remoteViews.setInt(R.id.iSuMain, "setBackgroundResource", R.drawable.button);
-        else if (SuBinary(Constants.xbin_isu))
+        else if (SuBinary(SystemSystem() + xbin_isu))
             remoteViews.setInt(R.id.iSuMain, "setBackgroundResource", R.drawable.buttong);
         if (SU_SEL) {
             remoteViews.setTextViewText(R.id.iSuMonitor, "SELinux" + "\n" + Tools.getSELinuxStatus());
@@ -139,18 +185,18 @@ public class Tools implements Constants {
     }
 
     public static void UpMain(Context context) {
-            final Intent MainIntent = new Intent();
-            MainIntent.setAction("updateMainReceiver");
-            context.sendBroadcast(MainIntent);
+        final Intent MainIntent = new Intent();
+        MainIntent.setAction("updateMainReceiver");
+        context.sendBroadcast(MainIntent);
     }
 
     public static void SwitchSu(boolean isChecked, boolean AppMonitor, Context context) {
+        mount("rw");
+        String system = SystemSystem();
         if (isChecked) {
             // Mount rw to change mount ro after
-            RootUtils.runICommand("mount -o rw,remount /system");
-            RootUtils.runICommand("mv " + xbin_isu + " " + xbin_su);
-            RootUtils.runCommand("mv " + bin_temp_su + " " + bin_su);
-            RootUtils.runCommand("mount -o ro,remount /system");
+            RootUtils.runICommand("mv " + system + xbin_isu + " " + system + xbin_su);
+            RootUtils.runCommand("mv " + system + bin_temp_su + " " + system + bin_su);
             ActiveSUToast(context);
             ClearAllNotification(context);
         } else {
@@ -160,11 +206,9 @@ public class Tools implements Constants {
                     RootUtils.runCommand("am force-stop " + Constants.PAY);
             }
             // Make a link to isu so all root tool work
-            RootUtils.runCommand("mount -o rw,remount /system");
-            RootUtils.runCommand("ln -s -f " + xbin_isu + " " + bin_isu);
-            RootUtils.runCommand("mv " + xbin_su + " " + xbin_isu);
-            RootUtils.runICommand("mv " + bin_su + " " + bin_temp_su);
-            RootUtils.runICommand("mount -o ro,remount /system");
+            RootUtils.runCommand("ln -s -f " + system + xbin_isu + " " + system + bin_isu);
+            RootUtils.runCommand("mv " + system + xbin_su + " " + system + xbin_isu);
+            RootUtils.runICommand("mv " + system + bin_su + " " + system + bin_temp_su);
             if (getBoolean("isu_notification", false, context))
                 DoNotification(context);
             String Toast = context.getString(R.string.per_app_deactive);
@@ -178,6 +222,7 @@ public class Tools implements Constants {
             }
             Tools.DoAToast("iSu " + Toast + "!", context);
         }
+        mount("ro");
         updateAllWidgets(true, context, R.layout.widget_layouth, Widgeth.class);
         updateAllWidgets(true, context, R.layout.widget_layoutv, Widgetv.class);
         updateAllWidgets(false, context, R.layout.widget_layoutsu, Widgetsu.class);
@@ -194,8 +239,8 @@ public class Tools implements Constants {
             SwitchSelinux(false, context);
             Toast = Toast + "\n" + context.getString(R.string.deactivate_selinux);
         }
-        if (getBoolean("adb_change", false, context) && SuBinary(xbin_su) && !AndroidDebugState(context)) {
-            AndroidDebugSet(SuBinary(xbin_su), context);
+        if (getBoolean("adb_change", false, context) && SuBinary(SystemSystem() + xbin_su) && !AndroidDebugState(context)) {
+            AndroidDebugSet(SuBinary(SystemSystem() + xbin_su), context);
             Toast = Toast + "\n" + context.getString(R.string.activate_anddebug);
         }
         DoAToast("iSu " + Toast + "!", context);
@@ -203,29 +248,29 @@ public class Tools implements Constants {
 
     public static void WriteSettings(Context context) {
         if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") != 0) {
-            if (SuBinary(xbin_su))
+            if (SuBinary(SystemSystem() + xbin_su))
                 RootUtils.runCommand("pm grant com.bhb27.isu android.permission.WRITE_SECURE_SETTINGS");
-            else if (SuBinary(xbin_isu))
+            else if (SuBinary(SystemSystem() + xbin_isu))
                 RootUtils.runICommand("pm grant com.bhb27.isu android.permission.WRITE_SECURE_SETTINGS");
         }
     }
 
     public static void AndroidDebugSet(Boolean isChecked, Context context) {
         if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == 0)
-           Settings.Global.putInt(context.getContentResolver(),
+            Settings.Global.putInt(context.getContentResolver(),
                 Settings.Global.ADB_ENABLED, isChecked ? 1 : 0);
     }
 
     public static boolean AndroidDebugState(Context context) {
         if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == 0)
-           return (Settings.Global.getInt(context.getContentResolver(), Settings.Global.ADB_ENABLED, 0) != 0);
+            return (Settings.Global.getInt(context.getContentResolver(), Settings.Global.ADB_ENABLED, 0) != 0);
         return false;
     }
 
     public static void SwitchSelinux(boolean isChecked, Context context) {
-        if (SuBinary(xbin_su))
+        if (SuBinary(SystemSystem() + xbin_su))
             RootUtils.runCommand(Constants.SETENFORCE + (isChecked ? " 1" : " 0"));
-        else if (SuBinary(xbin_isu))
+        else if (SuBinary(SystemSystem() + xbin_isu))
             RootUtils.runCommand(Constants.SETENFORCE + (isChecked ? " 1" : " 0"));
         updateAllWidgets(true, context, R.layout.widget_layouth, Widgeth.class);
         updateAllWidgets(true, context, R.layout.widget_layoutv, Widgetv.class);
@@ -242,9 +287,9 @@ public class Tools implements Constants {
     public static String SuVersion(Context context) {
         String su_bin_version = "";
         // Check if is CM-SU
-        if (SuBinary(xbin_su)) {
+        if (SuBinary(SystemSystem() + xbin_su)) {
             su_bin_version = RootUtils.runCommand("su --version") + "";
-        } else if (SuBinary(xbin_isu))
+        } else if (SuBinary(SystemSystem() + xbin_isu))
             su_bin_version = RootUtils.runICommand("isu --version") + "";
         else
             su_bin_version = RootUtils.runCommand("su --version") + "";
@@ -316,7 +361,7 @@ public class Tools implements Constants {
 
     public static String getSELinuxStatus() {
         String result = "";
-        if (existFile(xbin_su, true))
+        if (existFile(SystemSystem() + xbin_su, true))
             result = RootUtils.runCommand(GETENFORCE);
         else
             result = RootUtils.runICommand(GETENFORCE);
@@ -397,9 +442,9 @@ public class Tools implements Constants {
 
     public static String readFile(String file, boolean asRoot) {
         if (asRoot) {
-            if (SuBinary(xbin_su))
+            if (SuBinary(SystemSystem() + xbin_su))
                 return new RootFile(file).readFile();
-            else if (SuBinary(xbin_isu))
+            else if (SuBinary(SystemSystem() + xbin_isu))
                 return new RootFile(file).IreadFile();
         }
 
@@ -429,11 +474,11 @@ public class Tools implements Constants {
     }
 
     public static boolean SuBinary(String binary) {
-        if (binary.equals(xbin_su)) {
+        if (binary.equals(SystemSystem() + xbin_su)) {
             if (existFile(binary, true))
                 return true;
         }
-        if (binary.equals(xbin_isu)) {
+        if (binary.equals(SystemSystem() + xbin_isu)) {
             if (IexistFile(binary, true))
                 return true;
         }
@@ -450,9 +495,9 @@ public class Tools implements Constants {
      */
     public static void writeFile(String path, String text, boolean append, boolean asRoot) {
         if (asRoot) {
-            if (SuBinary(xbin_su))
+            if (SuBinary(SystemSystem() + xbin_su))
                 new RootFile(path).write(text, append);
-            else if (SuBinary(xbin_isu))
+            else if (SuBinary(SystemSystem() + xbin_isu))
                 new RootFile(path).Iwrite(text, append);
             return;
         }

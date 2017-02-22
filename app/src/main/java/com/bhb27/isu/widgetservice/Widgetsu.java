@@ -64,7 +64,7 @@ public class Widgetsu extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         if (ACTION_SU.equals(intent.getAction())) {
-            Tools.SwitchSu(!Tools.SuBinary(Constants.xbin_su), false, context);
+            Tools.SwitchSu(!Tools.SuBinary(Tools.SystemSystem() + Constants.xbin_su), false, context);
         }
     }
 

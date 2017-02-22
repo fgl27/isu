@@ -55,6 +55,8 @@ import com.bhb27.isu.PerAppActivity;
 import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.tools.Tools;
 
+import com.bhb27.isu.tools.RootUtils;
+
 public class Main extends Activity {
 
     private TextView SuSwitchSummary, SuStatus, kernel_check, Selinux_State, su_version, su_version_summary,
@@ -62,11 +64,11 @@ public class Main extends Activity {
     private Button about, per_app;
     private Switch suSwitch, SelinuxSwitch, iSuNotification, SuSelinuxSwitch, AndDebugSwitch, ChangeAndDebugSwitch;
 
-    private String bin_su = Constants.bin_su;
-    private String xbin_su = Constants.xbin_su;
-    private String bin_isu = Constants.bin_isu;
-    private String xbin_isu = Constants.xbin_isu;
-    private String bin_temp_su = Constants.bin_temp_su;
+    private String bin_su = Tools.SystemSystem() + Constants.bin_su;
+    private String xbin_su = Tools.SystemSystem() + Constants.xbin_su;
+    private String bin_isu = Tools.SystemSystem() + Constants.bin_isu;
+    private String xbin_isu = Tools.SystemSystem() + Constants.xbin_isu;
+    private String bin_temp_su = Tools.SystemSystem() + Constants.bin_temp_su;
 
     private ImageView ic_launcher;
 
@@ -94,7 +96,9 @@ public class Main extends Activity {
         animation.setDuration(750);
         layout.startAnimation(animation);
 
-        suVersion = Tools.SuVersion(MainContext);
+        Tools.mount("rw");
+        suVersion = Tools.SuVersion(MainContext) + "\n\nmount path:\n" + RootUtils.runCommand("cat /proc/mounts | grep /system | grep rw") + "\n\nSU path:\n" + RootUtils.runCommand("which su") + "\n\nsystem path:\n" + Tools.SystemSystem();
+        Tools.mount("ro");
         isCMSU = Tools.SuVersionBool(suVersion);
 
         Runnable runSepolicy = new Runnable() {
