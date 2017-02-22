@@ -35,7 +35,23 @@ dump_boot() {
     done
   fi;
 
-  dd if=$block of=/tmp/anykernel/boot.img;
+  # recovery.log dump_boot
+  if [ -z "$block" ]; then
+     if [ -e /tmp/recovery.log ]; then
+        block=$(cat /tmp/recovery.log | grep /boot | grep /dev | head -n1 | awk '{print $3;}');
+     fi;
+  fi;
+
+  # fstab dump_boot
+  # Theoretically a fstab exist in root, theoretically must be a /boot, theoretically the partition will be the third part of the string
+  if [ -z "$block" ]; then
+        block=$(grep boot /*"fstab"* | head -n1 | awk '{print $3;}' );
+        # if it doesn't contains mcblk0p readlink
+        if [ ! -z "$block" ]; then
+           contains $block "mcblk0p" || block=$(readlink $block);
+        fi;
+  fi;
+
   if [ -f "$bin/nanddump" ]; then
     $bin/nanddump -f /tmp/anykernel/boot.img $block;
   else
@@ -48,7 +64,7 @@ dump_boot() {
     $bin/unpackbootimg -i /tmp/anykernel/boot.img -o $split_img;
   fi;
   if [ $? != 0 ]; then
-    ui_print " "; ui_print "Dumping/splitting image failed. Aborting..."; exit 1;
+    ui_print "block = $block"; ui_print "Dumping/splitting image failed. Aborting..."; exit 1;
   fi;
   if [ -f "$bin/mkmtkhdr" ]; then
     dd bs=512 skip=1 conv=notrunc if=$split_img/boot.img-ramdisk.gz of=$split_img/temprd;
