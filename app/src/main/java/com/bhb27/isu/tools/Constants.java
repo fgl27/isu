@@ -19,11 +19,11 @@ public interface Constants {
 
     String TAG = "iSu";
     String PREF_NAME = "pref";
-    String bin_su = "/bin/su";
-    String xbin_su = "/xbin/su";
-    String bin_isu = "/bin/isu";
-    String xbin_isu = "/xbin/isu";
-    String bin_temp_su = "/bin/temp_su";
+    String bin_su = "/system/bin/su";
+    String xbin_su = "/system/xbin/su";
+    String bin_isu = "/system/bin/isu";
+    String xbin_isu = "/system/xbin/isu";
+    String bin_temp_su = "/system/bin/temp_su";
 
     String GETENFORCE = "getenforce";
     String SETENFORCE = "setenforce";

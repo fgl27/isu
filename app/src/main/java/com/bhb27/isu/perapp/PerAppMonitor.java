@@ -43,11 +43,11 @@ public class PerAppMonitor extends AccessibilityService {
     public static String accessibilityId;
     String last_profile = "";
     long time = System.currentTimeMillis();
-    private String bin_su = Tools.SystemSystem() + Constants.bin_su;
-    private String xbin_su = Tools.SystemSystem() + Constants.xbin_su;
-    private String bin_isu = Tools.SystemSystem() + Constants.bin_isu;
-    private String xbin_isu = Tools.SystemSystem() + Constants.xbin_isu;
-    private String bin_temp_su = Tools.SystemSystem() + Constants.bin_temp_su;
+    private String bin_su = Constants.bin_su;
+    private String xbin_su = Constants.xbin_su;
+    private String bin_isu = Constants.bin_isu;
+    private String xbin_isu = Constants.xbin_isu;
+    private String bin_temp_su = Constants.bin_temp_su;
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
