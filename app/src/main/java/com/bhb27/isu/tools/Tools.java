@@ -76,18 +76,16 @@ public class Tools implements Constants {
     }
 
     public static boolean ReadSystemPatch() {
-        String reboot_support_rc, reboot_support_sh;
+        String reboot_support_rc = "", reboot_support_sh = "";
         if (SuBinary(xbin_su)) {
             reboot_support_rc = RootUtils.runCommand("grep -i isu_daemon system/etc/init/superuser.rc") + "";
             reboot_support_sh = RootUtils.runCommand("grep -i /system/xbin/isu system/xbin/isush") + "";
-            if (reboot_support_rc.contains("isu_daemon") && reboot_support_sh.contains("/system/xbin/isu"))
-                return true;
         } else if (SuBinary(xbin_isu)) {
             reboot_support_rc = RootUtils.runICommand("grep -i isu_daemon system/etc/init/superuser.rc") + "";
             reboot_support_sh = RootUtils.runICommand("grep -i /system/xbin/isu system/xbin/isush") + "";
-            if (reboot_support_rc.contains("isu_daemon") && reboot_support_sh.contains("/system/xbin/isu"))
-                return true;
         }
+        if (reboot_support_rc.contains("isu_daemon") && reboot_support_sh.contains("/system/xbin/isu"))
+            return true;
         return false;
     }
 
@@ -139,9 +137,9 @@ public class Tools implements Constants {
     }
 
     public static void UpMain(Context context) {
-            final Intent MainIntent = new Intent();
-            MainIntent.setAction("updateMainReceiver");
-            context.sendBroadcast(MainIntent);
+        final Intent MainIntent = new Intent();
+        MainIntent.setAction("updateMainReceiver");
+        context.sendBroadcast(MainIntent);
     }
 
     public static void SwitchSu(boolean isChecked, boolean AppMonitor, Context context) {
@@ -212,13 +210,13 @@ public class Tools implements Constants {
 
     public static void AndroidDebugSet(Boolean isChecked, Context context) {
         if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == 0)
-           Settings.Global.putInt(context.getContentResolver(),
+            Settings.Global.putInt(context.getContentResolver(),
                 Settings.Global.ADB_ENABLED, isChecked ? 1 : 0);
     }
 
     public static boolean AndroidDebugState(Context context) {
         if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == 0)
-           return (Settings.Global.getInt(context.getContentResolver(), Settings.Global.ADB_ENABLED, 0) != 0);
+            return (Settings.Global.getInt(context.getContentResolver(), Settings.Global.ADB_ENABLED, 0) != 0);
         return false;
     }
 

@@ -91,9 +91,9 @@ public class PerAppMonitor extends AccessibilityService {
             time = System.currentTimeMillis();
             //active deactive su selinux
             if (last_profile.equals("Su") && Tools.SuBinary(xbin_isu))
-                PerAppiSuSwitch(true, packageName);
+                Tools.SwitchSu(true, true, this);
             else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_su))
-                PerAppiSuSwitch(false, packageName);
+                Tools.SwitchSu(false, true, this);
             else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_isu) && !Tools.isSELinuxActive()) {
                 Tools.SwitchSelinux(true, this);
                 Tools.DoAToast(getString(R.string.selinux_toast_ok), this);
@@ -102,12 +102,4 @@ public class PerAppMonitor extends AccessibilityService {
         }
     }
 
-    private void PerAppiSuSwitch(boolean isChecked, String packageName) {
-        Tools.SwitchSu(isChecked, true, this);
-        //if (!isChecked && packageName.contains("com.nianticlabs.pokemongo")) {
-          //  String poketoast = getString(R.string.pokemongo_start) + "\n\n" + Tools.RandomString(this);
-            //Tools.DoAToast(poketoast, this);
-            //Tools.DoAToast(poketoast, this);
-        //}
-    }
 }
