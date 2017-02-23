@@ -66,8 +66,6 @@
     <string name="per_app_active_summary">Selecione os apps que iram fazer o iSu ativar SU quando iniciados.</string>
     <string name="per_app_deactive">Desativando SU</string>
     <string name="per_app_deactive_summary">Selecione os apps que iram fazer o iSu desativar SU quando iniciados.\n(Desativar o SU também seta o SELinux para Enforcing)</string>
-    <string name="per_app_restart">Reiniciar o app apos Ativar o SU</string>
-    <string name="per_app_restart_summary">É possível que o app que escolhei para ativar o SU quando clicado inicie antes que o iSu consiga ativar o SU e isso vai fazer este app falhar por falta de acesso SU, Então o iSu pode reiniciar este app apos ter ativado o SU.\nO reinicio pode não funcionar em todos aplicativos e não é preciso em todos aparelhos.</string>
    <string name="not_available">Não disponível</string>
    <string name="activate_selinux">SELinux setado para Enforcing</string>
    <string name="deactivate_selinux">SELinux setado para Permissive</string>

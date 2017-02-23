@@ -31,6 +31,28 @@
             android:gravity="center"
             android:id="@+id/perapp_isu_summary"
             android:layout_gravity="center|top" />
+        <Switch
+            android:id="@+id/AutorestartSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/text_black"
+            android:text="@string/auto_restart_su"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+        <TextView
+            android:id="@+id/AutorestartSwitchSwitchSummary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold"
+            android:textColor="@color/text_black"
+            android:text="@string/auto_restart_su_summary"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
 	<View
 	    android:layout_width="match_parent"
             android:layout_marginTop="10dp"
@@ -59,33 +81,6 @@
             android:text="@string/per_app_active_summary"
             android:id="@+id/perapp_su_summary"
             android:layout_gravity="center|top" />
-	<View
-	    android:layout_width="match_parent"
-            android:layout_marginTop="10dp"
-	    android:layout_height="1dp"
-	    android:background="@color/colorAccent"/>
-        <Switch
-            android:id="@+id/restartSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginTop="10dp"
-            android:textStyle="bold"
-            android:textColor="@color/text_black"
-            android:text="@string/per_app_restart"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
-        <TextView
-            android:id="@+id/restartSwitchSummary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginTop="5dp"
-            android:textStyle="bold"
-            android:textColor="@color/text_black"
-            android:text="@string/per_app_restart_summary"
-            android:textAppearance="?android:attr/textAppearanceSmall"/>
 	<View
 	    android:layout_width="match_parent"
             android:layout_marginTop="10dp"

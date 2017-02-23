@@ -307,11 +307,6 @@ public class Tools implements Constants {
         return false;
     }
 
-    public static void RestartApp(String packageName) {
-        RootUtils.runCommand("am force-stop " + packageName);
-        RootUtils.runCommand("am start " + packageName);
-    }
-
     public static String getSELinuxStatus() {
         String result = "";
         if (existFile(xbin_su, true))

@@ -22,7 +22,8 @@ android {
         abortOnError false
 	disable 'UnsafeNativeCodeLocation', //UnsafeNativeCodeLocation: Native code outside library directory libsupol and supolicy
 		'GoogleAppIndexingWarning', //GoogleAppIndexingWarning: Missing support for Firebase App Indexing
-		'IconMissingDensityFolder' //IconMissingDensityFolder: Missing density folder
+		'IconMissingDensityFolder', //IconMissingDensityFolder: Missing density folder
+                'ProtectedPermissions' //ProtectedPermissions: Using system app permission
     }
     productFlavors {
     }

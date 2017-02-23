@@ -47,7 +47,7 @@ import android.content.DialogInterface;
 public class PerAppActivity extends Activity {
 
     private Button perapp_isu, perapp_su;
-    private Switch restartSwitch;
+    private Switch AutorestartSwitch;
     private ImageView ic_launcher;
     private AlertDialog.Builder mPerAppDialog;
     private Context PerAppActivityContext = null;
@@ -63,7 +63,7 @@ public class PerAppActivity extends Activity {
 
         perapp_su = (Button) findViewById(R.id.buttonSu);
 
-        restartSwitch = (Switch) findViewById(R.id.restartSwitch);
+        AutorestartSwitch = (Switch) findViewById(R.id.AutorestartSwitch);
 
         perapp_isu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,14 +88,15 @@ public class PerAppActivity extends Activity {
             }
         });
 
-        restartSwitch.setChecked(Tools.getBoolean("restart_su", false, PerAppActivityContext));
-        restartSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+        AutorestartSwitch.setChecked(Tools.getBoolean("auto_restart_su", false, PerAppActivityContext));
+        AutorestartSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                 boolean isChecked) {
-                Tools.saveBoolean("restart_su", isChecked, PerAppActivityContext);
+                Tools.saveBoolean("auto_restart_su", isChecked, PerAppActivityContext);
             }
         });
+
     }
 
     private void PerAppDialog(String id) {

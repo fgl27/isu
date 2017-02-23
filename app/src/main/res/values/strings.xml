@@ -77,13 +77,13 @@
     <string name="per_app_active_summary">Select the apps that will make iSu activate SU when started.</string>
     <string name="per_app_deactive">Deactivate SU</string>
     <string name="per_app_deactive_summary">Select the apps that will make iSu deactivate SU when started.\n(deactivating SU will also set SELinux to enforcing)</string>
-    <string name="per_app_restart">Restart the app after Activate SU</string>
-    <string name="per_app_restart_summary">There is a chance that the app you choose start before iSu can activate SU and it will fail because missing SU acess, so iSu can restart the app after activating SU to make shore it has ROOT access.\nThe restart may not work with all apps and is not need in all devices.</string>
    <string name="not_available">Not Available</string>
    <string name="activate_selinux">SELinux Set to Enforcing</string>
    <string name="deactivate_selinux">SELinux Set to Permissive</string>
    <string name="per_app_default_deactivate">Deactivate SU to any app if SU is activated</string>
    <string name="per_app_default_activate">Activated SU to any app if SU is deactivated</string>
+   <string name="auto_restart_su">Automatic Restart SU</string>
+   <string name="auto_restart_su_summary">If on, will automatic active SU when leave the app that deactivated SU</string>
 
     <!--Widget-->
     <string name="horizontal">Horizontal</string>

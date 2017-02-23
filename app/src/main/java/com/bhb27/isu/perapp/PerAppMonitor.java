@@ -41,6 +41,7 @@ public class PerAppMonitor extends AccessibilityService {
     private static final String TAG = PerAppMonitor.class.getSimpleName();
     public static String sPackageName;
     public static String accessibilityId;
+    String last_package = "";
     String last_profile = "";
     long time = System.currentTimeMillis();
     private String bin_su = Constants.bin_su;
@@ -61,12 +62,12 @@ public class PerAppMonitor extends AccessibilityService {
 
         if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED && event.getPackageName() != null) {
             sPackageName = event.getPackageName().toString();
-            Log.d(TAG, "Package Name is " + sPackageName);
-            if ((System.currentTimeMillis() - time) < 1000) {
-                if (!sPackageName.equals(launcher) || !sPackageName.equals("com.android.systemui")) {
+            Log.d(TAG, "Package Name is " + sPackageName + " time " + (System.currentTimeMillis() - time));
+            if ((System.currentTimeMillis() - time) < 2000) {
+                if (!sPackageName.equals(launcher) && !sPackageName.equals("com.android.systemui")) {
                     process_window_change(sPackageName);
                 }
-            } else if ((System.currentTimeMillis() - time) >= 1000) {
+            } else if ((System.currentTimeMillis() - time) >= 2000) {
                 process_window_change(sPackageName);
             }
         }
@@ -78,28 +79,47 @@ public class PerAppMonitor extends AccessibilityService {
     }
 
     private void process_window_change(String packageName) {
-        if (!Per_App.app_profile_exists(packageName, getApplicationContext())) {
-            packageName = "Default";
-            Log.d(TAG, "Profile does not exist. Using Default");
-        }
-        if (Per_App.app_profile_exists(packageName, getApplicationContext())) {
-            ArrayList < String > info = new ArrayList < String > ();
-            // Item 0 is package name Item 1 is the profile ID
-            info = Per_App.app_profile_info(packageName, getApplicationContext());
-
-            last_profile = info.get(1);
+        if (Tools.getBoolean("auto_restart_su", false, this)) {
+            if (!packageName.equals(last_package) && !packageName.equals("com.android.systemui")) {
+                if (!Per_App.app_profile_exists(packageName, getApplicationContext()))
+                    last_profile = "Su";
+                else {
+                    ArrayList < String > info = new ArrayList < String > ();
+                    // Item 0 is package name Item 1 is the profile ID
+                    info = Per_App.app_profile_info(packageName, getApplicationContext());
+                    last_profile = info.get(1);
+                }
+            last_package = packageName;
             time = System.currentTimeMillis();
-            //active deactive su selinux
-            if (last_profile.equals("Su") && Tools.SuBinary(xbin_isu))
-                Tools.SwitchSu(true, true, this);
-            else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_su))
-                Tools.SwitchSu(false, true, this);
-            else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_isu) && !Tools.isSELinuxActive()) {
-                Tools.SwitchSelinux(true, this);
-                Tools.DoAToast(getString(R.string.selinux_toast_ok), this);
+            change();
             }
-
+        } else {
+            if (!Per_App.app_profile_exists(packageName, getApplicationContext())) {
+                packageName = "Default";
+                Log.d(TAG, "Profile does not exist. Using Default");
+            }
+            if (Per_App.app_profile_exists(packageName, getApplicationContext())) {
+                ArrayList < String > info = new ArrayList < String > ();
+                // Item 0 is package name Item 1 is the profile ID
+                info = Per_App.app_profile_info(packageName, getApplicationContext());
+                last_package = packageName;
+                last_profile = info.get(1);
+                time = System.currentTimeMillis();
+                change();
+            }
         }
+
     }
 
+    public void change() {
+        //active deactive su selinux
+        if (last_profile.equals("Su") && Tools.SuBinary(xbin_isu)) {
+            Tools.SwitchSu(true, true, this);
+        } else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_su))
+            Tools.SwitchSu(false, true, this);
+        else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_isu) && !Tools.isSELinuxActive()) {
+            Tools.SwitchSelinux(true, this);
+            Tools.DoAToast(getString(R.string.selinux_toast_ok), this);
+        }
+    }
 }
