@@ -30,6 +30,7 @@
     <!-- Notification -->
     <string name="notification_title">SU nie je aktívny, aktivovať SU?</string>
     <string name="notification_switch">Zobraziť upozornenie keď je SU deaktivované</string>
+    <string name="toast_notification_switch">Zobraziť Toast upozornenie pri zmene SU</string>
     <string name="yes">Áno</string>
     <string name="dismiss">Zrušiť</string>
 
