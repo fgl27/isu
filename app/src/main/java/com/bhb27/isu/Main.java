@@ -60,7 +60,7 @@ public class Main extends Activity {
     private TextView SuSwitchSummary, SuStatus, kernel_check, Selinux_State, su_version, su_version_summary,
     SelinuxStatus, download_folder_link, per_app_summary, SuSelinuxSwitch_summary, AndDebugSwitch_summary, ChangeAndDebugSwitch_summary;
     private Button about, per_app;
-    private Switch suSwitch, SelinuxSwitch, iSuNotification, SuSelinuxSwitch, AndDebugSwitch, ChangeAndDebugSwitch;
+    private Switch suSwitch, SelinuxSwitch, iSuNotification, iSuToastNotification, SuSelinuxSwitch, AndDebugSwitch, ChangeAndDebugSwitch;
 
     private String bin_su = Constants.bin_su;
     private String xbin_su = Constants.xbin_su;
@@ -135,6 +135,7 @@ public class Main extends Activity {
         ChangeAndDebugSwitch_summary = (TextView) findViewById(R.id.ChangeAndDebugSwitch_summary);
 
         iSuNotification = (Switch) findViewById(R.id.iSuNotification);
+        iSuToastNotification = (Switch) findViewById(R.id.iSuToastNotification);
         SuSelinuxSwitch = (Switch) findViewById(R.id.SuSelinuxSwitch);
         SuSelinuxSwitch_summary = (TextView) findViewById(R.id.SuSelinuxSwitch_summary);
 
@@ -275,6 +276,15 @@ public class Main extends Activity {
                 }
             });
 
+            iSuToastNotification.setChecked(Tools.getBoolean("toast_notifications", true, MainContext));
+            iSuToastNotification.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
+                    Tools.saveBoolean("toast_notifications", isChecked, MainContext);
+                }
+            });
+
             SuSelinuxSwitch.setChecked(Tools.getBoolean("restart_selinux", false, MainContext));
             SuSelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 @Override
@@ -310,6 +320,9 @@ public class Main extends Activity {
             iSuNotification.setEnabled(false);
             iSuNotification.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
             iSuNotification.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            iSuToastNotification.setEnabled(false);
+            iSuToastNotification.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
+            iSuToastNotification.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             SuSelinuxSwitch_summary.setVisibility(View.GONE);
             per_app.setEnabled(false);
             per_app_summary.setText(getString(R.string.not_available));

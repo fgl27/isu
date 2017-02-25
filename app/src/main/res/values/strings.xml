@@ -31,6 +31,7 @@
     <!-- Notification -->
     <string name="notification_title">SU is deactivated, activate SU?</string>
     <string name="notification_switch">Show a notification when SU is deactivated</string>
+    <string name="toast_notification_switch">Show Toast notifications when changing SU</string>
     <string name="yes">Yes</string>
     <string name="dismiss">Dismiss</string>
 

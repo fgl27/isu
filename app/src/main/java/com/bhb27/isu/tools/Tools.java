@@ -114,6 +114,12 @@ public class Tools implements Constants {
             RootUtils.runICommand("LD_LIBRARY_PATH=" + executableFilePath + " " + executableFilePath + sepolicy);
     }
 
+    public static void updateAllWidgetsLayouts(Context context) {
+        updateAllWidgets(true, context, R.layout.widget_layouth, Widgeth.class);
+        updateAllWidgets(true, context, R.layout.widget_layoutv, Widgetv.class);
+        updateAllWidgets(false, context, R.layout.widget_layoutsu, Widgetsu.class);
+    }
+
     public static void updateAllWidgets(boolean SU_SEL, final Context context,
         final int layoutResourceId,
         final Class < ? extends AppWidgetProvider > appWidgetClass) {
@@ -149,7 +155,8 @@ public class Tools implements Constants {
             RootUtils.runICommand("mv " + xbin_isu + " " + xbin_su);
             RootUtils.runCommand("mv " + bin_temp_su + " " + bin_su);
             RootUtils.runCommand("mount -o ro,remount /system");
-            ActiveSUToast(context);
+            if (Tools.getBoolean("toast_notifications", true, context))
+                ActiveSUToast(context);
             ClearAllNotification(context);
         } else {
             if (!AppMonitor) {
@@ -165,20 +172,20 @@ public class Tools implements Constants {
             RootUtils.runICommand("mount -o ro,remount /system");
             if (getBoolean("isu_notification", false, context))
                 DoNotification(context);
-            String Toast = context.getString(R.string.per_app_deactive);
-            if (!isSELinuxActive()) {
-                SwitchSelinux(true, context);
-                Toast = Toast + "\n" + context.getString(R.string.activate_selinux);
+            if (Tools.getBoolean("toast_notifications", true, context)) {
+                String Toast = context.getString(R.string.per_app_deactive);
+                if (!isSELinuxActive()) {
+                    SwitchSelinux(true, context);
+                    Toast = Toast + "\n" + context.getString(R.string.activate_selinux);
+                }
+                if (getBoolean("adb_change", false, context) && AndroidDebugState(context)) {
+                    AndroidDebugSet(isChecked, context);
+                    Toast = Toast + "\n" + context.getString(R.string.deactivate_anddebug);
+                }
+                Tools.DoAToast("iSu " + Toast + "!", context);
             }
-            if (getBoolean("adb_change", false, context) && AndroidDebugState(context)) {
-                AndroidDebugSet(isChecked, context);
-                Toast = Toast + "\n" + context.getString(R.string.deactivate_anddebug);
-            }
-            Tools.DoAToast("iSu " + Toast + "!", context);
         }
-        updateAllWidgets(true, context, R.layout.widget_layouth, Widgeth.class);
-        updateAllWidgets(true, context, R.layout.widget_layoutv, Widgetv.class);
-        updateAllWidgets(false, context, R.layout.widget_layoutsu, Widgetsu.class);
+        updateAllWidgetsLayouts(context);
     }
 
     public static void ActiveSUToast(Context context) {
@@ -225,9 +232,7 @@ public class Tools implements Constants {
             RootUtils.runCommand(Constants.SETENFORCE + (isChecked ? " 1" : " 0"));
         else if (SuBinary(xbin_isu))
             RootUtils.runCommand(Constants.SETENFORCE + (isChecked ? " 1" : " 0"));
-        updateAllWidgets(true, context, R.layout.widget_layouth, Widgeth.class);
-        updateAllWidgets(true, context, R.layout.widget_layoutv, Widgetv.class);
-        updateAllWidgets(false, context, R.layout.widget_layoutsu, Widgetsu.class);
+        updateAllWidgetsLayouts(context);
     }
 
     public static boolean SuVersionBool(String suVersion) {

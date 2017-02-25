@@ -119,6 +119,7 @@ public class PerAppMonitor extends AccessibilityService {
             Tools.SwitchSu(false, true, this);
         else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_isu) && !Tools.isSELinuxActive()) {
             Tools.SwitchSelinux(true, this);
+        if (Tools.getBoolean("toast_notifications", true, this))
             Tools.DoAToast(getString(R.string.selinux_toast_ok), this);
         }
     }
