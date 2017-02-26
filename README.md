@@ -35,7 +35,7 @@ $ ./gradlew build
 ```
 
 I particularly prefer to use this .sh to build all in one shot
- [iSu Build Script](https://github.com/bhb27/scripts/blob/master/build_scripts/build_Isu.sh)
+ [iSu Build Script](https://github.com/bhb27/isu/blob/master/app/build_Isu.sh)
 
 ## Credits
 
