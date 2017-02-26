@@ -155,8 +155,7 @@ public class Tools implements Constants {
             RootUtils.runICommand("mv " + xbin_isu + " " + xbin_su);
             RootUtils.runCommand("mv " + bin_temp_su + " " + bin_su);
             RootUtils.runCommand("mount -o ro,remount /system");
-            if (Tools.getBoolean("toast_notifications", true, context))
-                ActiveSUToast(context);
+            ActiveSUToast(context);
             ClearAllNotification(context);
         } else {
             if (!AppMonitor) {
@@ -172,19 +171,19 @@ public class Tools implements Constants {
             RootUtils.runICommand("mount -o ro,remount /system");
             if (getBoolean("isu_notification", false, context))
                 DoNotification(context);
-            if (Tools.getBoolean("toast_notifications", true, context)) {
-                String Toast = context.getString(R.string.per_app_deactive);
-                if (!isSELinuxActive()) {
-                    SwitchSelinux(true, context);
-                    Toast = Toast + "\n" + context.getString(R.string.activate_selinux);
-                }
-                if (getBoolean("adb_change", false, context) && AndroidDebugState(context)) {
-                    AndroidDebugSet(isChecked, context);
-                    Toast = Toast + "\n" + context.getString(R.string.deactivate_anddebug);
-                }
-                Tools.DoAToast("iSu " + Toast + "!", context);
+            String Toast = context.getString(R.string.per_app_deactive);
+            if (!isSELinuxActive()) {
+                SwitchSelinux(true, context);
+                Toast = Toast + "\n" + context.getString(R.string.activate_selinux);
+            }
+            if (getBoolean("adb_change", false, context) && AndroidDebugState(context)) {
+                AndroidDebugSet(isChecked, context);
+                Toast = Toast + "\n" + context.getString(R.string.deactivate_anddebug);
+                if (Tools.getBoolean("toast_notifications", true, context))
+                    Tools.DoAToast("iSu " + Toast + "!", context);
             }
         }
+        Log.d(TAG, "Change SU isChecked = " + isChecked + " SU path " + (isChecked ? RootUtils.runICommand("which su") : RootUtils.runICommand("which isu")));
         updateAllWidgetsLayouts(context);
     }
 
@@ -203,7 +202,8 @@ public class Tools implements Constants {
             AndroidDebugSet(SuBinary(xbin_su), context);
             Toast = Toast + "\n" + context.getString(R.string.activate_anddebug);
         }
-        DoAToast("iSu " + Toast + "!", context);
+        if (Tools.getBoolean("toast_notifications", true, context))
+            DoAToast("iSu " + Toast + "!", context);
     }
 
     public static void WriteSettings(Context context) {
@@ -219,6 +219,7 @@ public class Tools implements Constants {
         if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == 0)
             Settings.Global.putInt(context.getContentResolver(),
                 Settings.Global.ADB_ENABLED, isChecked ? 1 : 0);
+        Log.d(TAG, "Change ADB isChecked = " + isChecked + " ADB = " + AndroidDebugState(context));
     }
 
     public static boolean AndroidDebugState(Context context) {
@@ -232,6 +233,7 @@ public class Tools implements Constants {
             RootUtils.runCommand(Constants.SETENFORCE + (isChecked ? " 1" : " 0"));
         else if (SuBinary(xbin_isu))
             RootUtils.runCommand(Constants.SETENFORCE + (isChecked ? " 1" : " 0"));
+        Log.d(TAG, "Change SELinux isChecked = " + isChecked + " State = " + getSELinuxStatus());
         updateAllWidgetsLayouts(context);
     }
 
