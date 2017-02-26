@@ -179,9 +179,9 @@ public class Tools implements Constants {
             if (getBoolean("adb_change", false, context) && AndroidDebugState(context)) {
                 AndroidDebugSet(isChecked, context);
                 Toast = Toast + "\n" + context.getString(R.string.deactivate_anddebug);
-                if (Tools.getBoolean("toast_notifications", true, context))
-                    Tools.DoAToast("iSu " + Toast + "!", context);
             }
+            if (Tools.getBoolean("toast_notifications", true, context))
+                Tools.DoAToast("iSu " + Toast + "!", context);
         }
         Log.d(TAG, "Change SU isChecked = " + isChecked + " SU path " + (isChecked ? RootUtils.runICommand("which su") : RootUtils.runICommand("which isu")));
         updateAllWidgetsLayouts(context);
