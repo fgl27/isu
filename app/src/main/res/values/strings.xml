@@ -12,14 +12,16 @@
     <string name="su_version">Su version:</string>
     <string name="selinux_switch">Activate or deactivate SELinux</string>
     <string name="selinux_state">Current SELinux state:</string>
-    <string name="selinux_toast_ok">SELinux set to Enforcing!\n This is need by some App safety check</string>
-    <string name="restart_selinux">Activate SELinux when SU is activated</string>
+    <string name="selinux_toast_ok">SELinux set to Enforcing!\nThis is need by safety Net app\'s</string>
+    <string name="restart_selinux">Change SELinux when SU is activated</string>
    <string name="restart_selinux_summary">If ON will set SELinux to Enforcing\nIf OFF will set SELinux to Permissive</string>
     <string name="isu_kernel_good">iSu Kernel Support OK.</string>
     <string name="isu_kernel_bad">No iSu Kernel Support!!!\nPlease flash the kernel support .zip or you may loose SU access</string>
     <string name="isu_kernel_no_su">If you use iSu to deactivate SU and lost SU support try&#8230;\nA reboot if you have iSu kernel support, if you don\'t have kernel support reflash yours current ROM .zip, without SU access the app can\'t tell if you have reboot support so also check in Setting Developer option if Root accesses is granted to apps, in doubt check XDA thread link in About iSu&#8230; XDA support forun site.</string>
     <string name="download_folder_link">Click here to go to iSu download folder</string>
     <string name="isu_reboot">iSu Nougat reboot support OK.</string>
+    <string name="su_selinux_change">Activate SELinux when SU is deactivated</string>
+    <string name="su_selinux_change_summary">If ON will set SELinux to Enforcing when deactivate SU, this is need by safety net apps</string>
 
     <string name="anddebug_switch">Android debugging</string>
     <string name="anddebug_switch_summary">From android Developer options\nEnable the Android Debug Bridge (adb) interface</string>

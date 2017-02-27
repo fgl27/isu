@@ -89,9 +89,9 @@ public class PerAppMonitor extends AccessibilityService {
                     info = Per_App.app_profile_info(packageName, getApplicationContext());
                     last_profile = info.get(1);
                 }
-            last_package = packageName;
-            time = System.currentTimeMillis();
-            change();
+                last_package = packageName;
+                time = System.currentTimeMillis();
+                change();
             }
         } else {
             if (!Per_App.app_profile_exists(packageName, getApplicationContext())) {
@@ -117,10 +117,12 @@ public class PerAppMonitor extends AccessibilityService {
             Tools.SwitchSu(true, true, this);
         } else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_su))
             Tools.SwitchSu(false, true, this);
-        else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_isu) && !Tools.isSELinuxActive()) {
-            Tools.SwitchSelinux(true, this);
-        if (Tools.getBoolean("toast_notifications", true, this))
-            Tools.DoAToast(getString(R.string.selinux_toast_ok), this);
+        else if (Tools.getBoolean("su_selinux_change", true, this)) {
+            if (last_profile.equals("iSu") && Tools.SuBinary(xbin_isu) && !Tools.isSELinuxActive()) {
+                Tools.SwitchSelinux(true, this);
+                if (Tools.getBoolean("toast_notifications", true, this))
+                    Tools.DoAToast(getString(R.string.selinux_toast_ok), this);
+            }
         }
     }
 }

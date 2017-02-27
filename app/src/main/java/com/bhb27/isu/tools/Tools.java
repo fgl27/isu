@@ -172,7 +172,7 @@ public class Tools implements Constants {
             if (getBoolean("isu_notification", false, context))
                 DoNotification(context);
             String Toast = context.getString(R.string.per_app_deactive);
-            if (!isSELinuxActive()) {
+            if (!isSELinuxActive() && getBoolean("su_selinux_change", true, context)) {
                 SwitchSelinux(true, context);
                 Toast = Toast + "\n" + context.getString(R.string.activate_selinux);
             }
@@ -183,7 +183,8 @@ public class Tools implements Constants {
             if (Tools.getBoolean("toast_notifications", true, context))
                 Tools.DoAToast("iSu " + Toast + "!", context);
         }
-        Log.d(TAG, "Change SU isChecked = " + isChecked + " SU path " + (isChecked ? RootUtils.runICommand("which su") : RootUtils.runICommand("which isu")));
+        Log.d(TAG, "Change SU isChecked = " + isChecked + " SU path " +
+            (isChecked ? RootUtils.runICommand("which su") : RootUtils.runICommand("which isu")));
         updateAllWidgetsLayouts(context);
     }
 

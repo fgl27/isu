@@ -11,14 +11,16 @@
     <string name="su_version">Versão do SU:</string>
     <string name="selinux_switch">Ativar ou desativar o SELinux</string>
     <string name="selinux_state">Estado atual do SELinux:</string>
-    <string name="selinux_toast_ok">SELinux setado para Enforcing!\n Isto é necessário para o funcionamento de alguns app com Safety Check</string>
-   <string name="restart_selinux">Ativar SELinux quando SU é ativado</string>
+    <string name="selinux_toast_ok">SELinux setado para Enforcing!\nIsto é necessário em aplicativos que usam a Safety net</string>
+   <string name="restart_selinux">Mudar SELinux quando SU é ativado</string>
    <string name="restart_selinux_summary">Se ligado SELinux sera setado para Enforcing\nSe desligado SELinux sera setado para Permissive</string>
     <string name="isu_kernel_good">Suporte de reboot iSu OK.</string>
     <string name="isu_kernel_bad">Sem suporte de reboot iSu!!!\nPor favor usar o .zip via TWRP ou poderá perder acesso SU apos um reboot</string>
-    <string name="isu_kernel_no_su">Se usou o iSu pra desativar o SU caso tenha reboot suporte do iSu tente&#8230;\nReiniciar o aparelho, caso não tenha o suporte reinstale o .zip da sua ROM atual, sem acesso SU o app não consegue saber se o aparelho suporte a Reboot também cheque nas configurações Opções de desenvolvedor se o Acesso superusuátio esta ativo para aplicativos, em duvida verifique o site de suporte no Sobre iSu&#8230; XDA forum de suporte.</string>
+    <string name="isu_kernel_no_su">Se usou o iSu pra desativar o SU caso tenha reboot suporte do iSu tente&#8230;\nReiniciar o aparelho, caso não tenha o suporte reinstale o .zip da sua ROM atual, sem acesso SU o app não consegue saber se o aparelho suporte a Reboot também cheque nas configurações Opções de desenvolvedor se o Acesso superusuário esta ativo para aplicativos, em duvida verifique o site de suporte no Sobre iSu&#8230; XDA forum de suporte.</string>
     <string name="download_folder_link">Toque aqui para ir a pasta de Download do iSu</string>
     <string name="isu_reboot">iSu Nougat Reboot Suporte OK</string>
+    <string name="su_selinux_change">Ativar SELinux quando SU é desativado</string>
+    <string name="su_selinux_change_summary">Se ligado SELinux sera setado para Enforcing quando o SU é desativado, isto é necessário em aplicativos que usam a safety net</string>
 
     <string name="anddebug_switch">Depuração Android</string>
     <string name="anddebug_switch_summary">Opções do desenvolvedor\nAtivar a interface Android Debug Bridge (adb)</string>

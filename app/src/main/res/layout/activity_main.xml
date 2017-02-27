@@ -136,6 +136,27 @@
 		    android:textSize="16sp"/>
 	</LinearLayout>
         <Switch
+            android:id="@+id/ChangeSuSelinuxSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold"
+            android:textColor="@color/text_black"
+            android:text="@string/su_selinux_change"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+        <TextView
+            android:id="@+id/ChangeSuSelinuxSwitch_summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/text_black"
+            android:text="@string/su_selinux_change_summary"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
+        <Switch
             android:id="@+id/SuSelinuxSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

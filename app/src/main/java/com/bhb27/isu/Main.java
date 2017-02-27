@@ -58,9 +58,9 @@ import com.bhb27.isu.tools.Tools;
 public class Main extends Activity {
 
     private TextView SuSwitchSummary, SuStatus, kernel_check, Selinux_State, su_version, su_version_summary,
-    SelinuxStatus, download_folder_link, per_app_summary, SuSelinuxSwitch_summary, AndDebugSwitch_summary, ChangeAndDebugSwitch_summary;
+    SelinuxStatus, download_folder_link, per_app_summary, ChangeSuSelinuxSwitch_summary, SuSelinuxSwitch_summary, AndDebugSwitch_summary, ChangeAndDebugSwitch_summary;
     private Button about, per_app;
-    private Switch suSwitch, SelinuxSwitch, iSuNotification, iSuToastNotification, SuSelinuxSwitch, AndDebugSwitch, ChangeAndDebugSwitch;
+    private Switch suSwitch, SelinuxSwitch, iSuNotification, iSuToastNotification, ChangeSuSelinuxSwitch, SuSelinuxSwitch, AndDebugSwitch, ChangeAndDebugSwitch;
 
     private String bin_su = Constants.bin_su;
     private String xbin_su = Constants.xbin_su;
@@ -138,6 +138,9 @@ public class Main extends Activity {
         iSuToastNotification = (Switch) findViewById(R.id.iSuToastNotification);
         SuSelinuxSwitch = (Switch) findViewById(R.id.SuSelinuxSwitch);
         SuSelinuxSwitch_summary = (TextView) findViewById(R.id.SuSelinuxSwitch_summary);
+
+        ChangeSuSelinuxSwitch = (Switch) findViewById(R.id.ChangeSuSelinuxSwitch);
+        ChangeSuSelinuxSwitch_summary = (TextView) findViewById(R.id.ChangeSuSelinuxSwitch_summary);
 
         per_app = (Button) findViewById(R.id.buttonPer_app);
         per_app_summary = (TextView) findViewById(R.id.per_app);
@@ -293,6 +296,16 @@ public class Main extends Activity {
                     Tools.saveBoolean("restart_selinux", isChecked, MainContext);
                 }
             });
+
+            ChangeSuSelinuxSwitch.setChecked(Tools.getBoolean("su_selinux_change", true, MainContext));
+            ChangeSuSelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
+                    Tools.saveBoolean("su_selinux_change", isChecked, MainContext);
+                }
+            });
+
             try {
                 MainContext.registerReceiver(updateMainReceiver, new IntentFilter("updateMainReceiver"));
             } catch (NullPointerException ignored) {}
