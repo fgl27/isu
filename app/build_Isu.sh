@@ -27,7 +27,7 @@ KEY_FOLDER=$HOME/android/temp/sign/fgl.key;
 KEY_PASS=$(</$HOME/android/temp/sign/pass);
 
 # out app folder and out app name
-VERSION=$(grep versionName build.gradle | head -n1 | cut -d\" -f2 | sed 's/\./_/');
+VERSION=$(grep versionName $FOLDER/app/build.gradle | head -n1 | cut -d\" -f2 | sed 's/\./_/');
 OUT_FOLDER=$FOLDER/app/build/outputs/apk;
 APP_FINAL_NAME=iSu_$VERSION.apk;
 
