@@ -11,14 +11,16 @@
     <string name="su_version">Verzia SU:</string>
     <string name="selinux_switch">Aktivovať alebo deaktivovať SELinux</string>
     <string name="selinux_state">Aktuálny stav SELinux:</string>
-    <string name="selinux_toast_ok">SELinux je v režime Enforcing!\nTo je potrebné pre kontrolu zabezpečenia v niektorých aplikáciách</string>
-   <string name="restart_selinux">Aktivovať SELinux keď je SU aktivovaný</string>
+    <string name="selinux_toast_ok">SELinux je v režime Enforcing!\nTo je potrebné pre zabezpečené Net aplikácie</string>
+   <string name="restart_selinux">Zmeniť SELinux keď je SU aktivovaný</string>
    <string name="restart_selinux_summary">Ak je POVOLENÉ, zmení SELinux na Enforcing\nAk je ZAKÁZANÉ, zmení SELinux na Permissive.</string>
     <string name="isu_kernel_good">iSu podpora kernelom je OK.</string>
     <string name="isu_kernel_bad">Nemáte iSu podporu kernelom!!!\nProsím, nahrajte .zip súbor pre podporu kernelom, inak môžete stratiť SU prístup</string>
     <string name="isu_kernel_no_su">Ak používate iSu pre deaktivovanie SU a prišli ste o SU prístup, skúste&#8230;\nReštertujte zariadenie ak máte iSu podporu kernelom, ak nie, znovu nahrajte .zip vašej aktuálnej ROM. Bez SU prístupu, aplikácia nemôže zistiť, či máte podporu reštartovania, takže tiež skontroľujte v nastaveniach pre vývojárov, či je root prístup povolený aj pre aplikácie. Pri pochybnostiach navštívte XDA fórum, odkaz nájdete v časti O iSu&#8230; Podpora na XDA fóre.</string>
     <string name="download_folder_link">Kliknite pre zobrazenie priečinka so súbormi na stiahnutie iSu</string>
     <string name="isu_reboot">iSu Nougat podpora reštartovania je OK.</string>
+    <string name="su_selinux_change">Aktivovať SELinux keď je SU deaktivovaný</string>
+    <string name="su_selinux_change_summary">Ak je POVOLENÉ, zmení SELinux na Enforcing pri deaktivovaní SU, to je potrebné pre zabezpečené Net aplikácie</string>
 
     <string name="anddebug_switch">Ladanie systému Android</string>
     <string name="anddebug_switch_summary">V nastaveniach Androidu, Pre vývojárov\npovoľte Ladanie systému Android</string>
@@ -75,6 +77,8 @@
    <string name="deactivate_selinux">SELinux nastavený na Permissive</string>
    <string name="per_app_default_deactivate">Deaktivovať SU pre ktorúkoľvek aplikáciu ak je SU aktívny</string>
    <string name="per_app_default_activate">Aktivovať SU pre ktorúkoľvek aplikáciu ak je SU neaktívny</string>
+   <string name="auto_restart_su">Automatické reštartovanie SU</string>
+   <string name="auto_restart_su_summary">Ak je povolené, automaticky aktivuje SU pri ukončení aplikácie, ktorá SU deaktivovala</string>
 
     <!--Widget-->
     <string name="horizontal">Vodorovné</string>
