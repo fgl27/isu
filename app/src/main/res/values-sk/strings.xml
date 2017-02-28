@@ -77,6 +77,8 @@
    <string name="deactivate_selinux">SELinux nastavený na Permissive</string>
    <string name="per_app_default_deactivate">Deaktivovať SU pre ktorúkoľvek aplikáciu ak je SU aktívny</string>
    <string name="per_app_default_activate">Aktivovať SU pre ktorúkoľvek aplikáciu ak je SU neaktívny</string>
+   <string name="auto_restart_su">Automatické reštartovanie SU</string>
+   <string name="auto_restart_su_summary">Ak je povolené, automaticky aktivuje SU pri ukončení aplikácie, ktorá SU deaktivovala</string>
 
     <!--Widget-->
     <string name="horizontal">Vodorovné</string>
