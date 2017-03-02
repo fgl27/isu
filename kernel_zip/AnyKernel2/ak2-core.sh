@@ -8,14 +8,6 @@ patch=/tmp/anykernel/patch;
 chmod -R 755 $bin;
 mkdir -p $ramdisk $split_img;
 
-if [ "$is_slot_device" == 1 ]; then
-  slot=$(getprop ro.boot.slot_suffix 2>/dev/null);
-  test ! "$slot" && slot=$(grep -o 'androidboot.slot_suffix=.*$' /proc/cmdline | cut -d\  -f1 | cut -d= -f2);
-  test "$slot" && block=$block$slot;
-  if [ $? != 0 -o ! -e "$block" ]; then
-    ui_print " "; ui_print "Unable to determine active boot slot. Aborting..."; exit 1;
-  fi;
-fi;
 
 OUTFD=/proc/self/fd/$1;
 
@@ -30,7 +22,7 @@ dump_boot() {
 
   if [ -z "$block" ]; then
     for PARTITION in kern-a KERN-A android_boot ANDROID_BOOT kernel KERNEL boot BOOT lnx LNX; do
-      block=$(readlink /dev/block/by-name/$PARTITION || readlink /dev/block/platform/*/by-name/$PARTITION || readlink /dev/block/platform/*/*/by-name/$PARTITION)
+      block=$(readlink /dev/block/by-name/$PARTITION || readlink /dev/block/platform/*/by-name/$PARTITION || readlink /dev/block/platform/*/*/by-name/$PARTITION || readlink /dev/block/bootdevice/by-name/$PARTITION)
       if [ ! -z "$block" ]; then break; fi
     done
   fi;
@@ -50,6 +42,18 @@ dump_boot() {
         if [ ! -z "$block" ]; then
            contains $block "mcblk0p" || block=$(readlink $block);
         fi;
+  fi;
+
+  if [ "$(getprop ro.product.device)" == "marlin" -o "$(getprop ro.build.product)" == "sailfish" ]; then
+    if [ -z "$block" ]; then
+      block="/dev/block/bootdevice/by-name/boot";
+    fi;
+    slot=$(getprop ro.boot.slot_suffix 2>/dev/null);
+    test ! "$slot" && slot=$(grep -o 'androidboot.slot_suffix=.*$' /proc/cmdline | cut -d\  -f1 | cut -d= -f2);
+    test "$slot" && block=$block$slot;
+    if [ $? != 0 -o ! -e "$block" ]; then
+      ui_print "block - $block slot - $slot "; ui_print "Unable to determine active boot slot. Aborting..."; exit 1;
+    fi;
   fi;
 
   if [ -f "$bin/nanddump" ]; then
