@@ -23,7 +23,7 @@ docmdline=0;
 # used by up-bin to print on the default.prop patch cmdline etc
 do.isu=0
 do.cmdline=0
-do.cmdline=0
+do.do.sbin=0
 ## end setup
 
 ## AnyKernel methods (DO NOT CHANGE)
@@ -54,9 +54,27 @@ if [ $docmdline == 0 ]; then
 		replace_line default.prop "ro.debuggable=1" "ro.debuggable=0"
 	elif [ $install_isu == 3 ]; then
 		# iSu pixel sepolicy patch need to run SU in /sbin !! sepolicy-inject here is arm64 and N only
-		$bin/sepolicy-inject -s untrusted_app -t rootfs -c file -p execute,getattr,read,open,execute_no_trans,write -P $ramdisk/sepolicy;
-		$bin/sepolicy-inject -s priv_app -t rootfs -c file -p execute,getattr,read,open,execute_no_trans,write -P $ramdisk/sepolicy;
-		$bin/sepolicy-inject -s system_app -t rootfs -c file -p execute,getattr,read,open,execute_no_trans,write -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -s untrusted_app -t rootfs -c file -p execute -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -s untrusted_app -t rootfs -c file -p getattr -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -s untrusted_app -t rootfs -c file -p read -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -s untrusted_app -t rootfs -c file -p open -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -s untrusted_app -t rootfs -c file -p execute_no_trans -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -s untrusted_app -t rootfs -c file -p write -P $ramdisk/sepolicy;
+
+		$bin/sepolicy-inject -s priv_app -t rootfs -c file -p execute -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -s priv_app -t rootfs -c file -p getattr -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -s priv_app -t rootfs -c file -p read -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -s priv_app -t rootfs -c file -p open -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -s priv_app -t rootfs -c file -p execute_no_trans -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -s priv_app -t rootfs -c file -p write -P $ramdisk/sepolicy;
+
+		$bin/sepolicy-inject -s system_app -t rootfs -c file -p execute -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -s system_app -t rootfs -c file -p getattr -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -s system_app -t rootfs -c file -p read -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -s system_app -t rootfs -c file -p open -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -s system_app -t rootfs -c file -p execute_no_trans -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -s system_app -t rootfs -c file -p write -P $ramdisk/sepolicy;
+
 		$bin/sepolicy-inject -Z shell -P $ramdisk/sepolicy;
 		$bin/sepolicy-inject -Z sudaemon -P $ramdisk/sepolicy;
 		$bin/sepolicy-inject -Z su -P $ramdisk/sepolicy;

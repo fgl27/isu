@@ -45,15 +45,9 @@ dump_boot() {
   fi;
 
   if [ "$(getprop ro.product.device)" == "marlin" -o "$(getprop ro.build.product)" == "sailfish" ]; then
-    if [ -z "$block" ]; then
-      block="/dev/block/bootdevice/by-name/boot";
-    fi;
-    slot=$(getprop ro.boot.slot_suffix 2>/dev/null);
-    test ! "$slot" && slot=$(grep -o 'androidboot.slot_suffix=.*$' /proc/cmdline | cut -d\  -f1 | cut -d= -f2);
-    test "$slot" && block=$block$slot;
-    if [ $? != 0 -o ! -e "$block" ]; then
-      ui_print "block - $block slot - $slot "; ui_print "Unable to determine active boot slot. Aborting..."; exit 1;
-    fi;
+    SLOT=$(for i in `cat /proc/cmdline`; do echo $i | grep slot | dd bs=1 skip=24 2>/dev/null; done);
+    block="/dev/block/bootdevice/by-name/boot$SLOT";
+    ui_print "block $block"; 
   fi;
 
   if [ -f "$bin/nanddump" ]; then

@@ -131,7 +131,7 @@ if [ $MKZIP == 1 ]; then
 	sed -i '/docmdline=1/c\docmdline=0\;' $ANYKERNEL/anykernel.sh;
 	sed -i '/do.cmdline=1/c\do.cmdline=0' $ANYKERNEL/anykernel.sh;
 	sed -i '/dopermissive=0/c\dopermissive=1\;' $ANYKERNEL/anykernel.sh;
-	sed -i '/do.sbin=1/c\do.cmdline=0' $ANYKERNEL/anykernel.sh;
+	sed -i '/do.sbin=1/c\do.do.sbin=0' $ANYKERNEL/anykernel.sh;
 fi;
 
 END2="$(date)";
