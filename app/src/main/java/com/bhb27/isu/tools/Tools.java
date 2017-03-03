@@ -107,6 +107,21 @@ public class Tools implements Constants {
         }
     }
 
+    public static boolean RebootSupportPixel() {
+        String which = "";
+        which = RootUtils.runCommand("which su");
+        if (which != null) {
+            if (which.contains("/sbin/su"))
+                return true;
+        }
+        which = RootUtils.runICommand("which isu");
+        if (which != null) {
+            if (which.contains("/sbin/isu"))
+                return true;
+        }
+        return false;
+    }
+
     public static void PatchSepolicy(String executableFilePath) {
         if (SuBinary(xbin_su))
             RootUtils.runCommand("LD_LIBRARY_PATH=" + executableFilePath + " " + executableFilePath + sepolicy);
@@ -151,10 +166,16 @@ public class Tools implements Constants {
     public static void SwitchSu(boolean isChecked, boolean AppMonitor, Context context) {
         if (isChecked) {
             // Mount rw to change mount ro after
-            RootUtils.runICommand("mount -o rw,remount /system");
-            RootUtils.runICommand("mv " + xbin_isu + " " + xbin_su);
-            RootUtils.runCommand("mv " + bin_temp_su + " " + bin_su);
-            RootUtils.runCommand("mount -o ro,remount /system");
+            if (RootUtils.runICommand("which isu").contains("/sbin/")) {
+                RootUtils.runICommand("mount -o rw,remount -t auto /");
+                RootUtils.runICommand("mv /sbin/isu /sbin/su");
+                RootUtils.runCommand("mount -o ro,remount  -t auto /system");
+            } else {
+                RootUtils.runICommand("mount -o rw,remount /system");
+                RootUtils.runICommand("mv " + xbin_isu + " " + xbin_su);
+                RootUtils.runCommand("mv " + bin_temp_su + " " + bin_su);
+                RootUtils.runCommand("mount -o ro,remount /system");
+            }
             ActiveSUToast(context);
             ClearAllNotification(context);
         } else {
@@ -164,11 +185,17 @@ public class Tools implements Constants {
                     RootUtils.runCommand("am force-stop " + Constants.PAY);
             }
             // Make a link to isu so all root tool work
-            RootUtils.runCommand("mount -o rw,remount /system");
-            RootUtils.runCommand("ln -s -f " + xbin_isu + " " + bin_isu);
-            RootUtils.runCommand("mv " + xbin_su + " " + xbin_isu);
-            RootUtils.runICommand("mv " + bin_su + " " + bin_temp_su);
-            RootUtils.runICommand("mount -o ro,remount /system");
+            if (RootUtils.runCommand("which su").contains("/sbin/")) {
+                RootUtils.runCommand("mount -o rw,remount -t auto /");
+                RootUtils.runCommand("mv /sbin/su /sbin/isu");
+                RootUtils.runICommand("mount -o ro,remount  -t auto /system");
+            } else {
+                RootUtils.runCommand("mount -o rw,remount /system");
+                RootUtils.runCommand("ln -s -f " + xbin_isu + " " + bin_isu);
+                RootUtils.runCommand("mv " + xbin_su + " " + xbin_isu);
+                RootUtils.runICommand("mv " + bin_su + " " + bin_temp_su);
+                RootUtils.runICommand("mount -o ro,remount /system");
+            }
             if (getBoolean("isu_notification", false, context))
                 DoNotification(context);
             String Toast = context.getString(R.string.per_app_deactive);
@@ -317,7 +344,7 @@ public class Tools implements Constants {
 
     public static String getSELinuxStatus() {
         String result = "";
-        if (existFile(xbin_su, true))
+        if (SuBinary(xbin_su))
             result = RootUtils.runCommand(GETENFORCE);
         else
             result = RootUtils.runICommand(GETENFORCE);
@@ -430,13 +457,20 @@ public class Tools implements Constants {
     }
 
     public static boolean SuBinary(String binary) {
+        String which = "";
         if (binary.equals(xbin_su)) {
-            if (existFile(binary, true))
-                return true;
+            which = RootUtils.runCommand("which su");
+            if (which != null) {
+                if (which.contains("bin/su"))
+                    return true;
+            }
         }
         if (binary.equals(xbin_isu)) {
-            if (IexistFile(binary, true))
-                return true;
+            which = RootUtils.runICommand("which isu");
+            if (which != null) {
+                if (which.contains("bin/isu"))
+                    return true;
+            }
         }
         return false;
     }

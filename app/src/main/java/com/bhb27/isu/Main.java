@@ -166,7 +166,10 @@ public class Main extends Activity {
         });
 
         //reboot support check
-        if (RebootSupport()) {
+        if (Tools.RebootSupportPixel()) {
+            kernel_check.setText(getString(R.string.pixel_reboot));
+            download_folder_link.setVisibility(View.GONE);
+        } else if (RebootSupport()) {
             kernel_check.setText(getString(R.string.isu_reboot));
             download_folder_link.setVisibility(View.GONE);
         } else if (Tools.KernelSupport()) {
