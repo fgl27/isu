@@ -42,7 +42,7 @@ ZIPNAME_ENFORCE=iSu_kernel_Reboot_Support_V_$VERSION\_and_up_Enforcing;
 ZIPNAME_PERMISSIVE=iSu_kernel_Reboot_Support_V_$VERSION\_and_up_Permissive;
 ZIPNAME_CMDLINE=iSu_kernel_cmdline_Patch_V_$VERSION\_and_up;
 ZIPNAME_PROP=iSu_kernel_defaultprop_Patch_V_$VERSION\_and_up;
-
+ZIPNAME_PIXEL=iSu_kernel_Pixel_Patch_V_$VERSION\_and_up;
 #making start here...
 
 cd $FOLDER;
@@ -107,8 +107,19 @@ if [ $MKZIP == 1 ]; then
 	echo -e "\ncmdline patch\n"
 	sed -i '/docmdline=0/c\docmdline=1\;' $ANYKERNEL/anykernel.sh;
 	sed -i '/do.cmdline=0/c\do.cmdline=1' $ANYKERNEL/anykernel.sh;
+	sed -i '/do.isu=1/c\do.isu=0' $ANYKERNEL/anykernel.sh;
 	sed -i '/do.buildprop=1/c\do.buildprop=0' $ANYKERNEL/anykernel.sh;
 	zip -r9 $ZIPNAME_CMDLINE * -x README .gitignore *.zip tools/su*
+	$ZIP_SIGN_FOLDER/sign.sh test  $ANYKERNEL/$ZIPNAME_CMDLINE.zip
+	rm -rf ./ZipScriptSign/$ZIPNAME_ENFORCE.zip
+	mv $ANYKERNEL/$ZIPNAME_CMDLINE-signed.zip $ANYKERNEL/$ZIPNAME_CMDLINE.zip
+
+	echo -e "\npixel patch\n"
+	sed -i '/docmdline=1/c\docmdline=0\;' $ANYKERNEL/anykernel.sh;
+	sed -i '/do.cmdline=1/c\do.cmdline=0' $ANYKERNEL/anykernel.sh;
+	sed -i '/do.sbin=0/c\do.sbin=1' $ANYKERNEL/anykernel.sh;
+	sed -i '/install_isu=2/c\install_isu=3\;' $ANYKERNEL/anykernel.sh;
+	zip -r9 $ZIPNAME_PIXEL * -x README .gitignore *.zip tools/su*
 	$ZIP_SIGN_FOLDER/sign.sh test  $ANYKERNEL/$ZIPNAME_CMDLINE.zip
 	rm -rf ./ZipScriptSign/$ZIPNAME_ENFORCE.zip
 	mv $ANYKERNEL/$ZIPNAME_CMDLINE-signed.zip $ANYKERNEL/$ZIPNAME_CMDLINE.zip
@@ -120,7 +131,7 @@ if [ $MKZIP == 1 ]; then
 	sed -i '/docmdline=1/c\docmdline=0\;' $ANYKERNEL/anykernel.sh;
 	sed -i '/do.cmdline=1/c\do.cmdline=0' $ANYKERNEL/anykernel.sh;
 	sed -i '/dopermissive=0/c\dopermissive=1\;' $ANYKERNEL/anykernel.sh;
-	sed -i '/do.isu=1/c\do.isu=0' $ANYKERNEL/anykernel.sh;
+	sed -i '/do.sbin=1/c\do.cmdline=0' $ANYKERNEL/anykernel.sh;
 fi;
 
 END2="$(date)";

@@ -14,14 +14,15 @@ device.name1=
 # shell variables
 is_slot_device=0;
 # 0 clean kernel support, 1 kernel support, 2 patch default.prop
-install_isu=1;
-# used by up-bin to print on the default.prop patch
-do.isu=0
+install_isu=3;
 #Boot in permissive function
 dopermissive=1;
 #Patch cmline
 docmdline=0;
 #extra for update-binary
+# used by up-bin to print on the default.prop patch cmdline etc
+do.isu=0
+do.cmdline=0
 do.cmdline=0
 ## end setup
 
@@ -51,6 +52,14 @@ if [ $docmdline == 0 ]; then
 	elif [ $install_isu == 2 ]; then
 		# iSu patch default.prop
 		replace_line default.prop "ro.debuggable=1" "ro.debuggable=0"
+	elif [ $install_isu == 3 ]; then
+		# iSu pixel sepolicy patch need to run SU in /sbin !! sepolicy-inject here is arm64 and N only
+		$bin/sepolicy-inject -s untrusted_app -t rootfs -c file -p execute,getattr,read,open,execute_no_trans,write -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -s priv_app -t rootfs -c file -p execute,getattr,read,open,execute_no_trans,write -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -s system_app -t rootfs -c file -p execute,getattr,read,open,execute_no_trans,write -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -Z shell -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -Z sudaemon -P $ramdisk/sepolicy;
+		$bin/sepolicy-inject -Z su -P $ramdisk/sepolicy;
 	fi;
 fi;
 # end ramdisk changes

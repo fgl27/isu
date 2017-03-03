@@ -36,6 +36,19 @@ fi;
 chmod -R 755 /tmp/anykernel/tools /tmp/anykernel/bin;
 bb=/tmp/anykernel/tools/busybox;
 
+if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.sbin)" == 1 ]; then
+  mount -o rw,remount -t auto /system;
+
+  cp -rf /system/system/xbin/su /tmp/anykernel/ramdisk/sbin;
+  set_perm_recursive 0 0 0755 0755 /tmp/anykernel/ramdisk/sbin/su;
+
+  rm -rf /system/system/xbin/su;
+  rm -rf /system/system/bin/su;
+
+  sed -ri 's/\/system\/xbin\/su/\/sbin\/su/g' /system/system/etc/init/superuser.rc;
+  sed -ri 's/\/system\/xbin\/su/\/sbin\/su/g' /system/etc/init/superuser.rc;
+fi;
+
 ui_print "-----------------------------------------------";
 ui_print "                                               ";
 ui_print "$(file_getprop /tmp/anykernel/anykernel.sh kernel.string)";
@@ -59,19 +72,12 @@ if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.devicecheck)" == 1 ]; then
   fi;
 fi;
 
-if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.initd)" == 1 ]; then
-  ui_print "Creating init.d...";
-  ui_print " ";
-  mount -o rw,remount -t auto /system;
-  mkdir /system/etc/init.d;
-  set_perm_recursive 0 0 0755 0755 /system/etc/init.d;
-  mount -o ro,remount -t auto /system;
-fi;
-
 if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.cmdline)" == 1 ]; then
   ui_print "iSu Patching Kernel cmdline...";
 elif [ "$(file_getprop /tmp/anykernel/anykernel.sh do.isu)" == 1 ]; then
   ui_print "iSu Patching Kernel default.prop...";
+elif [ "$(file_getprop /tmp/anykernel/anykernel.sh do.sbin)" == 1 ]; then
+  ui_print "iSu Patching Pixel LOS SU...";
 else
   ui_print "Installing iSu Kernel Reboot support...";
 fi;
