@@ -19,6 +19,7 @@
     <string name="isu_kernel_no_su">Ak používate iSu pre deaktivovanie SU a prišli ste o SU prístup, skúste&#8230;\nReštertujte zariadenie ak máte iSu podporu kernelom, ak nie, znovu nahrajte .zip vašej aktuálnej ROM. Bez SU prístupu, aplikácia nemôže zistiť, či máte podporu reštartovania, takže tiež skontroľujte v nastaveniach pre vývojárov, či je root prístup povolený aj pre aplikácie. Pri pochybnostiach navštívte XDA fórum, odkaz nájdete v časti O iSu&#8230; Podpora na XDA fóre.</string>
     <string name="download_folder_link">Kliknite pre zobrazenie priečinka so súbormi na stiahnutie iSu</string>
     <string name="isu_reboot">iSu Nougat podpora reštartovania je OK.</string>
+    <string name="pixel_reboot">iSu Pixel podpora reštartovania je OK.</string>
     <string name="su_selinux_change">Aktivovať SELinux keď je SU deaktivovaný</string>
     <string name="su_selinux_change_summary">Ak je POVOLENÉ, zmení SELinux na Enforcing pri deaktivovaní SU, to je potrebné pre zabezpečené Net aplikácie</string>
 
