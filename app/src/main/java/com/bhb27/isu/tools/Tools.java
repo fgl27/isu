@@ -90,19 +90,24 @@ public class Tools implements Constants {
     }
 
     public static void SystemPatch(String executableFilePath) {
+        String seclabel = "";
         if (SuBinary(xbin_su)) {
+            seclabel = RootUtils.runCommand("cat system/etc/init/superuser.rc | grep seclabel | head -1");
             RootUtils.runCommand("mount -o rw,remount /system");
             RootUtils.runCommand("cp -f " + executableFilePath + "isush" + " /system/xbin/");
             RootUtils.runCommand("chmod 0755" + " /system/xbin/isush");
             RootUtils.runCommand("cp -f " + executableFilePath + "superuser.rc" + " /system/etc/init/");
             RootUtils.runCommand("chmod 0644" + " /system/etc/init/superuser.rc");
+            RootUtils.runCommand("sed -i '/seclabel/c\\    " + seclabel + "' system/etc/init/superuser.rc ");
             RootUtils.runCommand("mount -o ro,remount /system");
         } else if (SuBinary(xbin_isu)) {
+            seclabel = RootUtils.runCommand("cat system/etc/init/superuser.rc | grep seclabel | head -1");
             RootUtils.runICommand("mount -o rw,remount /system");
             RootUtils.runICommand("cp -f " + executableFilePath + "isush" + " /system/xbin/");
             RootUtils.runICommand("chmod 0755" + " /system/xbin/isush");
             RootUtils.runICommand("cp -f " + executableFilePath + "superuser.rc" + " /system/etc/init/");
             RootUtils.runICommand("chmod 0644" + " /system/etc/init/superuser.rc");
+            RootUtils.runICommand("sed -i '/seclabel/c\\    " + seclabel + "' system/etc/init/superuser.rc ");
             RootUtils.runICommand("mount -o ro,remount /system");
         }
     }
