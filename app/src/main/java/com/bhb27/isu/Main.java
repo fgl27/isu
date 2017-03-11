@@ -324,6 +324,10 @@ public class Main extends Activity {
             SelinuxSwitch.setEnabled(false);
             SelinuxSwitch.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
             SelinuxSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            ChangeSuSelinuxSwitch.setEnabled(false);
+            ChangeSuSelinuxSwitch.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
+            ChangeSuSelinuxSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            ChangeSuSelinuxSwitch_summary.setVisibility(View.GONE);
             SuSelinuxSwitch.setEnabled(false);
             SuSelinuxSwitch.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
             SuSelinuxSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
