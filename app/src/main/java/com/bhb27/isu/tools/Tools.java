@@ -271,8 +271,8 @@ public class Tools implements Constants {
     }
 
     public static boolean SuVersionBool(String suVersion) {
-        if (suVersion.contains("cm-su") || suVersion.contains("mk-su") ||
-            suVersion.contains("16 com.android.settings"))
+        if ((suVersion.contains("cm-su") || suVersion.contains("mk-su") ||
+            suVersion.contains("16 com.android.settings")) && !suVersion.contains("phh"))
             return true;
         else return false;
     }
