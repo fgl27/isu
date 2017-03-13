@@ -16,7 +16,7 @@ is_slot_device=0;
 # 0 clean kernel support, 1 kernel support, 2 patch default.prop
 install_isu=3;
 #Boot in permissive function
-dopermissive=1;
+dopermissive=0;
 #Patch cmline
 docmdline=0;
 #extra for update-binary

@@ -38,8 +38,7 @@ APP_FINAL_NAME=iSu_$VERSION.apk;
 MKZIP=1;
 ANYKERNEL=$FOLDER/kernel_zip/AnyKernel2/;
 ZIP_SIGN_FOLDER=$HOME/android/ZipScriptSign;
-ZIPNAME_ENFORCE=iSu_kernel_Reboot_Support_V_$VERSION\_and_up_Enforcing;
-ZIPNAME_PERMISSIVE=iSu_kernel_Reboot_Support_V_$VERSION\_and_up_Permissive;
+ZIPNAME_REBOOT=iSu_kernel_Reboot_Support_V_$VERSION\_and_up;
 ZIPNAME_CMDLINE=iSu_kernel_cmdline_Patch_V_$VERSION\_and_up;
 ZIPNAME_PROP=iSu_kernel_defaultprop_Patch_V_$VERSION\_and_up;
 ZIPNAME_PIXEL=iSu_kernel_Pixel_Patch_V_$VERSION\_and_up;
@@ -79,26 +78,18 @@ fi;
 if [ $MKZIP == 1 ]; then
 	echo -e "\nMaking the zips\n"
 
-	echo -e "\nKernel reboot support enforce\n"
+	echo -e "\nKernel reboot support\n"
 	cd $ANYKERNEL/
 	rm -rf *.zip
-	zip -r9 $ZIPNAME_ENFORCE * -x README .gitignore *.zip tools/su*
-	$ZIP_SIGN_FOLDER/sign.sh test  $ANYKERNEL/$ZIPNAME_ENFORCE.zip
-	rm -rf ./ZipScriptSign/$ZIPNAME_ENFORCE.zip
-	mv $ANYKERNEL/$ZIPNAME_ENFORCE-signed.zip $ANYKERNEL/$ZIPNAME_ENFORCE.zip
-
-	echo -e "\nKernel reboot support permissive\n"
-	sed -i '/	setenforce 1/c\	setenforce 0\;' $ANYKERNEL/ramdisk/sbin/isu.sh;
-	zip -r9 $ZIPNAME_PERMISSIVE * -x README .gitignore *.zip tools/su*
-	$ZIP_SIGN_FOLDER/sign.sh test  $ANYKERNEL/$ZIPNAME_PERMISSIVE.zip
-	rm -rf ./ZipScriptSign/$ZIPNAME_PERMISSIVE.zip
-	mv $ANYKERNEL/$ZIPNAME_PERMISSIVE-signed.zip $ANYKERNEL/$ZIPNAME_PERMISSIVE.zip
+	zip -r9 $ZIPNAME_REBOOT * -x README .gitignore *.zip tools/su*
+	$ZIP_SIGN_FOLDER/sign.sh test  $ANYKERNEL/$ZIPNAME_REBOOT.zip
+	rm -rf ./ZipScriptSign/$ZIPNAME_REBOOT.zip
+	mv $ANYKERNEL/$ZIPNAME_REBOOT-signed.zip $ANYKERNEL/$ZIPNAME_REBOOT.zip
 
 	echo -e "\ndefault.prop patch\n"
 	sed -i '/install_isu=1/c\install_isu=2\;' $ANYKERNEL/anykernel.sh;
 	sed -i '/do.isu=0/c\do.isu=1' $ANYKERNEL/anykernel.sh;
 	sed -i '/do.buildprop=0/c\do.buildprop=1' $ANYKERNEL/anykernel.sh;
-	sed -i '/dopermissive=1/c\dopermissive=0\;' $ANYKERNEL/anykernel.sh;
 	zip -r9 $ZIPNAME_PROP * -x README .gitignore *.zip
 	$ZIP_SIGN_FOLDER/sign.sh test  $ANYKERNEL/$ZIPNAME_PROP.zip
 	rm -rf ./ZipScriptSign/$ZIPNAME_PROP.zip
@@ -130,7 +121,6 @@ if [ $MKZIP == 1 ]; then
 	sed -i '/do.buildprop=1/c\do.buildprop=0' $ANYKERNEL/anykernel.sh;
 	sed -i '/docmdline=1/c\docmdline=0\;' $ANYKERNEL/anykernel.sh;
 	sed -i '/do.cmdline=1/c\do.cmdline=0' $ANYKERNEL/anykernel.sh;
-	sed -i '/dopermissive=0/c\dopermissive=1\;' $ANYKERNEL/anykernel.sh;
 	sed -i '/do.sbin=1/c\do.do.sbin=0' $ANYKERNEL/anykernel.sh;
 fi;
 

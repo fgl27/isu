@@ -1,0 +1,27 @@
+#!/system/bin/sh
+# simple service to make shore SU is in place after a reboot that the user has disable it without this no SU after boot
+mount -o rw,remount /system
+subefore=$(which su);
+# Isu Reboot support
+if [ -e /system/bin/temp_su ]; then
+	mv /system/bin/temp_su /system/bin/su
+fi
+
+if [ -e /system/xbin/isu ]; then
+	mv /system/xbin/isu /system/xbin/su
+	if [ ! -e /system/bin/su ]; then
+		ln -s -f /system/xbin/su /system/bin/su
+	fi
+# Isu Reboot support end
+fi
+
+# give su root:root to adb su work optional/recommended
+if [ -e /system/xbin/su ]; then
+	chown root:root /system/xbin/su
+fi
+suafter=$(which su);
+echo 'isu_init: isush RUN subefore = ' $subefore 'suafter '$suafter > /dev/kmsg;
+mount -o ro,remount /system;
+umount /system;
+exit
+

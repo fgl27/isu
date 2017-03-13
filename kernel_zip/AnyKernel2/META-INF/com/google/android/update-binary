@@ -65,6 +65,10 @@ elif [ "$(file_getprop /tmp/anykernel/anykernel.sh do.sbin)" == 1 ]; then
   ui_print "iSu Patching Pixel LOS SU...";
 else
   ui_print "Installing iSu Kernel Reboot support...";
+  mount -o rw,remount -t auto /system;
+  cp -rf /tmp/anykernel/system/isush /system/xbin;
+  set_perm_recursive 0 0 0755 0755 /system/xbin/isush;
+  mount -o ro,remount -t auto /system;
 fi;
 
 for i in $($bb --list); do
@@ -76,15 +80,6 @@ fi;
 PATH="/tmp/anykernel/bin:$PATH" $bb ash /tmp/anykernel/anykernel.sh $2;
 if [ $? != "0" ]; then
   abort;
-fi;
-
-if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.modules)" == 1 ]; then
-  ui_print " ";
-  ui_print "Pushing modules...";
-  mount -o rw,remount -t auto /system;
-  cp -rf /tmp/anykernel/modules/* /system/lib/modules/;
-  set_perm_recursive 0 0 0755 0644 /system/lib/modules;
-  mount -o ro,remount -t auto /system;
 fi;
 
 ##Build.prop editor
