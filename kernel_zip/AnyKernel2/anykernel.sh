@@ -44,7 +44,9 @@ if [ $docmdline == 0 ]; then
 	elif [ $install_isu == 1 ]; then
 		# iSu patch include
 		if [ -f init.superuser.rc ]; then
+                  seclable=$(cat init.superuser.rc | grep seclabel | head -1);
 		  replace_file init.superuser.rc 750 init.superuser.rc;
+                  sed -i '/seclabel/c\\    '$seclabel ' ' $ramdisk/init.superuser.rc;
 		else
 		  replace_file init.superuser.rc 750 init.superuser.rc;
 		  insert_line init.rc "init.superuser.rc" after "import /init.environ.rc" "import /init.superuser.rc";
