@@ -36,6 +36,13 @@ fi;
 chmod -R 755 /tmp/anykernel/tools /tmp/anykernel/bin;
 bb=/tmp/anykernel/tools/busybox;
 
+mount -o ro /system;
+cp -rf /system/build.prop /tmp/anykernel/system/bp.sh;
+sdk="$(file_getprop /tmp/anykernel/system/bp.sh ro.build.version.sdk)";
+if [ "$sdk" -lt 24 ]; then
+  sed -i '/sdk=24/c\sdk=23\;' /tmp/anykernel/anykernel.sh;
+fi;
+
 if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.sbin)" == 1 ]; then
   mount /system;
 

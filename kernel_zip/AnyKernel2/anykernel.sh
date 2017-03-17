@@ -14,11 +14,13 @@ device.name1=
 # shell variables
 is_slot_device=0;
 # 0 clean kernel support, 1 kernel support, 2 patch default.prop
-install_isu=3;
+install_isu=1;
 #Boot in permissive function
 dopermissive=0;
 #Patch cmline
 docmdline=0;
+#sdk checker
+sdk=24;
 #extra for update-binary
 # used by up-bin to print on the default.prop patch cmdline etc
 do.isu=0
@@ -41,12 +43,10 @@ if [ $docmdline == 0 ]; then
 	if [ $install_isu == 0 ]; then
 		# iSu patch remover
 		remove_section init.superuser.rc "# isu daemon" "# isu daemon end"
-	elif [ $install_isu == 1 ]; then
+	elif [ $install_isu == 1 ] && [ "$sdk" -lt 24 ]; then
 		# iSu patch include
 		if [ -f init.superuser.rc ]; then
-                  seclable=$(cat init.superuser.rc | grep seclabel | head -1);
 		  replace_file init.superuser.rc 750 init.superuser.rc;
-                  sed -i '/seclabel/c\\    '$seclabel ' ' $ramdisk/init.superuser.rc;
 		else
 		  replace_file init.superuser.rc 750 init.superuser.rc;
 		  insert_line init.rc "init.superuser.rc" after "import /init.environ.rc" "import /init.superuser.rc";

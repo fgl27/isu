@@ -117,7 +117,7 @@ if [ $MKZIP == 1 ]; then
 
 	echo -e "\ncleaning sed\n"
 	sed -i '/	setenforce 0/c\	setenforce 1\;' $ANYKERNEL/ramdisk/sbin/isu.sh;
-	sed -i '/install_isu=2/c\install_isu=1\;' $ANYKERNEL/anykernel.sh;
+	sed -i '/install_isu=3/c\install_isu=1\;' $ANYKERNEL/anykernel.sh;
 	sed -i '/do.buildprop=1/c\do.buildprop=0' $ANYKERNEL/anykernel.sh;
 	sed -i '/docmdline=1/c\docmdline=0\;' $ANYKERNEL/anykernel.sh;
 	sed -i '/do.cmdline=1/c\do.cmdline=0' $ANYKERNEL/anykernel.sh;
