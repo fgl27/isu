@@ -67,7 +67,7 @@ public class PropActivity extends Activity {
         flash_locked_help = (TextView) findViewById(R.id.flash_locked_help);
         roverifiedbootstate_help = (TextView) findViewById(R.id.roverifiedbootstate_help);
 
-        String used_b_rb = getString(R.string.used_by) + " " + getString(R.string.banks) + " | " + getString(R.string.root_beer);
+        String used_b_rb = getString(R.string.used_by) + " " + getString(R.string.banks) + " " + getString(R.string.and) + " " + getString(R.string.root_beer);
         String safety = getString(R.string.used_by) + " " + getString(R.string.safety_net);
 
         robuildtags_help.setText(used_b_rb);

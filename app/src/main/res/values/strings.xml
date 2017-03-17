@@ -100,6 +100,7 @@
     <string name="root_beer">Root beer (a ROOT checker app)</string>
     <string name="safety_net">Safety Net</string>
     <string name="equal" translatable="false" >%s =</string>
+    <string name="and">and</string>
 
     <!--Widget-->
     <string name="horizontal">Horizontal</string>
