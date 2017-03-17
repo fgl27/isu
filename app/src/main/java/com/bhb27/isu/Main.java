@@ -100,6 +100,7 @@ public class Main extends Activity {
         Runnable runSepolicy = new Runnable() {
             public void run() {
                 Sepolicy();
+                extractresetprop();
                 // Only run boot service if app was used and is CM SU
                 if (isCMSU && !Tools.getBoolean("run_boot", false, MainContext))
                     Tools.saveBoolean("run_boot", true, MainContext);
@@ -363,6 +364,18 @@ public class Main extends Activity {
             UpdateMain(true);
         }
     };
+
+    public void extractresetprop() {
+        String executableFilePath = getFilesDir().getPath() + "/";
+        if (!Tools.NewexistFile(executableFilePath + "resetprop", true) ||
+            !Tools.NewexistFile(executableFilePath + "resetproparm64", true) ||
+            !Tools.NewexistFile(executableFilePath + "resetproparx86", true)) {
+            extractAssets(executableFilePath + "resetprop", "resetprop");
+            extractAssets(executableFilePath + "resetproparm64", "resetproparm64");
+            extractAssets(executableFilePath + "resetproparx86", "resetpropx86");
+        }
+        Tools.PatchSepolicy(executableFilePath);
+    }
 
     public void Sepolicy() {
         String executableFilePath = getFilesDir().getPath() + "/";

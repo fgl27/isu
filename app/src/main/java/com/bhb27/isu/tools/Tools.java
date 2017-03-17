@@ -293,6 +293,26 @@ public class Tools implements Constants {
         return su_bin_version;
     }
 
+    public static String abi() {
+        String abi_version = "";
+        String abi_result = " ";
+        // Check if is CM-SU
+        if (SuBinary(xbin_su)) {
+            abi_version = RootUtils.runCommand("getprop ro.product.cpu.abi") + "";
+        } else if (SuBinary(xbin_isu))
+            abi_version = RootUtils.runICommand("getprop ro.product.cpu.abi") + "";
+        if (abi_version.contains("x86")) abi_result = "x86 ";
+        if (abi_version.contains("arm64")) abi_result = "arm64 ";
+        return abi_result;
+    }
+
+    public static void resetprop(String path, String prop) {
+        if (SuBinary(xbin_su))
+            RootUtils.runCommand(path + "resetprop" + abi() + prop);
+        else if (SuBinary(xbin_isu))
+            RootUtils.runICommand(path + "resetprop" + abi() + prop);
+    }
+
     public static void DoNotification(Context context) {
 
         NotificationCompat.Builder notification = new NotificationCompat.Builder(context);
