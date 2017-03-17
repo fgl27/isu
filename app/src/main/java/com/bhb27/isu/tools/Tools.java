@@ -294,16 +294,18 @@ public class Tools implements Constants {
     }
 
     public static String abi() {
-        String abi_version = "";
+        String abi_version = getprop("ro.product.cpu.abi");
         String abi_result = " ";
-        // Check if is CM-SU
-        if (SuBinary(xbin_su)) {
-            abi_version = RootUtils.runCommand("getprop ro.product.cpu.abi") + "";
-        } else if (SuBinary(xbin_isu))
-            abi_version = RootUtils.runICommand("getprop ro.product.cpu.abi") + "";
         if (abi_version.contains("x86")) abi_result = "x86 ";
         if (abi_version.contains("arm64")) abi_result = "arm64 ";
         return abi_result;
+    }
+
+    public static String getprop(String prop) {
+        if (SuBinary(xbin_su))
+            return RootUtils.runCommand("getprop " + prop) + "";
+        else
+            return RootUtils.runICommand("getprop " + prop) + "";
     }
 
     public static void resetprop(String path, String prop) {
@@ -390,6 +392,36 @@ public class Tools implements Constants {
 
     public static void saveBoolean(String name, boolean value, Context context) {
         context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit().putBoolean(name, value).apply();
+    }
+
+    public static String getString(String name, String defaults, Context context) {
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getString(name, defaults);
+    }
+
+    public static void saveString(String name, String value, Context context) {
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit().putString(name, value).apply();
+    }
+
+    public static void saveprop(Context context) {
+        String value;
+        for (int i = 0; i < props.length; i++) {
+            value = Tools.getprop(props[i]);
+            if(value != null && !value.isEmpty())
+               saveString(props[i], Tools.getprop(props[i]), context);
+        }
+        saveBoolean("prop_run", true, context);
+    }
+
+    public static void applyprop(Context context, String path) {
+        String newvalue = "", originalvalue;
+        for (int i = 0; i < props.length; i++) {
+           originalvalue = Tools.getprop(props[i]);
+           if(originalvalue != null && !originalvalue.isEmpty()) {
+              newvalue = getString(props[i], null, context);
+              resetprop(path, props[i] + " " + newvalue);
+           }
+           Log.d(TAG, "Set " + props[i] + " = " + newvalue);
+        }
     }
 
     public static String StringreadFileN(String file) {

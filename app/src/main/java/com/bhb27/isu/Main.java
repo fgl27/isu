@@ -59,7 +59,7 @@ public class Main extends Activity {
 
     private TextView SuSwitchSummary, SuStatus, kernel_check, Selinux_State, su_version, su_version_summary,
     SelinuxStatus, download_folder_link, per_app_summary, ChangeSuSelinuxSwitch_summary, SuSelinuxSwitch_summary, AndDebugSwitch_summary, ChangeAndDebugSwitch_summary;
-    private Button about, per_app;
+    private Button about, per_app, buttonprop;
     private Switch suSwitch, SelinuxSwitch, iSuNotification, iSuToastNotification, ChangeSuSelinuxSwitch, SuSelinuxSwitch, AndDebugSwitch, ChangeAndDebugSwitch;
 
     private String bin_su = Constants.bin_su;
@@ -145,6 +145,8 @@ public class Main extends Activity {
 
         per_app = (Button) findViewById(R.id.buttonPer_app);
         per_app_summary = (TextView) findViewById(R.id.per_app);
+
+        buttonprop = (Button) findViewById(R.id.buttonprop);
 
         download_folder_link = (TextView) findViewById(R.id.download_folder_link);
         kernel_check = (TextView) findViewById(R.id.kernel_check);
@@ -268,6 +270,14 @@ public class Main extends Activity {
 
             per_app.setOnClickListener(new View.OnClickListener() {
                 Intent myIntent = new Intent(getApplicationContext(), PerAppActivity.class);
+                @Override
+                public void onClick(View v) {
+                    startActivity(myIntent);
+                }
+            });
+
+            buttonprop.setOnClickListener(new View.OnClickListener() {
+                Intent myIntent = new Intent(getApplicationContext(), PropActivity.class);
                 @Override
                 public void onClick(View v) {
                     startActivity(myIntent);

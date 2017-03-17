@@ -49,6 +49,8 @@ public class BootService extends Service {
     private void init() {
         String executableFilePath = getFilesDir().getPath() + "/";
         Tools.PatchSepolicy(executableFilePath);
+        if (Tools.getBoolean("prop_run", false, this))
+           Tools.applyprop(this, executableFilePath);
         Tools.WriteSettings(this);
         if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && (!Tools.ReadSystemPatch()) && (!Tools.RebootSupportPixel()))
             Tools.SystemPatch(executableFilePath);

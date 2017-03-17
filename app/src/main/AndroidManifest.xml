@@ -34,6 +34,11 @@
             android:label="@string/set_per_app"
             android:theme="@style/AppThemeMonitor" />
 
+        <activity
+            android:name=".PropActivity"
+            android:label="@string/prop_editor"
+            android:theme="@style/AppThemeMonitor" />
+
         <!-- Profile Widget -->
         <receiver android:name=".widgetservice.Widgeth"  android:label="@string/horizontal">
             <intent-filter>

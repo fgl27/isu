@@ -89,6 +89,18 @@
    <string name="auto_restart_su">Automatic Restart SU</string>
    <string name="auto_restart_su_summary">If on, will automatic active SU when leave the app that deactivated SU</string>
 
+    <!--Prop-->
+    <string name="prop_editor">Props Editor</string>
+    <string name="prop_editor_summary">A tool to change props that may be use to block the access to some apps</string>
+    <string name="in_prop_summary">Some apps may block the access base on the state of the below prop flags</string>
+    <string name="green_good">GREEN = Good</string>
+    <string name="red_bad">RED = Bad</string>
+    <string name="used_by">Used by</string>
+    <string name="banks">Banks and others payments sites</string>
+    <string name="root_beer">Root beer (a ROOT checker app)</string>
+    <string name="safety_net">Safety Net</string>
+    <string name="equal" translatable="false" >%s =</string>
+
     <!--Widget-->
     <string name="horizontal">Horizontal</string>
     <string name="vertical">Vertical</string>

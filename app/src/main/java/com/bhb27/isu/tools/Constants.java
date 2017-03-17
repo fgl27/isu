@@ -34,4 +34,13 @@ public interface Constants {
     String DISSMISS_ACTION = "DISSMISS_ACTION";
 
     String PAY = "com.google.android.apps.walletnfcrel";
+
+    String[] props = new String[] {
+        "ro.build.tags",
+        "ro.debuggable",
+        "ro.boot.bl_state",
+        "ro.boot.flash.locked",
+        "ro.boot.verifiedbootstate",
+        "temp.temp"
+    };
 }
