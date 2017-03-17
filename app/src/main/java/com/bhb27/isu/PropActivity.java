@@ -93,7 +93,7 @@ public class PropActivity extends Activity {
         robuildtags.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateprop(Sbuildtags, "test-keys", "released-keys");
+                updateprop(Sbuildtags, "test-keys", "release-keys");
             }
         });
 
@@ -107,7 +107,7 @@ public class PropActivity extends Activity {
         robuildtags_summary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateprop(Sbuildtags, "test-keys", "released-keys");
+                updateprop(Sbuildtags, "test-keys", "release-keys");
             }
         });
 
