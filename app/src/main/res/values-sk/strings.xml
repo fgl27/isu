@@ -87,11 +87,9 @@
     <string name="in_prop_summary">Niektoré aplikácie môžu blokovať prístup na základe stavu nasledujúcich prop značiek</string>
     <string name="green_good">ZELENÁ = dobré</string>
     <string name="red_bad">ČERVENÁ = zlé</string>
-    <string name="used_by">Používa</string>
-    <string name="banks">Bankové a iné platobné stránky</string>
-    <string name="root_beer">Root beer (aplikácia na kontrolu root prístupu)</string>
-    <string name="safety_net">Safety Net</string>
-    <string name="equal" translatable="false" >%s =</string>
+    <string name="used_by">Používa:</string>
+    <string name="banks">Bankové a iné platobné stránky.</string>
+    <string name="root_beer">Root beer (aplikácia na kontrolu root prístupu).</string>
 
     <!--Widget-->
     <string name="horizontal">Vodorovné</string>
