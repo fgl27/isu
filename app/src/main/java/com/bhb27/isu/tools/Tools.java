@@ -389,7 +389,7 @@ public class Tools implements Constants {
             RootUtils.runCommand("mount -o ro,remount /system");
         } else {
             RootUtils.runICommand("mount -o rw,remount /system");
-            RootUtils.runICommand(executableFilePath + "busybox sed -i 's/ro.cm.version/ro.no.version/g' /system/xbin/su");
+            RootUtils.runICommand(executableFilePath + "busybox sed -i 's/ro.cm.version/ro.no.version/g' /system/xbin/isu");
             RootUtils.runICommand("mount -o ro,remount /system");
         }
     }
