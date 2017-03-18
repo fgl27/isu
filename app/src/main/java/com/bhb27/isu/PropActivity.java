@@ -137,13 +137,13 @@ public class PropActivity extends Activity {
         bl_state.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateprop(Sbl_state, "1", "0");
+                updateprop(Sbl_state, "2", "0");
             }
         });
         bl_state_summary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateprop(Sbl_state, "1", "0");
+                updateprop(Sbl_state, "2", "0");
             }
         });
 
@@ -169,7 +169,7 @@ public class PropActivity extends Activity {
         roverifiedbootstate_summary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateprop(Sroverifiedbootstate, "green", "red");
+                updateprop(Sroverifiedbootstate, "green", "orange");
             }
         });
 
@@ -206,6 +206,7 @@ public class PropActivity extends Activity {
         flash_locked_summary.setText(flashlocked);
         roverifiedbootstate_summary.setText(verifiedbootstate);
 
+        // below are the "OK" values
         rodebuggable_summary.setTextColor(debuggable.contains("0") ? getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
             getColorWrapper(PropActivityContext, R.color.colorAccent));
         rosecure_summary.setTextColor(secure.contains("1") ? getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
