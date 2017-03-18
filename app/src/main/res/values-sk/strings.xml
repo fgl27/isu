@@ -81,6 +81,18 @@
    <string name="auto_restart_su">Automatické reštartovanie SU</string>
    <string name="auto_restart_su_summary">Ak je povolené, automaticky aktivuje SU pri ukončení aplikácie, ktorá SU deaktivovala</string>
 
+    <!--Prop-->
+    <string name="prop_editor">Props Editor</string>
+    <string name="prop_editor_summary">Nástroj na úpravu props, ktorý môže byť použitý na blokovanie prístupu k niektorým aplikáciám</string>
+    <string name="in_prop_summary">Niektoré aplikácie môžu blokovať prístup na základe stavu nasledujúcich prop značiek</string>
+    <string name="green_good">ZELENÁ = dobré</string>
+    <string name="red_bad">ČERVENÁ = zlé</string>
+    <string name="used_by">Používa</string>
+    <string name="banks">Bankové a iné platobné stránky</string>
+    <string name="root_beer">Root beer (aplikácia na kontrolu root prístupu)</string>
+    <string name="safety_net">Safety Net</string>
+    <string name="equal" translatable="false" >%s =</string>
+
     <!--Widget-->
     <string name="horizontal">Vodorovné</string>
     <string name="vertical">Zvislé</string>
