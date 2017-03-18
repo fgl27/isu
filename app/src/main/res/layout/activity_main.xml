@@ -95,7 +95,7 @@
 	<View
 	    android:layout_width="match_parent"
             android:layout_marginTop="10dp"
-	    android:layout_height="1dp"
+	    android:layout_height="2dp"
 	    android:background="@color/colorAccent"/>
         <Switch
             android:id="@+id/SelinuxSwitch"
@@ -180,7 +180,7 @@
 	<View
 	    android:layout_width="match_parent"
             android:layout_marginTop="15dp"
-	    android:layout_height="1dp"
+	    android:layout_height="2dp"
 	    android:background="@color/colorAccent"/>
         <Switch
             android:id="@+id/AndDebugSwitch"
@@ -227,7 +227,7 @@
 	<View
 	    android:layout_width="match_parent"
             android:layout_marginTop="10dp"
-	    android:layout_height="1dp"
+	    android:layout_height="2dp"
 	    android:background="@color/colorAccent"/>
         <Switch
             android:id="@+id/iSuNotification"
@@ -254,7 +254,7 @@
 	<View
 	    android:layout_width="match_parent"
             android:layout_marginTop="10dp"
-	    android:layout_height="1dp"
+	    android:layout_height="2dp"
 	    android:background="@color/colorAccent"/>
         <Button
             android:id="@+id/buttonPer_app"
@@ -282,7 +282,7 @@
 	<View
 	    android:layout_width="match_parent"
             android:layout_marginTop="10dp"
-	    android:layout_height="1dp"
+	    android:layout_height="2dp"
 	    android:background="@color/colorAccent"/>
         <Button
             android:id="@+id/buttonprop"
@@ -310,7 +310,7 @@
 	<View
 	    android:layout_width="match_parent"
             android:layout_marginTop="15dp"
-	    android:layout_height="1dp"
+	    android:layout_height="2dp"
 	    android:background="@color/colorAccent"/>
         <Button
             android:id="@+id/buttonAbout"

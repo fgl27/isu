@@ -41,6 +41,7 @@ public interface Constants {
         "ro.boot.bl_state",
         "ro.boot.flash.locked",
         "ro.boot.verifiedbootstate",
+        "ro.secure",
         "temp.temp"
     };
 }

@@ -40,7 +40,7 @@
 	    android:textAppearance="?android:attr/textAppearanceSmall"/>
 	<View
 	    android:layout_width="match_parent"
-	    android:layout_height="1dp"
+	    android:layout_height="2dp"
 	    android:background="@color/colorAccent"/>
 	<LinearLayout
 	    android:layout_width="match_parent"
@@ -56,7 +56,7 @@
 		    android:gravity="center"
 		    android:textStyle="bold"
 		    android:textColor="@color/text_black"
-		    android:textAppearance="?android:attr/textAppearanceMedium"/>
+		    android:textAppearance="?android:attr/textAppearanceLarge"/>
 		<TextView
 		    android:id="@+id/rodebuggable_summary"
 		    android:layout_width="wrap_content"
@@ -81,7 +81,48 @@
             android:textAppearance="?android:attr/textAppearanceSmall"/>
 	<View
 	    android:layout_width="match_parent"
-	    android:layout_height="1dp"
+	    android:layout_height="2dp"
+	    android:background="@color/colorAccent"/>
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+	    android:orientation="horizontal">
+		<TextView
+		    android:id="@+id/rosecure"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_gravity="center"
+		    android:gravity="center"
+		    android:textStyle="bold"
+		    android:textColor="@color/text_black"
+		    android:textAppearance="?android:attr/textAppearanceLarge"/>
+		<TextView
+		    android:id="@+id/rosecure_summary"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_gravity="center"
+		    android:gravity="center"
+		    android:text=""
+		    android:layout_marginStart="5dp"
+		    android:textColor="@color/colorAccent"
+		    android:textStyle="bold"
+		    android:textSize="16sp"/>
+	</LinearLayout>
+        <TextView
+            android:id="@+id/rosecure_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/text_black"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
+	<View
+	    android:layout_width="match_parent"
+	    android:layout_height="2dp"
 	    android:background="@color/colorAccent"/>
 	<LinearLayout
 	    android:layout_width="match_parent"
@@ -97,7 +138,7 @@
 		    android:gravity="center"
 		    android:textStyle="bold"
 		    android:textColor="@color/text_black"
-		    android:textAppearance="?android:attr/textAppearanceMedium"/>
+		    android:textAppearance="?android:attr/textAppearanceLarge"/>
 		<TextView
 		    android:id="@+id/robuildtags_summary"
 		    android:layout_width="wrap_content"
@@ -122,7 +163,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"/>
 	<View
 	    android:layout_width="match_parent"
-	    android:layout_height="1dp"
+	    android:layout_height="2dp"
 	    android:background="@color/colorAccent"/>
 	<LinearLayout
 	    android:layout_width="match_parent"
@@ -138,7 +179,7 @@
 		    android:gravity="center"
 		    android:textStyle="bold"
 		    android:textColor="@color/text_black"
-		    android:textAppearance="?android:attr/textAppearanceMedium"/>
+		    android:textAppearance="?android:attr/textAppearanceLarge"/>
 		<TextView
 		    android:id="@+id/bl_state_summary"
 		    android:layout_width="wrap_content"
@@ -164,7 +205,7 @@
 	<View
             android:id="@+id/bl_state_view"
 	    android:layout_width="match_parent"
-	    android:layout_height="1dp"
+	    android:layout_height="2dp"
 	    android:background="@color/colorAccent"/>
 	<LinearLayout
 	    android:layout_width="match_parent"
@@ -180,7 +221,7 @@
 		    android:gravity="center"
 		    android:textStyle="bold"
 		    android:textColor="@color/text_black"
-		    android:textAppearance="?android:attr/textAppearanceMedium"/>
+		    android:textAppearance="?android:attr/textAppearanceLarge"/>
 		<TextView
 		    android:id="@+id/flash_locked_summary"
 		    android:layout_width="wrap_content"
@@ -206,7 +247,7 @@
 	<View
             android:id="@+id/flash_locked_view"
 	    android:layout_width="match_parent"
-	    android:layout_height="1dp"
+	    android:layout_height="2dp"
 	    android:background="@color/colorAccent"/>
 	<LinearLayout
 	    android:layout_width="match_parent"
@@ -222,7 +263,7 @@
 		    android:gravity="center"
 		    android:textStyle="bold"
 		    android:textColor="@color/text_black"
-		    android:textAppearance="?android:attr/textAppearanceMedium"/>
+		    android:textAppearance="?android:attr/textAppearanceLarge"/>
 		<TextView
 		    android:id="@+id/roverifiedbootstate_summary"
 		    android:layout_width="wrap_content"
@@ -248,7 +289,16 @@
 	<View
             android:id="@+id/roverifiedbootstate_view"
 	    android:layout_width="match_parent"
-	    android:layout_height="1dp"
+	    android:layout_height="2dp"
 	    android:background="@color/colorAccent"/>
+        <ImageView
+            android:id="@+id/ic_launcher_perapp"
+            android:layout_marginTop="25dp"
+            android:contentDescription="@string/isu_icon"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:src="@drawable/ic_launcher"/>
     </LinearLayout>
 </ScrollView>

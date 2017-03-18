@@ -382,6 +382,18 @@ public class Tools implements Constants {
         return "Unknown Status";
     }
 
+    public static void stripsu(String executableFilePath) {
+        if (SuBinary(xbin_su)){
+            RootUtils.runCommand("mount -o rw,remount /system");
+            RootUtils.runCommand(executableFilePath + "busybox sed -i 's/ro.cm.version/ro.no.version/g' /system/xbin/su");
+            RootUtils.runCommand("mount -o ro,remount /system");
+        } else {
+            RootUtils.runICommand("mount -o rw,remount /system");
+            RootUtils.runICommand(executableFilePath + "busybox sed -i 's/ro.cm.version/ro.no.version/g' /system/xbin/su");
+            RootUtils.runICommand("mount -o ro,remount /system");
+        }
+    }
+
     public static boolean getBoolean(String name, boolean defaults, Context context) {
         try {
             return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getBoolean(name, defaults);

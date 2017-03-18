@@ -379,10 +379,12 @@ public class Main extends Activity {
         String executableFilePath = getFilesDir().getPath() + "/";
         if (!Tools.NewexistFile(executableFilePath + "resetprop", true) ||
             !Tools.NewexistFile(executableFilePath + "resetproparm64", true) ||
-            !Tools.NewexistFile(executableFilePath + "resetproparx86", true)) {
-            extractAssets(executableFilePath + "resetprop", "resetprop");
-            extractAssets(executableFilePath + "resetproparm64", "resetproparm64");
-            extractAssets(executableFilePath + "resetproparx86", "resetpropx86");
+            !Tools.NewexistFile(executableFilePath + "resetproparx86", true) ||
+            !Tools.NewexistFile(executableFilePath + "busybox", true)) {
+            extractAssets(executableFilePath, "resetprop");
+            extractAssets(executableFilePath, "resetproparm64");
+            extractAssets(executableFilePath, "resetpropx86");
+            extractAssets(executableFilePath, "busybox");
         }
         Tools.PatchSepolicy(executableFilePath);
     }
@@ -391,14 +393,14 @@ public class Main extends Activity {
         String executableFilePath = getFilesDir().getPath() + "/";
         if (!Tools.NewexistFile(executableFilePath + "libsupol.so", true) ||
             !Tools.NewexistFile(executableFilePath + "supolicy", true)) {
-            extractAssets(executableFilePath + "libsupol.so", "libsupol.so");
-            extractAssets(executableFilePath + "supolicy", "supolicy");
+            extractAssets(executableFilePath, "libsupol.so");
+            extractAssets(executableFilePath, "supolicy");
         }
         Tools.PatchSepolicy(executableFilePath);
     }
 
     public void extractAssets(String executableFilePath, String filename) {
-
+        executableFilePath = executableFilePath + filename;
         AssetManager assetManager = getAssets();
         InputStream inStream = null;
         OutputStream outStream = null;
