@@ -206,16 +206,16 @@ public class PropActivity extends Activity {
         flash_locked_summary.setText(flashlocked);
         roverifiedbootstate_summary.setText(verifiedbootstate);
 
-        rodebuggable_summary.setTextColor(debuggable.contains("1") ? getColorWrapper(PropActivityContext, R.color.colorAccent) :
-            getColorWrapper(PropActivityContext, R.color.colorButtonGreen));
-        rosecure_summary.setTextColor(secure.contains("0") ? getColorWrapper(PropActivityContext, R.color.colorAccent) :
-            getColorWrapper(PropActivityContext, R.color.colorButtonGreen));
-        robuildtags_summary.setTextColor(buildtags.contains("test") ? getColorWrapper(PropActivityContext, R.color.colorAccent) :
-            getColorWrapper(PropActivityContext, R.color.colorButtonGreen));
-        bl_state_summary.setTextColor(blstate.contains("1") ? getColorWrapper(PropActivityContext, R.color.colorAccent) :
-            getColorWrapper(PropActivityContext, R.color.colorButtonGreen));
-        flash_locked_summary.setTextColor(flashlocked.contains("0") ? getColorWrapper(PropActivityContext, R.color.colorAccent) :
-            getColorWrapper(PropActivityContext, R.color.colorButtonGreen));
+        rodebuggable_summary.setTextColor(debuggable.contains("0") ? getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
+            getColorWrapper(PropActivityContext, R.color.colorAccent));
+        rosecure_summary.setTextColor(secure.contains("1") ? getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
+            getColorWrapper(PropActivityContext, R.color.colorAccent));
+        robuildtags_summary.setTextColor(buildtags.contains("release") ? getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
+            getColorWrapper(PropActivityContext, R.color.colorAccent));
+        bl_state_summary.setTextColor(blstate.contains("0") ? getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
+            getColorWrapper(PropActivityContext, R.color.colorAccent));
+        flash_locked_summary.setTextColor(flashlocked.contains("1") ? getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
+            getColorWrapper(PropActivityContext, R.color.colorAccent));
         roverifiedbootstate_summary.setTextColor(verifiedbootstate.contains("green") ? getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
             getColorWrapper(PropActivityContext, R.color.colorAccent));
 
