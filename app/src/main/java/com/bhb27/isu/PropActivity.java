@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v4.content.ContextCompat;
@@ -54,6 +55,8 @@ public class PropActivity extends Activity {
 
     private ImageView ic_launcher;
 
+    private Button set_all_green, set_all_red;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +70,9 @@ public class PropActivity extends Activity {
         bl_state = (TextView) findViewById(R.id.bl_state);
         flash_locked = (TextView) findViewById(R.id.flash_locked);
         roverifiedbootstate = (TextView) findViewById(R.id.roverifiedbootstate);
+
+        set_all_green = (Button) findViewById(R.id.set_all_green);
+        set_all_red = (Button) findViewById(R.id.set_all_red);
 
         rodebuggable.setText(String.format(getString(R.string.equal), Sdebuggable));
         rosecure.setText(String.format(getString(R.string.equal), Srosecure));
@@ -193,13 +199,26 @@ public class PropActivity extends Activity {
             }
         });
 
+        set_all_green.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Tools.resetallprop(executableFilePath, true, PropActivityContext);
+                updateprop();
+            }
+        });
 
+        set_all_red.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Tools.resetallprop(executableFilePath, false, PropActivityContext);
+                updateprop();
+            }
+        });
     }
 
     public void updateprop(String prop, String defaultvalue, String newvalue) {
         boolean prop_value = Tools.getprop(prop).contains(defaultvalue);
-        Tools.saveString(prop, prop_value ? newvalue : defaultvalue, PropActivityContext);
-        Tools.resetprop(executableFilePath, prop_value ? prop + " " + newvalue : prop + " " + defaultvalue);
+        Tools.resetprop(executableFilePath, prop, prop_value ? newvalue : defaultvalue, PropActivityContext);
         updateprop();
     }
 

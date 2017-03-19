@@ -297,11 +297,24 @@ public class Tools implements Constants {
         return runShell("getprop " + prop);
     }
 
-    public static void resetprop(String path, String prop) {
+    public static void resetprop(String path, String prop, String value, Context context) {
+        String prop_cmd = prop + " " + value;
         if (SuBinary())
-            RootUtils.runCommand(path + "resetprop" + abi() + prop);
+            RootUtils.runCommand(path + "resetprop" + abi() + prop_cmd);
         else
-            RootUtils.runICommand(path + "resetprop" + abi() + prop);
+            RootUtils.runICommand(path + "resetprop" + abi() + prop_cmd);
+        Tools.saveString(prop, value, context);
+    }
+
+    public static void resetallprop(String path, boolean green, Context context) {
+        String originalvalue;
+        for (int i = 0; i < props.length; i++) {
+            originalvalue = Tools.getprop(props[i]);
+            if (originalvalue != null && !originalvalue.isEmpty()) {
+                resetprop(path, props[i], (green ? props_OK[i] : props_NOK[i]), context);
+                Log.d(TAG, "Set " + props[i] + " = " + (green ? props_OK[i] : props_NOK[i]));
+            }
+        }
     }
 
     public static void DoNotification(Context context) {
@@ -450,7 +463,7 @@ public class Tools implements Constants {
             originalvalue = Tools.getprop(props[i]);
             if (originalvalue != null && !originalvalue.isEmpty()) {
                 newvalue = getString(props[i], null, context);
-                resetprop(path, props[i] + " " + newvalue);
+                resetprop(path, props[i], newvalue, context);
             }
             Log.d(TAG, "Set " + props[i] + " = " + newvalue);
         }

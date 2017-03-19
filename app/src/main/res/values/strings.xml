@@ -95,6 +95,9 @@
     <string name="in_prop_summary">Some apps may block the access base on the state of the below prop flags</string>
     <string name="green_good">GREEN = Good</string>
     <string name="red_bad">RED = Bad</string>
+    <string name="set_all_green">Set all to green</string>
+    <string name="set_all_red">Set all to red</string>
+    <string name="individual_prop">Click on a individual Prop to change it</string>
     <string name="used_by">Used by:</string>
     <string name="banks">Banks and others payments sites.</string>
     <string name="root_beer">Root beer (a ROOT checker app).</string>
