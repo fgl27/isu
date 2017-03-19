@@ -38,7 +38,19 @@ public class PropActivity extends Activity {
 
     private Context PropActivityContext = null;
 
-    private String executableFilePath, Sdebuggable = Constants.props[1], Sbuildtags = Constants.props[0], Sbl_state = Constants.props[2], Sflash_locked = Constants.props[3], Sroverifiedbootstate = Constants.props[4], Srosecure = Constants.props[5];
+    private String executableFilePath;
+
+    private String Sdebuggable = Constants.props[1], Sbuildtags = Constants.props[0],
+        Sbl_state = Constants.props[2], Sflash_locked = Constants.props[3],
+        Sroverifiedbootstate = Constants.props[4], Srosecure = Constants.props[5];
+
+    private String VOKdebuggable = Constants.props_OK[1], VOKbuildtags = Constants.props_OK[0],
+        VOKbl_state = Constants.props_OK[2], VOKflash_locked = Constants.props_OK[3],
+        VOKroverifiedbootstate = Constants.props_OK[4], VOKrosecure = Constants.props_OK[5];
+
+    private String VNOKdebuggable = Constants.props_NOK[1], VNOKbuildtags = Constants.props_NOK[0],
+        VNOKbl_state = Constants.props_NOK[2], VNOKflash_locked = Constants.props_NOK[3],
+        VNOKroverifiedbootstate = Constants.props_NOK[4], VNOKrosecure = Constants.props_NOK[5];
 
     private ImageView ic_launcher;
 
@@ -98,78 +110,78 @@ public class PropActivity extends Activity {
         rodebuggable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateprop(Sdebuggable, "1", "0");
+                updateprop(Sdebuggable, VOKdebuggable, VNOKdebuggable);
             }
         });
         rodebuggable_summary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateprop(Sdebuggable, "1", "0");
+                updateprop(Sdebuggable, VOKdebuggable, VNOKdebuggable);
             }
         });
 
         rosecure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateprop(Srosecure, "1", "0");
+                updateprop(Srosecure, VOKrosecure, VNOKrosecure);
             }
         });
         rosecure_summary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateprop(Srosecure, "1", "0");
+                updateprop(Srosecure, VOKrosecure, VNOKrosecure);
             }
         });
 
         robuildtags.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateprop(Sbuildtags, "test-keys", "release-keys");
+                updateprop(Sbuildtags, VOKbuildtags, VNOKbuildtags);
             }
         });
         robuildtags_summary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateprop(Sbuildtags, "test-keys", "release-keys");
+                updateprop(Sbuildtags, VOKbuildtags, VNOKbuildtags);
             }
         });
 
         bl_state.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateprop(Sbl_state, "2", "0");
+                updateprop(Sbl_state, VOKbl_state, VNOKbl_state);
             }
         });
         bl_state_summary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateprop(Sbl_state, "2", "0");
+                updateprop(Sbl_state, VOKbl_state, VNOKbl_state);
             }
         });
 
         flash_locked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateprop(Sflash_locked, "0", "1");
+                updateprop(Sflash_locked, VOKflash_locked, VNOKflash_locked);
             }
         });
         flash_locked_summary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateprop(Sflash_locked, "0", "1");
+                updateprop(Sflash_locked, VOKflash_locked, VNOKflash_locked);
             }
         });
 
         roverifiedbootstate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateprop(Sroverifiedbootstate, "green", "red");
+                updateprop(Sroverifiedbootstate, VOKroverifiedbootstate, VNOKroverifiedbootstate);
             }
         });
         roverifiedbootstate_summary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateprop(Sroverifiedbootstate, "green", "orange");
+                updateprop(Sroverifiedbootstate, VOKroverifiedbootstate, VNOKroverifiedbootstate);
             }
         });
 
@@ -207,17 +219,23 @@ public class PropActivity extends Activity {
         roverifiedbootstate_summary.setText(verifiedbootstate);
 
         // below are the "OK" values
-        rodebuggable_summary.setTextColor(debuggable.contains("0") ? getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
+        rodebuggable_summary.setTextColor(debuggable.contains(VOKdebuggable) ?
+            getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
             getColorWrapper(PropActivityContext, R.color.colorAccent));
-        rosecure_summary.setTextColor(secure.contains("1") ? getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
+        rosecure_summary.setTextColor(secure.contains(VOKrosecure) ?
+            getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
             getColorWrapper(PropActivityContext, R.color.colorAccent));
-        robuildtags_summary.setTextColor(buildtags.contains("release") ? getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
+        robuildtags_summary.setTextColor(buildtags.contains(VOKbuildtags) ?
+            getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
             getColorWrapper(PropActivityContext, R.color.colorAccent));
-        bl_state_summary.setTextColor(blstate.contains("0") ? getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
+        bl_state_summary.setTextColor(blstate.contains(VOKbl_state) ?
+            getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
             getColorWrapper(PropActivityContext, R.color.colorAccent));
-        flash_locked_summary.setTextColor(flashlocked.contains("1") ? getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
+        flash_locked_summary.setTextColor(flashlocked.contains(VOKflash_locked) ?
+            getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
             getColorWrapper(PropActivityContext, R.color.colorAccent));
-        roverifiedbootstate_summary.setTextColor(verifiedbootstate.contains("green") ? getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
+        roverifiedbootstate_summary.setTextColor(verifiedbootstate.contains(VOKroverifiedbootstate) ?
+            getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
             getColorWrapper(PropActivityContext, R.color.colorAccent));
 
         if (blstate == null || blstate.isEmpty()) {

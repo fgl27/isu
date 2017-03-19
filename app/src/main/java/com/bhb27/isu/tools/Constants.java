@@ -44,4 +44,24 @@ public interface Constants {
         "ro.secure",
         "temp.temp"
     };
+
+    String[] props_OK = new String[] {
+        "release-keys",
+        "0",
+        "0",
+        "1",
+        "green",
+        "1",
+        "temp"
+    };
+
+    String[] props_NOK = new String[] {
+        "test-keys",
+        "1",
+        "2",
+        "0",
+        "orange",
+        "0",
+        "temp"
+    };
 }
