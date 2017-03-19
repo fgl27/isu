@@ -33,14 +33,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -62,12 +60,6 @@ public class Main extends Activity {
     private Button about, per_app, buttonprop;
     private Switch suSwitch, SelinuxSwitch, iSuNotification, iSuToastNotification, ChangeSuSelinuxSwitch, SuSelinuxSwitch, AndDebugSwitch, ChangeAndDebugSwitch;
 
-    private String bin_su = Constants.bin_su;
-    private String xbin_su = Constants.xbin_su;
-    private String bin_isu = Constants.bin_isu;
-    private String xbin_isu = Constants.xbin_isu;
-    private String bin_temp_su = Constants.bin_temp_su;
-
     private ImageView ic_launcher;
 
     private String TAG = Constants.TAG;
@@ -85,38 +77,10 @@ public class Main extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         MainContext = this;
-
-        LinearLayout layout = (LinearLayout) findViewById(R.id.MainLayout);
-        AlphaAnimation animation = new AlphaAnimation(0.0f, 1.0f);
-        animation.setFillAfter(true);
-        animation.setDuration(750);
-        layout.startAnimation(animation);
 
         suVersion = Tools.SuVersion(MainContext);
         isCMSU = Tools.SuVersionBool(suVersion);
-
-        Runnable runSepolicy = new Runnable() {
-            public void run() {
-                Sepolicy();
-                extractresetprop();
-                // Only run boot service if app was used and is CM SU
-                if (isCMSU && !Tools.getBoolean("run_boot", false, MainContext))
-                    Tools.saveBoolean("run_boot", true, MainContext);
-
-                // Create a blank profiles.json to prevent logspam.
-                File file = new File(getFilesDir() + "/per_app.json");
-                if (!file.exists()) {
-                    try {
-                        file.createNewFile();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        };
-        new Thread(runSepolicy).start();
 
         suSwitch = (Switch) findViewById(R.id.suSwitch);
         SuSwitchSummary = (TextView) findViewById(R.id.SuSwitchSummary);
@@ -128,7 +92,6 @@ public class Main extends Activity {
         SelinuxSwitch = (Switch) findViewById(R.id.SelinuxSwitch);
         SelinuxStatus = (TextView) findViewById(R.id.SelinuxStatus);
         Selinux_State = (TextView) findViewById(R.id.Selinux_State);
-        Selinux_State.setText(Tools.getSELinuxStatus());
 
         AndDebugSwitch = (Switch) findViewById(R.id.AndDebugSwitch);
         AndDebugSwitch_summary = (TextView) findViewById(R.id.AndDebugSwitch_summary);
@@ -169,10 +132,7 @@ public class Main extends Activity {
         });
 
         //reboot support check
-        if (Tools.RebootSupportPixel()) {
-            kernel_check.setText(getString(R.string.pixel_reboot));
-            download_folder_link.setVisibility(View.GONE);
-        } else if (RebootSupport()) {
+        if (RebootSupport()) {
             kernel_check.setText(getString(R.string.isu_reboot));
             download_folder_link.setVisibility(View.GONE);
         } else if (Tools.KernelSupport()) {
@@ -193,7 +153,16 @@ public class Main extends Activity {
                 }
             });
         }
+
+        ChangeAndDebugSwitch.setChecked(Tools.getBoolean("adb_change", false, MainContext));
+        iSuNotification.setChecked(Tools.getBoolean("isu_notification", false, MainContext));
+        iSuToastNotification.setChecked(Tools.getBoolean("toast_notifications", true, MainContext));
+        SuSelinuxSwitch.setChecked(Tools.getBoolean("restart_selinux", false, MainContext));
+        ChangeSuSelinuxSwitch.setChecked(Tools.getBoolean("su_selinux_change", true, MainContext));
+
+
         UpdateMain(isCMSU);
+        UpdateMainListners(isCMSU);
     }
 
     @Override
@@ -217,114 +186,21 @@ public class Main extends Activity {
     protected void UpdateMain(boolean CMSU) {
         if (CMSU) {
 
-            Tools.WriteSettings(MainContext);
-            suSwitch.setChecked(Tools.SuBinary(xbin_su));
+            suSwitch.setChecked(Tools.SuBinary());
+            SelinuxSwitch.setChecked(Tools.isSELinuxActive());
+            AndDebugSwitch.setChecked(Tools.AndroidDebugState(MainContext));
+
             SuStatus.setText((suSwitch.isChecked() ? getString(R.string.activated) :
                 getString(R.string.deactivated)));
-            suSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                    boolean isChecked) {
-                    if (Tools.SuBinary(xbin_su) != isChecked) {
-                        Tools.SwitchSu(isChecked, false, MainContext);
-                        Tools.UpMain(MainContext);
-                    }
-                }
-            });
             SuSwitchSummary.setText(getString(R.string.su_state));
 
-            // Selinux switch
-            SelinuxSwitch.setChecked(Tools.isSELinuxActive());
-            Selinux_State.setText(Tools.getSELinuxStatus());
-            SelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                    boolean isChecked) {
-                    if (Tools.isSELinuxActive() != isChecked) {
-                        Tools.SwitchSelinux(isChecked, MainContext);
-                        Tools.UpMain(MainContext);
-                    }
-                }
-            });
-
-            AndDebugSwitch.setChecked(Tools.AndroidDebugState(MainContext));
-            AndDebugSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                    boolean isChecked) {
-                    if (Tools.AndroidDebugState(MainContext) != isChecked) {
-                        Tools.AndroidDebugSet(isChecked, MainContext);
-                        Tools.UpMain(MainContext);
-                    }
-                }
-            });
-
-            ChangeAndDebugSwitch.setChecked(Tools.getBoolean("adb_change", false, MainContext));
-            ChangeAndDebugSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                    boolean isChecked) {
-                    Tools.saveBoolean("adb_change", isChecked, MainContext);
-                }
-            });
-
-            per_app.setOnClickListener(new View.OnClickListener() {
-                Intent myIntent = new Intent(getApplicationContext(), PerAppActivity.class);
-                @Override
-                public void onClick(View v) {
-                    startActivity(myIntent);
-                }
-            });
-
-            buttonprop.setOnClickListener(new View.OnClickListener() {
-                Intent myIntent = new Intent(getApplicationContext(), PropActivity.class);
-                @Override
-                public void onClick(View v) {
-                    startActivity(myIntent);
-                }
-            });
-
-            iSuNotification.setChecked(Tools.getBoolean("isu_notification", false, MainContext));
-            iSuNotification.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                    boolean isChecked) {
-                    Tools.saveBoolean("isu_notification", isChecked, MainContext);
-                }
-            });
-
-            iSuToastNotification.setChecked(Tools.getBoolean("toast_notifications", true, MainContext));
-            iSuToastNotification.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                    boolean isChecked) {
-                    Tools.saveBoolean("toast_notifications", isChecked, MainContext);
-                }
-            });
-
-            SuSelinuxSwitch.setChecked(Tools.getBoolean("restart_selinux", false, MainContext));
-            SuSelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                    boolean isChecked) {
-                    Tools.saveBoolean("restart_selinux", isChecked, MainContext);
-                }
-            });
-
-            ChangeSuSelinuxSwitch.setChecked(Tools.getBoolean("su_selinux_change", true, MainContext));
-            ChangeSuSelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                    boolean isChecked) {
-                    Tools.saveBoolean("su_selinux_change", isChecked, MainContext);
-                }
-            });
+            SuStatus.setTextColor((Tools.SuBinary()) ? getColorWrapper(MainContext, R.color.colorAccent) :
+                getColorWrapper(MainContext, R.color.colorButtonGreen));
 
             try {
                 MainContext.registerReceiver(updateMainReceiver, new IntentFilter("updateMainReceiver"));
             } catch (NullPointerException ignored) {}
-            SuStatus.setTextColor((Tools.SuBinary(xbin_su)) ? getColorWrapper(MainContext, R.color.colorAccent) :
-                getColorWrapper(MainContext, R.color.colorButtonGreen));
+
             upMain = true;
         } else {
             suSwitch.setEnabled(false);
@@ -364,8 +240,124 @@ public class Main extends Activity {
         }
         su_version_summary.setTextColor((!CMSU) ? getColorWrapper(MainContext, R.color.colorAccent) :
             getColorWrapper(MainContext, R.color.colorButtonGreen));
+        Selinux_State.setText(Tools.getSELinuxStatus());
         Selinux_State.setTextColor((!Tools.isSELinuxActive()) ? getColorWrapper(MainContext, R.color.colorAccent) :
             getColorWrapper(MainContext, R.color.colorButtonGreen));
+    }
+
+    protected void UpdateMainListners(boolean CMSU) {
+        if (CMSU) {
+            suSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
+                    if (Tools.SuBinary() != isChecked) {
+                        Tools.SwitchSu(isChecked, false, MainContext);
+                        Tools.UpMain(MainContext);
+                    }
+                }
+            });
+
+            SelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
+                    if (Tools.isSELinuxActive() != isChecked) {
+                        Tools.SwitchSelinux(isChecked, MainContext);
+                        Tools.UpMain(MainContext);
+                    }
+                }
+            });
+
+            AndDebugSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
+                    if (Tools.AndroidDebugState(MainContext) != isChecked) {
+                        Tools.AndroidDebugSet(isChecked, MainContext);
+                        Tools.UpMain(MainContext);
+                    }
+                }
+            });
+
+            ChangeAndDebugSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
+                    Tools.saveBoolean("adb_change", isChecked, MainContext);
+                }
+            });
+
+            per_app.setOnClickListener(new View.OnClickListener() {
+                Intent myIntent = new Intent(getApplicationContext(), PerAppActivity.class);
+                @Override
+                public void onClick(View v) {
+                    startActivity(myIntent);
+                }
+            });
+
+            buttonprop.setOnClickListener(new View.OnClickListener() {
+                Intent myIntent = new Intent(getApplicationContext(), PropActivity.class);
+                @Override
+                public void onClick(View v) {
+                    startActivity(myIntent);
+                }
+            });
+
+            iSuNotification.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
+                    Tools.saveBoolean("isu_notification", isChecked, MainContext);
+                }
+            });
+
+            iSuToastNotification.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
+                    Tools.saveBoolean("toast_notifications", isChecked, MainContext);
+                }
+            });
+
+            SuSelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
+                    Tools.saveBoolean("restart_selinux", isChecked, MainContext);
+                }
+            });
+
+            ChangeSuSelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                    boolean isChecked) {
+                    Tools.saveBoolean("su_selinux_change", isChecked, MainContext);
+                }
+            });
+        }
+
+        Runnable runThread = new Runnable() {
+            public void run() {
+                Sepolicy();
+                extractresetprop();
+                Tools.WriteSettings(MainContext);
+                // Only run boot service if app was used and is CM SU
+                if (isCMSU && !Tools.getBoolean("run_boot", false, MainContext))
+                    Tools.saveBoolean("run_boot", true, MainContext);
+
+                // Create a blank profiles.json to prevent logspam.
+                File file = new File(getFilesDir() + "/per_app.json");
+                if (!file.exists()) {
+                    try {
+                        file.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        new Thread(runThread).start();
     }
 
     private final BroadcastReceiver updateMainReceiver = new BroadcastReceiver() {
@@ -386,7 +378,6 @@ public class Main extends Activity {
             extractAssets(executableFilePath, "resetpropx86");
             extractAssets(executableFilePath, "busybox");
         }
-        Tools.PatchSepolicy(executableFilePath);
     }
 
     public void Sepolicy() {
@@ -434,9 +425,9 @@ public class Main extends Activity {
 
     private boolean RebootSupport() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
-            String executableFilePath = getFilesDir().getPath() + "/";
             if (Tools.ReadSystemPatch())
                 return true;
+            String executableFilePath = getFilesDir().getPath() + "/";
             if (!Tools.NewexistFile(executableFilePath + "isush", true) ||
                 !Tools.NewexistFile(executableFilePath + "superuser.rc", true)) {
                 extractAssets(executableFilePath + "isush", "isush");

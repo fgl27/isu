@@ -35,7 +35,6 @@ import com.bhb27.isu.Main;
 import com.bhb27.isu.PerAppActivity;
 import com.bhb27.isu.R;
 import com.bhb27.isu.tools.Tools;
-import com.bhb27.isu.tools.Constants;
 
 import android.app.Activity;
 
@@ -67,7 +66,7 @@ public class Widgeth extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         if (ACTION_SU.equals(intent.getAction())) {
-            Tools.SwitchSu(!Tools.SuBinary(Constants.xbin_su), false, context);
+            Tools.SwitchSu(!Tools.SuBinary(), false, context);
         }
         if (ACTION_SELINUX.equals(intent.getAction())) {
             Tools.SwitchSelinux(!Tools.isSELinuxActive(), context);

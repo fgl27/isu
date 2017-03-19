@@ -29,19 +29,16 @@ import android.service.quicksettings.TileService;
 import com.bhb27.isu.Main;
 import com.bhb27.isu.R;
 import com.bhb27.isu.tools.Tools;
-import com.bhb27.isu.tools.Constants;
 
 @TargetApi(24)
 public class QuickTileSU extends TileService {
-
-    private String xbin_su = Constants.xbin_su; 
 
     @Override
     public void onStartListening() {
         super.onStartListening();
         boolean su = (Tools.SuVersionBool(Tools.SuVersion(this)));
         if (su) {
-            getQsTile().setLabel((Tools.SuBinary(xbin_su) ?
+            getQsTile().setLabel((Tools.SuBinary() ?
                 this.getString(R.string.activated) : this.getString(R.string.deactivated)));
         } else
             getQsTile().setLabel(this.getString(R.string.not_available));
@@ -51,10 +48,11 @@ public class QuickTileSU extends TileService {
     @Override
     public void onClick() {
         super.onClick();
-        boolean su = (Tools.SuVersionBool(Tools.SuVersion(this)));
-        if (su) {
-            Tools.SwitchSu(!Tools.SuBinary(xbin_su), false, this);
-            getQsTile().setLabel((Tools.SuBinary(xbin_su) ?
+        boolean su_version = (Tools.SuVersionBool(Tools.SuVersion(this)));
+        boolean su = Tools.SuBinary();
+        if (su_version) {
+            Tools.SwitchSu(!su, false, this);
+            getQsTile().setLabel((su ?
                 this.getString(R.string.activated) : this.getString(R.string.deactivated)));
             Tools.UpMain(this);
             getQsTile().updateTile();

@@ -26,7 +26,6 @@ import android.content.pm.PackageManager;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 
-import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.tools.Tools;
 import com.bhb27.isu.R;
 
@@ -44,11 +43,6 @@ public class PerAppMonitor extends AccessibilityService {
     String last_package = "";
     String last_profile = "";
     long time = System.currentTimeMillis();
-    private String bin_su = Constants.bin_su;
-    private String xbin_su = Constants.xbin_su;
-    private String bin_isu = Constants.bin_isu;
-    private String xbin_isu = Constants.xbin_isu;
-    private String bin_temp_su = Constants.bin_temp_su;
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
@@ -113,12 +107,12 @@ public class PerAppMonitor extends AccessibilityService {
 
     public void change() {
         //active deactive su selinux
-        if (last_profile.equals("Su") && Tools.SuBinary(xbin_isu)) {
+        if (last_profile.equals("Su") && !Tools.SuBinary()) {
             Tools.SwitchSu(true, true, this);
-        } else if (last_profile.equals("iSu") && Tools.SuBinary(xbin_su))
+        } else if (last_profile.equals("iSu") && Tools.SuBinary())
             Tools.SwitchSu(false, true, this);
         else if (Tools.getBoolean("su_selinux_change", true, this)) {
-            if (last_profile.equals("iSu") && Tools.SuBinary(xbin_isu) && !Tools.isSELinuxActive()) {
+            if (last_profile.equals("iSu") && !Tools.SuBinary() && !Tools.isSELinuxActive()) {
                 Tools.SwitchSelinux(true, this);
                 if (Tools.getBoolean("toast_notifications", true, this))
                     Tools.DoAToast(getString(R.string.selinux_toast_ok), this);

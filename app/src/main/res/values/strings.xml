@@ -20,7 +20,7 @@
     <string name="isu_kernel_no_su">If you use iSu to deactivate SU and lost SU support try&#8230;\nA reboot if you have iSu kernel support, if you don\'t have kernel support reflash yours current ROM .zip, without SU access the app can\'t tell if you have reboot support so also check in Setting Developer option if Root accesses is granted to apps, in doubt check XDA thread link in About iSu&#8230; XDA support forun site.</string>
     <string name="download_folder_link">Click here to go to iSu download folder</string>
     <string name="isu_reboot">iSu Nougat reboot support OK.</string>
-    <string name="pixel_reboot">iSu Pixel reboot support OK.</string>
+    <!--    <string name="pixel_reboot">iSu Pixel reboot support OK.</string>-->
     <string name="su_selinux_change">Activate SELinux when SU is deactivated</string>
     <string name="su_selinux_change_summary">If ON will set SELinux to Enforcing when deactivate SU, this is need by safety net apps</string>
 
