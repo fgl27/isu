@@ -383,14 +383,23 @@ public class Tools implements Constants {
     }
 
     public static void stripsu(String executableFilePath) {
-        if (SuBinary(xbin_su)){
-            RootUtils.runCommand("mount -o rw,remount /system");
-            RootUtils.runCommand(executableFilePath + "busybox sed -i 's/ro.cm.version/ro.no.version/g' /system/xbin/su");
-            RootUtils.runCommand("mount -o ro,remount /system");
+        String ro_cm = "";
+        if (SuBinary(xbin_su)) {
+            ro_cm = ro_cm + RootUtils.runCommand(executableFilePath + "busybox strings system/xbin/su | grep ro.cm.version");
+            if (ro_cm.contains("ro.cm.version")) {
+                RootUtils.runCommand("mount -o rw,remount /system");
+                RootUtils.runCommand(executableFilePath + "busybox sed -i 's/ro.cm.version/ro.no.version/g' /system/xbin/su");
+                RootUtils.runCommand("mount -o ro,remount /system");
+                Log.d(TAG, "stripsu ro_cm = " + ro_cm);
+            } else Log.d(TAG, "not stripsu ro_cm = " + ro_cm);
         } else {
-            RootUtils.runICommand("mount -o rw,remount /system");
-            RootUtils.runICommand(executableFilePath + "busybox sed -i 's/ro.cm.version/ro.no.version/g' /system/xbin/isu");
-            RootUtils.runICommand("mount -o ro,remount /system");
+            ro_cm = ro_cm + RootUtils.runICommand(executableFilePath + "busybox strings system/xbin/isu | grep ro.cm.version");
+            if (ro_cm.contains("ro.cm.version")) {
+                RootUtils.runICommand("mount -o rw,remount /system");
+                RootUtils.runICommand(executableFilePath + "busybox sed -i 's/ro.cm.version/ro.no.version/g' /system/xbin/isu");
+                RootUtils.runICommand("mount -o ro,remount /system");
+                Log.d(TAG, "stripsu ro_cm = " + ro_cm);
+            } else Log.d(TAG, "not stripsu ro_cm = " + ro_cm);
         }
     }
 
