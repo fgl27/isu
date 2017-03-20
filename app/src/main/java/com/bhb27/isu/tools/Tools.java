@@ -287,9 +287,9 @@ public class Tools implements Constants {
 
     public static String abi() {
         String abi_version = getprop("ro.product.cpu.abi");
-        String abi_result = " ";
-        if (abi_version.contains("x86")) abi_result = "x86 ";
-        if (abi_version.contains("arm64")) abi_result = "arm64 ";
+        String abi_result = "";
+        if (abi_version.contains("x86")) abi_result = "x86";
+        if (abi_version.contains("arm64")) abi_result = "arm64";
         return abi_result;
     }
 
@@ -300,9 +300,9 @@ public class Tools implements Constants {
     public static void resetprop(String path, String prop, String value, Context context) {
         String prop_cmd = prop + " " + value;
         if (SuBinary())
-            RootUtils.runCommand(path + "resetprop" + abi() + prop_cmd);
+            RootUtils.runCommand(path + "resetprop" + abi() + " -v -n " + prop_cmd);
         else
-            RootUtils.runICommand(path + "resetprop" + abi() + prop_cmd);
+            RootUtils.runICommand(path + "resetprop" + abi() + " -v -n " + prop_cmd);
         Tools.saveString(prop, value, context);
     }
 

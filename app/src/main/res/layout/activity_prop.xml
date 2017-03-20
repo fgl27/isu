@@ -125,6 +125,7 @@
             android:textColor="@color/text_black"
             android:textAppearance="?android:attr/textAppearanceSmall" />
         <View
+            android:id="@+id/rodebuggable_view"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/colorAccent" />
@@ -166,6 +167,7 @@
             android:textColor="@color/text_black"
             android:textAppearance="?android:attr/textAppearanceSmall" />
         <View
+            android:id="@+id/rosecure_view"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/colorAccent" />
@@ -207,6 +209,7 @@
             android:textColor="@color/text_black"
             android:textAppearance="?android:attr/textAppearanceSmall" />
         <View
+            android:id="@+id/robuildtags_view"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/colorAccent" />
@@ -333,6 +336,174 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
         <View
             android:id="@+id/roverifiedbootstate_view"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorAccent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/roveritymode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/text_black"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+            <TextView
+                android:id="@+id/roveritymode_summary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"
+                android:text=""
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/roveritymode_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/text_black"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        <View
+            android:id="@+id/roveritymode_view"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorAccent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/robuildtype"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/text_black"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+            <TextView
+                android:id="@+id/robuildtype_summary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"
+                android:text=""
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/robuildtype_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/text_black"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        <View
+            android:id="@+id/robuildtype_view"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorAccent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/robuildselinux"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/text_black"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+            <TextView
+                android:id="@+id/robuildselinux_summary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"
+                android:text=""
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/robuildselinux_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/text_black"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        <View
+            android:id="@+id/robuildselinux_view"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorAccent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/robootselinux"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/text_black"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+            <TextView
+                android:id="@+id/robootselinux_summary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"
+                android:text=""
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/robootselinux_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/text_black"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        <View
+            android:id="@+id/robootselinux_view"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/colorAccent" />

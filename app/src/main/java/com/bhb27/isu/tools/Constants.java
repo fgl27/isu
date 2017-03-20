@@ -42,6 +42,10 @@ public interface Constants {
         "ro.boot.flash.locked",
         "ro.boot.verifiedbootstate",
         "ro.secure",
+        "ro.boot.veritymode",
+        "ro.build.type",
+        "ro.build.selinux",
+        "ro.boot.selinux",
         "temp.temp"
     };
 
@@ -52,6 +56,10 @@ public interface Constants {
         "1",
         "green",
         "1",
+        "enforcing",
+        "user",
+        "1",
+        "enforcing",
         "temp"
     };
 
@@ -62,6 +70,10 @@ public interface Constants {
         "0",
         "orange",
         "0",
+        "logging",
+        "userdebug",
+        "0",
+        "permissive",
         "temp"
     };
 }
