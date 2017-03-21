@@ -33,6 +33,8 @@ public interface Constants {
     String YES_ACTION = "YES_ACTION";
     String DISSMISS_ACTION = "DISSMISS_ACTION";
 
+    String BUILD_PROP = "system/build.prop";
+
     String PAY = "com.google.android.apps.walletnfcrel";
 
     String[] props = new String[] {

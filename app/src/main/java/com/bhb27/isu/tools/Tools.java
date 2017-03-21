@@ -299,11 +299,32 @@ public class Tools implements Constants {
 
     public static void resetprop(String path, String prop, String value, Context context) {
         String prop_cmd = prop + " " + value;
-        if (SuBinary())
+        String bp_prop_value = "";
+        String bp_prop = "";
+        if (SuBinary()) {
             RootUtils.runCommand(path + "resetprop" + abi() + " -v -n " + prop_cmd);
-        else
+            bp_prop_value = bp_prop_value + RootUtils.runCommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f2");
+            bp_prop = bp_prop + RootUtils.runCommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f1");
+       } else {
             RootUtils.runICommand(path + "resetprop" + abi() + " -v -n " + prop_cmd);
+            bp_prop_value = bp_prop_value + RootUtils.runICommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f2");
+            bp_prop = bp_prop + RootUtils.runICommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f1");
+        }
         Tools.saveString(prop, value, context);
+        if (bp_prop.contains(prop) && !bp_prop_value.equals(value))
+           overwritebp(prop, bp_prop_value, prop, value, path);
+    }
+
+    public static void overwritebp(String oldKey, String oldValue, String newKey, String newValue, String path) {
+        if (SuBinary()) {
+            RootUtils.runCommand("mount -o rw,remount /system");
+            RootUtils.runCommand(path + "busybox sed -ir \"s/" + oldKey + "=" + oldValue + "/" + newKey + "=" + newValue + "/\" " + BUILD_PROP);
+            RootUtils.runCommand("mount -o ro,remount /system");
+        } else {
+            RootUtils.runICommand("mount -o rw,remount /system");
+            RootUtils.runICommand(path + "busybox sed -ir \"s/" + oldKey + "=" + oldValue + "/" + newKey + "=" + newValue + "/\" " + BUILD_PROP);
+            RootUtils.runICommand("mount -o ro,remount /system");
+        }
     }
 
     public static void resetallprop(String path, boolean green, Context context) {
