@@ -64,6 +64,7 @@
     <string name="in_prop_summary">Alguns aplicativos podem bloquear o acesso baseado no estado dos valores abaixo</string>
     <string name="green_good">VERDE = Bom</string>
     <string name="red_bad">Vermelho = Ruim</string>
+    <string name="need_reboot">*Este prop precisa de um Reboot apos mudar para ter efeito no app Root beer.</string>
     <string name="set_all_green">Setar todos para verde</string>
     <string name="set_all_red">Setar todos para vermelho</string>
     <string name="individual_prop">Clique sobre um Prop para alterar o seu valor</string>
