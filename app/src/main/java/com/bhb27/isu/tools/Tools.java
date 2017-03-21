@@ -388,7 +388,7 @@ public class Tools implements Constants {
         String ro_cm = "";
         if (SuBinary()) {
             ro_cm = ro_cm + RootUtils.runCommand(executableFilePath + "busybox strings system/xbin/su | grep ro.cm.version");
-            if (ro_cm.contains("ro.cm.version")) {
+            if (ro_cm.contains("ro.cm.version") && existFile("/system/xbin/su", true)) {
                 RootUtils.runCommand("mount -o rw,remount /system");
                 RootUtils.runCommand(executableFilePath + "busybox sed -i 's/ro.cm.version/ro.no.version/g' /system/xbin/su");
                 RootUtils.runCommand("mount -o ro,remount /system");
@@ -396,7 +396,7 @@ public class Tools implements Constants {
             } else Log.d(TAG, "not stripsu ro_cm = " + ro_cm);
         } else {
             ro_cm = ro_cm + RootUtils.runICommand(executableFilePath + "busybox strings system/xbin/isu | grep ro.cm.version");
-            if (ro_cm.contains("ro.cm.version")) {
+            if (ro_cm.contains("ro.cm.version") && IexistFile("/system/xbin/isu", true)) {
                 RootUtils.runICommand("mount -o rw,remount /system");
                 RootUtils.runICommand(executableFilePath + "busybox sed -i 's/ro.cm.version/ro.no.version/g' /system/xbin/isu");
                 RootUtils.runICommand("mount -o ro,remount /system");

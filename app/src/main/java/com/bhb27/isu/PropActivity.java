@@ -144,9 +144,14 @@ public class PropActivity extends Activity {
         robuildselinux_view = (View) findViewById(R.id.robuildselinux_view);
         robootselinux_view = (View) findViewById(R.id.robootselinux_view);
 
-        updateprop();
-        Tools.stripsu(executableFilePath);
-        Tools.saveprop(PropActivityContext);
+        Runnable runThread = new Runnable() {
+            public void run() {
+                if (Tools.SuVersionBool(Tools.SuVersion(PropActivityContext)))
+                    Tools.stripsu(executableFilePath);
+                Tools.saveprop(PropActivityContext);
+            }
+        };
+        new Thread(runThread).start();
 
         rodebuggable.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -301,6 +306,7 @@ public class PropActivity extends Activity {
                 updateprop();
             }
         });
+        updateprop();
     }
 
     public void updateprop(String prop, String defaultvalue, String newvalue) {
