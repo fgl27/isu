@@ -58,6 +58,19 @@
     <string name="no_email_client">Não há nenhum cliente de email instalado no dispositivo.</string>
     <string name="no_browser">Não há nenhum navegador de web instalado no dispositivo.</string>
 
+    <!--Prop-->
+    <string name="prop_editor">Editor de Props</string>
+    <string name="prop_editor_summary">Uma ferramenta para alterar props que podem ser usado para bloquear o acesso de algum aplicativo</string>
+    <string name="in_prop_summary">Alguns aplicativos podem bloquear o acesso baseado no estado dos valores abaixo</string>
+    <string name="green_good">VERDE = Bom</string>
+    <string name="red_bad">Vermelho = Ruim</string>
+    <string name="set_all_green">Setar todos para verde</string>
+    <string name="set_all_red">Setar todos para vermelho</string>
+    <string name="individual_prop">Clique sobre um Prop para alterar o seu valor</string>
+    <string name="used_by">Usado por:</string>
+    <string name="banks">Bancos e outros aplicativos de pagamento.</string>
+    <string name="root_beer">Root beer (um app que ROOT).</string>
+
     <!--Per app-->
     <string name="set_per_app">Monitor de aplicativos</string>
     <string name="service_per_app">iSu monitor de aplicativos</string>
