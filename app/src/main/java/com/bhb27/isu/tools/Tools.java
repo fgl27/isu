@@ -102,7 +102,7 @@ public class Tools implements Constants {
             RootUtils.runCommand("sed -i '/seclabel/c\\    " + seclabel + "' system/etc/init/superuser.rc ");
             RootUtils.runCommand("mount -o ro,remount /system");
         } else {
-            seclabel = RootUtils.runCommand("cat system/etc/init/superuser.rc | grep seclabel | head -1");
+            seclabel = RootUtils.runICommand("cat system/etc/init/superuser.rc | grep seclabel | head -1");
             RootUtils.runICommand("mount -o rw,remount /system");
             RootUtils.runICommand("cp -f " + executableFilePath + "isush" + " /system/xbin/");
             RootUtils.runICommand("chmod 0755" + " /system/xbin/isush");
