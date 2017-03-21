@@ -430,8 +430,8 @@ public class Main extends Activity {
             String executableFilePath = getFilesDir().getPath() + "/";
             if (!Tools.NewexistFile(executableFilePath + "isush", true) ||
                 !Tools.NewexistFile(executableFilePath + "superuser.rc", true)) {
-                extractAssets(executableFilePath + "isush", "isush");
-                extractAssets(executableFilePath + "superuser.rc", "superuser.rc");
+                extractAssets(executableFilePath, "isush");
+                extractAssets(executableFilePath, "superuser.rc");
             }
             Tools.SystemPatch(executableFilePath);
             if (Tools.ReadSystemPatch())
