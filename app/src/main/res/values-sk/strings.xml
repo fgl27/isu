@@ -87,6 +87,7 @@
     <string name="in_prop_summary">Niektoré aplikácie môžu blokovať prístup na základe stavu nasledujúcich prop značiek</string>
     <string name="green_good">ZELENÁ = dobré</string>
     <string name="red_bad">ČERVENÁ = zlé</string>
+    <string name="need_reboot">*Tento prop vyžaduje reštart po zmene, pre kontrolu cez Root Beer</string>
     <string name="set_all_green">Všetky na zelenú</string>
     <string name="set_all_red">Všetky na červenú</string>
     <string name="individual_prop">Kliknite na jednotlivé Prop pre ich zmenu</string>
