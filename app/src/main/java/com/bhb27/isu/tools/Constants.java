@@ -47,8 +47,7 @@ public interface Constants {
         "ro.boot.veritymode",
         "ro.build.type",
         "ro.build.selinux",
-        "ro.boot.selinux",
-        "temp.temp"
+        "ro.boot.selinux"
     };
 
     String[] props_OK = new String[] {
@@ -61,8 +60,7 @@ public interface Constants {
         "enforcing",
         "user",
         "1",
-        "enforcing",
-        "temp"
+        "enforcing"
     };
 
     String[] props_NOK = new String[] {
@@ -75,7 +73,6 @@ public interface Constants {
         "logging",
         "userdebug",
         "0",
-        "permissive",
-        "temp"
+        "permissive"
     };
 }

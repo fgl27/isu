@@ -331,6 +331,37 @@ public class PropActivity extends Activity {
         String buildselinux = Tools.getprop(Srobuildselinux);
         String bootselinux = Tools.getprop(Srobootselinux);
 
+        if (debuggable == null || debuggable.isEmpty()) {
+            debuggable = getString(R.string.unknown);
+        }
+        if (secure == null || secure.isEmpty()) {
+            secure = getString(R.string.unknown);
+        }
+        if (buildtags == null || buildtags.isEmpty()) {
+            buildtags = getString(R.string.unknown);
+        }
+        if (blstate == null || blstate.isEmpty()) {
+            blstate = getString(R.string.unknown);
+        }
+        if (flashlocked == null || flashlocked.isEmpty()) {
+            flashlocked = getString(R.string.unknown);
+        }
+        if (verifiedbootstate == null || verifiedbootstate.isEmpty()) {
+            verifiedbootstate = getString(R.string.unknown);
+        }
+        if (veritymode == null || veritymode.isEmpty()) {
+            veritymode = getString(R.string.unknown);
+        }
+        if (buildtype == null || buildtype.isEmpty()) {
+            buildtype = getString(R.string.unknown);
+        }
+        if (buildselinux == null || buildselinux.isEmpty()) {
+            buildselinux = getString(R.string.unknown);
+        }
+        if (bootselinux == null || bootselinux.isEmpty()) {
+            bootselinux = getString(R.string.unknown);
+        }
+
         rodebuggable_summary.setText(debuggable);
         rosecure_summary.setText(secure);
         robuildtags_summary.setText(buildtags);
@@ -342,7 +373,6 @@ public class PropActivity extends Activity {
         robuildselinux_summary.setText(buildselinux);
         robootselinux_summary.setText(bootselinux);
 
-        // below are the "OK" values
         rodebuggable_summary.setTextColor(debuggable.equals(VOKdebuggable) ?
             getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
             getColorWrapper(PropActivityContext, R.color.colorAccent));
@@ -374,66 +404,6 @@ public class PropActivity extends Activity {
             getColorWrapper(PropActivityContext, R.color.colorButtonGreen) :
             getColorWrapper(PropActivityContext, R.color.colorAccent));
 
-        if (secure == null || secure.isEmpty()) {
-            rosecure.setVisibility(View.GONE);
-            rosecure_summary.setVisibility(View.GONE);
-            rosecure_help.setVisibility(View.GONE);
-            rosecure_view.setVisibility(View.GONE);
-        }
-        if (buildtags == null || buildtags.isEmpty()) {
-            robuildtags.setVisibility(View.GONE);
-            robuildtags_summary.setVisibility(View.GONE);
-            robuildtags_help.setVisibility(View.GONE);
-            robuildtags_view.setVisibility(View.GONE);
-        }
-        if (debuggable == null || debuggable.isEmpty()) {
-            rodebuggable.setVisibility(View.GONE);
-            rodebuggable_summary.setVisibility(View.GONE);
-            rodebuggable_help.setVisibility(View.GONE);
-            rodebuggable_view.setVisibility(View.GONE);
-        }
-        if (blstate == null || blstate.isEmpty()) {
-            bl_state.setVisibility(View.GONE);
-            bl_state_summary.setVisibility(View.GONE);
-            bl_state_help.setVisibility(View.GONE);
-            bl_state_view.setVisibility(View.GONE);
-        }
-        if (blstate == null || blstate.isEmpty()) {
-            flash_locked.setVisibility(View.GONE);
-            flash_locked_summary.setVisibility(View.GONE);
-            flash_locked_help.setVisibility(View.GONE);
-            flash_locked_view.setVisibility(View.GONE);
-        }
-        if (blstate == null || blstate.isEmpty()) {
-            roverifiedbootstate.setVisibility(View.GONE);
-            roverifiedbootstate_summary.setVisibility(View.GONE);
-            roverifiedbootstate_help.setVisibility(View.GONE);
-            roverifiedbootstate_view.setVisibility(View.GONE);
-        }
-        if (veritymode == null || veritymode.isEmpty()) {
-            roveritymode.setVisibility(View.GONE);
-            roveritymode_summary.setVisibility(View.GONE);
-            roveritymode_help.setVisibility(View.GONE);
-            roveritymode_view.setVisibility(View.GONE);
-        }
-        if (buildtype == null || buildtype.isEmpty()) {
-            robuildtype.setVisibility(View.GONE);
-            robuildtype_summary.setVisibility(View.GONE);
-            robuildtype_help.setVisibility(View.GONE);
-            robuildtype_view.setVisibility(View.GONE);
-        }
-        if (buildselinux == null || buildselinux.isEmpty()) {
-            robuildselinux.setVisibility(View.GONE);
-            robuildselinux_summary.setVisibility(View.GONE);
-            robuildselinux_help.setVisibility(View.GONE);
-            robuildselinux_view.setVisibility(View.GONE);
-        }
-        if (bootselinux == null || bootselinux.isEmpty()) {
-            robootselinux.setVisibility(View.GONE);
-            robootselinux_summary.setVisibility(View.GONE);
-            robootselinux_help.setVisibility(View.GONE);
-            robootselinux_view.setVisibility(View.GONE);
-        }
     }
 
     private static int getColorWrapper(Context context, int id) {

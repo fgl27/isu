@@ -328,13 +328,9 @@ public class Tools implements Constants {
     }
 
     public static void resetallprop(String path, boolean green, Context context) {
-        String originalvalue;
         for (int i = 0; i < props.length; i++) {
-            originalvalue = Tools.getprop(props[i]);
-            if (originalvalue != null && !originalvalue.isEmpty()) {
-                resetprop(path, props[i], (green ? props_OK[i] : props_NOK[i]), context);
-                Log.d(TAG, "Set " + props[i] + " = " + (green ? props_OK[i] : props_NOK[i]));
-            }
+            resetprop(path, props[i], (green ? props_OK[i] : props_NOK[i]), context);
+            Log.d(TAG, "Set " + props[i] + " = " + (green ? props_OK[i] : props_NOK[i]));
         }
     }
 
