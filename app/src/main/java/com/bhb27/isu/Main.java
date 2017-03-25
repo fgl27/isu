@@ -59,7 +59,7 @@ public class Main extends Activity {
 
     private TextView SuSwitchSummary, SuStatus, kernel_check, Selinux_State, su_version, su_version_summary,
     SelinuxStatus, download_folder_link, per_app_summary, ChangeSuSelinuxSwitch_summary, SuSelinuxSwitch_summary, AndDebugSwitch_summary, ChangeAndDebugSwitch_summary;
-    private Button about, per_app, buttonprop, test;
+    private Button about, per_app, buttonprop;
     private Switch suSwitch, SelinuxSwitch, iSuNotification, iSuToastNotification, ChangeSuSelinuxSwitch, SuSelinuxSwitch, AndDebugSwitch, ChangeAndDebugSwitch;
 
     private ImageView ic_launcher;
@@ -114,7 +114,6 @@ public class Main extends Activity {
         per_app_summary = (TextView) findViewById(R.id.per_app);
 
         buttonprop = (Button) findViewById(R.id.buttonprop);
-        test = (Button) findViewById(R.id.test);
 
         download_folder_link = (TextView) findViewById(R.id.download_folder_link);
         kernel_check = (TextView) findViewById(R.id.kernel_check);
@@ -306,14 +305,6 @@ public class Main extends Activity {
                 @Override
                 public void onClick(View v) {
                     startActivity(myIntent);
-                }
-            });
-
-            test.setOnClickListener(new View.OnClickListener() {
-                Intent myIntent = new Intent(getApplicationContext(), PropActivity.class);
-                @Override
-                public void onClick(View v) {
-                    new StripeExecute().execute(executableFilePath, "com.bhb27.turbotoast", "com.app.test");
                 }
             });
 
