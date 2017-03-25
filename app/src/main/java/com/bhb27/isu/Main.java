@@ -364,7 +364,20 @@ public class Main extends Activity {
         new Thread(runThread).start();
     }
 
-    private class StripeExecute extends AsyncTask < String, Void, Void > {
+    //new StripeExecute().execute(new StripeExecuteParams(executableFilePath, "com.app.toclean", new String[]{"app_constant", "app_constant2"}));
+    private static class StripeExecuteParams {
+        String executableFilePath;
+        String app;
+        String[] seds;
+
+        StripeExecuteParams(String executableFilePath, String path_app, String[] seds) {
+            this.executableFilePath = executableFilePath;
+            this.app = app;
+            this.seds = seds;
+        }
+    }
+
+    private class StripeExecute extends AsyncTask < StripeExecuteParams, Void, Void > {
         private ProgressDialog progressDialog;
 
         @Override
@@ -378,8 +391,8 @@ public class Main extends Activity {
         }
 
         @Override
-        protected Void doInBackground(String...params) {
-            Tools.stripapp(params[0], params[1], params[2]);
+        protected Void doInBackground(StripeExecuteParams...params) {
+            Tools.stripapp(params[0].executableFilePath, params[0].app, params[0].seds);
             return null;
         }
 

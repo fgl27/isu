@@ -422,7 +422,15 @@ public class Tools implements Constants {
         }
     }
 
-    public static void stripapp(String executableFilePath, String app, String strip_old) {
+    public static void stripapp(String executableFilePath, String app, String[] strip_old) {
+        String app_path = "";
+        app_path = app_path + RootUtils.runCommand("pm path " + app + "| head -n1 | cut -d: -f2");
+        RootUtils.runCommand("pm install -r " + app_path);
+        for (int i = 0; i < strip_old.length; i++)
+            sedstring(executableFilePath, app, String.valueOf(strip_old[i]));
+    }
+
+    public static void sedstring(String executableFilePath, String app, String strip_old) {
         String odex = "";
         String strip_new;
         String app_path = "";
@@ -433,19 +441,15 @@ public class Tools implements Constants {
         strip_new = String.valueOf(strip_char);
 
         if (SuBinary()) {
-            app_path = app_path + RootUtils.runCommand("pm path " + app + "| head -n1 | cut -d: -f2");
-            RootUtils.runCommand("pm install -r " + app_path);
             app_path = "" + RootUtils.runCommand("pm path " + app + "| head -n1 | cut -d: -f2");
             app_path = app_path.substring(0, app_path.length() - 8) + "oat/*/base.odex";
-            Log.d(TAG, " stripe app " + app_path);
             RootUtils.runCommand(executableFilePath + "busybox sed -i -r 's/" + strip_old + "/" + strip_new + "/g' " + app_path);
+            Log.d(TAG, " sedstring app " + app_path);
         } else {
-            app_path = app_path + RootUtils.runICommand("pm path " + app + "| head -n1 | cut -d: -f2");
-            RootUtils.runICommand("pm install -r " + app_path);
             app_path = "" + RootUtils.runICommand("pm path " + app + "| head -n1 | cut -d: -f2");
             app_path = app_path.substring(0, app_path.length() - 8) + "oat/*/base.odex";
-            Log.d(TAG, " stripe app " + app_path);
             RootUtils.runICommand(executableFilePath + "busybox sed -i -r 's/" + strip_old + "/" + strip_new + "/g' " + app_path);
+            Log.d(TAG, " sedstring app " + app_path);
         }
     }
 
