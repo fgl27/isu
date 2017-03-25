@@ -22,6 +22,8 @@
     <!--    <string name="pixel_reboot">iSu Pixel podpora reštartovania je OK.</string>-->
     <string name="su_selinux_change">Aktivovať SELinux keď je SU deaktivovaný</string>
     <string name="su_selinux_change_summary">Ak je POVOLENÉ, zmení SELinux na Enforcing pri deaktivovaní SU, to je potrebné pre zabezpečené Net aplikácie</string>
+    <string name="running">Beží</string>
+    <string name="unknown">Neznáme</string>
 
     <string name="anddebug_switch">Ladanie systému Android</string>
     <string name="anddebug_switch_summary">V nastaveniach Androidu, Pre vývojárov\npovoľte Ladanie systému Android</string>
