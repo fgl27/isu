@@ -203,7 +203,7 @@ public class Tools implements Constants {
                 Toast = Toast + "\n" + context.getString(R.string.deactivate_anddebug);
             }
             if (Tools.getBoolean("toast_notifications", true, context))
-                Tools.DoAToast("iSu " + Toast + "!", context);
+                DoAToast("iSu " + Toast + "!", context);
         }
         Log.d(TAG, "Change SU isChecked = " + isChecked + " SU path " +
             (isChecked ? RootUtils.runICommand("which su") : RootUtils.runICommand("which isu")));
@@ -305,24 +305,24 @@ public class Tools implements Constants {
             RootUtils.runCommand(path + "resetprop" + abi() + " -v -n " + prop_cmd);
             bp_prop_value = bp_prop_value + RootUtils.runCommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f2");
             bp_prop = bp_prop + RootUtils.runCommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f1");
-       } else {
+        } else {
             RootUtils.runICommand(path + "resetprop" + abi() + " -v -n " + prop_cmd);
             bp_prop_value = bp_prop_value + RootUtils.runICommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f2");
             bp_prop = bp_prop + RootUtils.runICommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f1");
         }
         Tools.saveString(prop, value, context);
         if (bp_prop.contains(prop) && !bp_prop_value.equals(value))
-           overwritebp(prop, bp_prop_value, prop, value, path);
+            overwritebp(prop, bp_prop_value, prop, value, path);
     }
 
     public static void overwritebp(String oldKey, String oldValue, String newKey, String newValue, String path) {
         if (SuBinary()) {
             RootUtils.runCommand("mount -o rw,remount /system");
-            RootUtils.runCommand(path + "busybox sed -ir \"s/" + oldKey + "=" + oldValue + "/" + newKey + "=" + newValue + "/\" " + BUILD_PROP);
+            RootUtils.runCommand(path + "busybox sed -i -r \"s/" + oldKey + "=" + oldValue + "/" + newKey + "=" + newValue + "/\" " + BUILD_PROP);
             RootUtils.runCommand("mount -o ro,remount /system");
         } else {
             RootUtils.runICommand("mount -o rw,remount /system");
-            RootUtils.runICommand(path + "busybox sed -ir \"s/" + oldKey + "=" + oldValue + "/" + newKey + "=" + newValue + "/\" " + BUILD_PROP);
+            RootUtils.runICommand(path + "busybox sed -i -r \"s/" + oldKey + "=" + oldValue + "/" + newKey + "=" + newValue + "/\" " + BUILD_PROP);
             RootUtils.runICommand("mount -o ro,remount /system");
         }
     }
@@ -423,6 +423,43 @@ public class Tools implements Constants {
                 RootUtils.runICommand("mount -o ro,remount /system");
                 Log.d(TAG, "stripsu ro_cm = " + ro_cm);
             } else Log.d(TAG, "not stripsu ro_cm = " + ro_cm);
+        }
+    }
+
+    public static void stripapp(String executableFilePath, String app, String strip_old) {
+        String odex = "";
+        String strip_new;
+        String app_path = "";
+
+        char[] strip_char = strip_old.toCharArray();
+        strip_char[0] = ChangeLetter(strip_char[0]);
+        strip_char[strip_char.length - 1] = ChangeLetter(strip_char[strip_char.length - 1]);
+        strip_new = String.valueOf(strip_char);
+
+        if (SuBinary()) {
+            app_path = app_path + RootUtils.runCommand("pm path " + app + "| head -n1 | cut -d: -f2");
+            RootUtils.runCommand("pm install -r " + app_path);
+            app_path = "" + RootUtils.runCommand("pm path " + app + "| head -n1 | cut -d: -f2");
+            app_path = app_path.substring(0, app_path.length() - 8) + "oat/*/base.odex";
+            Log.d(TAG, " stripe app " + app_path);
+            RootUtils.runCommand(executableFilePath + "busybox sed -i -r 's/" + strip_old + "/" + strip_new + "/g' " + app_path);
+        } else {
+            app_path = app_path + RootUtils.runICommand("pm path " + app + "| head -n1 | cut -d: -f2");
+            RootUtils.runICommand("pm install -r " + app_path);
+            app_path = "" + RootUtils.runICommand("pm path " + app + "| head -n1 | cut -d: -f2");
+            app_path = app_path.substring(0, app_path.length() - 8) + "oat/*/base.odex";
+            Log.d(TAG, " stripe app " + app_path);
+            RootUtils.runICommand(executableFilePath + "busybox sed -i -r 's/" + strip_old + "/" + strip_new + "/g' " + app_path);
+        }
+    }
+
+    public static char ChangeLetter(char letter) {
+        char[] randon_char = ("abcdefghijklmnopqrstuvw‌​xyz").toCharArray();
+        char mod_string;
+        while (true) {
+            mod_string = randon_char[new Random().nextInt(randon_char.length)];
+            if (!String.valueOf(mod_string).equals(String.valueOf(letter)))
+                return mod_string;
         }
     }
 

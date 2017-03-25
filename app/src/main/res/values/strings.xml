@@ -23,6 +23,7 @@
     <!--    <string name="pixel_reboot">iSu Pixel reboot support OK.</string>-->
     <string name="su_selinux_change">Activate SELinux when SU is deactivated</string>
     <string name="su_selinux_change_summary">If ON will set SELinux to Enforcing when deactivate SU, this is need by safety net apps</string>
+    <string name="running">Running</string>
 
     <string name="anddebug_switch">Android debugging</string>
     <string name="anddebug_switch_summary">From android Developer options\nEnable the Android Debug Bridge (adb) interface</string>

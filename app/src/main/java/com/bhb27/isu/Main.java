@@ -20,6 +20,7 @@
 package com.bhb27.isu;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -29,6 +30,7 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -57,7 +59,7 @@ public class Main extends Activity {
 
     private TextView SuSwitchSummary, SuStatus, kernel_check, Selinux_State, su_version, su_version_summary,
     SelinuxStatus, download_folder_link, per_app_summary, ChangeSuSelinuxSwitch_summary, SuSelinuxSwitch_summary, AndDebugSwitch_summary, ChangeAndDebugSwitch_summary;
-    private Button about, per_app, buttonprop;
+    private Button about, per_app, buttonprop, test;
     private Switch suSwitch, SelinuxSwitch, iSuNotification, iSuToastNotification, ChangeSuSelinuxSwitch, SuSelinuxSwitch, AndDebugSwitch, ChangeAndDebugSwitch;
 
     private ImageView ic_launcher;
@@ -69,6 +71,7 @@ public class Main extends Activity {
     private boolean upMain = false;
 
     private String suVersion;
+    public String executableFilePath;
     private boolean isCMSU;
 
     private Context MainContext = null;
@@ -78,6 +81,7 @@ public class Main extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         MainContext = this;
+        executableFilePath = getFilesDir().getPath() + "/";
 
         suVersion = Tools.SuVersion(MainContext);
         isCMSU = Tools.SuVersionBool(suVersion);
@@ -110,6 +114,7 @@ public class Main extends Activity {
         per_app_summary = (TextView) findViewById(R.id.per_app);
 
         buttonprop = (Button) findViewById(R.id.buttonprop);
+        test = (Button) findViewById(R.id.test);
 
         download_folder_link = (TextView) findViewById(R.id.download_folder_link);
         kernel_check = (TextView) findViewById(R.id.kernel_check);
@@ -304,6 +309,14 @@ public class Main extends Activity {
                 }
             });
 
+            test.setOnClickListener(new View.OnClickListener() {
+                Intent myIntent = new Intent(getApplicationContext(), PropActivity.class);
+                @Override
+                public void onClick(View v) {
+                    new StripeExecute().execute(executableFilePath, "com.bhb27.turbotoast", "com.app.test");
+                }
+            });
+
             iSuNotification.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView,
@@ -360,6 +373,32 @@ public class Main extends Activity {
         new Thread(runThread).start();
     }
 
+    private class StripeExecute extends AsyncTask < String, Void, Void > {
+        private ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(MainContext);
+            progressDialog.setTitle(getString(R.string.app_name));
+            progressDialog.setMessage(getString(R.string.running));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(String...params) {
+            Tools.stripapp(params[0], params[1], params[2]);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            progressDialog.dismiss();
+        }
+    }
+
     private final BroadcastReceiver updateMainReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context arg0, Intent intent) {
@@ -368,10 +407,9 @@ public class Main extends Activity {
     };
 
     public void extractresetprop() {
-        String executableFilePath = getFilesDir().getPath() + "/";
         if (!Tools.NewexistFile(executableFilePath + "resetprop", true) ||
             !Tools.NewexistFile(executableFilePath + "resetproparm64", true) ||
-            !Tools.NewexistFile(executableFilePath + "resetproparx86", true) ||
+            !Tools.NewexistFile(executableFilePath + "resetpropx86", true) ||
             !Tools.NewexistFile(executableFilePath + "busybox", true)) {
             extractAssets(executableFilePath, "resetprop");
             extractAssets(executableFilePath, "resetproparm64");
@@ -381,7 +419,6 @@ public class Main extends Activity {
     }
 
     public void Sepolicy() {
-        String executableFilePath = getFilesDir().getPath() + "/";
         if (!Tools.NewexistFile(executableFilePath + "libsupol.so", true) ||
             !Tools.NewexistFile(executableFilePath + "supolicy", true)) {
             extractAssets(executableFilePath, "libsupol.so");
@@ -416,7 +453,7 @@ public class Main extends Activity {
         }
         File execFile = new File(executableFilePath);
         execFile.setExecutable(true);
-        Log.e(TAG, "Copy success: " + filename);
+        Log.d(TAG, "Copy success: " + filename);
     }
 
     private static int getColorWrapper(Context context, int id) {
@@ -427,7 +464,6 @@ public class Main extends Activity {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
             if (Tools.ReadSystemPatch())
                 return true;
-            String executableFilePath = getFilesDir().getPath() + "/";
             if (!Tools.NewexistFile(executableFilePath + "isush", true) ||
                 !Tools.NewexistFile(executableFilePath + "superuser.rc", true)) {
                 extractAssets(executableFilePath, "isush");
