@@ -518,9 +518,8 @@ public class Tools implements Constants {
     public static void applyprop(Context context, String path) {
         String newvalue = "", originalvalue;
         for (int i = 0; i < props.length; i++) {
-            originalvalue = Tools.getprop(props[i]);
-            if (originalvalue != null && !originalvalue.isEmpty()) {
-                newvalue = getString(props[i], null, context);
+            newvalue = getString(props[i], null, context);
+            if (newvalue != null && !newvalue.isEmpty()) {
                 resetprop(path, props[i], newvalue, context);
             }
             Log.d(TAG, "Set " + props[i] + " = " + newvalue);
