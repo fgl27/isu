@@ -53,6 +53,7 @@ import java.io.OutputStream;
 import com.bhb27.isu.AboutActivity;
 import com.bhb27.isu.PerAppActivity;
 import com.bhb27.isu.tools.Constants;
+import com.bhb27.isu.tools.RootUtils;
 import com.bhb27.isu.tools.Tools;
 
 public class Main extends Activity {
@@ -79,6 +80,26 @@ public class Main extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StartMain();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isCMSU = Tools.SuVersionBool(Tools.SuVersion(MainContext));
+        if (upMain && isCMSU) UpdateMain(isCMSU);
+        else StartMain();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            MainContext.unregisterReceiver(updateMainReceiver);
+        } catch (IllegalArgumentException ignored) {}
+    }
+
+    protected void StartMain() {
         setContentView(R.layout.activity_main);
         MainContext = this;
         executableFilePath = getFilesDir().getPath() + "/";
@@ -168,24 +189,6 @@ public class Main extends Activity {
         UpdateMainListners(isCMSU);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        isCMSU = Tools.SuVersionBool(Tools.SuVersion(MainContext));
-        if (upMain && isCMSU) UpdateMain(isCMSU);
-        else this.onCreate(null);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (Tools.SuVersionBool(Tools.SuVersion(MainContext))) {
-            try {
-                MainContext.unregisterReceiver(updateMainReceiver);
-            } catch (IllegalArgumentException ignored) {}
-        }
-    }
-
     protected void UpdateMain(boolean CMSU) {
         if (CMSU) {
 
@@ -223,8 +226,12 @@ public class Main extends Activity {
             per_app.setEnabled(false);
             per_app_summary.setText(getString(R.string.not_available));
             SuStatus.setVisibility(View.GONE);
-            kernel_check.setTextColor(getColorWrapper(MainContext, R.color.colorAccent));
-            kernel_check.setText(getString(R.string.isu_kernel_no_su));
+            if (!RootUtils.rootAccess()) {
+                kernel_check.setText(getString(R.string.isu_kernel_no_su));
+                kernel_check.setTextColor(getColorWrapper(MainContext, R.color.colorAccent));
+            } else
+                kernel_check.setVisibility(View.GONE);
+
             upMain = false;
         }
         SelinuxSwitch.setChecked(Tools.isSELinuxActive());
@@ -396,8 +403,10 @@ public class Main extends Activity {
 
     private final BroadcastReceiver updateMainReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context arg0, Intent intent) {
-            UpdateMain(true);
+        public void onReceive(Context context, Intent intent) {
+            isCMSU = Tools.SuVersionBool(Tools.SuVersion(MainContext));
+            if (upMain && isCMSU) UpdateMain(isCMSU);
+            else StartMain();
         }
     };
 
