@@ -299,7 +299,7 @@ public class PropActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Tools.resetallprop(executableFilePath, true, PropActivityContext);
-                updateprop();
+                updatepropaction();
             }
         });
 
@@ -307,19 +307,19 @@ public class PropActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Tools.resetallprop(executableFilePath, false, PropActivityContext);
-                updateprop();
+                updatepropaction();
             }
         });
-        updateprop();
+        updatepropaction();
     }
 
     public void updateprop(String prop, String defaultvalue, String newvalue) {
         boolean prop_value = Tools.getprop(prop).equals(defaultvalue);
         Tools.resetprop(executableFilePath, prop, prop_value ? newvalue : defaultvalue, PropActivityContext);
-        updateprop();
+        updatepropaction();
     }
 
-    public void updateprop() {
+    public void updatepropaction() {
         String debuggable = Tools.getprop(Sdebuggable);
         String secure = Tools.getprop(Srosecure);
         String buildtags = Tools.getprop(Sbuildtags);
