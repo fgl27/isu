@@ -25,9 +25,11 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.res.AssetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -39,10 +41,13 @@ import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.io.IOException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
@@ -153,7 +158,7 @@ public class Tools implements Constants {
         else
             remoteViews.setInt(R.id.iSuMain, "setBackgroundResource", R.drawable.buttong);
         if (SU_SEL) {
-            remoteViews.setTextViewText(R.id.iSuMonitor, "SELinux" + "\n" + Tools.getSELinuxStatus());
+            remoteViews.setTextViewText(R.id.iSuMonitor, "SELinux" + "\n" + getSELinuxStatus());
             if (isSELinuxActive())
                 remoteViews.setInt(R.id.iSuMonitor, "setBackgroundResource", R.drawable.buttong);
             else
@@ -168,6 +173,35 @@ public class Tools implements Constants {
         final Intent MainIntent = new Intent();
         MainIntent.setAction("updateMainReceiver");
         context.sendBroadcast(MainIntent);
+    }
+
+    public static void extractAssets(String executableFilePath, String filename, Context context) {
+        executableFilePath = executableFilePath + filename;
+        AssetManager assetManager = context.getAssets();
+        InputStream inStream = null;
+        OutputStream outStream = null;
+
+        try {
+
+            inStream = assetManager.open(filename);
+            outStream = new FileOutputStream(executableFilePath); // for override file content
+            //outStream = new FileOutputStream(out,true); // for append file content
+
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = inStream.read(buffer)) > 0) {
+                outStream.write(buffer, 0, length);
+            }
+
+            if (inStream != null) inStream.close();
+            if (outStream != null) outStream.close();
+
+        } catch (IOException e) {
+            Log.e(TAG, "Failed to copy asset file: " + filename, e);
+        }
+        File execFile = new File(executableFilePath);
+        execFile.setExecutable(true);
+        Log.d(TAG, "Copy success: " + filename);
     }
 
     public static void SwitchSu(boolean isChecked, boolean AppMonitor, Context context) {
@@ -202,7 +236,7 @@ public class Tools implements Constants {
                 AndroidDebugSet(isChecked, context);
                 Toast = Toast + "\n" + context.getString(R.string.deactivate_anddebug);
             }
-            if (Tools.getBoolean("toast_notifications", true, context))
+            if (getBoolean("toast_notifications", true, context))
                 DoAToast("iSu " + Toast + "!", context);
         }
         Log.d(TAG, "Change SU isChecked = " + isChecked + " SU path " +
@@ -226,8 +260,24 @@ public class Tools implements Constants {
             AndroidDebugSet(su, context);
             Toast = Toast + "\n" + context.getString(R.string.activate_anddebug);
         }
-        if (Tools.getBoolean("toast_notifications", true, context))
+        if (getBoolean("toast_notifications", true, context))
             DoAToast("iSu " + Toast + "!", context);
+    }
+
+    public static boolean RebootSupport(String executableFilePath, Context context) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
+            if (ReadSystemPatch())
+                return true;
+            if (!NewexistFile(executableFilePath + "isush", true) ||
+                !NewexistFile(executableFilePath + "superuser.rc", true)) {
+                extractAssets(executableFilePath, "isush", context);
+                extractAssets(executableFilePath, "superuser.rc", context);
+            }
+            SystemPatch(executableFilePath);
+            if (ReadSystemPatch())
+                return true;
+        }
+        return false;
     }
 
     public static void WriteSettings(Context context) {
@@ -310,7 +360,7 @@ public class Tools implements Constants {
             bp_prop_value = bp_prop_value + RootUtils.runICommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f2");
             bp_prop = bp_prop + RootUtils.runICommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f1");
         }
-        Tools.saveString(prop, value, context);
+        saveString(prop, value, context);
         if (bp_prop.contains(prop) && !bp_prop_value.equals(value))
             overwritebp(prop, bp_prop_value, prop, value, path);
     }
@@ -508,9 +558,9 @@ public class Tools implements Constants {
     public static void saveprop(Context context) {
         String value;
         for (int i = 0; i < props.length; i++) {
-            value = Tools.getprop(props[i]);
+            value = getprop(props[i]);
             if (value != null && !value.isEmpty())
-                saveString(props[i], Tools.getprop(props[i]), context);
+                saveString(props[i], getprop(props[i]), context);
         }
         saveBoolean("prop_run", true, context);
     }

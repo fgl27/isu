@@ -116,6 +116,7 @@
        </service>
 
        <service android:enabled="true" android:name=".bootservice.BootService" />
+       <service android:enabled="true" android:name=".bootservice.MainService" />
 
     </application>
 </manifest>

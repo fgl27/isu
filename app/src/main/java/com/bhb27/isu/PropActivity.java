@@ -121,10 +121,10 @@ public class PropActivity extends Activity {
 
         String used_b_rb = getString(R.string.used_by) + "\n" + getString(R.string.banks) + "\n" + getString(R.string.root_beer);
         String used_b_rb_reboot = getString(R.string.used_by) + "\n" + getString(R.string.banks) + "\n" + getString(R.string.root_beer) +
-                "\n\n" + getString(R.string.need_reboot);
+            "\n\n" + getString(R.string.need_reboot);
         String safety = getString(R.string.used_by) + "\n" + getString(R.string.safety_net);
         String safety_reboot = getString(R.string.used_by) + "\n" + getString(R.string.safety_net) + "\n\n" +
-                 getString(R.string.need_reboot);
+            getString(R.string.need_reboot);
 
         rodebuggable_help.setText(used_b_rb);
         rosecure_help.setText(used_b_rb);

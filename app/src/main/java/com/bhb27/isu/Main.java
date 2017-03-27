@@ -26,16 +26,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.animation.Animation;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -44,12 +40,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-
+import com.bhb27.isu.bootservice.MainService;
 import com.bhb27.isu.AboutActivity;
 import com.bhb27.isu.PerAppActivity;
 import com.bhb27.isu.tools.Constants;
@@ -157,7 +148,7 @@ public class Main extends Activity {
         });
 
         //reboot support check
-        if (RebootSupport()) {
+        if (Tools.RebootSupport(executableFilePath, MainContext)) {
             kernel_check.setText(getString(R.string.isu_reboot));
             download_folder_link.setVisibility(View.GONE);
         } else if (Tools.KernelSupport()) {
@@ -245,6 +236,13 @@ public class Main extends Activity {
         try {
             MainContext.registerReceiver(updateMainReceiver, new IntentFilter("updateMainReceiver"));
         } catch (NullPointerException ignored) {}
+
+        Runnable runThread = new Runnable() {
+            public void run() {
+                MainContext.startService(new Intent(MainContext, MainService.class));
+            }
+        };
+        new Thread(runThread).start();
     }
 
     protected void UpdateMainListners(boolean CMSU) {
@@ -339,27 +337,6 @@ public class Main extends Activity {
             }
         });
 
-        Runnable runThread = new Runnable() {
-            public void run() {
-                Sepolicy();
-                extractresetprop();
-                Tools.WriteSettings(MainContext);
-                // Only run boot service if app was used and is CM SU
-                if (isCMSU && !Tools.getBoolean("run_boot", false, MainContext))
-                    Tools.saveBoolean("run_boot", true, MainContext);
-
-                // Create a blank profiles.json to prevent logspam.
-                File file = new File(getFilesDir() + "/per_app.json");
-                if (!file.exists()) {
-                    try {
-                        file.createNewFile();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        };
-        new Thread(runThread).start();
     }
 
     //new StripeExecute().execute(new StripeExecuteParams(executableFilePath, "com.app.toclean", new String[]{"app_constant", "app_constant2"}));
@@ -410,74 +387,8 @@ public class Main extends Activity {
         }
     };
 
-    public void extractresetprop() {
-        if (!Tools.NewexistFile(executableFilePath + "resetprop", true) ||
-            !Tools.NewexistFile(executableFilePath + "resetproparm64", true) ||
-            !Tools.NewexistFile(executableFilePath + "resetpropx86", true) ||
-            !Tools.NewexistFile(executableFilePath + "busybox", true)) {
-            extractAssets(executableFilePath, "resetprop");
-            extractAssets(executableFilePath, "resetproparm64");
-            extractAssets(executableFilePath, "resetpropx86");
-            extractAssets(executableFilePath, "busybox");
-        }
-    }
-
-    public void Sepolicy() {
-        if (!Tools.NewexistFile(executableFilePath + "libsupol.so", true) ||
-            !Tools.NewexistFile(executableFilePath + "supolicy", true)) {
-            extractAssets(executableFilePath, "libsupol.so");
-            extractAssets(executableFilePath, "supolicy");
-        }
-        Tools.PatchSepolicy(executableFilePath);
-    }
-
-    public void extractAssets(String executableFilePath, String filename) {
-        executableFilePath = executableFilePath + filename;
-        AssetManager assetManager = getAssets();
-        InputStream inStream = null;
-        OutputStream outStream = null;
-
-        try {
-
-            inStream = assetManager.open(filename);
-            outStream = new FileOutputStream(executableFilePath); // for override file content
-            //outStream = new FileOutputStream(out,true); // for append file content
-
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = inStream.read(buffer)) > 0) {
-                outStream.write(buffer, 0, length);
-            }
-
-            if (inStream != null) inStream.close();
-            if (outStream != null) outStream.close();
-
-        } catch (IOException e) {
-            Log.e(TAG, "Failed to copy asset file: " + filename, e);
-        }
-        File execFile = new File(executableFilePath);
-        execFile.setExecutable(true);
-        Log.d(TAG, "Copy success: " + filename);
-    }
-
     private static int getColorWrapper(Context context, int id) {
         return ContextCompat.getColor(context, id);
-    }
-
-    private boolean RebootSupport() {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
-            if (Tools.ReadSystemPatch())
-                return true;
-            if (!Tools.NewexistFile(executableFilePath + "isush", true) ||
-                !Tools.NewexistFile(executableFilePath + "superuser.rc", true)) {
-                extractAssets(executableFilePath, "isush");
-                extractAssets(executableFilePath, "superuser.rc");
-            }
-            Tools.SystemPatch(executableFilePath);
-            if (Tools.ReadSystemPatch())
-                return true;
-        }
-        return false;
     }
 
 }
