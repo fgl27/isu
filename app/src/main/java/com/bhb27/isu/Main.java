@@ -164,7 +164,6 @@ public class Main extends Activity {
         SuSelinuxSwitch.setChecked(Tools.getBoolean("restart_selinux", false, MainContext));
         ChangeSuSelinuxSwitch.setChecked(Tools.getBoolean("su_selinux_change", true, MainContext));
 
-
         UpdateMain(isCMSU);
         UpdateMainListners(isCMSU);
     }
@@ -191,8 +190,6 @@ public class Main extends Activity {
         if (CMSU) {
 
             suSwitch.setChecked(Tools.SuBinary());
-            SelinuxSwitch.setChecked(Tools.isSELinuxActive());
-            AndDebugSwitch.setChecked(Tools.AndroidDebugState(MainContext));
 
             SuStatus.setText((suSwitch.isChecked() ? getString(R.string.activated) :
                 getString(R.string.deactivated)));
@@ -200,11 +197,6 @@ public class Main extends Activity {
 
             SuStatus.setTextColor((Tools.SuBinary()) ? getColorWrapper(MainContext, R.color.colorAccent) :
                 getColorWrapper(MainContext, R.color.colorButtonGreen));
-
-            try {
-                MainContext.registerReceiver(updateMainReceiver, new IntentFilter("updateMainReceiver"));
-            } catch (NullPointerException ignored) {}
-
             upMain = true;
         } else {
             suSwitch.setEnabled(false);
@@ -212,9 +204,6 @@ public class Main extends Activity {
             suSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             SuSwitchSummary.setText(getString(R.string.su_not_cm));
             su_version.setVisibility(View.GONE);
-            SelinuxSwitch.setEnabled(false);
-            SelinuxSwitch.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
-            SelinuxSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             ChangeSuSelinuxSwitch.setEnabled(false);
             ChangeSuSelinuxSwitch.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
             ChangeSuSelinuxSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -222,10 +211,6 @@ public class Main extends Activity {
             SuSelinuxSwitch.setEnabled(false);
             SuSelinuxSwitch.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
             SuSelinuxSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            AndDebugSwitch.setEnabled(false);
-            AndDebugSwitch.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
-            AndDebugSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            AndDebugSwitch_summary.setVisibility(View.GONE);
             ChangeAndDebugSwitch.setVisibility(View.GONE);
             ChangeAndDebugSwitch_summary.setVisibility(View.GONE);
             iSuNotification.setEnabled(false);
@@ -242,11 +227,17 @@ public class Main extends Activity {
             kernel_check.setText(getString(R.string.isu_kernel_no_su));
             upMain = false;
         }
+        SelinuxSwitch.setChecked(Tools.isSELinuxActive());
+        AndDebugSwitch.setChecked(Tools.AndroidDebugState(MainContext));
         su_version_summary.setTextColor((!CMSU) ? getColorWrapper(MainContext, R.color.colorAccent) :
             getColorWrapper(MainContext, R.color.colorButtonGreen));
         Selinux_State.setText(Tools.getSELinuxStatus());
         Selinux_State.setTextColor((!Tools.isSELinuxActive()) ? getColorWrapper(MainContext, R.color.colorAccent) :
             getColorWrapper(MainContext, R.color.colorButtonGreen));
+
+        try {
+            MainContext.registerReceiver(updateMainReceiver, new IntentFilter("updateMainReceiver"));
+        } catch (NullPointerException ignored) {}
     }
 
     protected void UpdateMainListners(boolean CMSU) {
@@ -262,28 +253,6 @@ public class Main extends Activity {
                 }
             });
 
-            SelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                    boolean isChecked) {
-                    if (Tools.isSELinuxActive() != isChecked) {
-                        Tools.SwitchSelinux(isChecked, MainContext);
-                        Tools.UpMain(MainContext);
-                    }
-                }
-            });
-
-            AndDebugSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                    boolean isChecked) {
-                    if (Tools.AndroidDebugState(MainContext) != isChecked) {
-                        Tools.AndroidDebugSet(isChecked, MainContext);
-                        Tools.UpMain(MainContext);
-                    }
-                }
-            });
-
             ChangeAndDebugSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView,
@@ -294,14 +263,6 @@ public class Main extends Activity {
 
             per_app.setOnClickListener(new View.OnClickListener() {
                 Intent myIntent = new Intent(getApplicationContext(), PerAppActivity.class);
-                @Override
-                public void onClick(View v) {
-                    startActivity(myIntent);
-                }
-            });
-
-            buttonprop.setOnClickListener(new View.OnClickListener() {
-                Intent myIntent = new Intent(getApplicationContext(), PropActivity.class);
                 @Override
                 public void onClick(View v) {
                     startActivity(myIntent);
@@ -340,6 +301,36 @@ public class Main extends Activity {
                 }
             });
         }
+
+        AndDebugSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                boolean isChecked) {
+                if (Tools.AndroidDebugState(MainContext) != isChecked) {
+                    Tools.AndroidDebugSet(isChecked, MainContext);
+                    Tools.UpMain(MainContext);
+                }
+            }
+        });
+
+        SelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                boolean isChecked) {
+                if (Tools.isSELinuxActive() != isChecked) {
+                    Tools.SwitchSelinux(isChecked, MainContext);
+                    Tools.UpMain(MainContext);
+                }
+            }
+        });
+
+        buttonprop.setOnClickListener(new View.OnClickListener() {
+            Intent myIntent = new Intent(getApplicationContext(), PropActivity.class);
+            @Override
+            public void onClick(View v) {
+                startActivity(myIntent);
+            }
+        });
 
         Runnable runThread = new Runnable() {
             public void run() {
