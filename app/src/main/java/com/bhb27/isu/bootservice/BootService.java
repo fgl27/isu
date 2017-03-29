@@ -1,5 +1,5 @@
 /*
- * Copyright (C) Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (C) 2016-2017 Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of iSu.
  *
@@ -49,9 +49,10 @@ public class BootService extends Service {
     private void init() {
         String executableFilePath = getFilesDir().getPath() + "/";
         Tools.PatchSepolicy(executableFilePath);
-        if (Tools.getBoolean("prop_run", false, this)) {
+        if (Tools.getBoolean("prop_run", false, this) && Tools.getBoolean("apply_props", false, this)) {
             if (Tools.SuVersionBool(Tools.SuVersion(this)))
                 Tools.stripsu(executableFilePath);
+            Log.d(TAG, " Apply props");
             Tools.applyprop(this, executableFilePath);
         }
         Tools.WriteSettings(this);

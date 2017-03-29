@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--/*
+ * Copyright (C) 2016-2017 Felipe de Leon <fglfgl27@gmail.com>
+ *
+ * This file is part of iSu.
+ *
+ * iSu is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * iSu is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with iSu.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" xmlns:settings="http://schemas.android.com/apk/res/com.android.settings">
+    <PreferenceCategory
+        android:key="props_settings_pref"
+        android:title="@string/prop_editor">
+        <Preference
+            android:key="pref_description"
+            android:summary="@string/prop_editor_summary" />
+        <Preference
+            android:key="props_ok"
+            android:icon="@drawable/ok"
+            android:title="@string/props_ok" />
+        <Preference
+            android:key="props_nok"
+            android:icon="@drawable/warning"
+            android:title="@string/props_nok" />
+        <Preference
+            android:key="props_unknown"
+            android:icon="@drawable/interrogation"
+            android:title="@string/props_unknown"
+            android:summary="@string/props_unknown_summary" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="force_all_pref"
+        android:title="@string/force_all">
+        <Preference
+            android:key="force_all_description"
+            android:summary="@string/force_all_summary" />
+        <Preference
+            android:key="force_all_safe"
+            android:icon="@drawable/ok"
+            android:title="@string/safe" />
+        <Preference
+            android:key="force_all_unsafe"
+            android:icon="@drawable/warning"
+            android:title="@string/unsafe" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="props"
+        android:title="@string/props">
+        <Preference
+            android:key="props_summary"
+            android:summary="@string/in_prop_summary" />
+        <ListPreference
+            android:key="ro.build.tags"
+            android:title="@string/robuildtags"
+            android:summary="%s"
+            android:dialogTitle="@string/robuildtags" />
+        <ListPreference
+            android:key="ro.debuggable"
+            android:title="@string/rodebuggable"
+            android:summary="%s"
+            android:dialogTitle="@string/rodebuggable" />
+        <ListPreference
+            android:key="ro.boot.bl_state"
+            android:title="@string/robootbl_state"
+            android:summary="%s"
+            android:dialogTitle="@string/robootbl_state" />
+        <ListPreference
+            android:key="ro.boot.flash.locked"
+            android:title="@string/robootflashlocked"
+            android:summary="%s"
+            android:dialogTitle="@string/robootflashlocked" />
+        <ListPreference
+            android:key="ro.boot.verifiedbootstate"
+            android:title="@string/robootverifiedbootstate"
+            android:summary="%s"
+            android:dialogTitle="@string/robootverifiedbootstate" />
+        <ListPreference
+            android:key="ro.secure"
+            android:title="@string/rosecure"
+            android:summary="%s"
+            android:dialogTitle="@string/rosecure" />
+        <ListPreference
+            android:key="ro.boot.veritymode"
+            android:title="@string/robootveritymode"
+            android:summary="%s"
+            android:dialogTitle="@string/robootveritymode" />
+        <ListPreference
+            android:key="ro.build.type"
+            android:title="@string/robuildtype"
+            android:summary="%s"
+            android:dialogTitle="@string/robuildtype" />
+        <ListPreference
+            android:key="ro.build.selinux"
+            android:title="@string/robuildselinux"
+            android:summary="%s"
+            android:dialogTitle="@string/robuildselinux" />
+        <ListPreference
+            android:key="ro.boot.selinux"
+            android:title="@string/robootselinux"
+            android:summary="%s"
+            android:dialogTitle="@string/robootselinux" />
+    </PreferenceCategory>
+</PreferenceScreen>

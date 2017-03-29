@@ -1,13 +1,28 @@
 <resources>
-    <color name="text_black">#000000</color>
-    <color name="text_white">#FFFFFF</color>
-    <color name="text_blue">#3366BB</color>
-    <color name="text_gray">#7D7D7D</color>
-    <color name="button_text">#EAEAEA</color>
-    <color name="colorPrimary">#B00000</color>
-    <color name="colorPrimaryDark">#A00000</color>
-    <color name="colorAccent">#EC0000</color>
-    <color name="colorButtonRed">#CC0000</color>
-    <color name="colorButtonGreen">#00C020</color>
-    <color name="colorButtonGreenDark">#009F1A</color>
+    <color
+        name="text_black">#000000</color>
+    <color
+        name="text_white">#FFFFFF</color>
+    <color
+        name="colorNew">#FF4900</color>
+    <color
+        name="colorPrimary">#4D4D4D</color>
+    <color
+        name="colorPrimaryLight">#6D6D6D</color>
+    <color
+        name="colorPrimaryDark">#2D2D2D</color>
+    <color
+        name="colorAccent">#EC0000</color>
+    <color
+        name="colorButtonRed">#CC0000</color>
+    <color
+        name="colorButtonInsideRed">#B00000</color>
+    <color
+        name="colorButtonGreen">#00C020</color>
+    <color
+        name="colorButtonGreenDark">#009F1A</color>
+   <!-- <color
+        name="DeepRed">#DF0000</color>
+    <color
+        name="DeepGreen">#28A908</color>-->
 </resources>

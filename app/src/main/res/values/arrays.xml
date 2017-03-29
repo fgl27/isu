@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!--Selinux-->
+    <string-array
+        name="selinux_state_entries"
+        translatable="false">
+        <item>@string/enforcing</item>
+        <item>@string/permissive</item>
+    </string-array>
+    <string-array
+        name="selinux_state_values"
+        translatable="false">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <!--anddebug-->
+    <string-array
+        name="anddebug_state_entries"
+        translatable="false">
+        <item>@string/disable</item>
+        <item>@string/enable</item>
+    </string-array>
+    <string-array
+        name="anddebug_state_values"
+        translatable="false">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+</resources>

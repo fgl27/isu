@@ -19,108 +19,107 @@
  */
 package com.bhb27.isu;
 
-import android.app.Activity;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.ActivityNotFoundException;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Build;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Switch;
+import android.support.v7.app.AlertDialog;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.SwitchPreference;
+import android.preference.PreferenceCategory;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.util.Log;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
-import com.bhb27.isu.perapp.PerAppMonitor;
-import com.bhb27.isu.perapp.Per_App;
-import com.bhb27.isu.tools.Tools;
-import com.bhb27.isu.tools.Constants;
-
-import android.app.AlertDialog;
 import java.util.List;
 import java.util.ArrayList;
-import android.content.DialogInterface;
 
-public class PerAppActivity extends Activity {
+import com.bhb27.isu.preferencefragment.PreferenceFragment;
+import com.bhb27.isu.tools.Constants;
+import com.bhb27.isu.tools.Tools;
+import com.bhb27.isu.perapp.PerAppMonitor;
+import com.bhb27.isu.perapp.Per_App;
 
-    private Button perapp_isu, perapp_su;
-    private Switch AutorestartSwitch;
-    private ImageView ic_launcher;
+public class Monitor extends PreferenceFragment {
+
+    private Preference mPerAppActive, mPerAppDeactive, mMonitorView;
+    private PreferenceCategory mMonitor;
+    private SwitchPreference mAutoRestart;
     private AlertDialog.Builder mPerAppDialog;
-    private Context PerAppActivityContext = null;
-    private String TAG = Constants.TAG;
+    private String TAG = Constants.TAG, suVersion;
+    private boolean isCMSU;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_perapp);
-        PerAppActivityContext = this;
+        getPreferenceManager().setSharedPreferencesName(Constants.PREF_NAME);
+        addPreferencesFromResource(R.xml.monitor);
+        getActivity().setTheme(R.style.Switch_theme);
 
-        perapp_isu = (Button) findViewById(R.id.buttonIsu);
+        suVersion = Tools.SuVersion(getActivity());
+        isCMSU = Tools.SuVersionBool(suVersion);
 
-        perapp_su = (Button) findViewById(R.id.buttonSu);
+        mMonitor = (PreferenceCategory) getPreferenceManager().findPreference("monitor_su");
 
-        AutorestartSwitch = (Switch) findViewById(R.id.AutorestartSwitch);
+        mPerAppActive = (Preference) getPreferenceManager().findPreference("per_app_active");
+        mAutoRestart = (SwitchPreference) getPreferenceManager().findPreference("auto_restart_su");
+        mPerAppDeactive = (Preference) getPreferenceManager().findPreference("per_app_deactive");
+        mMonitorView = (Preference) getPreferenceManager().findPreference("per_app_view");
 
-        perapp_isu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PerAppDialog("iSu");
-            }
-        });
+        if (!isCMSU) {
+            mPerAppActive.setEnabled(false);
+            mAutoRestart.setEnabled(false);
+            mPerAppDeactive.setEnabled(false);
+        } else {
+            mMonitor.removePreference(mMonitorView);
+            mPerAppActive.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    PerAppDialog("Su");
+                    return true;
+                }
+            });
 
-        perapp_su.setOnClickListener(new View.OnClickListener() {
-            Intent myIntent = new Intent(getApplicationContext(), AboutActivity.class);
-            @Override
-            public void onClick(View v) {
-                PerAppDialog("Su");
-            }
-        });
+            mPerAppDeactive.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    PerAppDialog("iSu");
+                    return true;
+                }
+            });
+        }
+    }
 
-        ic_launcher = (ImageView) findViewById(R.id.ic_launcher_perapp);
-        ic_launcher.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Tools.DoAToast(getString(R.string.isu_by), PerAppActivityContext);
-            }
-        });
+    public void onResume() {
+        super.onResume();
+    }
 
-        AutorestartSwitch.setChecked(Tools.getBoolean("auto_restart_su", false, PerAppActivityContext));
-        AutorestartSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                boolean isChecked) {
-                Tools.saveBoolean("auto_restart_su", isChecked, PerAppActivityContext);
-            }
-        });
-
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     private void PerAppDialog(String id) {
-        if (!Per_App.isAccessibilityEnabled(PerAppActivityContext, PerAppMonitor.accessibilityId)) {
+        if (!Per_App.isAccessibilityEnabled(getActivity(), PerAppMonitor.accessibilityId)) {
             startActivityForResult(new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS), 0);
         } else {
 
-            mPerAppDialog = new AlertDialog.Builder(PerAppActivityContext);
+            mPerAppDialog = new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle);
             if (id.equals("iSu"))
                 mPerAppDialog.setTitle(getString(R.string.per_app_title_isu));
             else if (id.equals("Su"))
                 mPerAppDialog.setTitle(getString(R.string.per_app_title_su));
             mPerAppDialog.setCancelable(true);
 
-            final List < Per_App.App > apps = Per_App.getInstalledApps(PerAppActivityContext);
+            final List < Per_App.App > apps = Per_App.getInstalledApps(getActivity());
 
             final String[] packagelist = Per_App.getPackageNames(apps);
-            final String[] mapplist = Per_App.getAppNames(apps, id, PerAppActivityContext);
+            final String[] mapplist = Per_App.getAppNames(apps, id, getActivity());
 
             final String profile_id = id;
             final List < Integer > mSelectedApps = new ArrayList < Integer > ();
             final List < Integer > mDeSelectedApps = new ArrayList < Integer > ();
 
-            final boolean[] checkedValues = Per_App.getExistingSelections(packagelist, profile_id, PerAppActivityContext);
+            final boolean[] checkedValues = Per_App.getExistingSelections(packagelist, profile_id, getActivity());
 
             // Specify the list array, the items to be selected by default (null for none),
             // and the listener through which to receive callbacks when items are selected
@@ -144,7 +143,7 @@ public class PerAppActivity extends Activity {
                 });
 
             // Set the action buttons
-            mPerAppDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+            mPerAppDialog.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
                     // User clicked OK, so save the mSelectedItems results somewhere
@@ -155,20 +154,20 @@ public class PerAppActivity extends Activity {
                             String packageName = packagelist[y];
 
                             Log.d(TAG, "Saving " + packageName + " to " + profile_id);
-                            Per_App.save_app(packageName, profile_id, PerAppActivityContext);
+                            Per_App.save_app(packageName, profile_id, getActivity());
                         }
                     }
                     if (mDeSelectedApps != null) {
                         for (int i = 0; i < mDeSelectedApps.size(); i++) {
                             int y = mDeSelectedApps.get(i);
-                            Per_App.remove_app(packagelist[y], profile_id, PerAppActivityContext);
+                            Per_App.remove_app(packagelist[y], profile_id, getActivity());
                         }
                     }
 
 
                 }
             });
-            mPerAppDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            mPerAppDialog.setNegativeButton(getString(R.string.dismiss), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
 
@@ -178,5 +177,4 @@ public class PerAppActivity extends Activity {
             mPerAppDialog.show();
         }
     }
-
 }

@@ -19,376 +19,97 @@
  */
 package com.bhb27.isu;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Paint;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
-import com.bhb27.isu.bootservice.MainService;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.design.widget.TabLayout;
+
 import com.bhb27.isu.AboutActivity;
-import com.bhb27.isu.PerAppActivity;
-import com.bhb27.isu.tools.Constants;
-import com.bhb27.isu.tools.RootUtils;
-import com.bhb27.isu.tools.Tools;
+import com.bhb27.isu.Checks;
+import com.bhb27.isu.Controls;
+import com.bhb27.isu.Monitor;
+import com.bhb27.isu.Props;
+import com.bhb27.isu.Settings;
 
-public class Main extends Activity {
+public class Main extends AppCompatActivity {
 
-    private TextView SuSwitchSummary, SuStatus, kernel_check, Selinux_State, su_version, su_version_summary,
-    SelinuxStatus, download_folder_link, per_app_summary, ChangeSuSelinuxSwitch_summary, SuSelinuxSwitch_summary, AndDebugSwitch_summary, ChangeAndDebugSwitch_summary;
-    private Button about, per_app, buttonprop;
-    private Switch suSwitch, SelinuxSwitch, iSuNotification, iSuToastNotification, ChangeSuSelinuxSwitch, SuSelinuxSwitch, AndDebugSwitch, ChangeAndDebugSwitch;
-
-    private ImageView ic_launcher;
-
-    private String TAG = Constants.TAG;
-
-    private final String sepolicy = Constants.sepolicy;
-
-    private boolean upMain = false;
-
-    private String suVersion;
-    public String executableFilePath;
-    private boolean isCMSU;
-
-    private Context MainContext = null;
+    private TextView mAbout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StartMain();
-    }
+        setContentView(R.layout.main);
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        isCMSU = Tools.SuVersionBool(Tools.SuVersion(MainContext));
-        if (upMain && isCMSU) UpdateMain(isCMSU);
-        else StartMain();
-    }
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        try {
-            MainContext.unregisterReceiver(updateMainReceiver);
-        } catch (IllegalArgumentException ignored) {}
-    }
+        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager.setAdapter(new TabsExamplePagerAdapter(getSupportFragmentManager()));
+        viewPager.setOffscreenPageLimit(getTitles().length);
 
-    protected void StartMain() {
-        setContentView(R.layout.activity_main);
-        MainContext = this;
-        executableFilePath = getFilesDir().getPath() + "/";
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
 
-        suVersion = Tools.SuVersion(MainContext);
-        isCMSU = Tools.SuVersionBool(suVersion);
-
-        suSwitch = (Switch) findViewById(R.id.suSwitch);
-        SuSwitchSummary = (TextView) findViewById(R.id.SuSwitchSummary);
-        SuStatus = (TextView) findViewById(R.id.SuStatus);
-        su_version = (TextView) findViewById(R.id.su_version);
-        su_version_summary = (TextView) findViewById(R.id.su_version_summary);
-        su_version_summary.setText(suVersion);
-
-        SelinuxSwitch = (Switch) findViewById(R.id.SelinuxSwitch);
-        SelinuxStatus = (TextView) findViewById(R.id.SelinuxStatus);
-        Selinux_State = (TextView) findViewById(R.id.Selinux_State);
-
-        AndDebugSwitch = (Switch) findViewById(R.id.AndDebugSwitch);
-        AndDebugSwitch_summary = (TextView) findViewById(R.id.AndDebugSwitch_summary);
-        ChangeAndDebugSwitch = (Switch) findViewById(R.id.ChangeAndDebugSwitch);
-        ChangeAndDebugSwitch_summary = (TextView) findViewById(R.id.ChangeAndDebugSwitch_summary);
-
-        iSuNotification = (Switch) findViewById(R.id.iSuNotification);
-        iSuToastNotification = (Switch) findViewById(R.id.iSuToastNotification);
-        SuSelinuxSwitch = (Switch) findViewById(R.id.SuSelinuxSwitch);
-        SuSelinuxSwitch_summary = (TextView) findViewById(R.id.SuSelinuxSwitch_summary);
-
-        ChangeSuSelinuxSwitch = (Switch) findViewById(R.id.ChangeSuSelinuxSwitch);
-        ChangeSuSelinuxSwitch_summary = (TextView) findViewById(R.id.ChangeSuSelinuxSwitch_summary);
-
-        per_app = (Button) findViewById(R.id.buttonPer_app);
-        per_app_summary = (TextView) findViewById(R.id.per_app);
-
-        buttonprop = (Button) findViewById(R.id.buttonprop);
-
-        download_folder_link = (TextView) findViewById(R.id.download_folder_link);
-        kernel_check = (TextView) findViewById(R.id.kernel_check);
-        // about button
-        about = (Button) findViewById(R.id.buttonAbout);
-        about.setOnClickListener(new View.OnClickListener() {
-            Intent myIntent = new Intent(getApplicationContext(), AboutActivity.class);
+        mAbout = (TextView) findViewById(R.id.about);
+        mAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(myIntent);
+               Intent myIntent = new Intent(getApplicationContext(), AboutActivity.class);
+               startActivity(myIntent);
             }
         });
 
-        ic_launcher = (ImageView) findViewById(R.id.ic_launcher);
-        ic_launcher.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Tools.DoAToast(getString(R.string.isu_by), MainContext);
-            }
-        });
-
-        //reboot support check
-        if (Tools.RebootSupport(executableFilePath, MainContext)) {
-            kernel_check.setText(getString(R.string.isu_reboot));
-            download_folder_link.setVisibility(View.GONE);
-        } else if (Tools.KernelSupport()) {
-            kernel_check.setText(getString(R.string.isu_kernel_good));
-            download_folder_link.setVisibility(View.GONE);
-        } else {
-            kernel_check.setTextColor(getColorWrapper(MainContext, R.color.colorAccent));
-            kernel_check.setText(getString(R.string.isu_kernel_bad));
-            download_folder_link.setText(getString(R.string.download_folder_link));
-            download_folder_link.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.androidfilehost.com/?w=files&flid=120360")));
-                    } catch (ActivityNotFoundException ex) {
-                        Tools.DoAToast(getString(R.string.no_browser), MainContext);
-                    }
-                }
-            });
-        }
-
-        ChangeAndDebugSwitch.setChecked(Tools.getBoolean("adb_change", false, MainContext));
-        iSuNotification.setChecked(Tools.getBoolean("isu_notification", false, MainContext));
-        iSuToastNotification.setChecked(Tools.getBoolean("toast_notifications", true, MainContext));
-        SuSelinuxSwitch.setChecked(Tools.getBoolean("restart_selinux", false, MainContext));
-        ChangeSuSelinuxSwitch.setChecked(Tools.getBoolean("su_selinux_change", true, MainContext));
-
-        UpdateMain(isCMSU);
-        UpdateMainListners(isCMSU);
     }
 
-    protected void UpdateMain(boolean CMSU) {
-        if (CMSU) {
+    public class TabsExamplePagerAdapter extends FragmentPagerAdapter {
 
-            suSwitch.setChecked(Tools.SuBinary());
+        String titles[] = getTitles();
+        private Fragment frags[] = new Fragment[titles.length];
 
-            SuStatus.setText((suSwitch.isChecked() ? getString(R.string.activated) :
-                getString(R.string.deactivated)));
-            SuSwitchSummary.setText(getString(R.string.su_state));
-
-            SuStatus.setTextColor((Tools.SuBinary()) ? getColorWrapper(MainContext, R.color.colorAccent) :
-                getColorWrapper(MainContext, R.color.colorButtonGreen));
-            upMain = true;
-        } else {
-            suSwitch.setEnabled(false);
-            suSwitch.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
-            suSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            SuSwitchSummary.setText(getString(R.string.su_not_cm));
-            su_version.setVisibility(View.GONE);
-            ChangeSuSelinuxSwitch.setEnabled(false);
-            ChangeSuSelinuxSwitch.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
-            ChangeSuSelinuxSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            ChangeSuSelinuxSwitch_summary.setVisibility(View.GONE);
-            SuSelinuxSwitch.setEnabled(false);
-            SuSelinuxSwitch.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
-            SuSelinuxSwitch.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            ChangeAndDebugSwitch.setVisibility(View.GONE);
-            ChangeAndDebugSwitch_summary.setVisibility(View.GONE);
-            iSuNotification.setEnabled(false);
-            iSuNotification.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
-            iSuNotification.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            iSuToastNotification.setEnabled(false);
-            iSuToastNotification.setTextColor(getColorWrapper(MainContext, R.color.text_gray));
-            iSuToastNotification.setPaintFlags(suSwitch.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            SuSelinuxSwitch_summary.setVisibility(View.GONE);
-            per_app.setEnabled(false);
-            per_app_summary.setText(getString(R.string.not_available));
-            SuStatus.setVisibility(View.GONE);
-            if (!RootUtils.rootAccess()) {
-                kernel_check.setText(getString(R.string.isu_kernel_no_su));
-                kernel_check.setTextColor(getColorWrapper(MainContext, R.color.colorAccent));
-            } else
-                kernel_check.setVisibility(View.GONE);
-
-            upMain = false;
+        public TabsExamplePagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+            frags[0] = new Checks();
+            frags[1] = new Controls();
+            frags[2] = new Monitor();
+            frags[3] = new Props();
+            frags[4] = new Settings();
         }
-        SelinuxSwitch.setChecked(Tools.isSELinuxActive());
-        AndDebugSwitch.setChecked(Tools.AndroidDebugState(MainContext));
-        su_version_summary.setTextColor((!CMSU) ? getColorWrapper(MainContext, R.color.colorAccent) :
-            getColorWrapper(MainContext, R.color.colorButtonGreen));
-        Selinux_State.setText(Tools.getSELinuxStatus());
-        Selinux_State.setTextColor((!Tools.isSELinuxActive()) ? getColorWrapper(MainContext, R.color.colorAccent) :
-            getColorWrapper(MainContext, R.color.colorButtonGreen));
 
-        try {
-            MainContext.registerReceiver(updateMainReceiver, new IntentFilter("updateMainReceiver"));
-        } catch (NullPointerException ignored) {}
+        @Override
+        public Fragment getItem(int position) {
+            return frags[position];
+        }
 
-        Runnable runThread = new Runnable() {
-            public void run() {
-                MainContext.startService(new Intent(MainContext, MainService.class));
-            }
+        @Override
+        public int getCount() {
+            return frags.length;
+
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titles[position];
+        }
+    }
+
+    private String[] getTitles() {
+        String titleString[];
+        titleString = new String[] {
+            getString(R.string.checks),
+                getString(R.string.controls),
+                getString(R.string.monitor),
+                getString(R.string.props),
+                getString(R.string.settings)
         };
-        new Thread(runThread).start();
+        return titleString;
     }
-
-    protected void UpdateMainListners(boolean CMSU) {
-        if (CMSU) {
-            suSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                    boolean isChecked) {
-                    if (Tools.SuBinary() != isChecked) {
-                        Tools.SwitchSu(isChecked, false, MainContext);
-                        Tools.UpMain(MainContext);
-                    }
-                }
-            });
-
-            ChangeAndDebugSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                    boolean isChecked) {
-                    Tools.saveBoolean("adb_change", isChecked, MainContext);
-                }
-            });
-
-            per_app.setOnClickListener(new View.OnClickListener() {
-                Intent myIntent = new Intent(getApplicationContext(), PerAppActivity.class);
-                @Override
-                public void onClick(View v) {
-                    startActivity(myIntent);
-                }
-            });
-
-            iSuNotification.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                    boolean isChecked) {
-                    Tools.saveBoolean("isu_notification", isChecked, MainContext);
-                }
-            });
-
-            iSuToastNotification.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                    boolean isChecked) {
-                    Tools.saveBoolean("toast_notifications", isChecked, MainContext);
-                }
-            });
-
-            SuSelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                    boolean isChecked) {
-                    Tools.saveBoolean("restart_selinux", isChecked, MainContext);
-                }
-            });
-
-            ChangeSuSelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView,
-                    boolean isChecked) {
-                    Tools.saveBoolean("su_selinux_change", isChecked, MainContext);
-                }
-            });
-        }
-
-        AndDebugSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                boolean isChecked) {
-                if (Tools.AndroidDebugState(MainContext) != isChecked) {
-                    Tools.AndroidDebugSet(isChecked, MainContext);
-                    Tools.UpMain(MainContext);
-                }
-            }
-        });
-
-        SelinuxSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                boolean isChecked) {
-                if (Tools.isSELinuxActive() != isChecked) {
-                    Tools.SwitchSelinux(isChecked, MainContext);
-                    Tools.UpMain(MainContext);
-                }
-            }
-        });
-
-        buttonprop.setOnClickListener(new View.OnClickListener() {
-            Intent myIntent = new Intent(getApplicationContext(), PropActivity.class);
-            @Override
-            public void onClick(View v) {
-                startActivity(myIntent);
-            }
-        });
-
-    }
-
-    //new StripeExecute().execute(new StripeExecuteParams(executableFilePath, "com.app.toclean", new String[]{"app_constant", "app_constant2"}));
-    private static class StripeExecuteParams {
-        String executableFilePath;
-        String app;
-        String[] seds;
-
-        StripeExecuteParams(String executableFilePath, String path_app, String[] seds) {
-            this.executableFilePath = executableFilePath;
-            this.app = app;
-            this.seds = seds;
-        }
-    }
-
-    private class StripeExecute extends AsyncTask < StripeExecuteParams, Void, Void > {
-        private ProgressDialog progressDialog;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(MainContext);
-            progressDialog.setTitle(getString(R.string.app_name));
-            progressDialog.setMessage(getString(R.string.running));
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-        }
-
-        @Override
-        protected Void doInBackground(StripeExecuteParams...params) {
-            Tools.stripapp(params[0].executableFilePath, params[0].app, params[0].seds);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            progressDialog.dismiss();
-        }
-    }
-
-    private final BroadcastReceiver updateMainReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            isCMSU = Tools.SuVersionBool(Tools.SuVersion(MainContext));
-            if (upMain && isCMSU) UpdateMain(isCMSU);
-            else StartMain();
-        }
-    };
-
-    private static int getColorWrapper(Context context, int id) {
-        return ContextCompat.getColor(context, id);
-    }
-
 }

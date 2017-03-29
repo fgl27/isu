@@ -1,60 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
+    <!-- checks -->
+    <string name="safetyNet_connection_failed">Cannot connect to Google API</string>
+    <string name="safetyNet_connection_suspended">Connection to Google API was suspended</string>
+    <string name="safetyNet_error">Cannot check SafetyNet, no Internet?</string>
+    <string name="safetyNet_fail">Fail, CTS profile mismatch</string>
+    <string name="safetyNet_pass">Passed</string>
+    <string name="safetyNet_untested">Untested, Click to test</string>
+    <string name="safetyNet_testing">Testing&#8230; If it take too long click again!</string>
+    <string name="su_not_cm">Current SU is not supported.\nSome app functions only works with CM-SU</string>
+    <string name="reboot_support">Reboot support</string>
+    <string name="reboot_support_missing">The reboot support is need to avoid you losing SU after a reboot with SU deactivated. In Android Nougat the app can add that support, in Marshmallow or older is need to flash a file, click on DOWNLOAD FOLDER below to get that files</string>
+    <string name="ok">OK</string>
+    <string name="missing">Missing! Click here to understand</string>
+    <string name="download_folder">Download Folder</string>
+
     <!-- main -->
     <string name="app_name" translatable="false" >iSu</string>
-    <string name="su_switch">Activate or deactivate SU</string>
-    <string name="su_state">Current SU state:</string>
-    <string name="su_not_cm">Current SU is not supported.\nThe app only works with CM-SU\nDevice current SU version is:</string>
+    <string name="su_switch">Change SU state</string>
+    <string name="su_state">SU state</string>
     <string name="device_not_root">Root access not available</string>
     <string name="activated">Activated</string>
     <string name="deactivated">Deactivated</string>
-    <string name="su_version">Su version:</string>
-    <string name="selinux_switch">Activate or deactivate SELinux</string>
-    <string name="selinux_state">Current SELinux state:</string>
-    <string name="selinux_toast_ok">SELinux set to Enforcing!\nThis is need by safety Net app\'s</string>
-    <string name="restart_selinux">Change SELinux when SU is activated</string>
-   <string name="restart_selinux_summary">If ON will set SELinux to Enforcing\nIf OFF will set SELinux to Permissive</string>
-    <string name="isu_kernel_good">iSu Kernel Support OK.</string>
-    <string name="isu_kernel_bad">No iSu Kernel Support!!!\nPlease flash the kernel support .zip or you may loose SU access</string>
-    <string name="isu_kernel_no_su">If you use iSu to deactivate SU and lost SU support try&#8230;\nA reboot if you have iSu kernel support, if you don\'t have kernel support reflash yours current ROM .zip, without SU access the app can\'t tell if you have reboot support so also check in Setting Developer option if Root accesses is granted to apps, in doubt check XDA thread link in About iSu&#8230; XDA support forun site.</string>
-    <string name="download_folder_link">Click here to go to iSu download folder</string>
-    <string name="isu_reboot">iSu Nougat reboot support OK.</string>
-    <!--    <string name="pixel_reboot">iSu Pixel reboot support OK.</string>-->
-    <string name="su_selinux_change">Activate SELinux when SU is deactivated</string>
-    <string name="su_selinux_change_summary">If ON will set SELinux to Enforcing when deactivate SU, this is need by safety net apps</string>
-    <string name="running">Running</string>
-    <string name="unknown">Unknown</string>
-
+    <string name="su_version">Su version</string>
+    <string name="selinux_switch">Change SELinux state</string>
     <string name="anddebug_switch">Android debugging</string>
-    <string name="anddebug_switch_summary">From android Developer options\nEnable the Android Debug Bridge (adb) interface</string>
-    <string name="anddebug_change">Change Android debugging with SU</string>
-    <string name="anddebug_change_summary">This featuring is only need for some devices\nIf ON will activate/deactivate Android debugging</string>
-   <string name="activate_anddebug">Activated Android debugging</string>
-   <string name="deactivate_anddebug">Deactivated Android debugging</string>
+    <string name="anddebug_change">Change Android debugging state</string>
 
-    <!-- Notification -->
+    <!-- Settings -->
     <string name="notification_title">SU is deactivated, activate SU?</string>
     <string name="notification_switch">Show a notification when SU is deactivated</string>
     <string name="toast_notification_switch">Show Toast notifications when changing SU</string>
     <string name="yes">Yes</string>
     <string name="dismiss">Dismiss</string>
+    <string name="notifications">Notifications</string>
+    <string name="activate_anddebug">Activated Android debugging</string>
+    <string name="deactivate_anddebug">Deactivated Android debugging</string>
+    <string name="not_available">Not Available</string>
+    <string name="per_app_active">Activate SU</string>
+    <string name="per_app_deactive">Deactivate SU</string>
+    <string name="activate_selinux">SELinux Set to Enforcing</string>
 
-    <!-- Main pokemonstrings -->
-    <string name="pokemongo_start">hey ho let\'s go play Pokemon!!!</string>
-    <string name="pokemongo_1">Let\'s Grab that Pikachu today</string>
-    <string name="pokemongo_2">How many miles we are going today?</string>
-    <string name="pokemongo_3">Don\'t you have homework to do? Ooo I see you are a grownup, grownup I see -_-</string>
-    <string name="pokemongo_4">Have you??? tie your phone to the ceiling fan to try and get yours Pokemon eggs to hatch faster</string>
-    <string name="pokemongo_5">Presidents and Prime Ministers are playing Pokemon Go around the world, I guess you can say you\'re just practicing to be a politician -_-</string>
-    <string name="pokemongo_6">Alakazam: Alakazam, Alakazam, Alakazam!\nAsh: Pokedex, what Pokemon is that?!\nPokedex: -_- That is an Alakazam!\nAsh: No way!</string>
-    <string name="pokemongo_7">Chuck Norris won the World Series of Poker using Pokemon cards.</string>
-    <string name="pokemongo_8">Chuck Noris caught all 150 Pokemon in 2.7 seconds.</string>
-    <string name="pokemongo_9">How long will it be? before people start naming their kids after Pokemon</string>
-    <string name="isu_by">iSu by bhb27</string>
+    <!--Monitor-->
+    <string name="set_per_app">App monitor</string>
+    <string name="service_per_app">iSu App monitor</string>
+    <string name="per_app_title_isu">Select the apps that will deactivate SU when started</string>
+    <string name="per_app_title_su">Select the apps that will activate SU when started</string>
+    <string name="accessibility_service_desc">A Service to monitor when foreground app starts and activate or deactivate SU.</string>
+    <string name="deactivate_selinux">SELinux Set to Permissive</string>
+    <string name="per_app_default_deactivate">Deactivate SU to any app if SU is activated</string>
+    <string name="per_app_default_activate">Activated SU to any app if SU is deactivated</string>
+    <string name="auto_restart_su">Automatic Restart SU</string>
+    <string name="auto_restart_su_summary">If on, will automatic active SU when leave the app that deactivated SU</string>
+
+    <!--Prop-->
+    <string name="prop_editor">Props Editor</string>
+    <string name="prop_editor_summary">Some apps may block the access base on the state of the below props value</string>
+    <string name="unknown">Unknown</string>
+    <string name="in_prop_summary">Click on a individual Prop to change it\nProps whit * need a reboot after change to take full effect</string>
+    <string name="props_ok">Know safe value</string>
+    <string name="props_nok">Know unsafe value</string>
+    <string name="props_unknown">Unknown value</string>
+    <string name="props_unknown_summary">This means that your device doesn\'t have this prop.\nSet this to a safe value may help to pass a safety check</string>
+    <string name="safe">Safe value</string>
+    <string name="unsafe">Unsafe value</string>
+    <string name="force_all">Force set ALL</string>
+    <string name="force_all_summary">Click on the below to force all Props to the chosen value:</string>
+    <string name="safety_net">Safety Net test</string>
+
+
+    <!--Widget-->
+    <string name="horizontal">Horizontal</string>
+    <string name="vertical">Vertical</string>
+
+    <!--fragmets-->
+    <string name="checks">Checks</string>
+    <string name="controls">Controls</string>
+    <string name="monitor">Monitor</string>
+    <string name="props">Props</string>
+    <string name="settings">Settings</string>
+
+    <!--extras-->
+    <string name="selinux">SELinux</string>
+    <string name="selinux_settings">Extra SELinux controls</string>
+    <string name="selinux_settings_summary">Control the state of SELinux when SU is changed</string>
+    <string name="selinux_su_on">SELinux state when SU is Activated</string>
+    <string name="selinux_su_off">SELinux state SU Deactivated</string>
+    <string name="enforcing">Enforcing</string>
+    <string name="permissive">Permissive</string>
+    <string name="anddebug_settings">Extra Android Debug controls</string>
+    <string name="anddebug_settings_summary">Control the state of Android Debug when SU is changed</string>
+    <string name="anddebug_su_on">Android Debug state when SU is Activated</string>
+    <string name="anddebug_su_off">Android Debug state when SU is Deactivated</string>
+    <string name="enable">Enable</string>
+    <string name="disable">Disable</string>
+    <string name="props_apply_boot">Apply changes to props on boot</string>
+    <string name="su_not_supported">Su version not supported</string>
+
+    <!--  props -->
+    <string name="robuildtags" translatable="false" >ro.build.tags *</string>
+    <string name="rodebuggable" translatable="false" >ro.debuggable</string>
+    <string name="robootbl_state" translatable="false" >ro.boot.bl_state</string>
+    <string name="robootflashlocked" translatable="false" >ro.boot.flash.locked</string>
+    <string name="robootverifiedbootstate" translatable="false" >ro.boot.verifiedbootstate</string>
+    <string name="rosecure" translatable="false" >ro.secure</string>
+    <string name="robootveritymode" translatable="false" >ro.boot.veritymode</string>
+    <string name="robuildtype" translatable="false" >ro.build.type</string>
+    <string name="robuildselinux" translatable="false" >ro.build.selinux</string>
+    <string name="robootselinux" translatable="false" >ro.boot.selinux</string>
 
     <!-- about -->
-    <string name="about">About iSu</string>
+    <string name="about">About</string>
     <string name="dev_info">Developer information:</string>
     <string name="git_summary">This is a open source app check it on my github\ngithub.com/bhb27/isu</string>
     <string name="version">Version:</string>
@@ -73,41 +130,9 @@
     <!--Main image-->
     <string name="isu_icon" translatable="false" >iSu icon</string>
 
-    <!--Per app-->
-   <string name="set_per_app">App monitor</string>
-   <string name="service_per_app">iSu App monitor</string>
-    <string name="per_app_title_isu">Select the apps that will deactivate SU:</string>
-    <string name="per_app_title_su">Select the apps that will activate SU:</string>
-    <string name="accessibility_service_desc">A Service to monitor when foreground app starts and activate or deactivate SU.</string>
-    <string name="per_app_active">Activate SU</string>
-    <string name="per_app_active_summary">Select the apps that will make iSu activate SU when started.</string>
-    <string name="per_app_deactive">Deactivate SU</string>
-    <string name="per_app_deactive_summary">Select the apps that will make iSu deactivate SU when started.\n(deactivating SU will also set SELinux to enforcing)</string>
-   <string name="not_available">Not Available</string>
-   <string name="activate_selinux">SELinux Set to Enforcing</string>
-   <string name="deactivate_selinux">SELinux Set to Permissive</string>
-   <string name="per_app_default_deactivate">Deactivate SU to any app if SU is activated</string>
-   <string name="per_app_default_activate">Activated SU to any app if SU is deactivated</string>
-   <string name="auto_restart_su">Automatic Restart SU</string>
-   <string name="auto_restart_su_summary">If on, will automatic active SU when leave the app that deactivated SU</string>
-
-    <!--Prop-->
-    <string name="prop_editor">Props Editor</string>
-    <string name="prop_editor_summary">A tool to change props that may be use to block the access to some apps</string>
-    <string name="in_prop_summary">Some apps may block the access base on the state of the below prop flags</string>
-    <string name="green_good">GREEN = Good</string>
-    <string name="red_bad">RED = Bad</string>
-    <string name="need_reboot">*This prop need a reboot after change, for Root Beer check.</string>
-    <string name="set_all_green">Set all to green</string>
-    <string name="set_all_red">Set all to red</string>
-    <string name="individual_prop">Click on a individual Prop to change it</string>
-    <string name="used_by">Used by:</string>
-    <string name="banks">Banks and others payments sites.</string>
-    <string name="root_beer">Root beer (a ROOT checker app).</string>
-    <string name="safety_net">Safety Net.</string>
-    <string name="equal" translatable="false" >%s =</string>
-
-    <!--Widget-->
-    <string name="horizontal">Horizontal</string>
-    <string name="vertical">Vertical</string>
+    <!--  Strings for possible PreferenceActivity Back/Next buttons -->
+    <string name="back_button_label">Back</string>
+    <string name="next_button_label">Next</string>
+    <!-- Optional button to Skip a PreferenceActivity [CHAR LIMIT=20] -->
+    <string name="skip_button_label">Skip</string>
 </resources>

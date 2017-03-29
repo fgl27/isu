@@ -78,10 +78,10 @@ public class RootFile {
         List < String > list = new ArrayList < > ();
         String files = RootUtils.runCommand("ls '" + file + "'");
         if (files != null)
-        // Make sure the file exists
+            // Make sure the file exists
             for (String file: files.split("\\r?\\n"))
-            if (file != null && !file.isEmpty() && Tools.existFile(this.file + "/" + file, true))
-                list.add(file);
+                if (file != null && !file.isEmpty() && Tools.existFile(this.file + "/" + file, true))
+                    list.add(file);
         return list;
     }
 
@@ -89,10 +89,10 @@ public class RootFile {
         List < RootFile > list = new ArrayList < > ();
         String files = RootUtils.runCommand("ls '" + file + "'");
         if (files != null)
-        // Make sure the file exists
+            // Make sure the file exists
             for (String file: files.split("\\r?\\n"))
-            if (file != null && !file.isEmpty() && Tools.existFile(this.file + "/" + file, true))
-                list.add(new RootFile(this.file + "/" + file));
+                if (file != null && !file.isEmpty() && Tools.existFile(this.file + "/" + file, true))
+                    list.add(new RootFile(this.file + "/" + file));
         return list;
     }
 

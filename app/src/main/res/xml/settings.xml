@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--/*
+ * Copyright (C) 2016-2017 Felipe de Leon <fglfgl27@gmail.com>
+ *
+ * This file is part of iSu.
+ *
+ * iSu is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * iSu is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with iSu.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" xmlns:settings="http://schemas.android.com/apk/res/com.android.settings" android:key="settings_preferencescreen">
+    <PreferenceCategory
+        android:key="settings_pref_view">
+        <Preference
+            android:key="settings_view"
+            android:summary="@string/su_not_cm"
+            android:icon="@drawable/warning"
+            android:persistent="false" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="props_settings_pref"
+        android:title="@string/props">
+        <SwitchPreference
+            android:key="apply_props"
+            android:defaultValue="true"
+            android:title="@string/props_apply_boot" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="notifications_settings_pref"
+        android:title="@string/notifications">
+        <SwitchPreference
+            android:key="isu_notification"
+            android:defaultValue="false"
+            android:title="@string/notification_switch" />
+        <SwitchPreference
+            android:key="toast_notifications"
+            android:defaultValue="false"
+            android:title="@string/toast_notification_switch" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="selinux_settings_pref"
+        android:title="@string/selinux">
+        <SwitchPreference
+            android:key="selinux_settings_switch"
+            android:defaultValue="true"
+            android:title="@string/selinux_settings"
+            android:summary="@string/selinux_settings_summary" />
+        <ListPreference
+            android:key="selinux_su_on"
+            android:dependency="selinux_settings_switch"
+            android:defaultValue="0"
+            android:title="@string/selinux_su_on"
+            android:summary="%s"
+            android:dialogTitle="@string/selinux_su_on"
+            android:entries="@array/selinux_state_entries"
+            android:entryValues="@array/selinux_state_values" />
+        <ListPreference
+            android:key="selinux_su_off"
+            android:dependency="selinux_settings_switch"
+            android:defaultValue="0"
+            android:title="@string/selinux_su_off"
+            android:summary="%s"
+            android:dialogTitle="@string/selinux_su_off"
+            android:entries="@array/selinux_state_entries"
+            android:entryValues="@array/selinux_state_values" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="anddebug_settings_pref"
+        android:title="@string/anddebug_switch">
+        <SwitchPreference
+            android:key="anddebug_settings"
+            android:defaultValue="true"
+            android:title="@string/anddebug_settings"
+            android:summary="@string/anddebug_settings_summary" />
+        <ListPreference
+            android:key="anddebug_su_on"
+            android:dependency="anddebug_settings"
+            android:defaultValue="0"
+            android:title="@string/anddebug_su_on"
+            android:summary="%s"
+            android:dialogTitle="@string/anddebug_su_on"
+            android:entries="@array/anddebug_state_entries"
+            android:entryValues="@array/anddebug_state_values" />
+        <ListPreference
+            android:key="anddebug_su_off"
+            android:dependency="anddebug_settings"
+            android:defaultValue="0"
+            android:title="@string/anddebug_su_off"
+            android:summary="%s"
+            android:dialogTitle="@string/anddebug_su_off"
+            android:entries="@array/anddebug_state_entries"
+            android:entryValues="@array/anddebug_state_values" />
+    </PreferenceCategory>
+</PreferenceScreen>

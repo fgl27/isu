@@ -38,6 +38,11 @@ import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.preference.Preference;
+import android.support.v4.content.ContextCompat;
+import android.text.Html;
+import android.annotation.TargetApi;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -206,12 +211,10 @@ public class Tools implements Constants {
 
     public static void SwitchSu(boolean isChecked, boolean AppMonitor, Context context) {
         if (isChecked) {
-            // Mount rw to change mount ro after
             RootUtils.runICommand("mount -o rw,remount /system");
             RootUtils.runICommand("mv " + xbin_isu + " " + xbin_su);
             RootUtils.runCommand("mv " + bin_temp_su + " " + bin_su);
             RootUtils.runCommand("mount -o ro,remount /system");
-            ActiveSUToast(context);
             ClearAllNotification(context);
         } else {
             if (!AppMonitor) {
@@ -219,7 +222,6 @@ public class Tools implements Constants {
                 if (androidPay.contains(Constants.PAY))
                     RootUtils.runCommand("am force-stop " + Constants.PAY);
             }
-            // Make a link to isu so all root tool work
             RootUtils.runCommand("mount -o rw,remount /system");
             RootUtils.runCommand("ln -s -f " + xbin_isu + " " + bin_isu);
             RootUtils.runCommand("mv " + xbin_su + " " + xbin_isu);
@@ -227,41 +229,63 @@ public class Tools implements Constants {
             RootUtils.runICommand("mount -o ro,remount /system");
             if (getBoolean("isu_notification", false, context))
                 DoNotification(context);
-            String Toast = context.getString(R.string.per_app_deactive);
-            if (!isSELinuxActive() && getBoolean("su_selinux_change", true, context)) {
-                SwitchSelinux(true, context);
-                Toast = Toast + "\n" + context.getString(R.string.activate_selinux);
-            }
-            if (getBoolean("adb_change", false, context) && AndroidDebugState(context)) {
-                AndroidDebugSet(isChecked, context);
-                Toast = Toast + "\n" + context.getString(R.string.deactivate_anddebug);
-            }
-            if (getBoolean("toast_notifications", true, context))
-                DoAToast("iSu " + Toast + "!", context);
         }
+        ChangeSUToast(isChecked, context);
         Log.d(TAG, "Change SU isChecked = " + isChecked + " SU path " +
             (isChecked ? RootUtils.runICommand("which su") : RootUtils.runICommand("which isu")));
         updateAllWidgetsLayouts(context);
     }
 
-    public static void ActiveSUToast(Context context) {
-        String Toast = context.getString(R.string.per_app_active);
-        boolean restart_selinux = getBoolean("restart_selinux", false, context);
-        boolean selinux = isSELinuxActive();
+    public static void ChangeSUToast(boolean isChecked, Context context) {
         boolean su = SuBinary();
-        if (restart_selinux && !selinux) {
-            SwitchSelinux(true, context);
-            Toast = Toast + "\n" + context.getString(R.string.activate_selinux);
-        } else if (!restart_selinux && selinux) {
-            SwitchSelinux(false, context);
-            Toast = Toast + "\n" + context.getString(R.string.deactivate_selinux);
+        String Toast = (su ? context.getString(R.string.per_app_active) : context.getString(R.string.per_app_deactive));
+        if (getBoolean("selinux_settings_switch", false, context)) {
+            String selinux_su_off = redString("selinux_su_off", null, context);
+            String selinux_su_on = redString("selinux_su_on", null, context);
+            boolean selinux = isSELinuxActive();
+            if (isChecked) {
+                if (!selinux && selinux_su_on.equals("0")) {
+                    SwitchSelinux(true, context);
+                    Toast = Toast + "\n" + context.getString(R.string.activate_selinux);
+                } else if (selinux && selinux_su_on.equals("1")) {
+                    SwitchSelinux(false, context);
+                    Toast = Toast + "\n" + context.getString(R.string.deactivate_selinux);
+                }
+            } else {
+                if (!selinux && selinux_su_off.equals("0")) {
+                    SwitchSelinux(true, context);
+                    Toast = Toast + "\n" + context.getString(R.string.activate_selinux);
+                } else if (selinux && selinux_su_off.equals("1")) {
+                    SwitchSelinux(false, context);
+                    Toast = Toast + "\n" + context.getString(R.string.deactivate_selinux);
+                }
+            }
         }
-        if (getBoolean("adb_change", false, context) && su && !AndroidDebugState(context)) {
-            AndroidDebugSet(su, context);
-            Toast = Toast + "\n" + context.getString(R.string.activate_anddebug);
+        if (getBoolean("anddebug_settings", false, context)) {
+            String anddebug_su_off = redString("anddebug_su_off", null, context);
+            String anddebug_su_on = redString("anddebug_su_on", null, context);
+            boolean anddebug = AndroidDebugState(context);
+            if (isChecked) {
+                if (!anddebug && anddebug_su_on.equals("1")) {
+                    AndroidDebugSet(true, context);
+                    Toast = Toast + "\n" + context.getString(R.string.activate_anddebug);
+                } else if (anddebug && anddebug_su_on.equals("0")) {
+                    AndroidDebugSet(false, context);
+                    Toast = Toast + "\n" + context.getString(R.string.deactivate_anddebug);
+                }
+            } else {
+                if (!anddebug && anddebug_su_off.equals("1")) {
+                    AndroidDebugSet(true, context);
+                    Toast = Toast + "\n" + context.getString(R.string.activate_anddebug);
+                } else if (anddebug && anddebug_su_off.equals("0")) {
+                    AndroidDebugSet(false, context);
+                    Toast = Toast + "\n" + context.getString(R.string.deactivate_anddebug);
+                }
+            }
         }
         if (getBoolean("toast_notifications", true, context))
             DoAToast("iSu " + Toast + "!", context);
+        UpMain(context);
     }
 
     public static boolean RebootSupport(String executableFilePath, Context context) {
@@ -287,6 +311,28 @@ public class Tools implements Constants {
             else
                 RootUtils.runICommand("pm grant com.bhb27.isu android.permission.WRITE_SECURE_SETTINGS");
         }
+    }
+
+    public static void setSummaryColor(Preference preference, String summary, int color, Context context) {
+        String final_color = "#" + Integer.toHexString(ContextCompat.getColor(context, color) & 0x00ffffff);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            setSummaryColorN(preference, summary, final_color);
+        } else {
+            setSummaryColorOlder(preference, summary, final_color);
+        }
+    }
+
+    @TargetApi(24)
+    public static void setSummaryColorN(Preference preference, String summary, String color) {
+        preference.setSummary(Html.fromHtml("<font color='" + color + "'>" +
+            summary + "</font>", Html.FROM_HTML_MODE_LEGACY));
+    }
+
+    @TargetApi(21 | 22 | 23)
+    @SuppressWarnings("deprecation")
+    public static void setSummaryColorOlder(Preference preference, String summary, String color) {
+        preference.setSummary(Html.fromHtml("<font color='" + color + "'>" +
+            summary + "</font>"));
     }
 
     public static void AndroidDebugSet(Boolean isChecked, Context context) {
@@ -348,21 +394,27 @@ public class Tools implements Constants {
     }
 
     public static void resetprop(String path, String prop, String value, Context context) {
-        String prop_cmd = prop + " " + value;
-        String bp_prop_value = "";
-        String bp_prop = "";
-        if (SuBinary()) {
-            RootUtils.runCommand(path + "resetprop" + abi() + " -v -n " + prop_cmd);
-            bp_prop_value = bp_prop_value + RootUtils.runCommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f2");
-            bp_prop = bp_prop + RootUtils.runCommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f1");
+        if (value.isEmpty()) {
+            if (SuBinary())
+                RootUtils.runCommand(path + "resetprop" + abi() + " --delete -n " + prop);
+            else
+                RootUtils.runICommand(path + "resetprop" + abi() + " --delete -n " + prop);
         } else {
-            RootUtils.runICommand(path + "resetprop" + abi() + " -v -n " + prop_cmd);
-            bp_prop_value = bp_prop_value + RootUtils.runICommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f2");
-            bp_prop = bp_prop + RootUtils.runICommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f1");
+            String prop_cmd = prop + " " + value;
+            String bp_prop_value = "";
+            String bp_prop = "";
+            if (SuBinary()) {
+                RootUtils.runCommand(path + "resetprop" + abi() + " -v -n " + prop_cmd);
+                bp_prop_value = bp_prop_value + RootUtils.runCommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f2");
+                bp_prop = bp_prop + RootUtils.runCommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f1");
+            } else {
+                RootUtils.runICommand(path + "resetprop" + abi() + " -v -n " + prop_cmd);
+                bp_prop_value = bp_prop_value + RootUtils.runICommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f2");
+                bp_prop = bp_prop + RootUtils.runICommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f1");
+            }
+            if (bp_prop.contains(prop) && !bp_prop_value.equals(value))
+                overwritebp(prop, bp_prop_value, prop, value, path);
         }
-        saveString(prop, value, context);
-        if (bp_prop.contains(prop) && !bp_prop_value.equals(value))
-            overwritebp(prop, bp_prop_value, prop, value, path);
     }
 
     public static void overwritebp(String oldKey, String oldValue, String newKey, String newValue, String path) {
@@ -417,20 +469,6 @@ public class Tools implements Constants {
         TextView view = (TextView) toast.getView().findViewById(android.R.id.message);
         if (view != null) view.setGravity(Gravity.CENTER);
         toast.show();
-    }
-
-    // Random int generated base on a String[] length to get a Random String
-    public static String RandomString(Context context) {
-        String[] pokemonstrings = new String[] {
-            context.getString(R.string.pokemongo_1), context.getString(R.string.pokemongo_2), context.getString(R.string.pokemongo_3),
-                context.getString(R.string.pokemongo_4), context.getString(R.string.pokemongo_5), context.getString(R.string.pokemongo_6),
-                context.getString(R.string.pokemongo_7), context.getString(R.string.pokemongo_8), context.getString(R.string.pokemongo_9),
-                context.getString(R.string.isu_by), context.getString(R.string.pokemongo_start)
-        };
-        Random rand = new Random();
-        int generate = 0;
-        generate = rand.nextInt(pokemonstrings.length);
-        return pokemonstrings[generate];
     }
 
     public static boolean isSELinuxActive() {
@@ -547,7 +585,7 @@ public class Tools implements Constants {
         context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit().putBoolean(name, value).apply();
     }
 
-    public static String getString(String name, String defaults, Context context) {
+    public static String redString(String name, String defaults, Context context) {
         return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getString(name, defaults);
     }
 
@@ -568,7 +606,7 @@ public class Tools implements Constants {
     public static void applyprop(Context context, String path) {
         String newvalue = "", originalvalue;
         for (int i = 0; i < props.length; i++) {
-            newvalue = getString(props[i], null, context);
+            newvalue = redString(props[i], null, context);
             if (newvalue != null && !newvalue.isEmpty()) {
                 resetprop(path, props[i], newvalue, context);
             }

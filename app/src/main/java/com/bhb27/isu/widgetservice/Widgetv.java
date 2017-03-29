@@ -32,7 +32,6 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.bhb27.isu.Main;
-import com.bhb27.isu.PerAppActivity;
 import com.bhb27.isu.R;
 import com.bhb27.isu.tools.Tools;
 

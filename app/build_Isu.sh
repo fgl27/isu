@@ -35,7 +35,7 @@ APP_FINAL_NAME=iSu_$VERSION.apk;
 # Auto sign zip Download from my folder link below extract and set the folder below on yours machine
 # https://www.androidfilehost.com/?fid=312978532265364585
 # ZIPAPPFOLDER = folder of the zip the contains the apk inside the zip
-MKZIP=1;
+MKZIP=0;
 ANYKERNEL=$FOLDER/kernel_zip/AnyKernel2/;
 ZIP_SIGN_FOLDER=$HOME/android/ZipScriptSign;
 ZIPNAME_REBOOT=iSu_kernel_Reboot_Support_V_$VERSION\_and_up;
@@ -71,57 +71,30 @@ if [ ! -e ./app/build/outputs/apk/app-release-unsigned.apk ]; then
 else
 	jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -storepass $KEY_PASS -keystore $KEY_FOLDER $OUT_FOLDER/app-release-unsigned.apk Felipe_Leon
 	$ZIPALIGN_FOLDER -v 4 $OUT_FOLDER/app-release-unsigned.apk $OUT_FOLDER/$APP_FINAL_NAME
-	cp $OUT_FOLDER/$APP_FINAL_NAME $OUT_FOLDER/isu.apk
+	cp $OUT_FOLDER/$APP_FINAL_NAME $OUT_FOLDER/isu$(date +%s).apk
 fi;
 fi;
 
 if [ $MKZIP == 1 ]; then
 	echo -e "\nMaking the zips\n"
 
-	echo -e "\nKernel reboot support\n"
+	echo -e "\nKernel reboot support enforce\n"
 	cd $ANYKERNEL/
 	rm -rf *.zip
-	zip -r9 $ZIPNAME_REBOOT * -x README .gitignore *.zip tools/su*
-	$ZIP_SIGN_FOLDER/sign.sh test  $ANYKERNEL/$ZIPNAME_REBOOT.zip
-	rm -rf ./ZipScriptSign/$ZIPNAME_REBOOT.zip
-	mv $ANYKERNEL/$ZIPNAME_REBOOT-signed.zip $ANYKERNEL/$ZIPNAME_REBOOT.zip
-
-	echo -e "\ndefault.prop patch\n"
-	sed -i '/install_isu=1/c\install_isu=2\;' $ANYKERNEL/anykernel.sh;
-	sed -i '/do.isu=0/c\do.isu=1' $ANYKERNEL/anykernel.sh;
-	sed -i '/do.buildprop=0/c\do.buildprop=1' $ANYKERNEL/anykernel.sh;
-	zip -r9 $ZIPNAME_PROP * -x README .gitignore *.zip
-	$ZIP_SIGN_FOLDER/sign.sh test  $ANYKERNEL/$ZIPNAME_PROP.zip
-	rm -rf ./ZipScriptSign/$ZIPNAME_PROP.zip
-	mv $ANYKERNEL/$ZIPNAME_PROP-signed.zip $ANYKERNEL/$ZIPNAME_PROP.zip
-
-	echo -e "\ncmdline patch\n"
-	sed -i '/docmdline=0/c\docmdline=1\;' $ANYKERNEL/anykernel.sh;
-	sed -i '/do.cmdline=0/c\do.cmdline=1' $ANYKERNEL/anykernel.sh;
-	sed -i '/do.isu=1/c\do.isu=0' $ANYKERNEL/anykernel.sh;
-	sed -i '/do.buildprop=1/c\do.buildprop=0' $ANYKERNEL/anykernel.sh;
-	zip -r9 $ZIPNAME_CMDLINE * -x README .gitignore *.zip tools/su*
-	$ZIP_SIGN_FOLDER/sign.sh test  $ANYKERNEL/$ZIPNAME_CMDLINE.zip
+	zip -r9 $ZIPNAME_ENFORCE * -x README .gitignore *.zip tools/su*
+	$ZIP_SIGN_FOLDER/sign.sh test  $ANYKERNEL/$ZIPNAME_ENFORCE.zip
 	rm -rf ./ZipScriptSign/$ZIPNAME_ENFORCE.zip
-	mv $ANYKERNEL/$ZIPNAME_CMDLINE-signed.zip $ANYKERNEL/$ZIPNAME_CMDLINE.zip
+	mv $ANYKERNEL/$ZIPNAME_ENFORCE-signed.zip $ANYKERNEL/$ZIPNAME_ENFORCE.zip
 
-	echo -e "\npixel patch\n"
-	sed -i '/docmdline=1/c\docmdline=0\;' $ANYKERNEL/anykernel.sh;
-	sed -i '/do.cmdline=1/c\do.cmdline=0' $ANYKERNEL/anykernel.sh;
-	sed -i '/do.sbin=0/c\do.sbin=1' $ANYKERNEL/anykernel.sh;
-	sed -i '/install_isu=2/c\install_isu=3\;' $ANYKERNEL/anykernel.sh;
-	zip -r9 $ZIPNAME_PIXEL * -x README .gitignore *.zip tools/su*
-	$ZIP_SIGN_FOLDER/sign.sh test  $ANYKERNEL/$ZIPNAME_CMDLINE.zip
-	rm -rf ./ZipScriptSign/$ZIPNAME_ENFORCE.zip
-	mv $ANYKERNEL/$ZIPNAME_CMDLINE-signed.zip $ANYKERNEL/$ZIPNAME_CMDLINE.zip
+	echo -e "\nKernel reboot support permissive\n"
+	sed -i '/	setenforce 1/c\	setenforce 0\;' $ANYKERNEL/ramdisk/sbin/isu.sh;
+	zip -r9 $ZIPNAME_PERMISSIVE * -x README .gitignore *.zip tools/su*
+	$ZIP_SIGN_FOLDER/sign.sh test  $ANYKERNEL/$ZIPNAME_PERMISSIVE.zip
+	rm -rf ./ZipScriptSign/$ZIPNAME_PERMISSIVE.zip
+	mv $ANYKERNEL/$ZIPNAME_PERMISSIVE-signed.zip $ANYKERNEL/$ZIPNAME_PERMISSIVE.zip
 
 	echo -e "\ncleaning sed\n"
 	sed -i '/	setenforce 0/c\	setenforce 1\;' $ANYKERNEL/ramdisk/sbin/isu.sh;
-	sed -i '/install_isu=3/c\install_isu=1\;' $ANYKERNEL/anykernel.sh;
-	sed -i '/do.buildprop=1/c\do.buildprop=0' $ANYKERNEL/anykernel.sh;
-	sed -i '/docmdline=1/c\docmdline=0\;' $ANYKERNEL/anykernel.sh;
-	sed -i '/do.cmdline=1/c\do.cmdline=0' $ANYKERNEL/anykernel.sh;
-	sed -i '/do.sbin=1/c\do.do.sbin=0' $ANYKERNEL/anykernel.sh;
 fi;
 
 END2="$(date)";

@@ -50,8 +50,8 @@ public class QuickTileiSu extends TileService {
     }
 
     private void launch() {
-      Intent intent = new Intent(this, Main.class);
-      startActivity(intent);
+        Intent intent = new Intent(this, Main.class);
+        startActivity(intent);
     }
 
 }

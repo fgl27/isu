@@ -1,38 +1,9 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:style/Theme.Material.Light.DarkActionBar">
-        <item name="android:textColorPrimary">@color/text_black</item>
-        <item name="android:textColorSecondary">@color/text_black</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/text_white</item>
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
-        <item name="android:buttonStyle">@style/button</item>
-    </style>
-    <style name="AppThemeMonitor" parent="android:style/Theme.Material.Light.DarkActionBar">
-        <item name="android:textColorPrimary">@color/text_black</item>
-        <item name="android:textColorSecondary">@color/text_black</item>
-        <item name="android:colorPrimary">@color/colorPrimary</item>
-        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/text_white</item>
-        <item name="android:actionBarStyle">@style/MyActionBarMonitor</item>
-        <item name="android:buttonStyle">@style/button</item>
-        <item name="android:alertDialogTheme">@style/AlertDialogCustom</item>
-    </style>
-    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="android:titleTextStyle">@style/ActionBar.TitleTextStyle</item>
-        <item name="android:displayOptions">showHome|useLogo</item>
-    </style>
-    <style name="MyActionBarMonitor" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="android:titleTextStyle">@style/ActionBar.TitleTextStyle</item>
-    </style>
-    <style name="ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/text_white</item>
-        <item name="android:textStyle">bold</item>
     </style>
     <style name="button" parent="@android:style/Widget.Button">
         <item name="android:gravity">center_vertical|center_horizontal</item>
@@ -49,5 +20,19 @@
     </style>
     <style name="AlertDialogCustom" parent="android:Theme.Material.Light.Dialog.Alert">
       <item name="android:colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="Switch_theme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorControlActivated">@color/colorNew</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/start</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 </resources>

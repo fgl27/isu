@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--/*
+ * Copyright (C) 2016-2017 Felipe de Leon <fglfgl27@gmail.com>
+ *
+ * This file is part of iSu.
+ *
+ * iSu is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * iSu is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with iSu.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" xmlns:settings="http://schemas.android.com/apk/res/com.android.settings">
+    <PreferenceCategory
+        android:key="checks_su"
+        android:title="@string/su_state">
+        <Preference
+            android:key="checks_view"
+            android:summary="@string/su_not_cm"
+            android:icon="@drawable/warning"
+            android:persistent="false" />
+        <Preference
+            android:key="su_status"
+            android:title="@string/su_version"
+            android:persistent="false" />
+        <Preference
+            android:key="reboot_status"
+            android:title="@string/reboot_support"
+            android:persistent="false" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="safety"
+        android:title="@string/safety_net">
+        <Preference
+            android:key="safety_net"
+            android:title="@string/safety_net"
+            android:persistent="false" />
+    </PreferenceCategory>
+</PreferenceScreen>

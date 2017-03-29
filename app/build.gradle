@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda' 
 
 android {
     compileSdkVersion 25
@@ -8,8 +9,8 @@ android {
         applicationId "com.bhb27.isu"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 28
-        versionName "3.8"
+        versionCode 29
+        versionName "3.9_Beta"
     }
     buildTypes {
         release {
@@ -18,12 +19,22 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     lintOptions {
         abortOnError false
 	disable 'UnsafeNativeCodeLocation', //UnsafeNativeCodeLocation: Native code outside library directory libsupol and supolicy
 		'GoogleAppIndexingWarning', //GoogleAppIndexingWarning: Missing support for Firebase App Indexing
 		'IconMissingDensityFolder', //IconMissingDensityFolder: Missing density folder
-                'ProtectedPermissions' //ProtectedPermissions: Using system app permission
+                'ProtectedPermissions', //ProtectedPermissions: Using system app permission
+                'MissingTranslation' //Who cares? I don't know all the languages
+    }
+    retrolambda {
+        javaVersion JavaVersion.VERSION_1_7
+        defaultMethods false
+        incremental true
     }
     productFlavors {
     }
@@ -36,4 +47,7 @@ android {
 
 dependencies {
     compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.google.android.gms:play-services-safetynet:10.2.1'
 }

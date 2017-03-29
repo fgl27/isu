@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--/*
- * Copyright (C) 2016-2017 Felipe de Leon <fglfgl27@gmail.com>
+/*
+ * Copyright (C) Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of iSu.
  *
@@ -17,10 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with iSu.  If not, see <http://www.gnu.org/licenses/>.
  *
- */-->
-<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:initialLayout="@layout/widget_layouth"
-    android:minHeight="40dip"
-    android:minWidth="160dip"
-    android:previewImage="@drawable/wd_h"
-    android:resizeMode="horizontal|vertical" />
+ */
+package com.bhb27.isu;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+
+import com.bhb27.isu.Main;
+
+public class Start extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.startActivity(new Intent(this, Main.class));
+    }
+
+}

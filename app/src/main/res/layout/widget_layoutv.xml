@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:gravity="top"
     style="?android:attr/buttonBarStyle">
-
     <Button
         android:id="@+id/iSuMain"
         android:layout_width="wrap_content"
@@ -17,7 +16,6 @@
         android:textSize="12sp"
         android:textStyle="bold"
         style="?android:attr/buttonBarStyle" />
-
     <Button
         android:id="@+id/iSuMonitor"
         android:layout_marginTop="5dp"
@@ -30,5 +28,4 @@
         android:textSize="12sp"
         android:textStyle="bold"
         style="?android:attr/buttonBarStyle" />
-
 </LinearLayout>

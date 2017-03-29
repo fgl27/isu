@@ -25,3 +25,11 @@
 -dontnote android.support.annotation.Keep
 -dontnote org.apache.http.**
 -dontnote android.net.http.**
+
+-dontnote com.google.android.gms.**
+
+-keep class org.spongycastle.** { *; }
+-dontwarn javax.naming.**
+
+# retrolambda
+-dontwarn java.lang.invoke.*
