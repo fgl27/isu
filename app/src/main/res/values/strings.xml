@@ -72,7 +72,18 @@
     <string name="force_all">Force set ALL</string>
     <string name="force_all_summary">Click on the below to force all Props to the chosen value:</string>
     <string name="safety_net">Safety Net test</string>
-
+    <string name="states">States</string>
+    <string name="special_props">Special Props</string>
+    <string name="special_props_summary">\nIf after the change of a special prop and a reboot the new value is reverted to original ROM value you need request the developer of the ROM to fix it</string>
+    <string name="fingerprint_dialog_title">Choose a option:</string>
+    <string name="fingerprint_dialog_summary">Know safe:\nKnow Safe value for this prop for a nexus device\n\nPersonalized:\nEdit current value or Write a new value for this prop (example yours device stock ROM value for this)</string>
+    <string name="fingerprint_dialog_know_safe">Know safe</string>
+    <string name="fingerprint_dialog_personalized">Personalized</string>
+    <string name="fingerprint_dialog_personalized_title">Set new ro.build.fingerprint</string>
+    <string name="fingerprint_dialog_result">Be aware to apply the changes is need a reboot!</string>
+    <string name="fingerprint_apply">\n*The value has change reboot to apply</string>
+    <string name="empty_text">The Personalized value can\'t be empty change not accepted</string>
+    <string name="equals_values">No changes made, new value equal current ROM value!</string>
 
     <!--Widget-->
     <string name="horizontal">Horizontal</string>
@@ -113,6 +124,7 @@
     <string name="robuildtype" translatable="false" >ro.build.type</string>
     <string name="robuildselinux" translatable="false" >ro.build.selinux</string>
     <string name="robootselinux" translatable="false" >ro.boot.selinux</string>
+    <string name="robuildfingerprint" translatable="false" >ro.build.fingerprint</string>
 
     <!-- about -->
     <string name="about">About</string>

@@ -19,10 +19,14 @@
  */
 package com.bhb27.isu;
 
+import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatEditText;
 
 import com.bhb27.isu.preferencefragment.PreferenceFragment;
 import com.bhb27.isu.tools.Constants;
@@ -33,7 +37,7 @@ Preference.OnPreferenceChangeListener {
 
     private String executableFilePath, suVersion;
     private ListPreference[] props = new ListPreference[Constants.props.length];
-    private Preference mForceAllSafe, mForceAllUnsafe;
+    private Preference mBuildFingerprint, mForceAllSafe, mForceAllUnsafe;
     private boolean isCMSU;
 
     @Override
@@ -86,6 +90,73 @@ Preference.OnPreferenceChangeListener {
                     return true;
                 }
             });
+
+            mBuildFingerprint = (Preference) getPreferenceManager().findPreference(Constants.robuildfingerprint);
+            mBuildFingerprint.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    // main dialog ask what to change
+                    new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle)
+                        .setTitle(getString(R.string.fingerprint_dialog_title))
+                        .setMessage(getString(R.string.fingerprint_dialog_summary))
+                        .setNeutralButton(getString(R.string.dismiss), //dissmiss
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    return;
+                                }
+                            })
+                        .setPositiveButton(getString(R.string.fingerprint_dialog_know_safe), //know safe
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    if (!(Tools.getprop(Constants.robuildfingerprint)).equals(Build.FINGERPRINT)) {
+                                        Tools.resetprop(executableFilePath, Constants.robuildfingerprint, Constants.SAFEFINGERPRINT, getActivity());
+                                        finaldialog();
+                                    } else
+                                        Tools.DoAToast(getString(R.string.equals_values), getActivity());
+                                }
+                            })
+                        .setNegativeButton(getString(R.string.fingerprint_dialog_personalized), //personalized
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    // iner personalized dialog
+                                    final AppCompatEditText input = new AppCompatEditText(getActivity());
+                                    input.setText(Tools.getprop(Constants.robuildfingerprint));
+                                    new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle)
+                                        .setTitle(getString(R.string.fingerprint_dialog_personalized_title))
+                                        .setView(input)
+                                        .setPositiveButton(getString(R.string.ok),
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    String newvalue = input.getText().toString();
+                                                    if (newvalue.isEmpty()) {
+                                                        Tools.DoAToast(getString(R.string.empty_text), getActivity());
+                                                        return;
+                                                    } else if (newvalue.equals(Build.FINGERPRINT))
+                                                        Tools.DoAToast(getString(R.string.equals_values), getActivity());
+                                                    else {
+                                                        Tools.resetprop(executableFilePath, Constants.robuildfingerprint, newvalue, getActivity());
+                                                        finaldialog();
+                                                    }
+                                                    return;
+                                                }
+                                            })
+                                        .setNegativeButton(getString(R.string.dismiss),
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    return;
+                                                }
+                                            }).show();
+                                    return;
+                                }
+                            }).show();
+                    return true;
+                }
+            });
         }
 
         Runnable runThread = new Runnable() {
@@ -122,6 +193,19 @@ Preference.OnPreferenceChangeListener {
         return true;
     }
 
+    public void finaldialog() {
+        new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle)
+            .setTitle(getString(R.string.fingerprint_dialog_result))
+            .setNegativeButton(getString(R.string.dismiss),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        return;
+                    }
+                }).show();
+        updateState();
+    }
+
     public void updateprop(String prop, String value) {
         Tools.resetprop(executableFilePath, prop, value, getActivity());
         updateState();
@@ -143,5 +227,11 @@ Preference.OnPreferenceChangeListener {
                 props[i].setIcon(summary.equals(Constants.props_OK[i]) ? R.drawable.ok : R.drawable.warning);
             }
         }
+        String BuildFingerprint = Build.FINGERPRINT;
+        String RoBuildFingerprint = Tools.getprop(Constants.robuildfingerprint);
+        if (RoBuildFingerprint.equals(BuildFingerprint))
+            mBuildFingerprint.setSummary(Build.FINGERPRINT);
+        else
+            mBuildFingerprint.setSummary(RoBuildFingerprint + getString(R.string.fingerprint_apply));
     }
 }

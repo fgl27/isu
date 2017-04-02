@@ -227,7 +227,7 @@ public class Tools implements Constants {
             ClearAllNotification(context);
         } else {
             if (!AppMonitor)
-               killapp(Constants.PAY,context);
+                killapp(Constants.PAY, context);
             RootUtils.runCommand("mount -o rw,remount /system");
             RootUtils.runCommand("ln -s -f " + xbin_isu + " " + bin_isu);
             RootUtils.runCommand("mv " + xbin_su + " " + xbin_isu);
@@ -420,19 +420,41 @@ public class Tools implements Constants {
             }
             if (bp_prop.contains(prop) && !bp_prop_value.equals(value))
                 overwritebp(prop, bp_prop_value, prop, value, path);
+            else if (prop.contains("fingerprint") && !bp_prop_value.equals(value))
+                forcewritebp(prop + "=" + value);
+            Log.d(TAG, "prop = " + prop + " bp_prop_value = " + " value = " + value);
         }
     }
 
     public static void overwritebp(String oldKey, String oldValue, String newKey, String newValue, String path) {
+        String oldvalue = oldKey + "=" + oldValue;
+        String newvalue = newKey + "=" + newValue;
+        String command = "old=" + oldvalue + " && " + "new=" + newvalue + " && " + path + "busybox sed -i -r \"s%$old%$new%g\" " + BUILD_PROP;
         if (SuBinary()) {
             RootUtils.runCommand("mount -o rw,remount /system");
-            RootUtils.runCommand(path + "busybox sed -i -r \"s/" + oldKey + "=" + oldValue + "/" + newKey + "=" + newValue + "/\" " + BUILD_PROP);
+            RootUtils.runCommand(command);
             RootUtils.runCommand("mount -o ro,remount /system");
         } else {
             RootUtils.runICommand("mount -o rw,remount /system");
-            RootUtils.runICommand(path + "busybox sed -i -r \"s/" + oldKey + "=" + oldValue + "/" + newKey + "=" + newValue + "/\" " + BUILD_PROP);
+            RootUtils.runICommand(command);
             RootUtils.runICommand("mount -o ro,remount /system");
         }
+        Log.d(TAG, "overwritebp " + command);
+    }
+
+    public static void forcewritebp(String propvalue) {
+        if (SuBinary()) {
+            RootUtils.runCommand("mount -o rw,remount /system");
+            RootUtils.runCommand("echo '\n' >> " + BUILD_PROP);
+            RootUtils.runCommand("echo " + propvalue + " >> " + BUILD_PROP);
+            RootUtils.runCommand("mount -o ro,remount /system");
+        } else {
+            RootUtils.runICommand("mount -o rw,remount /system");
+            RootUtils.runICommand("echo '\n' >> " + BUILD_PROP);
+            RootUtils.runICommand("echo " + propvalue + " >> " + BUILD_PROP);
+            RootUtils.runICommand("mount -o ro,remount /system");
+        }
+        Log.d(TAG, "forcewritebp " + propvalue);
     }
 
     public static void resetallprop(String path, boolean green, Context context) {

@@ -22,8 +22,22 @@
     <PreferenceCategory
         android:key="props_settings_pref"
         android:title="@string/prop_editor">
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="props_special"
+        android:title="@string/special_props">
         <Preference
-            android:key="pref_description"
+            android:key="pref_special"
+            android:summary="@string/special_props_summary" />
+        <Preference
+            android:key="ro.build.fingerprint"
+            android:title="@string/robuildfingerprint" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="props_states"
+        android:title="@string/states">
+        <Preference
+            android:key="pref_states"
             android:summary="@string/prop_editor_summary" />
         <Preference
             android:key="props_ok"

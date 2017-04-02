@@ -37,6 +37,9 @@ public interface Constants {
 
     String PAY = "com.google.android.apps.walletnfcrel";
 
+    String SAFEFINGERPRINT = "google/shamu/shamu:7.1.1/N6F26U/3687496:user/release-keys";
+    String robuildfingerprint = "ro.build.fingerprint";
+
     String[] props = new String[] {
         "ro.build.tags",
         "ro.debuggable",
