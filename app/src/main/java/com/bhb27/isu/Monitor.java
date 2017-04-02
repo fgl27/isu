@@ -118,6 +118,8 @@ public class Monitor extends PreferenceFragment {
                 mPerAppDialog.setTitle(getString(R.string.per_app_title_isu));
             else if (id.equals("Su"))
                 mPerAppDialog.setTitle(getString(R.string.per_app_title_su));
+            else if (id.equals("dont"))
+                mPerAppDialog.setTitle(getString(R.string.per_app_dontcare));
             mPerAppDialog.setCancelable(true);
 
             final List < Per_App.App > apps = Per_App.getInstalledApps(getActivity());
