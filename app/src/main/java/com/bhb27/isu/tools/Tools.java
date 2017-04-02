@@ -209,6 +209,15 @@ public class Tools implements Constants {
         Log.d(TAG, "Copy success: " + filename);
     }
 
+    public static void killapp(String app, Context context) {
+        String executableFilePath = context.getFilesDir().getPath() + "/";
+        String appRunning = RootUtils.runCommand("ps | grep " + app);
+        String UID = RootUtils.runCommand(executableFilePath + "busybox ps | grep " +
+            app + " | head -1  | cut -d' ' -f1 ");
+        if (appRunning.contains(app))
+            RootUtils.runCommand("kill " + UID);
+    }
+
     public static void SwitchSu(boolean isChecked, boolean AppMonitor, Context context) {
         if (isChecked) {
             RootUtils.runICommand("mount -o rw,remount /system");
@@ -217,11 +226,8 @@ public class Tools implements Constants {
             RootUtils.runCommand("mount -o ro,remount /system");
             ClearAllNotification(context);
         } else {
-            if (!AppMonitor) {
-                String androidPay = RootUtils.runCommand("ps | grep " + Constants.PAY);
-                if (androidPay.contains(Constants.PAY))
-                    RootUtils.runCommand("am force-stop " + Constants.PAY);
-            }
+            if (!AppMonitor)
+               killapp(Constants.PAY,context);
             RootUtils.runCommand("mount -o rw,remount /system");
             RootUtils.runCommand("ln -s -f " + xbin_isu + " " + bin_isu);
             RootUtils.runCommand("mv " + xbin_su + " " + xbin_isu);

@@ -38,10 +38,8 @@ import java.util.List;
 public class PerAppMonitor extends AccessibilityService {
 
     private static final String TAG = PerAppMonitor.class.getSimpleName();
-    public static String sPackageName;
-    public static String accessibilityId;
-    String last_package = "";
-    String last_profile = "";
+    public static String accessibilityId, sPackageName;
+    String last_package = "", last_profile = "", dont_profile = "";
     long time = System.currentTimeMillis();
 
     @Override
@@ -73,36 +71,42 @@ public class PerAppMonitor extends AccessibilityService {
     }
 
     private void process_window_change(String packageName) {
-        if (Tools.getBoolean("auto_restart_su", false, this)) {
-            if (!packageName.equals(last_package) && !packageName.equals("com.android.systemui")) {
-                if (!Per_App.app_profile_exists(packageName, getApplicationContext()))
-                    last_profile = "Su";
-                else {
+        if (Per_App.app_profile_exists(packageName, getApplicationContext()))
+            dont_profile = Per_App.app_profile_info(packageName, getApplicationContext()).get(1);
+        else dont_profile = "";
+        if (dont_profile.equals("dont")) {
+           Log.d(TAG, "Profile = " + dont_profile + " app " + packageName);
+        } else {
+            if (Tools.getBoolean("auto_restart_su", false, this)) {
+                if (!packageName.equals(last_package) && !packageName.equals("com.android.systemui")) {
+                    if (!Per_App.app_profile_exists(packageName, getApplicationContext()))
+                        last_profile = "Su";
+                    else {
+                        ArrayList < String > info = new ArrayList < String > ();
+                        // Item 0 is package name Item 1 is the profile ID
+                        info = Per_App.app_profile_info(packageName, getApplicationContext());
+                        last_profile = info.get(1);
+                    }
+                    last_package = packageName;
+                    time = System.currentTimeMillis();
+                    change();
+                }
+            } else {
+                if (!Per_App.app_profile_exists(packageName, getApplicationContext())) {
+                    packageName = "Default";
+                    Log.d(TAG, "Profile does not exist. Using Default");
+                }
+                if (Per_App.app_profile_exists(packageName, getApplicationContext())) {
                     ArrayList < String > info = new ArrayList < String > ();
                     // Item 0 is package name Item 1 is the profile ID
                     info = Per_App.app_profile_info(packageName, getApplicationContext());
+                    last_package = packageName;
                     last_profile = info.get(1);
+                    time = System.currentTimeMillis();
+                    change();
                 }
-                last_package = packageName;
-                time = System.currentTimeMillis();
-                change();
-            }
-        } else {
-            if (!Per_App.app_profile_exists(packageName, getApplicationContext())) {
-                packageName = "Default";
-                Log.d(TAG, "Profile does not exist. Using Default");
-            }
-            if (Per_App.app_profile_exists(packageName, getApplicationContext())) {
-                ArrayList < String > info = new ArrayList < String > ();
-                // Item 0 is package name Item 1 is the profile ID
-                info = Per_App.app_profile_info(packageName, getApplicationContext());
-                last_package = packageName;
-                last_profile = info.get(1);
-                time = System.currentTimeMillis();
-                change();
             }
         }
-
     }
 
     public void change() {

@@ -16,7 +16,7 @@
     <string name="missing">Missing! Click here to understand</string>
     <string name="download_folder">Download Folder</string>
 
-    <!-- main -->
+    <!-- controls -->
     <string name="app_name" translatable="false" >iSu</string>
     <string name="su_switch">Change SU state</string>
     <string name="su_state">SU state</string>
@@ -27,6 +27,7 @@
     <string name="selinux_switch">Change SELinux state</string>
     <string name="anddebug_switch">Android debugging</string>
     <string name="anddebug_change">Change Android debugging state</string>
+    <string name="check_settings">Check SETTINGS for extra controls actions base on SU state</string>
 
     <!-- Settings -->
     <string name="notification_title">SU is deactivated, activate SU?</string>
@@ -38,8 +39,6 @@
     <string name="activate_anddebug">Activated Android debugging</string>
     <string name="deactivate_anddebug">Deactivated Android debugging</string>
     <string name="not_available">Not Available</string>
-    <string name="per_app_active">Activate SU</string>
-    <string name="per_app_deactive">Deactivate SU</string>
     <string name="activate_selinux">SELinux Set to Enforcing</string>
 
     <!--Monitor-->
@@ -53,6 +52,11 @@
     <string name="per_app_default_activate">Activated SU to any app if SU is deactivated</string>
     <string name="auto_restart_su">Automatic Restart SU</string>
     <string name="auto_restart_su_summary">If on, will automatic active SU when leave the app that deactivated SU</string>
+    <string name="per_app_click">Click to</string>
+    <string name="per_app_active">Activate SU</string>
+    <string name="per_app_deactive">Deactivate SU</string>
+    <string name="per_app_dontcare">Don\'t Care List</string>
+    <string name="per_app_dontcare_summary">Select the apps that will have no effect to App monitor, when the app start.\nHow this works:\nSelect apps that are nor Root nor UnRoot apps, and are used by or are displayed above a Root or UnRoot app, example Keyboard or function overlay apps</string>
 
     <!--Prop-->
     <string name="prop_editor">Props Editor</string>

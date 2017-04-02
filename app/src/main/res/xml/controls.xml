@@ -31,6 +31,10 @@
             android:key="su_switch"
             android:defaultValue="false"
             android:title="@string/su_switch" />
+        <Preference
+            android:key="controls_tip_settings"
+            android:summary="@string/check_settings"
+            android:persistent="false" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="selinux"

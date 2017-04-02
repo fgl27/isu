@@ -41,7 +41,7 @@ import com.bhb27.isu.perapp.Per_App;
 
 public class Monitor extends PreferenceFragment {
 
-    private Preference mPerAppActive, mPerAppDeactive, mMonitorView;
+    private Preference mPerAppDontCare, mPerAppActive, mPerAppDeactive, mMonitorView;
     private PreferenceCategory mMonitor;
     private SwitchPreference mAutoRestart;
     private AlertDialog.Builder mPerAppDialog;
@@ -60,6 +60,7 @@ public class Monitor extends PreferenceFragment {
 
         mMonitor = (PreferenceCategory) getPreferenceManager().findPreference("monitor_su");
 
+        mPerAppDontCare = (Preference) getPreferenceManager().findPreference("per_app_dontcare");
         mPerAppActive = (Preference) getPreferenceManager().findPreference("per_app_active");
         mAutoRestart = (SwitchPreference) getPreferenceManager().findPreference("auto_restart_su");
         mPerAppDeactive = (Preference) getPreferenceManager().findPreference("per_app_deactive");
@@ -71,6 +72,15 @@ public class Monitor extends PreferenceFragment {
             mPerAppDeactive.setEnabled(false);
         } else {
             mMonitor.removePreference(mMonitorView);
+
+            mPerAppDontCare.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    PerAppDialog("dont");
+                    return true;
+                }
+            });
+
             mPerAppActive.setOnPreferenceClickListener(new OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
