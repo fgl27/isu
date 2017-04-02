@@ -139,7 +139,7 @@ public class PerAppMonitor extends AccessibilityService {
                 String anddebug_su_off = Tools.redString("anddebug_su_off", null, this);
                 String anddebug_su_on = Tools.redString("anddebug_su_on", null, this);
                 boolean anddebug = Tools.AndroidDebugState(this);
-                if (last_profile.equals("Su")) {
+                if (last_profile.equals("iSu")) {
                     if (!anddebug && anddebug_su_on.equals("1")) {
                         Tools.AndroidDebugSet(true, this);
                         Toast = Toast + "\n" + getString(R.string.activate_anddebug);
