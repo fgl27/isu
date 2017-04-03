@@ -27,18 +27,28 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.AppCompatCheckBox;
+import android.view.Gravity;
+import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+
+import java.util.List;
+import java.util.ArrayList;
 
 import com.bhb27.isu.preferencefragment.PreferenceFragment;
 import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.tools.Tools;
+import com.bhb27.isu.perapp.PropDB;
 
 public class Props extends PreferenceFragment implements
 Preference.OnPreferenceChangeListener {
 
     private String executableFilePath, suVersion;
     private ListPreference[] props = new ListPreference[Constants.props.length];
-    private Preference mBuildFingerprint, mForceAllSafe, mForceAllUnsafe;
+    private Preference mBuildFingerprint, mForceAllSafe, mForceAllUnsafe, mPropsAny, mPropsAnyList;
     private boolean isCMSU;
+    private AlertDialog.Builder mPerAppDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,8 +120,8 @@ Preference.OnPreferenceChangeListener {
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    if (!(Tools.getprop(Constants.robuildfingerprint)).equals(Build.FINGERPRINT)) {
-                                        Tools.resetprop(executableFilePath, Constants.robuildfingerprint, Constants.SAFEFINGERPRINT, getActivity());
+                                    if (!(Tools.getprop(Constants.robuildfingerprint)).equals(Constants.SAFEFINGERPRINT)) {
+                                        Tools.resetprop(executableFilePath, Constants.robuildfingerprint, Constants.SAFEFINGERPRINT, getActivity(), true);
                                         finaldialog();
                                     } else
                                         Tools.DoAToast(getString(R.string.equals_values), getActivity());
@@ -122,35 +132,7 @@ Preference.OnPreferenceChangeListener {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     // iner personalized dialog
-                                    final AppCompatEditText input = new AppCompatEditText(getActivity());
-                                    input.setText(Tools.getprop(Constants.robuildfingerprint));
-                                    new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle)
-                                        .setTitle(getString(R.string.fingerprint_dialog_personalized_title))
-                                        .setView(input)
-                                        .setPositiveButton(getString(R.string.ok),
-                                            new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) {
-                                                    String newvalue = input.getText().toString();
-                                                    if (newvalue.isEmpty()) {
-                                                        Tools.DoAToast(getString(R.string.empty_text), getActivity());
-                                                        return;
-                                                    } else if (newvalue.equals(Build.FINGERPRINT))
-                                                        Tools.DoAToast(getString(R.string.equals_values), getActivity());
-                                                    else {
-                                                        Tools.resetprop(executableFilePath, Constants.robuildfingerprint, newvalue, getActivity());
-                                                        finaldialog();
-                                                    }
-                                                    return;
-                                                }
-                                            })
-                                        .setNegativeButton(getString(R.string.dismiss),
-                                            new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) {
-                                                    return;
-                                                }
-                                            }).show();
+                                    editonepropdialog(Constants.robuildfingerprint);
                                     return;
                                 }
                             }).show();
@@ -158,6 +140,24 @@ Preference.OnPreferenceChangeListener {
                 }
             });
         }
+
+        mPropsAny = (Preference) getPreferenceManager().findPreference("props_any");
+        mPropsAny.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                AnyPropDialog();
+                return true;
+            }
+        });
+
+        mPropsAnyList = (Preference) getPreferenceManager().findPreference("props_any_list");
+        mPropsAnyList.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                listdialog();
+                return true;
+            }
+        });
 
         Runnable runThread = new Runnable() {
             public void run() {
@@ -193,6 +193,38 @@ Preference.OnPreferenceChangeListener {
         return true;
     }
 
+    public void editonepropdialog(String prop) {
+        final AppCompatEditText input = new AppCompatEditText(getActivity());
+        input.setText(Tools.getprop(prop));
+        new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle)
+            .setTitle(getString(R.string.fingerprint_dialog_personalized_title) + prop)
+            .setView(input)
+            .setPositiveButton(getString(R.string.ok),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String newvalue = input.getText().toString();
+                        if (newvalue.isEmpty()) {
+                            Tools.DoAToast(getString(R.string.edited_text), getActivity());
+                            return;
+                        } else if (newvalue.equals(Tools.getprop(prop)))
+                            Tools.DoAToast(getString(R.string.equals_values), getActivity());
+                        else {
+                            Tools.resetprop(executableFilePath, prop, newvalue, getActivity(), true);
+                            finaldialog();
+                        }
+                        return;
+                    }
+                })
+            .setNegativeButton(getString(R.string.dismiss),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        return;
+                    }
+                }).show();
+    }
+
     public void finaldialog() {
         new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle)
             .setTitle(getString(R.string.fingerprint_dialog_result))
@@ -206,8 +238,23 @@ Preference.OnPreferenceChangeListener {
         updateState();
     }
 
+    public void listdialog() {
+        new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle)
+            .setTitle(getString(R.string.props_any_list_dialog_title))
+            .setMessage(String.format(getString(R.string.props_any_list_dialog_summary),
+                "(" + getString(R.string.props_apply_boot) + ")" + "\n\n" + List_props()))
+            .setNegativeButton(getString(R.string.dismiss),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        return;
+                    }
+                }).show();
+        updateState();
+    }
+
     public void updateprop(String prop, String value) {
-        Tools.resetprop(executableFilePath, prop, value, getActivity());
+        Tools.resetprop(executableFilePath, prop, value, getActivity(), false);
         updateState();
     }
 
@@ -233,5 +280,194 @@ Preference.OnPreferenceChangeListener {
             mBuildFingerprint.setSummary(Build.FINGERPRINT);
         else
             mBuildFingerprint.setSummary(RoBuildFingerprint + getString(R.string.fingerprint_apply));
+    }
+
+    private void AnyPropDialog() {
+        mPerAppDialog = new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle);
+        mPerAppDialog.setTitle(getString(R.string.props_any_edit_dialog_title));
+        mPerAppDialog.setCancelable(true);
+
+        final List < Integer > mSelectedBox = new ArrayList < Integer > ();
+        final List < Integer > mDeSelectedBox = new ArrayList < Integer > ();
+
+        final String[] mapplist = Tools.getallprop(executableFilePath);
+
+        final boolean[] checkedValues = new boolean[mapplist.length];
+        for (int i = 0; i < mapplist.length; i++)
+            checkedValues[i] = false;
+
+        // Specify the list array, the items to be selected by default (null for none),
+        // and the listener through which to receive callbacks when items are selected
+        mPerAppDialog.setMultiChoiceItems(mapplist, checkedValues,
+            new DialogInterface.OnMultiChoiceClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which,
+                    boolean isChecked) {
+                    if (isChecked) {
+                        // If the user checked the item, add it to the selected items
+                        mSelectedBox.add(which);
+                    }
+                    if (!isChecked) {
+                        mDeSelectedBox.add(which);
+                    }
+                    if (!isChecked && mSelectedBox.contains(which)) {
+                        // Else, if the item is already in the array, remove it
+                        mSelectedBox.remove(Integer.valueOf(which));
+                    }
+                }
+            });
+
+        // Set the action buttons
+        mPerAppDialog.setPositiveButton(getString(R.string.edit), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                if ((mSelectedBox != null) && (mSelectedBox.size() > 0)) {
+                    String[] PropsTo = new String[mSelectedBox.size()];
+                    for (int i = 0; i < mSelectedBox.size(); i++) {
+                        int selected = mSelectedBox.get(i);
+                        PropsTo[i] = mapplist[selected];
+                    }
+                    EditProps(PropsTo);
+                    return;
+                }
+                Tools.DoAToast(getString(R.string.props_any_no_selected), getActivity());
+                return;
+            }
+        });
+        mPerAppDialog.setNegativeButton(getString(R.string.dismiss), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                return;
+            }
+        });
+        mPerAppDialog.create();
+        mPerAppDialog.show();
+
+    }
+
+    public void save_prop(String app, String id) {
+        PropDB propDB = new PropDB(getActivity());
+        List < PropDB.PerAppItem > PerAppItem = propDB.getAllProps();
+        for (int i = 0; i < PerAppItem.size(); i++) {
+            String p = PerAppItem.get(i).getApp();
+            if (p != null && p.equals(app)) {
+                propDB.delApp(i);
+            }
+        }
+        propDB.putApp(app, id);
+        propDB.commit();
+    }
+    //TODO fix this odd loking variables
+    public String List_props() {
+        PropDB propDB = new PropDB(getActivity());
+        List < PropDB.PerAppItem > PropItem = propDB.getAllProps();
+        final String[] props = new String[PropItem.size()];
+        for (int i = 0; i < PropItem.size(); i++) {
+            String prop = PropItem.get(i).getApp();
+            String value = PropItem.get(i).getID();
+            if (prop != null && value != null)
+                props[i] = prop + "=" + value;
+        }
+
+        String result = "";
+        for (int i = 0; i < props.length; i++) {
+            result = ((i < (props.length - 1)) ? result + props[i] + "\n" : result + props[i]);
+        }
+        if (props.length == 0)
+            return getString(R.string.props_no_changes);
+        return result;
+    }
+
+    private void EditProps(String[] props) {
+        LinearLayout linearLayout = new LinearLayout(getActivity());
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setGravity(Gravity.CENTER);
+        linearLayout.setPadding(30, 20, 30, 20);
+
+        TextView descriptionText = new TextView(getActivity());
+        descriptionText.setText(getString(R.string.props_any_edit_dialog_summary));
+        linearLayout.addView(descriptionText);
+
+        ScrollView scrollView = new ScrollView(getActivity());
+        scrollView.setPadding(0, 0, 0, 10);
+        linearLayout.addView(scrollView);
+
+        LinearLayout editLayout = new LinearLayout(getActivity());
+        editLayout.setOrientation(LinearLayout.VERTICAL);
+        scrollView.addView(editLayout);
+
+        final AppCompatEditText[] EditProps = new AppCompatEditText[props.length];
+        final AppCompatCheckBox[] ForceBP = new AppCompatCheckBox[props.length];
+        final TextView[] descriptionAboveText = new TextView[props.length];
+        final TextView[] descriptionBelowText = new TextView[props.length];
+
+        for (int i = 0; i < props.length; i++) {
+            descriptionAboveText[i] = new TextView(getActivity());
+            descriptionAboveText[i].setText(String.format(getString(R.string.empty), props[i]));
+            editLayout.addView(descriptionAboveText[i]);
+
+            EditProps[i] = new AppCompatEditText(getActivity());
+            EditProps[i].setText(Tools.getprop(props[i]));
+            editLayout.addView(EditProps[i]);
+
+            descriptionBelowText[i] = new TextView(getActivity());
+            descriptionBelowText[i].setText(getString(R.string.props_any_edit_dialog_already_bp));
+            ForceBP[i] = new AppCompatCheckBox(getActivity());
+            ForceBP[i].setText(getString(R.string.props_any_edit_dialog_force_bp));
+
+            if (Tools.PropIsinbp(props[i]))
+                editLayout.addView(descriptionBelowText[i]);
+            else
+                editLayout.addView(ForceBP[i]);
+        }
+
+        new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle)
+            .setTitle(getString(R.string.props_any_edit_dialog_title))
+            .setView(linearLayout)
+            .setNegativeButton(getString(R.string.cancel),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        return;
+                    }
+                })
+            .setPositiveButton(getString(R.string.apply), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int id) {
+                    String finalmenssage = "\n", edited;
+                    for (int i = 0; i < props.length; i++) {
+                        edited = EditProps[i].getText().toString();
+                        if (edited.isEmpty()) {
+                            finalmenssage = finalmenssage + String.format(getString(R.string.edited_text_ro), props[i]);
+                        } else if (edited.equals(Tools.getprop(props[i])))
+                            finalmenssage = finalmenssage + String.format(getString(R.string.edited_text_equals), props[i]);
+                        else {
+                            if (((AppCompatCheckBox) ForceBP[i]).isChecked())
+                                Tools.resetprop(executableFilePath, props[i], edited, getActivity(), true);
+                            else
+                                Tools.resetprop(executableFilePath, props[i], edited, getActivity(), false);
+                            finalmenssage = finalmenssage + String.format(getString(R.string.edited_text_ok), props[i]);
+                            save_prop(props[i], edited);
+                        }
+                        finalmenssage = finalmenssage + "\n";
+                    }
+                    finaldialogro(finalmenssage);
+                    return;
+                }
+            }).show();
+    }
+
+    public void finaldialogro(String finalmenssage) {
+        new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle)
+            .setTitle(getString(R.string.edited_text_result))
+            .setMessage(finalmenssage + getString(R.string.edited_text_sumary))
+            .setNegativeButton(getString(R.string.dismiss),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        return;
+                    }
+                }).show();
+        updateState();
     }
 }

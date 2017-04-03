@@ -24,6 +24,18 @@
         android:title="@string/prop_editor">
     </PreferenceCategory>
     <PreferenceCategory
+        android:key="props_ro"
+        android:title="@string/ro_props">
+        <Preference
+            android:key="props_any"
+            android:title="@string/per_app_click"
+            android:summary="@string/props_any" />
+        <Preference
+            android:key="props_any_list"
+            android:title="@string/per_app_click"
+            android:summary="@string/props_any_list" />
+    </PreferenceCategory>
+    <PreferenceCategory
         android:key="props_special"
         android:title="@string/special_props">
         <Preference
@@ -70,7 +82,7 @@
     </PreferenceCategory>
     <PreferenceCategory
         android:key="props"
-        android:title="@string/props">
+        android:title="@string/know_props">
         <Preference
             android:key="props_summary"
             android:summary="@string/in_prop_summary" />

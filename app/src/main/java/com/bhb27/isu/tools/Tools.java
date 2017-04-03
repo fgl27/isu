@@ -53,10 +53,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import com.bhb27.isu.R;
+import com.bhb27.isu.perapp.PropDB;
 import com.bhb27.isu.tools.RootFile;
 import com.bhb27.isu.tools.RootUtils;
 import com.bhb27.isu.widgetservice.Widgeth;
@@ -395,11 +398,25 @@ public class Tools implements Constants {
         return abi_result;
     }
 
+    public static String[] getallprop(String path) {
+        String GetProps;
+            if (SuBinary())
+                GetProps = RootUtils.runCommand("getprop | grep 'ro\\.' | " + path + "busybox  sed 's/\\].*//' | " + path + "busybox  sed 's/\\[//'");
+            else
+                GetProps = RootUtils.runICommand("getprop | grep 'ro\\.' | " + path + "busybox  sed 's/\\].*//' | " + path + "busybox  sed 's/\\[//'");
+
+	String[] result = GetProps.split("\n");
+            Log.d(TAG, "all props = " + result);
+            Log.d(TAG, "all props = " + GetProps);
+        return result;
+    }
+
+
     public static String getprop(String prop) {
         return runShell("getprop " + prop);
     }
 
-    public static void resetprop(String path, String prop, String value, Context context) {
+    public static void resetprop(String path, String prop, String value, Context context, boolean force) {
         if (value.isEmpty()) {
             if (SuBinary())
                 RootUtils.runCommand(path + "resetprop" + abi() + " --delete -n " + prop);
@@ -420,10 +437,21 @@ public class Tools implements Constants {
             }
             if (bp_prop.contains(prop) && !bp_prop_value.equals(value))
                 overwritebp(prop, bp_prop_value, prop, value, path);
-            else if (prop.contains("fingerprint") && !bp_prop_value.equals(value))
+            else if (force)
                 forcewritebp(prop + "=" + value);
             Log.d(TAG, "prop = " + prop + " bp_prop_value = " + " value = " + value);
         }
+    }
+
+    public static boolean PropIsinbp(String prop) {
+        String bp_prop = "";
+        if (SuBinary())
+            bp_prop = bp_prop + RootUtils.runCommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f1");
+        else
+            bp_prop = bp_prop + RootUtils.runICommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f1");
+        if (bp_prop.contains(prop))
+            return true;
+        return false;
     }
 
     public static void overwritebp(String oldKey, String oldValue, String newKey, String newValue, String path) {
@@ -459,7 +487,7 @@ public class Tools implements Constants {
 
     public static void resetallprop(String path, boolean green, Context context) {
         for (int i = 0; i < props.length; i++) {
-            resetprop(path, props[i], (green ? props_OK[i] : props_NOK[i]), context);
+            resetprop(path, props[i], (green ? props_OK[i] : props_NOK[i]), context, false);
             Log.d(TAG, "Set " + props[i] + " = " + (green ? props_OK[i] : props_NOK[i]));
         }
     }
@@ -636,9 +664,22 @@ public class Tools implements Constants {
         for (int i = 0; i < props.length; i++) {
             newvalue = redString(props[i], null, context);
             if (newvalue != null && !newvalue.isEmpty()) {
-                resetprop(path, props[i], newvalue, context);
+                resetprop(path, props[i], newvalue, context, false);
             }
-            Log.d(TAG, "Set " + props[i] + " = " + newvalue);
+            Log.d(TAG, "ap Set " + props[i] + " = " + newvalue);
+        }
+    }
+
+    public static void applyDbProp(Context context, String path) {
+        PropDB propDB = new PropDB(context);
+        List < PropDB.PerAppItem > PropItem = propDB.getAllProps();
+        final String[] props = new String[PropItem.size()];
+        for (int i = 0; i < PropItem.size(); i++) {
+            String prop = PropItem.get(i).getApp();
+            String value = PropItem.get(i).getID();
+            if (prop != null && value != null)
+                resetprop(path, prop, value, context, false);
+            Log.d(TAG, "ap DB Set " + prop + " = " + value);
         }
     }
 

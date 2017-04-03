@@ -54,6 +54,7 @@ public class BootService extends Service {
                 Tools.stripsu(executableFilePath);
             Log.d(TAG, " Apply props");
             Tools.applyprop(this, executableFilePath);
+            Tools.applyDbProp(this, executableFilePath);
         }
         Tools.WriteSettings(this);
         if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && (!Tools.ReadSystemPatch()) && (!Tools.RebootSupportPixel()))

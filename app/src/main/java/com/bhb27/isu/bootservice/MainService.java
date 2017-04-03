@@ -67,6 +67,14 @@ public class MainService extends Service {
                 e.printStackTrace();
             }
         }
+        file = new File(getFilesDir() + "/prop.json");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         Log.d(TAG, " Run");
         stopSelf();
     }

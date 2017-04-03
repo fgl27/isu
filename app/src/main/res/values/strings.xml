@@ -60,7 +60,7 @@
 
     <!--Prop-->
     <string name="prop_editor">Props Editor</string>
-    <string name="prop_editor_summary">Some apps may block the access base on the state of the below props value</string>
+    <string name="prop_editor_summary">Some apps may block the access base on the value of the below know props</string>
     <string name="unknown">Unknown</string>
     <string name="in_prop_summary">Click on a individual Prop to change it\nProps whit * need a reboot after change to take full effect</string>
     <string name="props_ok">Know safe value</string>
@@ -69,21 +69,42 @@
     <string name="props_unknown_summary">This means that your device doesn\'t have this prop.\nSet this to a safe value may help to pass a safety check</string>
     <string name="safe">Safe value</string>
     <string name="unsafe">Unsafe value</string>
-    <string name="force_all">Force set ALL</string>
-    <string name="force_all_summary">Click on the below to force all Props to the chosen value:</string>
+    <string name="force_all">Force set ALL Know props</string>
+    <string name="force_all_summary">Click on the below to force all Know Props to the chosen value:</string>
     <string name="safety_net">Safety Net test</string>
-    <string name="states">States</string>
+    <string name="states">Know props list</string>
     <string name="special_props">Special Props</string>
-    <string name="special_props_summary">\nIf after the change of a special prop and a reboot the new value is reverted to original ROM value you need request the developer of the ROM to fix it</string>
+    <string name="special_props_summary">\nIf after the change of a special prop and a reboot the new value is reverted to original ROM value you need request the developer of the ROM to fix it\nClick on the below to change it</string>
     <string name="fingerprint_dialog_title">Choose a option:</string>
     <string name="fingerprint_dialog_summary">Know safe:\nKnow Safe value for this prop for a nexus device\n\nPersonalized:\nEdit current value or Write a new value for this prop (example yours device stock ROM value for this)</string>
     <string name="fingerprint_dialog_know_safe">Know safe</string>
     <string name="fingerprint_dialog_personalized">Personalized</string>
-    <string name="fingerprint_dialog_personalized_title">Set new ro.build.fingerprint</string>
+    <string name="fingerprint_dialog_personalized_title">Set new value for\n</string>
     <string name="fingerprint_dialog_result">Be aware to apply the changes is need a reboot!</string>
     <string name="fingerprint_apply">\n*The value has change reboot to apply</string>
-    <string name="empty_text">The Personalized value can\'t be empty change not accepted</string>
+    <string name="edited_text">The Personalized value can\'t be empty change not accepted</string>
     <string name="equals_values">No changes made, new value equal current ROM value!</string>
+    <string name="props_any">List all ro.props and select some to edit</string>
+    <string name="edit">edit</string>
+    <string name="props_any_edit_dialog_title">Props to edit</string>
+    <string name="props_any_edit_dialog_summary">Forcing a prop to build prop in most case make it persistent after boot, but is possible that some android tool overwrite the value during bootup that is way iSu will apply changes after boot</string>
+    <string name="props_any_edit_dialog_force_bp">Force this prop to build.prop</string>
+    <string name="props_any_edit_dialog_already_bp">This prop is already on build.prop</string>
+    <string name="edited_text_ro">No changes for prop %s New value was empty</string>
+    <string name="edited_text_equals">No changes for prop %s new value is equal old value</string>
+    <string name="edited_text_ok">Changes for prop %s apply OK</string>
+    <string name="edited_text_result">Result of the changes</string>
+    <string name="edited_text_sumary">\nSome props may only have a result after a reboot</string>
+    <string name="empty">\n%s</string>
+    <string name="ro_props">Read Only editor</string>
+    <string name="props_any_list">List yours changes to ro.props</string>
+    <string name="props_any_list_dialog_title">List of props that you changed</string>
+    <string name="props_any_list_dialog_summary">The below ro.props will be apply on boot if you enable in Setting %s</string>
+    <string name="props_no_changes">No changes made!</string>
+    <string name="props_any_no_selected">No props selected!</string>
+    <string name="know_props">Know Props</string>
+    <string name="apply">Apply</string>
+    <string name="cancel">Cancel</string>
 
     <!--Widget-->
     <string name="horizontal">Horizontal</string>
