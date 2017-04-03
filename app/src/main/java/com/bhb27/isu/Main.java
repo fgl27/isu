@@ -19,8 +19,12 @@
  */
 package com.bhb27.isu;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.Manifest;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -43,6 +47,7 @@ import com.bhb27.isu.Settings;
 public class Main extends AppCompatActivity {
 
     private TextView mAbout;
+    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +72,7 @@ public class Main extends AppCompatActivity {
                startActivity(myIntent);
             }
         });
-
+       check_writeexternalstorage();
     }
 
     public class TabsExamplePagerAdapter extends FragmentPagerAdapter {
@@ -111,5 +116,18 @@ public class Main extends AppCompatActivity {
                 getString(R.string.settings)
         };
         return titleString;
+    }
+
+    @TargetApi(23|24|25)
+    private void check_writeexternalstorage() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            int hasWriteExternalPermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (hasWriteExternalPermission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_CODE_ASK_PERMISSIONS);
+                return;
+            }
+        }
+        return;
     }
 }

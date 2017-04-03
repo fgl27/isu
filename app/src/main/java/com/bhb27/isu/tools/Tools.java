@@ -70,7 +70,7 @@ public class Tools implements Constants {
 
     public static boolean KernelSupport() {
         String kernel_support_rc, kernel_support_sh;
-        if (existFile(xbin_su, true)) {
+        if (SuBinary()) {
             kernel_support_rc = RootUtils.runCommand("grep -r -i isu_daemon *.rc ") + "";
             kernel_support_sh = RootUtils.runCommand("grep -r -i isu_daemon *.sh ") + "" +
                 RootUtils.runCommand("grep -r -i /system/xbin/isu /sbin/*.sh ");
@@ -737,6 +737,13 @@ public class Tools implements Constants {
     public static boolean IexistFile(String file, boolean asRoot) {
         if (asRoot) return new RootFile(file).Iexists();
         return new File(file).exists();
+    }
+
+    public static boolean compareFiles(String file, String file2, boolean asRoot) {
+        Log.i("Kernel adiutor", "compareFiles " + file + " size is " + new RootFile(file).length() + " and " +
+            file2 + " size is " + new RootFile(file2).length());
+        if (asRoot) return new RootFile(file).length() == new RootFile(file2).length();
+        return new File(file).length() == new RootFile(file2).length();
     }
 
     public static String readFile(String file, boolean asRoot) {

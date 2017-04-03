@@ -44,4 +44,13 @@
             android:title="@string/safety_net"
             android:persistent="false" />
     </PreferenceCategory>
+    <PreferenceCategory
+        android:key="log"
+        android:title="@string/log">
+        <Preference
+            android:key="check_log"
+            android:title="@string/per_app_click"
+            android:summary="@string/checks_log"
+            android:persistent="false" />
+    </PreferenceCategory>
 </PreferenceScreen>

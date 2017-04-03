@@ -33,3 +33,7 @@
 
 # retrolambda
 -dontwarn java.lang.invoke.*
+
+# zeroturnaround
+-dontwarn org.slf4j.**
+-dontwarn org.zeroturnaround.zip.**

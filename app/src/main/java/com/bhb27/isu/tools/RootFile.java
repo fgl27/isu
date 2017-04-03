@@ -98,7 +98,10 @@ public class RootFile {
 
     public float length() {
         try {
-            return Float.parseFloat(RootUtils.runCommand("du '" + file + "'").split(file)[0].trim());
+            if (Tools.SuBinary())
+                return Float.parseFloat(RootUtils.runCommand("du '" + file + "'").split(file)[0].trim());
+            else
+                return Float.parseFloat(RootUtils.runICommand("du '" + file + "'").split(file)[0].trim());
         } catch (Exception ignored) {
             return 0;
         }

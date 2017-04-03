@@ -15,6 +15,11 @@
     <string name="ok">OK</string>
     <string name="missing">Missing! Click here to understand</string>
     <string name="download_folder">Download Folder</string>
+    <string name="checks_log">Generate a .zip whit logs that can help to understand the fails bugs etc&#8230;</string>
+    <string name="log">Log</string>
+    <string name="generating_log">Generating a Log&#8230;</string>
+    <string name="generating_log_move">Log file saved at:\n\n%s</string>
+    <string name="cant_generating">Can\'t generate a log no write permission to storage</string>
 
     <!-- controls -->
     <string name="app_name" translatable="false" >iSu</string>
