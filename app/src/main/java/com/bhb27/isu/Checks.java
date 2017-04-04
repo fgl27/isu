@@ -300,6 +300,9 @@ public class Checks extends PreferenceFragment {
     private boolean check_writeexternalstorage() {
         if (Build.VERSION.SDK_INT >= 23) {
             int hasWriteExternalPermission = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (hasWriteExternalPermission == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            }
             if (hasWriteExternalPermission != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         REQUEST_CODE_ASK_PERMISSIONS);
