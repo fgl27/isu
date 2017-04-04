@@ -10,7 +10,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 25
         versionCode 29
-        versionName "3.9_Beta_2"
+        versionName "3.9_Beta_3"
     }
     buildTypes {
         release {
