@@ -118,8 +118,8 @@ public class PerAppMonitor extends AccessibilityService {
         else {
             String Toast = "";
             if (Tools.getBoolean("selinux_settings_switch", false, this)) {
-                String selinux_su_off = Tools.redString("selinux_su_off", null, this);
-                String selinux_su_on = Tools.redString("selinux_su_on", null, this);
+                String selinux_su_off = Tools.readString("selinux_su_off", null, this);
+                String selinux_su_on = Tools.readString("selinux_su_on", null, this);
                 boolean selinux = Tools.isSELinuxActive();
                 if (last_profile.equals("iSu")) {
                     if (!selinux && selinux_su_off.equals("0")) {
@@ -140,8 +140,8 @@ public class PerAppMonitor extends AccessibilityService {
                 }
             }
             if (Tools.getBoolean("anddebug_settings", false, this)) {
-                String anddebug_su_off = Tools.redString("anddebug_su_off", null, this);
-                String anddebug_su_on = Tools.redString("anddebug_su_on", null, this);
+                String anddebug_su_off = Tools.readString("anddebug_su_off", null, this);
+                String anddebug_su_on = Tools.readString("anddebug_su_on", null, this);
                 boolean anddebug = Tools.AndroidDebugState(this);
                 if (last_profile.equals("iSu")) {
                     if (!anddebug && anddebug_su_on.equals("1")) {

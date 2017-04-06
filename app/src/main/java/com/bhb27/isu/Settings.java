@@ -22,6 +22,7 @@ package com.bhb27.isu;
 import android.os.Bundle;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
+import android.preference.ListPreference;
 
 import com.bhb27.isu.preferencefragment.PreferenceFragment;
 import com.bhb27.isu.tools.Constants;
@@ -34,6 +35,7 @@ public class Settings extends PreferenceFragment {
     private boolean isCMSU;
     private PreferenceScreen mPreferenceScreen;
     private PreferenceCategory mSettings, mSettingsNotifications, mSettingsSelinux, mSettingsDebug;
+    private ListPreference mApplySuDelay;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,17 @@ public class Settings extends PreferenceFragment {
         mSettingsNotifications = (PreferenceCategory) getPreferenceManager().findPreference("notifications_settings_pref");
         mSettingsSelinux = (PreferenceCategory) getPreferenceManager().findPreference("selinux_settings_pref");
         mSettingsDebug = (PreferenceCategory) getPreferenceManager().findPreference("anddebug_settings_pref");
+
+        mApplySuDelay = (ListPreference) getPreferenceManager().findPreference("apply_su_delay");
+
+        CharSequence[] entries = new CharSequence[6];
+        CharSequence[] entryValues = new CharSequence[6];
+        for (int i = 0; i < 6; i++) {
+            entries[i] = (String.format(getString(R.string.apply_su_delay_summary), ((i+1)*10)));
+            entryValues[i] = String.valueOf((i+1)*10000);
+        }
+        mApplySuDelay.setEntries(entries);
+        mApplySuDelay.setEntryValues(entryValues);
 
         suVersion = Tools.SuVersion(getActivity());
         isCMSU = Tools.SuVersionBool(suVersion);

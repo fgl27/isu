@@ -45,6 +45,9 @@
     <string name="deactivate_anddebug">Deactivated Android debugging</string>
     <string name="not_available">Not Available</string>
     <string name="activate_selinux">SELinux Set to Enforcing</string>
+    <string name="apply_su">Deactivate SU at boot</string>
+    <string name="apply_su_delay">Deactivate SU Delay</string>
+    <string name="apply_su_delay_summary">%d seconds</string>
 
     <!--Monitor-->
     <string name="set_per_app">App monitor</string>

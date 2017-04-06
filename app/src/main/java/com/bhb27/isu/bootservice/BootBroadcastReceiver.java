@@ -29,16 +29,20 @@ import com.bhb27.isu.tools.Tools;
 public class BootBroadcastReceiver extends BroadcastReceiver {
 
     private static final String TAG = "iSu_BReceiver";
-
+    private boolean isCMSU;
     @Override
     public void onReceive(Context context, Intent intent) {
         // only run if the app has run before and main has extracted asserts
         String action = intent.getAction();
+        isCMSU = Tools.SuVersionBool(Tools.SuVersion(context));
         boolean run_boot = Tools.getBoolean("run_boot", false, context);
         if (Intent.ACTION_BOOT_COMPLETED.equals(action) && run_boot) {
             context.startService(new Intent(context, BootService.class));
             Log.d(TAG, " Started action " + action + " run_boot " + run_boot);
+           if (Tools.getBoolean("apply_su", false, context) && isCMSU)
+               context.startService(new Intent(context, SuService.class));
         } else
             Log.d(TAG, "Not Started action " + action + " run_boot " + run_boot);
+
     }
 }

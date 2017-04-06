@@ -29,7 +29,8 @@ android {
 		'GoogleAppIndexingWarning', //GoogleAppIndexingWarning: Missing support for Firebase App Indexing
 		'IconMissingDensityFolder', //IconMissingDensityFolder: Missing density folder
                 'ProtectedPermissions', //ProtectedPermissions: Using system app permission
-                'MissingTranslation' //Who cares? I don't know all the languages
+                'MissingTranslation', //Who cares? I don't know all the languages
+                'PluralsCandidate' //the string start at a plural
     }
     retrolambda {
         javaVersion JavaVersion.VERSION_1_7

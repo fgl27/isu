@@ -28,6 +28,21 @@
             android:persistent="false" />
     </PreferenceCategory>
     <PreferenceCategory
+        android:key="su_settings_pref"
+        android:title="SU">
+        <SwitchPreference
+            android:key="apply_su"
+            android:defaultValue="false"
+            android:title="@string/apply_su" />
+        <ListPreference
+            android:key="apply_su_delay"
+            android:dependency="apply_su"
+            android:defaultValue="20000"
+            android:title="@string/apply_su_delay"
+            android:summary="%s"
+            android:dialogTitle="@string/apply_su_delay" />
+    </PreferenceCategory>
+    <PreferenceCategory
         android:key="props_settings_pref"
         android:title="@string/props">
         <SwitchPreference

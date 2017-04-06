@@ -249,8 +249,8 @@ public class Tools implements Constants {
         boolean su = SuBinary();
         String Toast = (su ? context.getString(R.string.per_app_active) : context.getString(R.string.per_app_deactive));
         if (getBoolean("selinux_settings_switch", false, context)) {
-            String selinux_su_off = redString("selinux_su_off", null, context);
-            String selinux_su_on = redString("selinux_su_on", null, context);
+            String selinux_su_off = readString("selinux_su_off", null, context);
+            String selinux_su_on = readString("selinux_su_on", null, context);
             boolean selinux = isSELinuxActive();
             if (isChecked) {
                 if (!selinux && selinux_su_on.equals("0")) {
@@ -271,8 +271,8 @@ public class Tools implements Constants {
             }
         }
         if (getBoolean("anddebug_settings", false, context)) {
-            String anddebug_su_off = redString("anddebug_su_off", null, context);
-            String anddebug_su_on = redString("anddebug_su_on", null, context);
+            String anddebug_su_off = readString("anddebug_su_off", null, context);
+            String anddebug_su_on = readString("anddebug_su_on", null, context);
             boolean anddebug = AndroidDebugState(context);
             if (isChecked) {
                 if (!anddebug && anddebug_su_on.equals("1")) {
@@ -641,7 +641,7 @@ public class Tools implements Constants {
         context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit().putBoolean(name, value).apply();
     }
 
-    public static String redString(String name, String defaults, Context context) {
+    public static String readString(String name, String defaults, Context context) {
         return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getString(name, defaults);
     }
 
@@ -662,7 +662,7 @@ public class Tools implements Constants {
     public static void applyprop(Context context, String path) {
         String newvalue = "", originalvalue;
         for (int i = 0; i < props.length; i++) {
-            newvalue = redString(props[i], null, context);
+            newvalue = readString(props[i], null, context);
             if (newvalue != null && !newvalue.isEmpty()) {
                 resetprop(path, props[i], newvalue, context, false);
             }
