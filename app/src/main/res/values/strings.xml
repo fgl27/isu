@@ -15,7 +15,7 @@
     <string name="ok">OK</string>
     <string name="missing">Missing! Click here to understand</string>
     <string name="download_folder">Download Folder</string>
-    <string name="checks_log">Generate a .zip whit logs that can help to understand the fails bugs etc&#8230;</string>
+    <string name="checks_log">Generate a .zip with logs that can help to understand the fails bugs etc&#8230;</string>
     <string name="log">Log</string>
     <string name="generating_log">Generating a Log&#8230;</string>
     <string name="generating_log_move">Log file saved at:\n\n%s</string>
@@ -70,7 +70,7 @@
     <string name="prop_editor">Props Editor</string>
     <string name="prop_editor_summary">Some apps may block the access base on the value of the below know props</string>
     <string name="unknown">Unknown</string>
-    <string name="in_prop_summary">Click on a individual Prop to change it\nProps whit * need a reboot after change to take full effect</string>
+    <string name="in_prop_summary">Click on a individual Prop to change it\nProps with * need a reboot after change to take full effect</string>
     <string name="props_ok">Know safe value</string>
     <string name="props_nok">Know unsafe value</string>
     <string name="props_unknown">Unknown value</string>

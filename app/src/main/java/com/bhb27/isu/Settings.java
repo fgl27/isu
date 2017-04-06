@@ -34,7 +34,7 @@ public class Settings extends PreferenceFragment {
     private String suVersion;
     private boolean isCMSU;
     private PreferenceScreen mPreferenceScreen;
-    private PreferenceCategory mSettings, mSettingsNotifications, mSettingsSelinux, mSettingsDebug;
+    private PreferenceCategory mSettingsSU, mSettings, mSettingsNotifications, mSettingsSelinux, mSettingsDebug;
     private ListPreference mApplySuDelay;
 
     @Override
@@ -44,6 +44,7 @@ public class Settings extends PreferenceFragment {
         addPreferencesFromResource(R.xml.settings);
         getActivity().setTheme(R.style.Switch_theme);
 
+        mSettingsSU = (PreferenceCategory) getPreferenceManager().findPreference("su_settings_pref");
         mPreferenceScreen = (PreferenceScreen) getPreferenceManager().findPreference("settings_preferencescreen");
         mSettings = (PreferenceCategory) getPreferenceManager().findPreference("settings_pref_view");
         mSettingsNotifications = (PreferenceCategory) getPreferenceManager().findPreference("notifications_settings_pref");
@@ -65,6 +66,7 @@ public class Settings extends PreferenceFragment {
         isCMSU = Tools.SuVersionBool(suVersion);
 
         if (!isCMSU) {
+            mSettingsSU.setEnabled(false);
             mSettingsNotifications.setEnabled(false);
             mSettingsSelinux.setEnabled(false);
             mSettingsDebug.setEnabled(false);

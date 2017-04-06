@@ -67,6 +67,7 @@ public class Monitor extends PreferenceFragment {
         mMonitorView = (Preference) getPreferenceManager().findPreference("per_app_view");
 
         if (!isCMSU) {
+            mPerAppDontCare.setEnabled(false);
             mPerAppActive.setEnabled(false);
             mAutoRestart.setEnabled(false);
             mPerAppDeactive.setEnabled(false);
