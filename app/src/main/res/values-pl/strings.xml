@@ -17,8 +17,8 @@
     <string name="download_folder">Folder pobierania</string>
     <string name="checks_log">Wygeneruj .zip z logami, które pomogą rozwiązać problemy, błędy itp.&#8230;</string>
     <string name="log">Log</string>
-    <string name="generating_log">Generowanie Logu&#8230;</string>
-    <string name="generating_log_move">Plik Log zapisany w:\n\n%s</string>
+    <string name="generating_log">Generowanie logu&#8230;</string>
+    <string name="generating_log_move">Plik log zapisany w:\n\n%s</string>
     <string name="cant_generating">Nie można wygenerować logu, brak uprawnienia do zapisu w pamięci</string>
 
     <!-- controls -->
@@ -63,7 +63,7 @@
     <string name="per_app_active">Włącz SU</string>
     <string name="per_app_deactive">Wyłącz SU</string>
     <string name="per_app_dontcare">Lista obojętnych aplikacji</string>
-    <string name="per_app_dontcare_summary">Wybierz aplikacje, które nie mają wpływu na Monitor aplikacji, gdy zostaną uruchomione.\nJak to działa:\nWybierz aplikacje z dostępem ROOT lub nie, i są wyświetlane nad tymi aplikacjami, np. klawiatura lub funkcje wyświetlania nad innymi aplikacjami</string>
+    <string name="per_app_dontcare_summary">Wybierz aplikacje, które nie mają wpływu na Monitor aplikacji, gdy zostaną uruchomione.\nJak to działa:\nWybierz aplikacje z dostępem ROOT lub nie, które są wyświetlane nad tymi aplikacjami, np. klawiatura lub funkcje wyświetlania nad innymi aplikacjami</string>
 
     <!--Prop-->
     <string name="prop_editor">Edytor Props</string>
@@ -94,7 +94,7 @@
     <string name="props_any">Lista wszystkich ro.props, wybierz jakieś do edytowania</string>
     <string name="edit">edytuj</string>
     <string name="props_any_edit_dialog_title">Props do edytowania</string>
-    <string name="props_any_edit_dialog_summary">Wymuszanie zmian Prop do build prop w większości przypadków zostaje po starcie, ale jest taka możliwość, że niektóre narządzia androida nadpiszą wartość podczas startu, właśnie tak iSu zastosuje zmiany po starcie</string>
+    <string name="props_any_edit_dialog_summary">Wymuszanie zmian Prop do build prop w większości przypadków zostaje po uruchomieniu, ale jest taka możliwość, że niektóre narządzia androida nadpiszą wartość podczas uruchomiania, właśnie tak iSu zastosuje zmiany po uruchomieniu</string>
     <string name="props_any_edit_dialog_force_bp">Wymuś Prop w build.prop</string>
     <string name="props_any_edit_dialog_already_bp">Prop już jest w build.prop</string>
     <string name="edited_text_ro">Brak zmian dla Prop %s Nowa wartośc jest pusta</string>
@@ -106,7 +106,7 @@
     <string name="ro_props">Edytor Read Only</string>
     <string name="props_any_list">Lista zmian w ro.props</string>
     <string name="props_any_list_dialog_title">Lista Props, które zostały zmienione</string>
-    <string name="props_any_list_dialog_summary">Poniższy ro.props będzie zastosowany po starcie, jeśli włączono w Ustawieniach %s</string>
+    <string name="props_any_list_dialog_summary">Poniższy ro.props będzie zastosowany po uruchomieniu, jeśli włączono w Ustawieniach %s</string>
     <string name="props_no_changes">Nie wprowadzono zmian!</string>
     <string name="props_any_no_selected">Nie wybrano Props!</string>
     <string name="know_props">Znane Props</string>
@@ -128,17 +128,17 @@
     <string name="selinux">SELinux</string>
     <string name="selinux_settings">Dodatkowa kontrola SELinux</string>
     <string name="selinux_settings_summary">Kontola stanu SELinux podczas zmiany SU</string>
-    <string name="selinux_su_on">Stan SELinux, gdu SU jest włączony</string>
+    <string name="selinux_su_on">Stan SELinux, gdy SU jest włączony</string>
     <string name="selinux_su_off">Stan SELinux, gdy SU jest wyłączony</string>
     <string name="enforcing">Restrykcyjny</string>
     <string name="permissive">Pobłażliwy</string>
     <string name="anddebug_settings">Dodatkowa kontrola debugowania Android</string>
     <string name="anddebug_settings_summary">Kontola stanu debugowania Android podczas zmiany SU</string>
-    <string name="anddebug_su_on">Stan debugowania Android, gdu SU jest włączony</string>
-    <string name="anddebug_su_off">Stan debugowania Android, gdu SU jest wyłączony</string>
+    <string name="anddebug_su_on">Stan debugowania Android, gdy SU jest włączony</string>
+    <string name="anddebug_su_off">Stan debugowania Android, gdy SU jest wyłączony</string>
     <string name="enable">Włączone</string>
     <string name="disable">Wyłączone</string>
-    <string name="props_apply_boot">Zastosuj zmiany Props przy starcie</string>
+    <string name="props_apply_boot">Zastosuj zmiany Props podczas uruchomienia</string>
     <string name="su_not_supported">Nieobsługiwana wersja SU</string>
 
     <!-- about -->
