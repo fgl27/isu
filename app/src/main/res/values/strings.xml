@@ -5,7 +5,7 @@
     <string name="safetyNet_connection_failed">Cannot connect to Google API</string>
     <string name="safetyNet_connection_suspended">Connection to Google API was suspended</string>
     <string name="safetyNet_error">Cannot check SafetyNet, no Internet?</string>
-    <string name="safetyNet_fail">Fail, CTS profile mismatch</string>
+    <string name="safetyNet_fail">Failed, CTS profile mismatch</string>
     <string name="safetyNet_pass">Passed</string>
     <string name="safetyNet_untested">Untested, Click to test</string>
     <string name="safetyNet_testing">Testing&#8230; If it take too long click again!</string>

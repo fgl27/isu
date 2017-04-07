@@ -48,7 +48,7 @@
         <SwitchPreference
             android:key="apply_props"
             android:defaultValue="true"
-            android:title="@string/props_apply_boot" />
+            android:summary="@string/props_apply_boot" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="notifications_settings_pref"
@@ -56,11 +56,11 @@
         <SwitchPreference
             android:key="isu_notification"
             android:defaultValue="false"
-            android:title="@string/notification_switch" />
+            android:summary="@string/notification_switch" />
         <SwitchPreference
             android:key="toast_notifications"
             android:defaultValue="false"
-            android:title="@string/toast_notification_switch" />
+            android:summary="@string/toast_notification_switch" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="selinux_settings_pref"

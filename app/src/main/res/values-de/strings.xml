@@ -4,7 +4,7 @@
     <string name="safetyNet_connection_failed">Verbindung zur Google API nicht möglich</string>
     <string name="safetyNet_connection_suspended">Verbindung zur Google API wurde eingestellt</string>
     <string name="safetyNet_error">SafetyNet-Abfrage nicht möglich, kein Internet?</string>
-    <string name="safetyNet_fail">Fail, CTS Profile mismatch</string>
+    <string name="safetyNet_fail">Fehlgeschlagen, CTS-Profilfehlanpassung</string>
     <string name="safetyNet_pass">Passed</string>
     <string name="safetyNet_untested">Ungetested, zum Testen drücken</string>
     <string name="safetyNet_testing">Testing&#8230; Wenn es zu lange dauert, erneut drücken!</string>
