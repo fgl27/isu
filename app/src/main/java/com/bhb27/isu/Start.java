@@ -31,6 +31,7 @@ public class Start extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.startActivity(new Intent(this, Main.class));
+        finish();
     }
 
 }
