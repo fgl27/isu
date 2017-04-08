@@ -45,6 +45,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.bhb27.isu.bootservice.MainService;
+import com.bhb27.isu.perapp.PerAppMonitor;
+import com.bhb27.isu.perapp.Per_App;
 import com.bhb27.isu.preferencefragment.PreferenceFragment;
 import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.tools.RootUtils;
@@ -128,7 +130,7 @@ public class Checks extends PreferenceFragment {
             public boolean onPreferenceClick(Preference preference) {
                 if (check_writeexternalstorage())
                     new Execute().execute();
-                else 
+                else
                     Tools.DoAToast(getString(R.string.cant_generating), getActivity());
                 return true;
             }
@@ -228,6 +230,13 @@ public class Checks extends PreferenceFragment {
             String dmesgC = "dmesg ";
             String getpropC = "getprop ";
 
+            String isuconfig = log_temp_folder + "iSu_config.txt";
+            String pref_folder = getActivity().getFilesDir().getParentFile().getAbsolutePath();
+            String perappjson = "per_app.json Accessibility Enabled = " +
+                Per_App.isAccessibilityEnabled(getActivity(), PerAppMonitor.accessibilityId) + "\n";
+            String propjson = "\n\nprop.json\n";
+            String prefs = "\n\nprefs\n";
+
             if (!Tools.NewexistFile(log_folder, true)) {
                 File dir = new File(log_folder);
                 dir.mkdir();
@@ -243,6 +252,12 @@ public class Checks extends PreferenceFragment {
             runCommand(logcatC + " > " + logcat, su);
             runCommand(dmesgC + " > " + log_temp_folder + "dmesg.txt", su);
             runCommand(getpropC + " > " + log_temp_folder + "getprop.txt", su);
+            runCommand("echo '" + perappjson + "' >> " + isuconfig, su);
+            runCommand("cat " + executableFilePath + "per_app.json >> " + isuconfig, su);
+            runCommand("echo '" + propjson + "' >> " + isuconfig, su);
+            runCommand("cat " + executableFilePath + "prop.json >> " + isuconfig, su);
+            runCommand("echo '" + prefs + "' >> " + isuconfig, su);
+            runCommand("cat " + pref_folder + "/shared_prefs/" + Constants.PREF_NAME + ".xml >> " + isuconfig, su);
             runCommand("rm -rf " + log_temp_folder + "logcat_wile.txt", su);
             // ZipUtil doesn’t understand folder name that end with /
             // Logcat some times is too long and the zip logcat.txt may be empty, do some check
@@ -296,7 +311,7 @@ public class Checks extends PreferenceFragment {
                 }).show();
     }
 
-    @TargetApi(23|24|25)
+    @TargetApi(23 | 24 | 25)
     private boolean check_writeexternalstorage() {
         if (Build.VERSION.SDK_INT >= 23) {
             int hasWriteExternalPermission = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -304,8 +319,10 @@ public class Checks extends PreferenceFragment {
                 return true;
             }
             if (hasWriteExternalPermission != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        REQUEST_CODE_ASK_PERMISSIONS);
+                requestPermissions(new String[] {
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    },
+                    REQUEST_CODE_ASK_PERMISSIONS);
             }
             hasWriteExternalPermission = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasWriteExternalPermission == PackageManager.PERMISSION_GRANTED) {
