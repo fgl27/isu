@@ -23,6 +23,10 @@
         android:key="monitor_su"
         android:title="@string/set_per_app">
         <Preference
+            android:key="per_app_summary"
+            android:summary="@string/accessibility_service_desc"
+            android:persistent="false" />
+        <Preference
             android:key="per_app_view"
             android:summary="@string/su_not_cm"
             android:icon="@drawable/warning"
