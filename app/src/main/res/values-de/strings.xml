@@ -58,7 +58,7 @@
     <string name="per_app_default_activate">Aktiviere SU für jede App, wenn SU deaktiviert ist</string>
     <string name="auto_restart_su">Automaticher Neustart für SU</string>
     <string name="auto_restart_su_summary">Falls eingeschaltet, wird SU automatisch wieder aktiviert, wenn die App, die SU deaktiviert beendet wird. </string>
-    <string name="per_app_click">Drücken um</string>
+    <string name="per_app_click">Hier drücken</string>
     <string name="per_app_active">SU zu aktivieren</string>
     <string name="per_app_deactive">SU zu deaktivieren</string>
     <string name="per_app_dontcare">Don\'t Care Liste</string>
@@ -72,9 +72,9 @@
     <string name="props_ok">Bekannter sicherer Wert</string>
     <string name="props_nok">Bekannter unsicherer Wert</string>
     <string name="props_unknown">Unbekannter Wert</string>
-    <string name="props_unknown_summary">This means that your device doesn\'t have this prop.\nSet this to a safe value may help to pass a safety check</string>
+    <string name="props_unknown_summary">Bedeutet, dass dein Gerät die Prop nicht besitzt. Auf einen sicheren Wert zu setzen, könnte helfen Sicherheitschecks zu bestehen</string>
     <string name="safe">Sicherer Wert</string>
-    <string name="unsafe">Sicherer Wert</string>
+    <string name="unsafe">Unsicherer Wert</string>
     <string name="force_all">Erzwinge das Setzten ALLER bekannten Props</string>
     <string name="force_all_summary">Drücke unten um bei allen bekantnen Props den gewählten wert zu erzwingen:</string>
     <string name="safety_net">Safety Net Test</string>
