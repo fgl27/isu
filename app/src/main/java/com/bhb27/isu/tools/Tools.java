@@ -159,19 +159,17 @@ public class Tools implements Constants {
         final int layoutResourceId,
         final Class < ? extends AppWidgetProvider > appWidgetClass) {
         boolean su = SuBinary();
+        boolean selinux = isSELinuxActive();
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), layoutResourceId);
         remoteViews.setTextViewText(R.id.iSuMain, "SU" + "\n" + (su ?
             context.getString(R.string.activated) : context.getString(R.string.deactivated)));
-        if (su)
-            remoteViews.setInt(R.id.iSuMain, "setBackgroundResource", R.drawable.button);
-        else
-            remoteViews.setInt(R.id.iSuMain, "setBackgroundResource", R.drawable.buttong);
+        remoteViews.setInt(R.id.iSuMain, "setBackgroundResource", (su ? R.drawable.button :
+                    R.drawable.buttong));
         if (SU_SEL) {
-            remoteViews.setTextViewText(R.id.iSuMonitor, "SELinux" + "\n" + getSELinuxStatus());
-            if (isSELinuxActive())
-                remoteViews.setInt(R.id.iSuMonitor, "setBackgroundResource", R.drawable.buttong);
-            else
-                remoteViews.setInt(R.id.iSuMonitor, "setBackgroundResource", R.drawable.button);
+            remoteViews.setTextViewText(R.id.iSuMonitor, context.getString(R.string.selinux) + "\n" + (selinux ? context.getString(R.string.enforcing) :
+                    context.getString(R.string.permissive)));
+            remoteViews.setInt(R.id.iSuMonitor, "setBackgroundResource", (selinux ? R.drawable.buttong :
+                    R.drawable.button));
         }
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         final int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, appWidgetClass));
