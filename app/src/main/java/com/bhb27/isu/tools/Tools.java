@@ -29,6 +29,7 @@ import android.content.res.AssetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
@@ -496,6 +497,7 @@ public class Tools implements Constants {
 
         NotificationCompat.Builder notification = new NotificationCompat.Builder(context);
         notification.setSmallIcon(R.drawable.ic_notification);
+        notification.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.big_icon));
         notification.setContentTitle(context.getString(R.string.notification_title));
         notification.setOngoing(true);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
@@ -503,14 +505,14 @@ public class Tools implements Constants {
         Intent yesReceiver = new Intent();
         yesReceiver.setAction(Constants.YES_ACTION);
         PendingIntent pendingIntentYes = PendingIntent.getBroadcast(context, 12345, yesReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Action actiony = new NotificationCompat.Action.Builder(R.drawable.ic_notification, context.getString(R.string.yes), pendingIntentYes).build();
-        notification.addAction(actiony);
+        NotificationCompat.Action actionyes = new NotificationCompat.Action.Builder(R.drawable.ic_notification_small, context.getString(R.string.yes), pendingIntentYes).build();
+        notification.addAction(actionyes);
 
         Intent dismissReceiver = new Intent();
         dismissReceiver.setAction(Constants.DISSMISS_ACTION);
-        PendingIntent pendingIntentYes2 = PendingIntent.getBroadcast(context, 12345, dismissReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Action actionn = new NotificationCompat.Action.Builder(R.drawable.ic_notification, context.getString(R.string.dismiss), pendingIntentYes2).build();
-        notification.addAction(actionn);
+        PendingIntent pendingIntentno = PendingIntent.getBroadcast(context, 12345, dismissReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Action actionno = new NotificationCompat.Action.Builder(R.drawable.ic_notification_small, context.getString(R.string.dismiss), pendingIntentno).build();
+        notification.addAction(actionno);
 
         notificationManager.notify(10, notification.build());
     }
