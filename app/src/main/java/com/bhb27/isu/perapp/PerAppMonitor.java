@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class PerAppMonitor extends AccessibilityService {
 
-    private static final String TAG = PerAppMonitor.class.getSimpleName();
+    private static final String TAG = "iSu" + PerAppMonitor.class.getSimpleName();
     public static String accessibilityId, sPackageName;
     String last_package = "", last_profile = "", dont_profile = "";
     long time = System.currentTimeMillis();
@@ -90,6 +90,7 @@ public class PerAppMonitor extends AccessibilityService {
                     last_package = packageName;
                     time = System.currentTimeMillis();
                     change();
+                    Log.d(TAG, "auto restart profile " + last_profile + " packageName = " + packageName );
                 }
             } else {
                 if (!Per_App.app_profile_exists(packageName, getApplicationContext())) {
@@ -104,6 +105,7 @@ public class PerAppMonitor extends AccessibilityService {
                     last_profile = info.get(1);
                     time = System.currentTimeMillis();
                     change();
+                    Log.d(TAG, "normal profile " + last_profile + " packageName = " + packageName );
                 }
             }
         }
