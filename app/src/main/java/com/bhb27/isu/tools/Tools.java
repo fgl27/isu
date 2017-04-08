@@ -494,23 +494,23 @@ public class Tools implements Constants {
 
     public static void DoNotification(Context context) {
 
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.notification);
-
         NotificationCompat.Builder notification = new NotificationCompat.Builder(context);
         notification.setSmallIcon(R.drawable.ic_notification);
-        notification.setContent(remoteViews);
+        notification.setContentTitle(context.getString(R.string.notification_title));
         notification.setOngoing(true);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 
         Intent yesReceiver = new Intent();
         yesReceiver.setAction(Constants.YES_ACTION);
         PendingIntent pendingIntentYes = PendingIntent.getBroadcast(context, 12345, yesReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
-        remoteViews.setOnClickPendingIntent(R.id.yes, pendingIntentYes);
+        NotificationCompat.Action actiony = new NotificationCompat.Action.Builder(R.drawable.ic_notification, context.getString(R.string.yes), pendingIntentYes).build();
+        notification.addAction(actiony);
 
         Intent dismissReceiver = new Intent();
         dismissReceiver.setAction(Constants.DISSMISS_ACTION);
-        PendingIntent pendingIntentno = PendingIntent.getBroadcast(context, 12345, dismissReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
-        remoteViews.setOnClickPendingIntent(R.id.dismiss, pendingIntentno);
+        PendingIntent pendingIntentYes2 = PendingIntent.getBroadcast(context, 12345, dismissReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Action actionn = new NotificationCompat.Action.Builder(R.drawable.ic_notification, context.getString(R.string.dismiss), pendingIntentYes2).build();
+        notification.addAction(actionn);
 
         notificationManager.notify(10, notification.build());
     }
