@@ -503,13 +503,13 @@ public class Tools implements Constants {
         Intent yesReceiver = new Intent();
         yesReceiver.setAction(Constants.YES_ACTION);
         PendingIntent pendingIntentYes = PendingIntent.getBroadcast(context, 12345, yesReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Action actionyes = new NotificationCompat.Action.Builder(R.drawable.ic_notification_small, context.getString(R.string.yes), pendingIntentYes).build();
+        NotificationCompat.Action actionyes = new NotificationCompat.Action.Builder(R.drawable.yes, context.getString(R.string.yes), pendingIntentYes).build();
         notification.addAction(actionyes);
 
         Intent dismissReceiver = new Intent();
         dismissReceiver.setAction(Constants.DISSMISS_ACTION);
         PendingIntent pendingIntentno = PendingIntent.getBroadcast(context, 12345, dismissReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Action actionno = new NotificationCompat.Action.Builder(R.drawable.ic_notification_small, context.getString(R.string.dismiss), pendingIntentno).build();
+        NotificationCompat.Action actionno = new NotificationCompat.Action.Builder(R.drawable.dismiss, context.getString(R.string.dismiss), pendingIntentno).build();
         notification.addAction(actionno);
 
         notificationManager.notify(10, notification.build());
