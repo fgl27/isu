@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <!-- checks -->
+    <string name="safety_net">Teste de Safety Net</string>
+    <string name="safetyNet_connection_failed">Não foi possível conectar com serviço Google</string>
+    <string name="safetyNet_connection_suspended">Conectar com serviço Google interrompida</string>
+    <string name="safetyNet_error">Não é possível verificar a SafetyNet, sem acesso a internet?</string>
+    <string name="safetyNet_fail">Falha, Incompatibilidade do perfil CTS</string>
+    <string name="safetyNet_pass">Sucesso</string>
+    <string name="safetyNet_untested">Não testado, clique para testar</string>
+    <string name="safetyNet_testing">Testando&#8230; Se demorar muito clique novamente!</string>
+    <string name="su_not_cm">Versão atual do SU não suportada.\nAlgumas funções do aplicativo só funcionam com SU CM-SU</string>
+    <string name="reboot_support">Suporte de reboot</string>
+    <string name="reboot_support_missing">O Suporte de reboot é necessário para evitar de perder o acesso ao SU apos um reboot com SU desativado. No android Nougat o aplicativo consegue adicionar o suporte, no Marshmallow ou mais antigo é necessário instalar um arquivo via TWRP, clique na PASTA DE DOWNLOADS para acessar os arquivos</string>
+    <string name="ok">OK</string>
+    <string name="missing">Ausênte! Clique aqui para entender</string>
+    <string name="download_folder">Pasta de Downloads</string>
+    <string name="checks_log">Gere um .zip com logs que podem ajudar a entender os erros, falhas etc&#8230;</string>
+    <string name="log">Log</string>
+    <string name="generating_log">Gerando um Log&#8230;</string>
+    <string name="generating_log_move">Arquivo de Log salvo em:\n\n%s</string>
+    <string name="cant_generating">Não é possível gerar um log sem acesso de escrita ao armazenamento interno</string>
+
+    <!-- controls -->
+    <string name="su_switch">Mudar o estado do SU</string>
+    <string name="su_state">Estado do SU</string>
+    <string name="device_not_root">Acesso so Root não disponível</string>
+    <string name="activated">Ativado</string>
+    <string name="deactivated">Desativado</string>
+    <string name="su_version">Versão do SU</string>
+    <string name="selinux_switch">Mudar o estado do SELinux</string>
+    <string name="anddebug_switch">Android debugging</string>
+    <string name="anddebug_change">Mudar o estado do Android debugging</string>
+    <string name="check_settings">Verifique as CONFIGURAÇÕES para controles extras baseados no estado do SU</string>
+
+    <!-- Settings -->
+    <string name="notification_title">SU esta desativado, ativar o SU?</string>
+    <string name="notification_switch">Mostra uma notificação quando o SU esta desativado</string>
+    <string name="yes">Sim</string>
+    <string name="dismiss">Descartar</string>
+    <string name="notifications">Notificações</string>
+    <string name="activate_anddebug">Android debugging ativado</string>
+    <string name="deactivate_anddebug">Android debugging desativado</string>
+    <string name="not_available">Não disponível</string>
+   <string name="activate_selinux">SELinux setado para Enforcing</string>
+   <string name="deactivate_selinux">SELinux setado para Permissive</string>
+    <string name="apply_su">Desativar SU apos o BOOT</string>
+    <string name="apply_su_delay">Atraso para desativar o SU</string>
+    <string name="apply_su_delay_summary">%d segundos</string>
+
+    <!--Monitor-->
+    <string name="set_per_app">Monitor de aplicativos</string>
+    <string name="service_per_app">iSu monitor de aplicativos</string>
+    <string name="per_app_title_isu">Selecione os apps que quando iniciados iram desativar SU:</string>
+    <string name="per_app_title_su">Selecione os apps que quando iniciados iram ativar SU:</string>
+    <string name="accessibility_service_desc">Um serviço para monitorar quando um aplicativo é iniciado e desativar ou ativar o SU</string>
+    <string name="per_app_active">Ativando SU</string>
+    <string name="per_app_deactive">Desativando SU</string>
+    <string name="per_app_default_deactivate">Desativa o SU para qualquer app se o SU esta ativado</string>
+    <string name="per_app_default_activate">Ativa o SU para qualquer app se o SU esta desativado</string>
+    <string name="auto_restart_su">Reinício automático so SU</string>
+    <string name="auto_restart_su_summary">Se este estiver ativado, o SU será ativada automática quando deixar o aplicativo que desativou SU</string>
+    <string name="per_app_click">Clique para</string>
+    <string name="per_app_dontcare">Lista não troca</string>
+    <string name="per_app_dontcare_summary">Selecione os aplicativos que não terão efeito no monitor.\nComo funciona:\nSelecione aplicativo que não precisão acesso a ROOT e não bloqueio acesso se tiver ROOT, e são usado por aplicativos ROOT ou que bloqueiam o acesso ao ROOT, exemplo aplicativos de teclado ou de sobreposição de funções</string>
+
+    <!--Prop-->
+    <string name="prop_editor">Editor de Props</string>
+    <string name="prop_editor_summary">Alguns aplicativos podem bloquear o acesso baseado no valor dos props abaixo</string>
+    <string name="unknown">Desconhecido</string>
+    <string name="in_prop_summary">Clique em um prop individual para modificá-lo\nProps com * precisão um Reboot para a mudança ter efeito</string>
+    <string name="props_ok">Valor seguro conhecido</string>
+    <string name="props_nok">Valor inseguro conhecido</string>
+    <string name="props_unknown">Valor desconhecido</string>
+    <string name="props_unknown_summary">Isto significa que o seu aparelho não tem este prop.\nDefina esto como um valor seguro pode ajudar a passar uma verificação de segurança</string>
+    <string name="safe">Valor seguro</string>
+    <string name="unsafe">Valor inseguro</string>
+    <string name="force_all">Setar todos props conhecidos</string>
+    <string name="force_all_summary">Clique em uma opção abaixo para setar todos props conhecidos para o valor escolhido:</string>
+    <string name="states">Lista de props conhecidos</string>
+    <string name="special_props">Props especiais</string>
+    <string name="special_props_summary">\nSe após a mudança de um prop especial e um reboot o novo valor é revertido para o valor original da ROM você precisa solicitar ao desenvolvedor da ROM para corrigi-lo\nClique abaixo para alterá-lo</string>
+    <string name="fingerprint_dialog_title">Escolha uma opção:</string>
+    <string name="fingerprint_dialog_summary">Conhecido e seguro:\nValor conhecido e seguro para este prop para um aparelho nexus\n\n ersonalizado:\nEdite o valor atual ou descreva um novo valor para este prop (exemplo o valor da Stock ROM do seu aparelho)</string>
+    <string name="fingerprint_dialog_know_safe">Seguro e conhecido</string>
+    <string name="fingerprint_dialog_personalized">Personalizado</string>
+    <string name="fingerprint_dialog_personalized_title">Setar o novo valor para\n</string>
+    <string name="fingerprint_dialog_result">Esteja ciente que para aplicar as alterações é necessário um reboot</string>
+    <string name="fingerprint_apply">\n*O valor mudou de reinicie para aplicar</string>
+    <string name="edited_text">O valor personalizado não pode estar vazio. Alteração não aceita</string>
+    <string name="equals_values">Nenhuma alteração feita, valor novo igual ao valor atual da ROM!</string>
+    <string name="props_any">Listar todos ro.props e selecionar alguns para edição</string>
+    <string name="edit">editar</string>
+    <string name="props_any_edit_dialog_title">Props para editar</string>
+    <string name="props_any_edit_dialog_summary">Forçar um prop para o build.prop na maioria dos casos o torná persistente após um reboot, mas é possível que algum arquivo de inicialização substitua o valor por isso o iSu pode forçar o prop ao valor selecionado no final do boot</string>
+    <string name="props_any_edit_dialog_force_bp">Forçar este prop para o build.prop</string>
+    <string name="props_any_edit_dialog_already_bp">Este prop já esta no build.prop</string>
+    <string name="edited_text_ro">Nenhuma mudança para o prop %s O novo valor esta vazio</string>
+    <string name="edited_text_equals">Nenhuma mudança para o prop %s nova valor igual ao antigo</string>
+    <string name="edited_text_ok">Mudança do prop %s aplicada OK</string>
+    <string name="edited_text_result">Resultado das mudanças</string>
+    <string name="edited_text_sumary">\nAlguns props podem só ter resultado após um reboot</string>
+    <string name="empty">\n%s</string>
+    <string name="ro_props">Editor somente leitura</string>
+    <string name="props_any_list">Listar suas mudanças aos ro.props</string>
+    <string name="props_any_list_dialog_title">Lista de props que você alterou</string>
+    <string name="props_any_list_dialog_summary">Os ro.props abaixo iram ser aplicados no boot se você habilitar nas configurações  %s</string>
+    <string name="props_no_changes">Nenhuma mudança feita!</string>
+    <string name="props_any_no_selected">Nenhum prop selecionado!</string>
+    <string name="know_props">Props conhecidos</string>
+    <string name="apply">Aplicar</string>
+    <string name="cancel">Cancelar</string>
+
+    <!--Widget-->
+    <string name="horizontal">Horizontal</string>
+    <string name="vertical">Vertical</string>
+
+    <!--fragmets-->
+    <string name="checks">Verificações</string>
+    <string name="controls">Controles</string>
+    <string name="monitor">Monitor</string>
+    <string name="props">Props</string>
+    <string name="settings">Configurações</string>
+
+    <!--extras-->
+    <string name="selinux">SELinux</string>
+    <string name="selinux_settings">Controles Extra de SELinux</string>
+    <string name="selinux_settings_summary">Controle o estado do SELinux quando o SU muda</string>
+    <string name="selinux_su_on">Estado do SELinux quando o SU for ativado</string>
+    <string name="selinux_su_off">Estado do SELinux quando o SU for desativado</string>
+    <string name="enforcing">Enforcing</string>
+    <string name="permissive">Permissive</string>
+    <string name="anddebug_settings">Controles Extra de Android Debug</string>
+    <string name="anddebug_settings_summary">Controle o estado do Android Debug quando o SU muda</string>
+    <string name="anddebug_su_on">Estado do Android Debug quando o SU for ativado</string>
+    <string name="anddebug_su_off">Estado do Android Debug quando o SU for desativado</string>
+    <string name="enable">Habilitado</string>
+    <string name="disable">Desabilitado</string>
+    <string name="props_apply_boot">Aplicar as mudanças nos props no boot</string>
+    <string name="su_not_supported">Versão do SU não suportada</string>
+
+    <!-- about -->
+    <string name="about">Sobre</string>
+    <string name="dev_info">Informação do desenvolvedor:</string>
+    <string name="git_summary">Este app é open source confira no meu github\ngithub.com/bhb27/isu</string>
+    <string name="version">Versão:</string>
+    <string name="version_summary">Um app simples para desativar ou ativar SU a vontade, e passar a verificação de segurança de alguns aplicativos, Hoje só funciona com o binário SU de ROM CM/LOS.</string>
+    <string name="xda_summary">XDA forum de suporte</string>
+    <string name="no_email_client">Não há nenhum cliente de email instalado no dispositivo.</string>
+    <string name="no_browser">Não há nenhum navegador de web instalado no dispositivo.</string>
+
+    <!--  Strings for possible PreferenceActivity Back/Next buttons -->
+    <string name="back_button_label">Voltar</string>
+    <string name="next_button_label">Próximo</string>
+    <!-- Optional button to Skip a PreferenceActivity [CHAR LIMIT=20] -->
+    <string name="skip_button_label">Pular</string>
+</resources>
