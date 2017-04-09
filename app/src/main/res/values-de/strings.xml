@@ -30,7 +30,7 @@
     <string name="selinux_switch">Ändere SELinux Status</string>
     <string name="anddebug_switch">Android Debugging</string>
     <string name="anddebug_change">Ändere Android Debugging Status</string>
-    <string name="check_settings">Prüfe EINSTELLUNGEN für extra Kontrollaktionen in Abhängigkeit vom SU Status</string>
+    <string name="check_settings">Prüfe EINSTELLUNGEN für zusätzliche Kontrollaktionen in Abhängigkeit vom SU Status</string>
 
     <!-- Settings -->
     <string name="notification_title">SU ist deaktiviert, SU aktivieren?</string>
@@ -59,8 +59,8 @@
     <string name="auto_restart_su">Automatischer Neustart für SU</string>
     <string name="auto_restart_su_summary">Falls eingeschaltet, wird SU automatisch wieder aktiviert, wenn die App, die SU deaktiviert, beendet wird. </string>
     <string name="per_app_click">Hier drücken</string>
-    <string name="per_app_active">SU aktivieren</string>
-    <string name="per_app_deactive">SU deaktivieren</string>
+    <string name="per_app_active">SU aktiviert</string>
+    <string name="per_app_deactive">SU deaktiviert</string>
     <string name="per_app_dontcare">Don\'t Care Liste</string>
     <string name="per_app_dontcare_summary">Wähle die Apps aus, die keinen Einfluss auf den App Monitor haben, wenn sie starten.\nSo funktioniert es:\nWähle Apps, die weder Root noch UnRoot sind und die von Root bzw. UnRoot Apps benutzt oder als Overlay angezeigt werden könnten, wie z.B. Tastatur oder Overlay Apps</string>
 
@@ -131,10 +131,10 @@
     <string name="selinux_su_off">SELinux Status, wenn SU deaktiviert ist</string>
     <string name="enforcing">Strikt</string>
     <string name="permissive">Moderat</string>
-    <string name="anddebug_settings">Extra Android Debug Steuerung</string>
-    <string name="anddebug_settings_summary">Steuert den Android Debug Status wenn SU geändert wird</string>
-    <string name="anddebug_su_on">Android Debug Status, wenn SU aktiviert</string>
-    <string name="anddebug_su_off">Android Debug Status, wenn SU deaktiviert</string>
+    <string name="anddebug_settings">Extra Android Debugging Steuerung</string>
+    <string name="anddebug_settings_summary">Steuert den Android Debugging Status wenn SU geändert wird</string>
+    <string name="anddebug_su_on">Android Debugging Status, wenn SU aktiviert</string>
+    <string name="anddebug_su_off">Android Debugging Status, wenn SU deaktiviert</string>
     <string name="enable">Einschalten</string>
     <string name="disable">Ausschalten</string>
     <string name="props_apply_boot">Änderungen an props beim Booten anwenden</string>
