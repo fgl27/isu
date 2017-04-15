@@ -24,7 +24,7 @@ on boot
 on property:sys.boot_completed=1
     start su_daemon
 
-service restart /data/data/com.bhb27.isu/files/restart --daemon
+service restart /data/data/com.bhb27.isu/files/restart41 --daemon
     user root
     group root
     disabled

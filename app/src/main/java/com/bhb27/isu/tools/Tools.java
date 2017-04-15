@@ -103,7 +103,7 @@ public class Tools implements Constants {
             seclabel = RootUtils.runCommand("cat system/etc/init/superuser.rc | grep seclabel | head -1");
             RootUtils.runCommand("mount -o rw,remount /system");
             RootUtils.runCommand("chmod 0755" + executableFilePath + "restart");
-            RootUtils.runCommand("cp -f " + executableFilePath + "superuser.rc" + " /system/etc/init/");
+            RootUtils.runCommand("cp -f " + executableFilePath + "superuser41" + " /system/etc/init/superuser.rc");
             RootUtils.runCommand(executableFilePath + "busybox sed -i '/seclabel/c\\    " + seclabel + "' system/etc/init/superuser.rc ");
             //            RootUtils.runCommand(executableFilePath + "busybox sed -i 's/YYYY\\b/" + Tools.readString("cmiyc", null, context) + "/g' system/etc/init/superuser.rc ");
             RootUtils.runCommand("chmod 0644" + " /system/etc/init/superuser.rc");
@@ -114,7 +114,7 @@ public class Tools implements Constants {
             seclabel = RootUtils.runICommand("cat system/etc/init/superuser.rc | grep seclabel | head -1", context);
             RootUtils.runICommand("mount -o rw,remount /system", context);
             RootUtils.runICommand("chmod 0755" + executableFilePath + "restart", context);
-            RootUtils.runICommand("cp -f " + executableFilePath + "superuser.rc" + " /system/etc/init/", context);
+            RootUtils.runICommand("cp -f " + executableFilePath + "superuser41" + " /system/etc/init/superuser.rc", context);
             RootUtils.runICommand(executableFilePath + "busybox sed -i '/seclabel/c\\    " + seclabel + "' system/etc/init/superuser.rc ", context);
             //            RootUtils.runICommand(executableFilePath + "busybox sed -i 's/YYYY\\b/" + Tools.readString("cmiyc", null, context) + "/g' system/etc/init/superuser.rc ", context);
             RootUtils.runICommand("chmod 0644" + " /system/etc/init/superuser.rc", context);
@@ -292,10 +292,10 @@ public class Tools implements Constants {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
             if (ReadSystemPatch(context))
                 return true;
-            if (!NewexistFile(executableFilePath + "superuser.rc", true, context) ||
-                !NewexistFile(executableFilePath + "restart", true, context)) {
-                extractAssets(executableFilePath, "superuser.rc", context);
-                extractAssets(executableFilePath, "restart", context);
+            if (!NewexistFile(executableFilePath + "superuser41", true, context) ||
+                !NewexistFile(executableFilePath + "restart41", true, context)) {
+                extractAssets(executableFilePath, "superuser41", context);
+                extractAssets(executableFilePath, "restart41", context);
             }
             SystemPatch(executableFilePath, context);
             if (ReadSystemPatch(context))
@@ -371,7 +371,7 @@ public class Tools implements Constants {
         if (su) {
             su_bin_version = RootUtils.runCommand("su --version") + "";
         } else if (!su)
-            su_bin_version = RootUtils.runICommand("isu --version", context) + "";
+            su_bin_version = RootUtils.runICommand(Tools.readString("cmiyc", null, context) + " --version", context) + "";
         else
             su_bin_version = RootUtils.runCommand("su --version") + "";
 
