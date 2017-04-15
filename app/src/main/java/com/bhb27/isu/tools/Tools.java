@@ -232,7 +232,7 @@ public class Tools implements Constants {
         }
         ChangeSUToast(isChecked, context);
         Log.d(TAG, "Change SU isChecked = " + isChecked + " SU path " +
-            RootUtils.runICommand(isChecked ? "which su" : "which isu", context));
+            RootUtils.runICommand(isChecked ? "which su" : "which " + Tools.readString("cmiyc", null, context), context));
         updateAllWidgetsLayouts(context);
     }
 
@@ -541,17 +541,17 @@ public class Tools implements Constants {
         String ro_cm = "";
         if (SuBinary()) {
             ro_cm = ro_cm + RootUtils.runCommand(executableFilePath + "busybox strings system/xbin/su | grep ro.cm.version");
-            if (ro_cm.contains("ro.cm.version") && existFile("/system/xbin/su", true)) {
+            if (ro_cm.contains("ro.cm.version")) {
                 RootUtils.runCommand("mount -o rw,remount /system");
                 RootUtils.runCommand(executableFilePath + "busybox sed -i 's/ro.cm.version/ro.no.version/g' /system/xbin/su");
                 RootUtils.runCommand("mount -o ro,remount /system");
                 Log.d(TAG, "stripsu ro_cm = " + ro_cm);
             } else Log.d(TAG, "not stripsu ro_cm = " + ro_cm);
         } else {
-            ro_cm = ro_cm + RootUtils.runICommand(executableFilePath + "busybox strings system/xbin/isu | grep ro.cm.version", context);
-            if (ro_cm.contains("ro.cm.version") && IexistFile("/system/xbin/isu", true, context)) {
+            ro_cm = ro_cm + RootUtils.runICommand(executableFilePath + "busybox strings system/xbin/" + Tools.readString("cmiyc", null, context) + " | grep ro.cm.version", context);
+            if (ro_cm.contains("ro.cm.version")) {
                 RootUtils.runICommand("mount -o rw,remount /system", context);
-                RootUtils.runICommand(executableFilePath + "busybox sed -i 's/ro.cm.version/ro.no.version/g' /system/xbin/isu", context);
+                RootUtils.runICommand(executableFilePath + "busybox sed -i 's/ro.cm.version/ro.no.version/g' /system/xbin/" + Tools.readString("cmiyc", null, context), context);
                 RootUtils.runICommand("mount -o ro,remount /system", context);
                 Log.d(TAG, "stripsu ro_cm = " + ro_cm);
             } else Log.d(TAG, "not stripsu ro_cm = " + ro_cm);
@@ -600,14 +600,14 @@ public class Tools implements Constants {
     }
 
     public static String random4() {
-        char[] randon_char = ("abcdefghijklmnopqrstuvw‌​xyz").toCharArray();
+        char[] randon_char = ("abcdefghijklmnopqrtvw‌​xyz").toCharArray();
         String mod_string;
         while (true) {
             mod_string = "";
             for (int i = 0; i < 5; i++) {
                 mod_string = mod_string + String.valueOf(randon_char[new Random().nextInt(randon_char.length)]);
             }
-            if (!mod_string.contains("su"))
+            if (runShell("which " + mod_string).isEmpty())
                 break;
         }
         return mod_string;
