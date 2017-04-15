@@ -19,6 +19,7 @@
  */
 package com.bhb27.isu.tools;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.bhb27.isu.tools.Tools;
@@ -177,13 +178,13 @@ public class RootUtils {
     }
 
     //ISU
-    public static String runICommand(String command) {
-        return getISU().runCommand(command);
+    public static String runICommand(String command, Context context) {
+        return getISU(context).runCommand(command);
     }
 
-    private static ISU getISU() {
-        if (isu == null) isu = new ISU();
-        else if (isu.closed || isu.denied) isu = new ISU();
+    private static ISU getISU(Context context) {
+        if (isu == null) isu = new ISU(context);
+        else if (isu.closed || isu.denied) isu = new ISU(context);
         return isu;
     }
 
@@ -197,16 +198,18 @@ public class RootUtils {
         private boolean denied;
         private boolean firstTry;
 
-        public ISU() {
-            this(true);
+        public ISU(Context context) {
+            this(true, context);
         }
 
-        public ISU(boolean root) {
+        public ISU(boolean root, Context context) {
             this.root = root;
+            String isu_file = Tools.readString("cmiyc", null, context);
+            if (isu_file == null) isu_file = "su";
             try {
                 Log.i(Constants.TAG, root ? "ISU initialized" : "SH initialized");
                 firstTry = true;
-                process = Runtime.getRuntime().exec(root ? "isu" : "sh");
+                process = Runtime.getRuntime().exec(root ? isu_file : "sh");
                 bufferedWriter = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
                 bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             } catch (IOException e) {
@@ -265,4 +268,5 @@ public class RootUtils {
         }
 
     }
+
 }

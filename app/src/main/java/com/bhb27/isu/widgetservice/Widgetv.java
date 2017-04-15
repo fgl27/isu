@@ -68,7 +68,7 @@ public class Widgetv extends AppWidgetProvider {
             Tools.SwitchSu(!Tools.SuBinary(), false, context);
         }
         if (ACTION_SELINUX.equals(intent.getAction())) {
-            Tools.SwitchSelinux(!Tools.isSELinuxActive(), context);
+            Tools.SwitchSelinux(!Tools.isSELinuxActive(context), context);
         }
     }
 

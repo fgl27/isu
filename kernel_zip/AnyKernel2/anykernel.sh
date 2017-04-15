@@ -16,7 +16,7 @@ is_slot_device=0;
 # 0 clean kernel support, 1 kernel support, 2 patch default.prop
 install_isu=1;
 #Boot in permissive function
-dopermissive=0;
+dopermissive=1;
 #Patch cmline
 docmdline=0;
 #sdk checker
@@ -54,32 +54,6 @@ if [ $docmdline == 0 ]; then
 	elif [ $install_isu == 2 ]; then
 		# iSu patch default.prop
 		replace_line default.prop "ro.debuggable=1" "ro.debuggable=0"
-	elif [ $install_isu == 3 ]; then
-		# iSu pixel sepolicy patch need to run SU in /sbin !! sepolicy-inject here is arm64 and N only
-		$bin/sepolicy-inject -s untrusted_app -t rootfs -c file -p execute -P $ramdisk/sepolicy;
-		$bin/sepolicy-inject -s untrusted_app -t rootfs -c file -p getattr -P $ramdisk/sepolicy;
-		$bin/sepolicy-inject -s untrusted_app -t rootfs -c file -p read -P $ramdisk/sepolicy;
-		$bin/sepolicy-inject -s untrusted_app -t rootfs -c file -p open -P $ramdisk/sepolicy;
-		$bin/sepolicy-inject -s untrusted_app -t rootfs -c file -p execute_no_trans -P $ramdisk/sepolicy;
-		$bin/sepolicy-inject -s untrusted_app -t rootfs -c file -p write -P $ramdisk/sepolicy;
-
-		$bin/sepolicy-inject -s priv_app -t rootfs -c file -p execute -P $ramdisk/sepolicy;
-		$bin/sepolicy-inject -s priv_app -t rootfs -c file -p getattr -P $ramdisk/sepolicy;
-		$bin/sepolicy-inject -s priv_app -t rootfs -c file -p read -P $ramdisk/sepolicy;
-		$bin/sepolicy-inject -s priv_app -t rootfs -c file -p open -P $ramdisk/sepolicy;
-		$bin/sepolicy-inject -s priv_app -t rootfs -c file -p execute_no_trans -P $ramdisk/sepolicy;
-		$bin/sepolicy-inject -s priv_app -t rootfs -c file -p write -P $ramdisk/sepolicy;
-
-		$bin/sepolicy-inject -s system_app -t rootfs -c file -p execute -P $ramdisk/sepolicy;
-		$bin/sepolicy-inject -s system_app -t rootfs -c file -p getattr -P $ramdisk/sepolicy;
-		$bin/sepolicy-inject -s system_app -t rootfs -c file -p read -P $ramdisk/sepolicy;
-		$bin/sepolicy-inject -s system_app -t rootfs -c file -p open -P $ramdisk/sepolicy;
-		$bin/sepolicy-inject -s system_app -t rootfs -c file -p execute_no_trans -P $ramdisk/sepolicy;
-		$bin/sepolicy-inject -s system_app -t rootfs -c file -p write -P $ramdisk/sepolicy;
-
-		$bin/sepolicy-inject -Z shell -P $ramdisk/sepolicy;
-		$bin/sepolicy-inject -Z sudaemon -P $ramdisk/sepolicy;
-		$bin/sepolicy-inject -Z su -P $ramdisk/sepolicy;
 	fi;
 fi;
 # end ramdisk changes

@@ -118,7 +118,7 @@ Preference.OnPreferenceChangeListener {
         }
 
         if (mSelSwitch != null) {
-            boolean selinux = Tools.isSELinuxActive();
+            boolean selinux = Tools.isSELinuxActive(getActivity());
             mSelSwitch.setChecked(selinux);
             mSelSwitch.setSummary(selinux ? getString(R.string.enforcing) :
                     getString(R.string.permissive));

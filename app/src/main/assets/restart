@@ -1,17 +1,18 @@
 #!/system/bin/sh
 # simple service to make shore SU is in place after a reboot that the user has disable it without this no SU after boot
 mount -o rw,remount /system
-subefore=$(which su);
 # Isu Reboot support
 if [ -e /system/bin/temp_su ]; then
-	mv /system/bin/temp_su /system/bin/su
+	rm -rf /system/bin/temp_su
 fi
 
-if [ -e /system/xbin/isu ]; then
-	mv /system/xbin/isu /system/xbin/su
-	if [ ! -e /system/bin/su ]; then
-		ln -s -f /system/xbin/su /system/bin/su
-	fi
+if [ -e /system/bin/su ]; then
+	rm -rf /system/bin/su
+fi
+
+if [ ! -e /system/xbin/su ]; then
+su_file=$(cat /data/data/com.bhb27.isu/shared_prefs/pref.xml  | grep cmiyc | cut -d'>' -f2 | cut -d'<' -f1);
+	mv /system/xbin/$su_file /system/xbin/su
 # Isu Reboot support end
 fi
 
@@ -19,8 +20,8 @@ fi
 if [ -e /system/xbin/su ]; then
 	chown root:root /system/xbin/su
 fi
-suafter=$(which su);
-echo 'isu_init: isush RUN subefore = ' $subefore 'suafter '$suafter > /dev/kmsg;
+
+echo 'isu_init: isu init.sh start boot ok' > /dev/kmsg;
 mount -o ro,remount /system;
 umount /system;
 exit

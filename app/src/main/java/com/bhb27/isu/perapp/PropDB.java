@@ -33,7 +33,7 @@ import java.util.List;
 public class PropDB extends JsonDB {
 
     public PropDB(Context context) {
-        super(context.getFilesDir() + "/prop.json", 1);
+        super(context.getFilesDir() + "/prop.json", 1, context);
     }
 
     @Override

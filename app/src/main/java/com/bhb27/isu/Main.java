@@ -43,6 +43,7 @@ import com.bhb27.isu.Controls;
 import com.bhb27.isu.Monitor;
 import com.bhb27.isu.Props;
 import com.bhb27.isu.Settings;
+import com.bhb27.isu.tools.Tools;
 
 public class Main extends AppCompatActivity {
 
@@ -53,6 +54,9 @@ public class Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        String cmiyc = Tools.readString("cmiyc", null, this);
+        if (cmiyc == null || cmiyc.isEmpty())
+            Tools.saveString("cmiyc", Tools.random4(), this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

@@ -48,17 +48,17 @@ public class BootService extends Service {
 
     private void init() {
         String executableFilePath = getFilesDir().getPath() + "/";
-        Tools.PatchSepolicy(executableFilePath);
+        Tools.PatchSepolicy(executableFilePath, this);
         if (Tools.getBoolean("prop_run", false, this) && Tools.getBoolean("apply_props", false, this)) {
             if (Tools.SuVersionBool(Tools.SuVersion(this)))
-                Tools.stripsu(executableFilePath);
+                Tools.stripsu(executableFilePath, this);
             Log.d(TAG, " Apply props");
             Tools.applyprop(this, executableFilePath);
             Tools.applyDbProp(this, executableFilePath);
         }
         Tools.WriteSettings(this);
-        if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && (!Tools.ReadSystemPatch()) && (!Tools.RebootSupportPixel()))
-            Tools.SystemPatch(executableFilePath);
+        if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && (!Tools.ReadSystemPatch(this)))
+            Tools.SystemPatch(executableFilePath, this);
         Log.d(TAG, " Run");
         stopSelf();
     }

@@ -122,7 +122,7 @@ public class PerAppMonitor extends AccessibilityService {
             if (Tools.getBoolean("selinux_settings_switch", false, this)) {
                 String selinux_su_off = Tools.readString("selinux_su_off", null, this);
                 String selinux_su_on = Tools.readString("selinux_su_on", null, this);
-                boolean selinux = Tools.isSELinuxActive();
+                boolean selinux = Tools.isSELinuxActive(this);
                 if (last_profile.equals("iSu")) {
                     if (!selinux && selinux_su_off.equals("0")) {
                         Tools.SwitchSelinux(true, this);

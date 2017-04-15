@@ -19,6 +19,7 @@
  */
 package com.bhb27.isu.tools;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.bhb27.isu.tools.Tools;
@@ -62,12 +63,12 @@ public class RootFile {
                 RootUtils.runCommand("echo '" + textarray[i] + "' >> " + file);
     }
 
-    public void Iwrite(String text, boolean append) {
+    public void Iwrite(String text, boolean append, Context context) {
         String[] textarray = text.split("\\r?\\n");
-        RootUtils.runICommand(append ? "echo '" + textarray[0] + "' >> " + file : "echo '" + textarray[0] + "' > " + file);
+        RootUtils.runICommand(append ? "echo '" + textarray[0] + "' >> " + file : "echo '" + textarray[0] + "' > " + file, context);
         if (textarray.length > 1)
             for (int i = 1; i < textarray.length; i++)
-                RootUtils.runICommand("echo '" + textarray[i] + "' >> " + file);
+                RootUtils.runICommand("echo '" + textarray[i] + "' >> " + file, context);
     }
 
     public void delete() {
@@ -96,12 +97,12 @@ public class RootFile {
         return list;
     }
 
-    public float length() {
+    public float length(Context context) {
         try {
             if (Tools.SuBinary())
                 return Float.parseFloat(RootUtils.runCommand("du '" + file + "'").split(file)[0].trim());
             else
-                return Float.parseFloat(RootUtils.runICommand("du '" + file + "'").split(file)[0].trim());
+                return Float.parseFloat(RootUtils.runICommand("du '" + file + "'", context).split(file)[0].trim());
         } catch (Exception ignored) {
             return 0;
         }
@@ -120,8 +121,8 @@ public class RootFile {
         return output != null && output.contains("true");
     }
 
-    public boolean Iexists() {
-        String output = RootUtils.runICommand("[ -e '" + file + "' ] && echo true");
+    public boolean Iexists(Context context) {
+        String output = RootUtils.runICommand("[ -e '" + file + "' ] && echo true", context);
         return output != null && output.contains("true");
     }
 
@@ -129,8 +130,8 @@ public class RootFile {
         return RootUtils.runCommand("cat '" + file + "'");
     }
 
-    public String IreadFile() {
-        return RootUtils.runICommand("cat '" + file + "'");
+    public String IreadFile(Context context) {
+        return RootUtils.runICommand("cat '" + file + "'", context);
     }
 
     public String toString() {

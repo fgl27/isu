@@ -35,9 +35,11 @@ APP_FINAL_NAME=iSu_$VERSION.apk;
 # Auto sign zip Download from my folder link below extract and set the folder below on yours machine
 # https://www.androidfilehost.com/?fid=312978532265364585
 # ZIPAPPFOLDER = folder of the zip the contains the apk inside the zip
-MKZIP=0;
+MKZIP=1;
 ANYKERNEL=$FOLDER/kernel_zip/AnyKernel2/;
 ZIP_SIGN_FOLDER=$HOME/android/ZipScriptSign;
+ZIPNAME_ENFORCE=iSu_kernel_Reboot_Support_V_$VERSION\_and_up_Enforcing;
+ZIPNAME_PERMISSIVE=iSu_kernel_Reboot_Support_V_$VERSION\_and_up_Permissive;
 ZIPNAME_REBOOT=iSu_kernel_Reboot_Support_V_$VERSION\_and_up;
 ZIPNAME_CMDLINE=iSu_kernel_cmdline_Patch_V_$VERSION\_and_up;
 ZIPNAME_PROP=iSu_kernel_defaultprop_Patch_V_$VERSION\_and_up;
@@ -87,14 +89,14 @@ if [ $MKZIP == 1 ]; then
 	mv $ANYKERNEL/$ZIPNAME_ENFORCE-signed.zip $ANYKERNEL/$ZIPNAME_ENFORCE.zip
 
 	echo -e "\nKernel reboot support permissive\n"
-	sed -i '/	setenforce 1/c\	setenforce 0\;' $ANYKERNEL/ramdisk/sbin/isu.sh;
+	sed -i '/	setenforce 1/c\	setenforce 0\;' $ANYKERNEL/ramdisk/sbin/restart.sh;
 	zip -r9 $ZIPNAME_PERMISSIVE * -x README .gitignore *.zip tools/su*
 	$ZIP_SIGN_FOLDER/sign.sh test  $ANYKERNEL/$ZIPNAME_PERMISSIVE.zip
 	rm -rf ./ZipScriptSign/$ZIPNAME_PERMISSIVE.zip
 	mv $ANYKERNEL/$ZIPNAME_PERMISSIVE-signed.zip $ANYKERNEL/$ZIPNAME_PERMISSIVE.zip
 
 	echo -e "\ncleaning sed\n"
-	sed -i '/	setenforce 0/c\	setenforce 1\;' $ANYKERNEL/ramdisk/sbin/isu.sh;
+	sed -i '/	setenforce 0/c\	setenforce 1\;' $ANYKERNEL/ramdisk/sbin/restart.sh;
 fi;
 
 END2="$(date)";

@@ -58,6 +58,9 @@ public class MainService extends Service {
         if (isCMSU && !Tools.getBoolean("run_boot", false, this))
             Tools.saveBoolean("run_boot", true, this);
 
+        if (isCMSU && Tools.NewexistFile(Constants.bin_su, true, this))
+            Tools.delbinsu(this);
+
         // Create a blank profiles.json to prevent logspam.
         File file = new File(getFilesDir() + "/per_app.json");
         if (!file.exists()) {
@@ -81,10 +84,10 @@ public class MainService extends Service {
 
 
     public void extractresetprop(Context context) {
-        if (!Tools.NewexistFile(executableFilePath + "resetprop", true) ||
-            !Tools.NewexistFile(executableFilePath + "resetproparm64", true) ||
-            !Tools.NewexistFile(executableFilePath + "resetpropx86", true) ||
-            !Tools.NewexistFile(executableFilePath + "busybox", true)) {
+        if (!Tools.NewexistFile(executableFilePath + "resetprop", true, context) ||
+            !Tools.NewexistFile(executableFilePath + "resetproparm64", true, context) ||
+            !Tools.NewexistFile(executableFilePath + "resetpropx86", true, context) ||
+            !Tools.NewexistFile(executableFilePath + "busybox", true, context)) {
             Tools.extractAssets(executableFilePath, "resetprop", context);
             Tools.extractAssets(executableFilePath, "resetproparm64", context);
             Tools.extractAssets(executableFilePath, "resetpropx86", context);
@@ -93,12 +96,12 @@ public class MainService extends Service {
     }
 
     public void Sepolicy(Context context) {
-        if (!Tools.NewexistFile(executableFilePath + "libsupol.so", true) ||
-            !Tools.NewexistFile(executableFilePath + "supolicy", true)) {
+        if (!Tools.NewexistFile(executableFilePath + "libsupol.so", true, context) ||
+            !Tools.NewexistFile(executableFilePath + "supolicy", true, context)) {
             Tools.extractAssets(executableFilePath, "libsupol.so", context);
             Tools.extractAssets(executableFilePath, "supolicy", context);
         }
-        Tools.PatchSepolicy(executableFilePath);
+        Tools.PatchSepolicy(executableFilePath, context);
     }
 
 }

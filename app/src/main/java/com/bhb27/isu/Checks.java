@@ -89,7 +89,7 @@ public class Checks extends PreferenceFragment {
             mChecks.removePreference(mChecksView);
 
         mRebootStatus = (Preference) getPreferenceManager().findPreference("reboot_status");
-        if (Tools.RebootSupport(executableFilePath, getActivity()) || Tools.KernelSupport()) {
+        if (Tools.RebootSupport(executableFilePath, getActivity()) || Tools.KernelSupport(getActivity())) {
             mRebootStatus.setSummary(getString(R.string.ok));
             mRebootStatus.setIcon(R.drawable.ok);
         } else {
@@ -237,11 +237,11 @@ public class Checks extends PreferenceFragment {
             String propjson = "\n\nprop.json\n";
             String prefs = "\n\nprefs\n";
 
-            if (!Tools.NewexistFile(log_folder, true)) {
+            if (!Tools.NewexistFile(log_folder, true, getActivity())) {
                 File dir = new File(log_folder);
                 dir.mkdir();
             }
-            if (Tools.NewexistFile(log_temp_folder, true)) {
+            if (Tools.NewexistFile(log_temp_folder, true, getActivity())) {
                 runCommand("rm -rf " + log_temp_folder, su);
                 File dir = new File(log_temp_folder);
                 dir.mkdir();
@@ -264,7 +264,7 @@ public class Checks extends PreferenceFragment {
             while (!zip_ok) {
                 ZipUtil.pack(new File(sdcard + "/iSu_Logs/tmpziplog"), new File(zip_file));
                 ZipUtil.unpackEntry(new File(zip_file), "logcat.txt", new File(tmplogcat));
-                if (Tools.compareFiles(logcat, tmplogcat, true)) {
+                if (Tools.compareFiles(logcat, tmplogcat, true, getActivity())) {
                     Log.d(Constants.TAG, "ziped logcat.txt is ok");
                     runCommand("rm -rf " + log_temp_folder, su);
                     zip_ok = true;
@@ -289,7 +289,7 @@ public class Checks extends PreferenceFragment {
         if (su)
             RootUtils.runCommand(command);
         else
-            RootUtils.runICommand(command);
+            RootUtils.runICommand(command, getActivity());
     }
 
     public String getDate() {

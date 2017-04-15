@@ -123,7 +123,7 @@ public class Per_App {
         }
 
         perappDB.putApp(app, id);
-        perappDB.commit();
+        perappDB.commit(context);
     }
 
     public static void remove_app(String app, String id, Context context) {
@@ -137,7 +137,7 @@ public class Per_App {
             }
         }
 
-        perappDB.commit();
+        perappDB.commit(context);
     }
 
     public static boolean app_profile_exists(String app, Context context) {

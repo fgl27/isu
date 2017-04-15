@@ -162,7 +162,7 @@ Preference.OnPreferenceChangeListener {
         Runnable runThread = new Runnable() {
             public void run() {
                 if (Tools.SuVersionBool(Tools.SuVersion(getActivity())))
-                    Tools.stripsu(executableFilePath);
+                    Tools.stripsu(executableFilePath, getActivity());
                 Tools.saveBoolean("prop_run", true, getActivity());
             }
         };
@@ -290,7 +290,7 @@ Preference.OnPreferenceChangeListener {
         final List < Integer > mSelectedBox = new ArrayList < Integer > ();
         final List < Integer > mDeSelectedBox = new ArrayList < Integer > ();
 
-        final String[] mapplist = Tools.getallprop(executableFilePath);
+        final String[] mapplist = Tools.getallprop(executableFilePath, getActivity());
 
         final boolean[] checkedValues = new boolean[mapplist.length];
         for (int i = 0; i < mapplist.length; i++)
@@ -355,7 +355,7 @@ Preference.OnPreferenceChangeListener {
             }
         }
         propDB.putApp(app, id);
-        propDB.commit();
+        propDB.commit(getActivity());
     }
     //TODO fix this odd loking variables
     public String List_props() {
@@ -415,7 +415,7 @@ Preference.OnPreferenceChangeListener {
             ForceBP[i] = new AppCompatCheckBox(getActivity());
             ForceBP[i].setText(getString(R.string.props_any_edit_dialog_force_bp));
 
-            if (Tools.PropIsinbp(props[i]))
+            if (Tools.PropIsinbp(props[i], getActivity()))
                 editLayout.addView(descriptionBelowText[i]);
             else
                 editLayout.addView(ForceBP[i]);

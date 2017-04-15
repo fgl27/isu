@@ -33,7 +33,7 @@ import java.util.List;
 public class PerAppDB extends JsonDB {
 
     public PerAppDB(Context context) {
-        super(context.getFilesDir() + "/per_app.json", 1);
+        super(context.getFilesDir() + "/per_app.json", 1, context);
     }
 
     @Override

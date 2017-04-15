@@ -19,6 +19,7 @@
  */
 package com.bhb27.isu.perapp;
 
+import android.content.Context;
 import com.bhb27.isu.tools.Tools;
 
 import org.json.JSONArray;
@@ -50,10 +51,10 @@ public abstract class JsonDB {
      * @param path    location of the JSON file
      * @param version If version doesn't match with the dataset, remove all saved datas
      */
-    public JsonDB(String path, int version) {
+    public JsonDB(String path, int version, Context context) {
         this.path = path;
         try {
-            String json = Tools.readFile(path, false);
+            String json = Tools.readFile(path, false, context);
             if (json != null) {
                 databaseMain = new JSONObject(json);
                 if (databaseMain.getInt("version") == version)
@@ -115,10 +116,10 @@ public abstract class JsonDB {
     /**
      * Write the dataset as JSON file
      */
-    public void commit() {
+    public void commit(Context context) {
         try {
             databaseMain.put("database", databaseItems);
-            Tools.writeFile(path, databaseMain.toString(), false, false);
+            Tools.writeFile(path, databaseMain.toString(), false, false, context);
         } catch (JSONException e) {
             e.printStackTrace();
         }
