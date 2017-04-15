@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- checks -->
+    <string name="safety_net">SafetyNet Test</string>
     <string name="safetyNet_connection_failed">Verbindung zur Google API nicht möglich</string>
     <string name="safetyNet_connection_suspended">Verbindung zur Google API wurde eingestellt</string>
     <string name="safetyNet_error">SafetyNet-Abfrage nicht möglich, kein Internet?</string>
@@ -59,8 +60,8 @@
     <string name="auto_restart_su">Automatischer Neustart für SU</string>
     <string name="auto_restart_su_summary">Falls eingeschaltet, wird SU automatisch wieder aktiviert, wenn die App, die SU deaktiviert, beendet wird. </string>
     <string name="per_app_click">Hier drücken</string>
-    <string name="per_app_active">SU aktiviert</string>
-    <string name="per_app_deactive">SU deaktiviert</string>
+    <string name="per_app_active">SU-Aktivierung</string>
+    <string name="per_app_deactive">SU-Deaktivierung</string>
     <string name="per_app_dontcare">Don\'t Care Liste</string>
     <string name="per_app_dontcare_summary">Wähle die Apps aus, die keinen Einfluss auf den App Monitor haben, wenn sie starten.\nSo funktioniert es:\nWähle Apps, die weder Root noch UnRoot sind und die von Root bzw. UnRoot Apps benutzt oder als Overlay angezeigt werden könnten, wie z.B. Tastatur oder Overlay Apps</string>
 
@@ -77,12 +78,11 @@
     <string name="unsafe">Unsicherer Wert</string>
     <string name="force_all">Erzwinge das Setzen ALLER bekannten Props</string>
     <string name="force_all_summary">Drücke unten, um bei allen bekannten Props den gewählten Wert zu erzwingen:</string>
-    <string name="safety_net">Safety Net Test</string>
     <string name="states">Liste der bekannten Props</string>
     <string name="special_props">Spezielle Props</string>
     <string name="special_props_summary">\nWenn nach der Änderung einer speziellen Prop und einem Reboot der Wert wieder auf den Originalwert der ROM zurückgesetzt wurde, wende dich bitte an den Entwickler deiner ROM, um das beheben zu lassen.\nDrücke zum Ändern unten</string>
     <string name="fingerprint_dialog_title">Wähle eine Option:</string>
-    <string name="fingerprint_dialog_summary">Als sicher bekannt:\nBekannter sicherer Wert für diese Prop für ein Nexus-Gerät\n\Personalisiert:\nEditiere den aktuellen Wert oder einen neuen Wert für diese Prop (z.B. den Stock-ROM Wert deines Geräts)</string>
+    <string name="fingerprint_dialog_summary">Als sicher bekannt:\nBekannter sicherer Wert für diese Prop für ein Nexus-Gerät\n\nPersonalisiert:\nEditiere den aktuellen Wert oder einen neuen Wert für diese Prop (z.B. den Stock-ROM Wert deines Geräts)</string>
     <string name="fingerprint_dialog_know_safe">Als sicher bekannt</string>
     <string name="fingerprint_dialog_personalized">Personalisiert</string>
     <string name="fingerprint_dialog_personalized_title">Setze neuen Wert für \n</string>      
@@ -105,7 +105,7 @@
     <string name="ro_props">Read Only Editor</string>
     <string name="props_any_list">Listet Änderungen an ro.props auf</string>
     <string name="props_any_list_dialog_title">Listet Props auf, die du geändert hast</string>
-    <string name="props_any_list_dialog_summary">Folgende ro.props werden beim Booten angewendet, wenn die Einstellung %s aktiviert ist</string>
+    <string name="props_any_list_dialog_summary">Folgende ro.props werden beim Booten angewendet, wenn folgende Einstellung aktiviert ist: %s</string>
     <string name="props_no_changes">Es wurden keine Änderungen vorgenommen!</string>
     <string name="props_any_no_selected">Keine Props ausgewählt!</string>
     <string name="know_props">Bekannte Props</string>
@@ -132,12 +132,12 @@
     <string name="enforcing">Strikt</string>
     <string name="permissive">Moderat</string>
     <string name="anddebug_settings">Extra Android Debugging Steuerung</string>
-    <string name="anddebug_settings_summary">Steuert den Android Debugging Status wenn SU geändert wird</string>
+    <string name="anddebug_settings_summary">Steuert den Android Debugging Status, wenn SU geändert wird</string>
     <string name="anddebug_su_on">Android Debugging Status, wenn SU aktiviert</string>
     <string name="anddebug_su_off">Android Debugging Status, wenn SU deaktiviert</string>
     <string name="enable">Einschalten</string>
     <string name="disable">Ausschalten</string>
-    <string name="props_apply_boot">Änderungen an props beim Booten anwenden</string>
+    <string name="props_apply_boot">Änderungen an Props beim Booten anwenden</string>
     <string name="su_not_supported">SU-Version wird nicht unterstützt</string>
 
     <!-- about -->

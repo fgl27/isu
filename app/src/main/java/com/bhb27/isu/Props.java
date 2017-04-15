@@ -242,7 +242,7 @@ Preference.OnPreferenceChangeListener {
         new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle)
             .setTitle(getString(R.string.props_any_list_dialog_title))
             .setMessage(String.format(getString(R.string.props_any_list_dialog_summary),
-                "(" + getString(R.string.props_apply_boot) + ")" + "\n\n" + List_props()))
+                "\"" + getString(R.string.props_apply_boot) + "\"" + "\n\n" + List_props()))
             .setNegativeButton(getString(R.string.dismiss),
                 new DialogInterface.OnClickListener() {
                     @Override
