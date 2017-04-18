@@ -20,6 +20,8 @@
 package com.bhb27.isu;
 
 import android.annotation.TargetApi;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -72,11 +74,29 @@ public class Main extends AppCompatActivity {
         mAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Intent myIntent = new Intent(getApplicationContext(), AboutActivity.class);
-               startActivity(myIntent);
+                Intent myIntent = new Intent(getApplicationContext(), AboutActivity.class);
+                startActivity(myIntent);
             }
         });
-       check_writeexternalstorage();
+        check_writeexternalstorage();
+        try {
+            this.registerReceiver(updateMainReceiver, new IntentFilter("updateMainReceiver"));
+        } catch (NullPointerException ignored) {}
+    }
+
+    public void onResume() {
+        super.onResume();
+        try {
+            this.registerReceiver(updateMainReceiver, new IntentFilter("updateMainReceiver"));
+        } catch (NullPointerException ignored) {}
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            this.unregisterReceiver(updateMainReceiver);
+        } catch (IllegalArgumentException ignored) {}
     }
 
     public class TabsExamplePagerAdapter extends FragmentPagerAdapter {
@@ -122,16 +142,25 @@ public class Main extends AppCompatActivity {
         return titleString;
     }
 
-    @TargetApi(23|24|25)
+    @TargetApi(23 | 24 | 25)
     private void check_writeexternalstorage() {
         if (Build.VERSION.SDK_INT >= 23) {
             int hasWriteExternalPermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasWriteExternalPermission != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        REQUEST_CODE_ASK_PERMISSIONS);
+                requestPermissions(new String[] {
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    },
+                    REQUEST_CODE_ASK_PERMISSIONS);
                 return;
             }
         }
         return;
     }
+
+    private final BroadcastReceiver updateMainReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            finish();
+        }
+    };
 }

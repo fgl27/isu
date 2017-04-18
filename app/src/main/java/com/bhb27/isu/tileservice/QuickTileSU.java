@@ -54,7 +54,7 @@ public class QuickTileSU extends TileService {
             Tools.SwitchSu(!su, false, this);
             getQsTile().setLabel((su ?
                 this.getString(R.string.activated) : this.getString(R.string.deactivated)));
-            Tools.UpMain(this);
+            Tools.SendBroadcast("updateControlsReceiver", this);
             getQsTile().updateTile();
         }
     }

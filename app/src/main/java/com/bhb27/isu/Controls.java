@@ -79,7 +79,7 @@ Preference.OnPreferenceChangeListener {
     public void onPause() {
         super.onPause();
         try {
-            getActivity().unregisterReceiver(updateMainReceiver);
+            getActivity().unregisterReceiver(updateControlsReceiver);
         } catch (IllegalArgumentException ignored) {}
     }
 
@@ -121,7 +121,7 @@ Preference.OnPreferenceChangeListener {
             boolean selinux = Tools.isSELinuxActive(getActivity());
             mSelSwitch.setChecked(selinux);
             mSelSwitch.setSummary(selinux ? getString(R.string.enforcing) :
-                    getString(R.string.permissive));
+                getString(R.string.permissive));
         }
 
         if (mDebug != null) {
@@ -132,7 +132,7 @@ Preference.OnPreferenceChangeListener {
         }
 
         try {
-            getActivity().registerReceiver(updateMainReceiver, new IntentFilter("updateMainReceiver"));
+            getActivity().registerReceiver(updateControlsReceiver, new IntentFilter("updateControlsReceiver"));
         } catch (NullPointerException ignored) {}
 
         if (!isCMSU)
@@ -141,7 +141,7 @@ Preference.OnPreferenceChangeListener {
             mControls.removePreference(mControlsView);
     }
 
-    private final BroadcastReceiver updateMainReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver updateControlsReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             updateState();

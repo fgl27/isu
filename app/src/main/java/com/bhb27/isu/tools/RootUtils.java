@@ -55,6 +55,12 @@ public class RootUtils {
         return !su.denied;
     }
 
+    public static boolean rootAccessiSu(Context context) {
+        ISU isu = getISU(context);
+        isu.runCommand("echo /testRoot/");
+        return !isu.denied;
+    }
+
     public static boolean busyboxInstalled() {
         return existBinary("busybox") || existBinary("toybox");
     }
@@ -81,6 +87,11 @@ public class RootUtils {
 
     public static void closeSU() {
         if (su != null) su.close();
+        su = null;
+    }
+
+    public static void closeISU() {
+        if (isu != null) isu.close();
         su = null;
     }
 

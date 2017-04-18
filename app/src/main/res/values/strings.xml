@@ -21,6 +21,7 @@
     <string name="generating_log">Generating a Log&#8230;</string>
     <string name="generating_log_move">Log file saved at:\n\n%s</string>
     <string name="cant_generating">Can\'t generate a log no write permission to storage</string>
+    <string name="reloading">SU Access has changed reloading the application!</string>
 
     <!-- controls -->
     <string name="app_name" translatable="false" >iSu</string>

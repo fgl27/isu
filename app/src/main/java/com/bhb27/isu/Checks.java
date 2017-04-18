@@ -44,6 +44,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import com.bhb27.isu.Main;
 import com.bhb27.isu.bootservice.MainService;
 import com.bhb27.isu.perapp.PerAppMonitor;
 import com.bhb27.isu.perapp.Per_App;
@@ -52,6 +53,7 @@ import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.tools.RootUtils;
 import com.bhb27.isu.tools.SafetyNetHelper;
 import com.bhb27.isu.tools.Tools;
+import com.bhb27.isu.tools.RootUtils;
 
 import org.zeroturnaround.zip.ZipUtil;
 
@@ -62,7 +64,7 @@ public class Checks extends PreferenceFragment {
     private PreferenceCategory mChecks;
     private String suVersion, executableFilePath, result;
     private int image;
-    private boolean isCMSU;
+    private boolean isCMSU, rootAccess;
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
@@ -71,6 +73,7 @@ public class Checks extends PreferenceFragment {
         super.onCreate(savedInstanceState);
         getPreferenceManager().setSharedPreferencesName(Constants.PREF_NAME);
         addPreferencesFromResource(R.xml.checks);
+        rootAccess = Tools.rootAccess(getActivity());
         getActivity().setTheme(R.style.Switch_theme);
         getActivity().startService(new Intent(getActivity(), MainService.class));
         executableFilePath = getActivity().getFilesDir().getPath() + "/";
@@ -151,6 +154,14 @@ public class Checks extends PreferenceFragment {
 
     public void onResume() {
         super.onResume();
+        if (rootAccess != Tools.rootAccess(getActivity())) {
+            rootAccess = Tools.rootAccess(getActivity());
+            RootUtils.closeSU();
+            RootUtils.closeISU();
+            Tools.DoAToast(getString(R.string.reloading), getActivity());
+            Tools.SendBroadcast("updateMainReceiver", getActivity());
+            getActivity().startActivity(new Intent(getActivity(), Main.class));
+        }
     }
 
     @Override

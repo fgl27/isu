@@ -158,10 +158,10 @@ public class Tools implements Constants {
         appWidgetManager.partiallyUpdateAppWidget(appWidgetIds, remoteViews);
     }
 
-    public static void UpMain(Context context) {
-        final Intent MainIntent = new Intent();
-        MainIntent.setAction("updateMainReceiver");
-        context.sendBroadcast(MainIntent);
+    public static void SendBroadcast(String action, Context context) {
+        final Intent NewIntent = new Intent();
+        NewIntent.setAction(action);
+        context.sendBroadcast(NewIntent);
     }
 
     public static void extractAssets(String executableFilePath, String filename, Context context) {
@@ -194,7 +194,7 @@ public class Tools implements Constants {
         if (filename.contains("restart") || filename.contains("superuser")) {
             if (SuBinary()) {
                 if (filename.contains("superuser")) {
-                   Log.d(TAG, "Copy success: supersu if");
+                    Log.d(TAG, "Copy success: supersu if");
                     RootUtils.runCommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_superuser);
                 } else {
                     RootUtils.runCommand("cp -f " + executableFilePath + filename + " /data/" + filename);
@@ -204,7 +204,7 @@ public class Tools implements Constants {
                 if (filename.contains("superuser")) {
                     RootUtils.runICommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_superuser, context);
                 } else {
-                    RootUtils.runICommand("cp -f " + executableFilePath + filename + " /data/" + filename, context);	
+                    RootUtils.runICommand("cp -f " + executableFilePath + filename + " /data/" + filename, context);
                     RootUtils.runICommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_restart, context);
                 }
             }
@@ -219,6 +219,16 @@ public class Tools implements Constants {
             else
                 RootUtils.runICommand("cp -f /system/xbin/" + readString("cmiyc", null, context) + " su /data/backup_isu", context);
         }
+    }
+
+    public static boolean rootAccess(Context context) {
+        if (runShell("getprop persist.sys.root_access").equals("0"))
+            return false;
+        if (RootUtils.rootAccess())
+            return true;
+        if (RootUtils.rootAccessiSu(context))
+            return true;
+        return false;
     }
 
     public static void killapp(String app, Context context) {
@@ -312,7 +322,7 @@ public class Tools implements Constants {
         }
         if (getBoolean("toast_notifications", true, context))
             DoAToast("iSu " + Toast + "!", context);
-        UpMain(context);
+        SendBroadcast("updateControlsReceiver", context);
     }
 
     public static boolean RebootSupport(String executableFilePath, Context context) {
