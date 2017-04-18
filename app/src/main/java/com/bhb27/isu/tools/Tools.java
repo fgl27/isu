@@ -204,7 +204,7 @@ public class Tools implements Constants {
                 if (filename.contains("superuser")) {
                     RootUtils.runICommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_superuser, context);
                 } else {
-                    RootUtils.runICommand("cp -f " + executableFilePath + filename + " /data/" + filename, context);
+                    RootUtils.runICommand("cp -f " + executableFilePath + filename + " /data/" + filename, context);	
                     RootUtils.runICommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_restart, context);
                 }
             }
@@ -213,9 +213,9 @@ public class Tools implements Constants {
     }
 
     public static void subackup(Context context) {
-        if (NewexistFile("/data/backup_isu", true, context)) {
+        if (!NewexistFile("/data/backup_isu", true, context)) {
             if (SuBinary())
-                RootUtils.runCommand("cp -f /system/xbin/su /data/backup_isu");
+                RootUtils.runCommand("cp -f " + xbin_su + " /data/backup_isu");
             else
                 RootUtils.runICommand("cp -f /system/xbin/" + readString("cmiyc", null, context) + " su /data/backup_isu", context);
         }
@@ -245,15 +245,14 @@ public class Tools implements Constants {
     public static void SwitchSu(boolean isChecked, boolean AppMonitor, Context context) {
         if (isChecked) {
             RootUtils.runICommand("mount -o rw,remount /system", context);
-            RootUtils.runICommand("mv -f" + "/system/xbin/" + readString("cmiyc", null, context) + " " + xbin_su, context);
+            RootUtils.runICommand("mv -f " + "/system/xbin/" + readString("cmiyc", null, context) + " " + xbin_su, context);
             RootUtils.runCommand("mount -o ro,remount /system");
             ClearAllNotification(context);
         } else {
             if (!AppMonitor)
                 killapp(Constants.PAY, context);
             RootUtils.runCommand("mount -o rw,remount /system");
-            RootUtils.runCommand("mv -f" + xbin_su + " " + "/system/xbin/" + readString("cmiyc", null, context));
-            RootUtils.runICommand("mv -f" + bin_su + " " + bin_temp_su, context);
+            RootUtils.runCommand("mv -f " + xbin_su + " " + "/system/xbin/" + readString("cmiyc", null, context));
             RootUtils.runICommand("mount -o ro,remount /system", context);
             if (getBoolean("isu_notification", false, context))
                 DoNotification(context);
@@ -566,23 +565,25 @@ public class Tools implements Constants {
     }
 
     public static void stripsu(String executableFilePath, Context context) {
-        String ro_cm = "";
+        String ro_tochange = "";
+        String stripro = "ro.cm.version";
+        String stripto = "no.cm.version";
         if (SuBinary()) {
-            ro_cm = ro_cm + RootUtils.runCommand(executableFilePath + "busybox strings system/xbin/su | grep ro.cm.version");
-            if (ro_cm.contains("ro.cm.version")) {
+            ro_tochange = ro_tochange + RootUtils.runCommand(executableFilePath + "busybox strings " + xbin_su + " | grep " + stripro);
+            if (ro_tochange.contains(stripro)) {
                 RootUtils.runCommand("mount -o rw,remount /system");
-                RootUtils.runCommand(executableFilePath + "busybox sed -i 's/ro.cm.version/ro.no.version/g' /system/xbin/su");
+                RootUtils.runCommand(executableFilePath + "busybox sed -i 's/" + stripro + "/" + stripto + "/g' " + xbin_su);
                 RootUtils.runCommand("mount -o ro,remount /system");
-                Log.d(TAG, "stripsu ro_cm = " + ro_cm);
-            } else Log.d(TAG, "not stripsu ro_cm = " + ro_cm);
+                Log.d(TAG, "stripsu ro_tochange = " + ro_tochange);
+            } else Log.d(TAG, "not stripsu ro_tochange = " + ro_tochange);
         } else {
-            ro_cm = ro_cm + RootUtils.runICommand(executableFilePath + "busybox strings system/xbin/" + Tools.readString("cmiyc", null, context) + " | grep ro.cm.version", context);
-            if (ro_cm.contains("ro.cm.version")) {
+            ro_tochange = ro_tochange + RootUtils.runICommand(executableFilePath + "busybox strings system/xbin/" + Tools.readString("cmiyc", null, context) + " | grep " + stripro, context);
+            if (ro_tochange.contains(stripro)) {
                 RootUtils.runICommand("mount -o rw,remount /system", context);
-                RootUtils.runICommand(executableFilePath + "busybox sed -i 's/ro.cm.version/ro.no.version/g' /system/xbin/" + Tools.readString("cmiyc", null, context), context);
+                RootUtils.runICommand(executableFilePath + "busybox sed -i 's/" + stripro + "/" + stripto + "/g' " + xbin_su, context);
                 RootUtils.runICommand("mount -o ro,remount /system", context);
-                Log.d(TAG, "stripsu ro_cm = " + ro_cm);
-            } else Log.d(TAG, "not stripsu ro_cm = " + ro_cm);
+                Log.d(TAG, "stripsu ro_tochange = " + ro_tochange);
+            } else Log.d(TAG, "not stripsu ro_tochange = " + ro_tochange);
         }
     }
 

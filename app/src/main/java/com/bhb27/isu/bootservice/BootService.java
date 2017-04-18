@@ -26,14 +26,10 @@ import android.util.Log;
 import android.content.Intent;
 
 import com.bhb27.isu.tools.Tools;
-import com.bhb27.isu.tools.Constants;
 
 public class BootService extends Service {
 
     private static final String TAG = "iSu_BootService";
-    private final String sepolicy = Constants.sepolicy;
-    private String xbin_su = Constants.xbin_su;
-    private String xbin_isu = Constants.xbin_isu;
 
     @Override
     public IBinder onBind(Intent intent) {

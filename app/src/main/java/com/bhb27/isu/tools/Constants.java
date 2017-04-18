@@ -21,9 +21,6 @@ public interface Constants {
     String PREF_NAME = "pref";
     String bin_su = "/system/bin/su";
     String xbin_su = "/system/xbin/su";
-    String bin_isu = "/system/bin/isu";
-    String xbin_isu = "/system/xbin/isu";
-    String bin_temp_su = "/system/bin/temp_su";
 
     String init_superuser = "superuser42";
     String init_restart = "restart42";
