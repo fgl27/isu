@@ -20,7 +20,6 @@ on boot
 
 on property:sys.boot_completed=1
     start restartc
-    start su_daemon
 
 service restartc  /system/bin/sh /sbin/restart.sh boot_completed
     class main

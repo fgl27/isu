@@ -25,7 +25,11 @@ if [ "$1" = "boot" ]; then
 	if [ ! -e /system/xbin/su ]; then
 		mv -f /data/backup_isu /system/xbin/su
         	chmod 0755 /system/xbin/su
-	        start su_daemon
+
+		su_daemon=$(getprop persist.sys.root_access);
+		if [ $su_daemon -gt 0 ]; then
+			start su_daemon
+		fi
 	# Isu Reboot support end
 	fi
 
