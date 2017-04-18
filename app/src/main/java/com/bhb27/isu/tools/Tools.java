@@ -217,7 +217,7 @@ public class Tools implements Constants {
             if (SuBinary())
                 RootUtils.runCommand("cp -f " + xbin_su + " /data/backup_isu");
             else
-                RootUtils.runICommand("cp -f /system/xbin/" + readString("cmiyc", null, context) + " su /data/backup_isu", context);
+                RootUtils.runICommand("cp -f /system/xbin/" + readString("cmiyc", null, context) + " /data/backup_isu", context);
         }
     }
 
@@ -590,7 +590,7 @@ public class Tools implements Constants {
             ro_tochange = ro_tochange + RootUtils.runICommand(executableFilePath + "busybox strings system/xbin/" + Tools.readString("cmiyc", null, context) + " | grep " + stripro, context);
             if (ro_tochange.contains(stripro)) {
                 RootUtils.runICommand("mount -o rw,remount /system", context);
-                RootUtils.runICommand(executableFilePath + "busybox sed -i 's/" + stripro + "/" + stripto + "/g' " + xbin_su, context);
+                RootUtils.runICommand(executableFilePath + "busybox sed -i 's/" + stripro + "/" + stripto + "/g' system/xbin/" + Tools.readString("cmiyc", null, context), context);
                 RootUtils.runICommand("mount -o ro,remount /system", context);
                 Log.d(TAG, "stripsu ro_tochange = " + ro_tochange);
             } else Log.d(TAG, "not stripsu ro_tochange = " + ro_tochange);
