@@ -20,6 +20,7 @@
     <string name="generating_log">Erzeuge Log&#8230;</string>
     <string name="generating_log_move">Logdatei gespeichert:\n\n%s</string>
     <string name="cant_generating">Kann kein Log erzeugen, da Speicher-Schreibzugriffsrechte fehlen.</string>
+    <string name="reloading">SU-Zugriff hat sich geändert, Anwendung wird neugestartet!</string>
 
     <!-- controls -->
     <string name="su_switch">Ändere SU Status</string>
