@@ -72,14 +72,14 @@ public class Tools implements Constants {
     public static boolean KernelSupport(Context context) {
         String kernel_support_rc, kernel_support_sh;
         if (SuBinary()) {
-            kernel_support_rc = RootUtils.runCommand("grep -r -i isupatch41 *.rc ") + "";
-            if (kernel_support_rc.contains("isupatch41"))
+            kernel_support_rc = RootUtils.runCommand("grep -r -i " + patchM + " *.rc ") + "";
+            if (kernel_support_rc.contains(patchM))
                 return true;
             else
                 return false;
         } else {
-            kernel_support_rc = RootUtils.runICommand("grep -r -i isupatch41 *.rc ", context) + "";
-            if (kernel_support_rc.contains("isupatch41"))
+            kernel_support_rc = RootUtils.runICommand("grep -r -i " + patchM + " *.rc ", context) + "";
+            if (kernel_support_rc.contains(patchM))
                 return true;
             else
                 return false;
@@ -89,10 +89,10 @@ public class Tools implements Constants {
     public static boolean ReadSystemPatch(Context context) {
         String reboot_support_rc = "", reboot_support_sh = "";
         if (SuBinary())
-            reboot_support_rc = RootUtils.runCommand("grep -i isupatch41 system/etc/init/superuser.rc") + "";
+            reboot_support_rc = RootUtils.runCommand("grep -i " + patchN + " system/etc/init/superuser.rc") + "";
         else
-            reboot_support_rc = RootUtils.runICommand("grep -i isupatch41 system/etc/init/superuser.rc", context) + "";
-        if (reboot_support_rc.contains("isupatch41"))
+            reboot_support_rc = RootUtils.runICommand("grep -i " + patchN + " system/etc/init/superuser.rc", context) + "";
+        if (reboot_support_rc.contains(patchN))
             return true;
         return false;
     }
@@ -103,7 +103,7 @@ public class Tools implements Constants {
             seclabel = RootUtils.runCommand("cat system/etc/init/superuser.rc | grep seclabel | head -1");
             RootUtils.runCommand("mount -o rw,remount /system");
             RootUtils.runCommand("chmod 0755" + executableFilePath + "restart");
-            RootUtils.runCommand("cp -f " + executableFilePath + "superuser41" + " /system/etc/init/superuser.rc");
+            RootUtils.runCommand("cp -f " + executableFilePath + init_superuser + " /system/etc/init/superuser.rc");
             RootUtils.runCommand(executableFilePath + "busybox sed -i '/seclabel/c\\    " + seclabel + "' system/etc/init/superuser.rc ");
             //            RootUtils.runCommand(executableFilePath + "busybox sed -i 's/YYYY\\b/" + Tools.readString("cmiyc", null, context) + "/g' system/etc/init/superuser.rc ");
             RootUtils.runCommand("chmod 0644" + " /system/etc/init/superuser.rc");
@@ -114,7 +114,7 @@ public class Tools implements Constants {
             seclabel = RootUtils.runICommand("cat system/etc/init/superuser.rc | grep seclabel | head -1", context);
             RootUtils.runICommand("mount -o rw,remount /system", context);
             RootUtils.runICommand("chmod 0755" + executableFilePath + "restart", context);
-            RootUtils.runICommand("cp -f " + executableFilePath + "superuser41" + " /system/etc/init/superuser.rc", context);
+            RootUtils.runICommand("cp -f " + executableFilePath + init_superuser + " /system/etc/init/superuser.rc", context);
             RootUtils.runICommand(executableFilePath + "busybox sed -i '/seclabel/c\\    " + seclabel + "' system/etc/init/superuser.rc ", context);
             //            RootUtils.runICommand(executableFilePath + "busybox sed -i 's/YYYY\\b/" + Tools.readString("cmiyc", null, context) + "/g' system/etc/init/superuser.rc ", context);
             RootUtils.runICommand("chmod 0644" + " /system/etc/init/superuser.rc", context);
@@ -165,7 +165,7 @@ public class Tools implements Constants {
     }
 
     public static void extractAssets(String executableFilePath, String filename, Context context) {
-        executableFilePath = executableFilePath + filename;
+        String InerexecutableFilePath = executableFilePath + filename;
         AssetManager assetManager = context.getAssets();
         InputStream inStream = null;
         OutputStream outStream = null;
@@ -173,7 +173,7 @@ public class Tools implements Constants {
         try {
 
             inStream = assetManager.open(filename);
-            outStream = new FileOutputStream(executableFilePath); // for override file content
+            outStream = new FileOutputStream(InerexecutableFilePath); // for override file content
             //outStream = new FileOutputStream(out,true); // for append file content
 
             byte[] buffer = new byte[1024];
@@ -188,9 +188,37 @@ public class Tools implements Constants {
         } catch (IOException e) {
             Log.e(TAG, "Failed to copy asset file: " + filename, e);
         }
-        File execFile = new File(executableFilePath);
+        File execFile = new File(InerexecutableFilePath);
         execFile.setExecutable(true);
         Log.d(TAG, "Copy success: " + filename);
+        if (filename.contains("restart") || filename.contains("superuser")) {
+            if (SuBinary()) {
+                if (filename.contains("superuser")) {
+                   Log.d(TAG, "Copy success: supersu if");
+                    RootUtils.runCommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_superuser);
+                } else {
+                    RootUtils.runCommand("cp -f " + executableFilePath + filename + " /data/" + filename);
+                    RootUtils.runCommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_restart);
+                }
+            } else {
+                if (filename.contains("superuser")) {
+                    RootUtils.runICommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_superuser, context);
+                } else {
+                    RootUtils.runICommand("cp -f " + executableFilePath + filename + " /data/" + filename, context);
+                    RootUtils.runICommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_restart, context);
+                }
+            }
+        }
+
+    }
+
+    public static void subackup(Context context) {
+        if (NewexistFile("/data/backup_isu", true, context)) {
+            if (SuBinary())
+                RootUtils.runCommand("cp -f /system/xbin/su /data/backup_isu");
+            else
+                RootUtils.runICommand("cp -f /system/xbin/" + readString("cmiyc", null, context) + " su /data/backup_isu", context);
+        }
     }
 
     public static void killapp(String app, Context context) {
@@ -217,15 +245,15 @@ public class Tools implements Constants {
     public static void SwitchSu(boolean isChecked, boolean AppMonitor, Context context) {
         if (isChecked) {
             RootUtils.runICommand("mount -o rw,remount /system", context);
-            RootUtils.runICommand("mv " + "/system/xbin/" + readString("cmiyc", null, context) + " " + xbin_su, context);
+            RootUtils.runICommand("mv -f" + "/system/xbin/" + readString("cmiyc", null, context) + " " + xbin_su, context);
             RootUtils.runCommand("mount -o ro,remount /system");
             ClearAllNotification(context);
         } else {
             if (!AppMonitor)
                 killapp(Constants.PAY, context);
             RootUtils.runCommand("mount -o rw,remount /system");
-            RootUtils.runCommand("mv " + xbin_su + " " + "/system/xbin/" + readString("cmiyc", null, context));
-            RootUtils.runICommand("mv " + bin_su + " " + bin_temp_su, context);
+            RootUtils.runCommand("mv -f" + xbin_su + " " + "/system/xbin/" + readString("cmiyc", null, context));
+            RootUtils.runICommand("mv -f" + bin_su + " " + bin_temp_su, context);
             RootUtils.runICommand("mount -o ro,remount /system", context);
             if (getBoolean("isu_notification", false, context))
                 DoNotification(context);
@@ -292,10 +320,10 @@ public class Tools implements Constants {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
             if (ReadSystemPatch(context))
                 return true;
-            if (!NewexistFile(executableFilePath + "superuser41", true, context) ||
-                !NewexistFile(executableFilePath + "restart41", true, context)) {
-                extractAssets(executableFilePath, "superuser41", context);
-                extractAssets(executableFilePath, "restart41", context);
+            if (!NewexistFile(executableFilePath + init_superuser, true, context) ||
+                !NewexistFile(executableFilePath + init_restart, true, context)) {
+                extractAssets(executableFilePath, "superuser", context);
+                extractAssets(executableFilePath, "restart", context);
             }
             SystemPatch(executableFilePath, context);
             if (ReadSystemPatch(context))

@@ -231,11 +231,12 @@ public class Checks extends PreferenceFragment {
             String getpropC = "getprop ";
 
             String isuconfig = log_temp_folder + "iSu_config.txt";
-            String pref_folder = getActivity().getFilesDir().getParentFile().getAbsolutePath();
+            String data_folder = getActivity().getFilesDir().getParentFile().getAbsolutePath();
             String perappjson = "per_app.json Accessibility Enabled = " +
                 Per_App.isAccessibilityEnabled(getActivity(), PerAppMonitor.accessibilityId) + "\n";
             String propjson = "\n\nprop.json\n";
             String prefs = "\n\nprefs\n";
+            String paths = "\n\npaths\n";
 
             if (!Tools.NewexistFile(log_folder, true, getActivity())) {
                 File dir = new File(log_folder);
@@ -257,7 +258,11 @@ public class Checks extends PreferenceFragment {
             runCommand("echo '" + propjson + "' >> " + isuconfig, su);
             runCommand("cat " + executableFilePath + "prop.json >> " + isuconfig, su);
             runCommand("echo '" + prefs + "' >> " + isuconfig, su);
-            runCommand("cat " + pref_folder + "/shared_prefs/" + Constants.PREF_NAME + ".xml >> " + isuconfig, su);
+            runCommand("cat " + data_folder + "/shared_prefs/" + Constants.PREF_NAME + ".xml >> " + isuconfig, su);
+            runCommand("cat " + data_folder + "/shared_prefs/" + Constants.PREF_NAME + ".xml >> " + isuconfig, su);
+            runCommand("echo '" + paths + "' >> " + isuconfig, su);
+            runCommand("echo '" + log_folder + "' >> " + isuconfig, su);
+            runCommand("echo '" + data_folder + "' >> " + isuconfig, su);
             runCommand("rm -rf " + log_temp_folder + "logcat_wile.txt", su);
             // ZipUtil doesn’t understand folder name that end with /
             // Logcat some times is too long and the zip logcat.txt may be empty, do some check

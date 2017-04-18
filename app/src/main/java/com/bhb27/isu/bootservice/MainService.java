@@ -54,12 +54,16 @@ public class MainService extends Service {
         Sepolicy(this);
         extractresetprop(this);
         Tools.WriteSettings(this);
-        // Only run boot service if app was used and is CM SU
-        if (isCMSU && !Tools.getBoolean("run_boot", false, this))
-            Tools.saveBoolean("run_boot", true, this);
+        if (isCMSU) {
+            // Only run boot service if app was used and is CM SU
+            if (!Tools.getBoolean("run_boot", false, this))
+                Tools.saveBoolean("run_boot", true, this);
 
-        if (isCMSU && Tools.NewexistFile(Constants.bin_su, true, this))
-            Tools.delbinsu(this);
+            if (Tools.NewexistFile(Constants.bin_su, true, this))
+                Tools.delbinsu(this);
+
+            Tools.subackup(this);
+        }
 
         // Create a blank profiles.json to prevent logspam.
         File file = new File(getFilesDir() + "/per_app.json");

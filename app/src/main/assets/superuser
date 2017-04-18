@@ -17,14 +17,14 @@ on property:persist.sys.root_access=1
 on property:persist.sys.root_access=3
     start su_daemon
 
-# isupatch41
+# isupatch42
 on boot
     start restart
 
 on property:sys.boot_completed=1
     start su_daemon
 
-service restart /data/data/com.bhb27.isu/files/restart41 --daemon
+service restart /data/restart --daemon
     user root
     group root
     disabled

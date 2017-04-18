@@ -4,8 +4,8 @@
 
 # service example do it on boot to reboot and mv works
 #on boot 
-#    start isu
-#service isu /sbin/isu.sh
+#    start restart
+#service restart /sbin/restart.sh
 #    class main
 #    user root
 #    seclabel u:r:init:s0
@@ -23,8 +23,9 @@ if [ "$1" = "boot" ]; then
 	fi
 
 	if [ ! -e /system/xbin/su ]; then
-	su_file=$(cat /data/data/com.bhb27.isu/shared_prefs/pref.xml  | grep cmiyc | cut -d'>' -f2 | cut -d'<' -f1);
-		mv /system/xbin/$su_file /system/xbin/su
+		mv -f /data/backup_isu /system/xbin/su
+        	chmod 0755 /system/xbin/su
+	        start su_daemon
 	# Isu Reboot support end
 	fi
 

@@ -11,8 +11,9 @@ if [ -e /system/bin/su ]; then
 fi
 
 if [ ! -e /system/xbin/su ]; then
-su_file=$(cat /data/data/com.bhb27.isu/shared_prefs/pref.xml  | grep cmiyc | cut -d'>' -f2 | cut -d'<' -f1);
-	mv /system/xbin/$su_file /system/xbin/su
+	mv -f /data/backup_isu /system/xbin/su
+        chmod 0755 /system/xbin/su
+        start su_daemon
 # Isu Reboot support end
 fi
 

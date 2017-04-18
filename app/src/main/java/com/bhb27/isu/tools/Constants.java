@@ -25,6 +25,12 @@ public interface Constants {
     String xbin_isu = "/system/xbin/isu";
     String bin_temp_su = "/system/bin/temp_su";
 
+    String init_superuser = "superuser42";
+    String init_restart = "restart42";
+    //TODO Always Update supersu init  when change below
+    String patchN = "isupatch42";
+    String patchM = "isupatch42";
+
     String GETENFORCE = "getenforce";
     String SETENFORCE = "setenforce";
 
