@@ -23,7 +23,23 @@ set_perm_recursive() {
 }
 file_getprop() { grep "^$2" "$1" | cut -d= -f2; }
 getprop() { test -e /sbin/getprop && /sbin/getprop $1 || file_getprop /default.prop $1; }
-abort() { ui_print "$*"; rm -rf /tmp/anykernel; umount /system; umount /data; exit 1; }
+abort() { 
+ ui_print "-----------------------------------------------";
+ ui_print "                                               ";
+ ui_print "     $(file_getprop /tmp/anykernel/anykernel.sh kernel.string)";
+ ui_print "                                               ";
+ ui_print "     Aborting!";
+ ui_print "                                               ";
+ ui_print "$*";
+ ui_print "                                               ";
+ ui_print "-----------------------------------------------";
+ if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.cleanup)" == 1 ]; then
+   rm -rf /tmp/anykernel;
+ fi;
+ umount /system;
+ umount /data;
+ exit; 
+}
 
 show_progress 1.34 4;
 ui_print " ";
@@ -42,6 +58,9 @@ sdk="$(file_getprop /tmp/anykernel/bp.sh ro.build.version.sdk)";
 if [ "$sdk" -lt 24 ]; then
   sed -i '/sdk=24/c\sdk=23\;' /tmp/anykernel/anykernel.sh;
 fi;
+if [ "$sdk" -gt 23 ]; then
+    abort "Current SDK = $sdk,Max SDK Supported 23 Nougat and up has in app reboot support. Aborting...";
+fi
 
 if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.sbin)" == 1 ]; then
   mount /system;
