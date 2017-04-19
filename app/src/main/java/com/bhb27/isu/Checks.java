@@ -233,7 +233,6 @@ public class Checks extends PreferenceFragment {
             String sdcard = Environment.getExternalStorageDirectory().getPath();
             String log_folder = sdcard + "/iSu_Logs/";
             String log_temp_folder = sdcard + "/iSu_Logs/tmpziplog/";
-            boolean zip_ok = false;
             String zip_file = sdcard + "/iSu_Logs/" + "iSu_log" + getDate() + ".zip";
             String logcat = log_temp_folder + "logcat.txt";
             String tmplogcat = log_temp_folder + "tmplogcat.txt";
@@ -270,20 +269,19 @@ public class Checks extends PreferenceFragment {
             runCommand("cat " + executableFilePath + "prop.json >> " + isuconfig, su);
             runCommand("echo '" + prefs + "' >> " + isuconfig, su);
             runCommand("cat " + data_folder + "/shared_prefs/" + Constants.PREF_NAME + ".xml >> " + isuconfig, su);
-            runCommand("cat " + data_folder + "/shared_prefs/" + Constants.PREF_NAME + ".xml >> " + isuconfig, su);
             runCommand("echo '" + paths + "' >> " + isuconfig, su);
             runCommand("echo '" + log_folder + "' >> " + isuconfig, su);
             runCommand("echo '" + data_folder + "' >> " + isuconfig, su);
             runCommand("rm -rf " + log_temp_folder + "logcat_wile.txt", su);
             // ZipUtil doesn’t understand folder name that end with /
             // Logcat some times is too long and the zip logcat.txt may be empty, do some check
-            while (!zip_ok) {
+            while (true) {
                 ZipUtil.pack(new File(sdcard + "/iSu_Logs/tmpziplog"), new File(zip_file));
                 ZipUtil.unpackEntry(new File(zip_file), "logcat.txt", new File(tmplogcat));
                 if (Tools.compareFiles(logcat, tmplogcat, true, getActivity())) {
                     Log.d(Constants.TAG, "ziped logcat.txt is ok");
                     runCommand("rm -rf " + log_temp_folder, su);
-                    zip_ok = true;
+                    break;
                 } else {
                     Log.d(Constants.TAG, "logcat.txt is nok");
                     runCommand("rm -rf " + zip_file, su);
