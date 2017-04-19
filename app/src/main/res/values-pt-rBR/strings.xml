@@ -87,7 +87,7 @@
     <string name="fingerprint_dialog_personalized">Personalizado</string>
     <string name="fingerprint_dialog_personalized_title">Setar o novo valor para\n</string>
     <string name="fingerprint_dialog_result">Esteja ciente que para aplicar as alterações é necessário um reboot</string>
-    <string name="fingerprint_apply">\n*O valor mudou de reinicie para aplicar</string>
+    <string name="fingerprint_apply">\n\n*O valor mudou de reinicie para aplicar</string>
     <string name="edited_text">O valor personalizado não pode estar vazio. Alteração não aceita</string>
     <string name="equals_values">Nenhuma alteração feita, valor novo igual ao valor atual da ROM!</string>
     <string name="props_any">Listar todos ro.props e selecionar alguns para edição</string>

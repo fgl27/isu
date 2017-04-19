@@ -90,7 +90,7 @@
     <string name="fingerprint_dialog_personalized">Personalized</string>
     <string name="fingerprint_dialog_personalized_title">Set new value for\n</string>
     <string name="fingerprint_dialog_result">Be aware to apply the changes is need a reboot!</string>
-    <string name="fingerprint_apply">\n*The value has changed reboot to apply</string>
+    <string name="fingerprint_apply">\n\n*The value has changed reboot to apply</string>
     <string name="edited_text">The Personalized value can\'t be empty change not accepted</string>
     <string name="equals_values">No changes made, new value equal current ROM value!</string>
     <string name="props_any">List all ro.props and select some to edit</string>
@@ -114,6 +114,7 @@
     <string name="know_props">Known Props</string>
     <string name="apply">Apply</string>
     <string name="cancel">Cancel</string>
+    <string name="fingerprint_help">\n\nYours current ro.build.fingerprint is the same as yours ro.bootimage.build.fingerprint\nThis on a custom ROM means you are not using a authentic ro.build.fingerprint and that may be a reason for a safety net fail</string>
 
     <!--Widget-->
     <string name="horizontal">Horizontal</string>

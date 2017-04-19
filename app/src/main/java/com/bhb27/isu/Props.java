@@ -20,11 +20,13 @@
 package com.bhb27.isu;
 
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatCheckBox;
@@ -49,6 +51,7 @@ Preference.OnPreferenceChangeListener {
     private Preference mBuildFingerprint, mForceAllSafe, mForceAllUnsafe, mPropsAny, mPropsAnyList;
     private boolean isCMSU;
     private AlertDialog.Builder mPerAppDialog;
+    private Drawable originalIcon;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,6 +105,7 @@ Preference.OnPreferenceChangeListener {
             });
 
             mBuildFingerprint = (Preference) getPreferenceManager().findPreference(Constants.robuildfingerprint);
+            originalIcon = mBuildFingerprint.getIcon();
             mBuildFingerprint.setOnPreferenceClickListener(new OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
@@ -276,10 +280,17 @@ Preference.OnPreferenceChangeListener {
         }
         String BuildFingerprint = Build.FINGERPRINT;
         String RoBuildFingerprint = Tools.getprop(Constants.robuildfingerprint);
-        if (RoBuildFingerprint.equals(BuildFingerprint))
+        if (Tools.getprop(Constants.robuildfingerprint).equals(Tools.getprop(Constants.robootbuildfingerprint))) {
+            mBuildFingerprint.setSummary(Build.FINGERPRINT + getString(R.string.fingerprint_help));
+            // use setIcon(Drawable) instead of setIcon(int) to avoid falls back to the previously-set in a new Drawable that is null
+            mBuildFingerprint.setIcon(ContextCompat.getDrawable(getActivity(), R.drawable.warning));
+        } else if (RoBuildFingerprint.equals(BuildFingerprint)) {
             mBuildFingerprint.setSummary(Build.FINGERPRINT);
-        else
+            mBuildFingerprint.setIcon(originalIcon);
+        } else {
             mBuildFingerprint.setSummary(RoBuildFingerprint + getString(R.string.fingerprint_apply));
+            mBuildFingerprint.setIcon(ContextCompat.getDrawable(getActivity(), R.drawable.exclamation));
+        }
     }
 
     private void AnyPropDialog() {
