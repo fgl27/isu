@@ -48,7 +48,7 @@ public class BootService extends Service {
         Tools.PatchSepolicy(executableFilePath, this);
         isCMSU = Tools.SuVersionBool(Tools.SuVersion(this));
         if (Tools.getBoolean("prop_run", false, this) && Tools.getBoolean("apply_props", false, this)) {
-            if (Tools.SuVersionBool(Tools.SuVersion(this)))
+            if (isCMSU)
                 Tools.stripsu(executableFilePath, this);
             Log.d(TAG, " Apply props");
             Tools.applyprop(this, executableFilePath);
