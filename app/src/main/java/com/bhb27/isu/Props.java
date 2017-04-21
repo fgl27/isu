@@ -488,7 +488,7 @@ Preference.OnPreferenceChangeListener {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(getActivity());
+            progressDialog = new ProgressDialog(getActivity(), R.style.AlertDialogStyle);
             progressDialog.setTitle(getString(R.string.app_name));
             progressDialog.setCancelable(false);
             progressDialog.show();

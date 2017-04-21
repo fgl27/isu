@@ -218,7 +218,7 @@ public class Checks extends PreferenceFragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(getActivity());
+            progressDialog = new ProgressDialog(getActivity(), R.style.AlertDialogStyle);
             progressDialog.setTitle(getString(R.string.app_name));
             progressDialog.setMessage(getString(R.string.generating_log));
             progressDialog.setCancelable(false);
