@@ -56,8 +56,8 @@ public class Settings extends PreferenceFragment {
         CharSequence[] entries = new CharSequence[6];
         CharSequence[] entryValues = new CharSequence[6];
         for (int i = 0; i < 6; i++) {
-            entries[i] = (String.format(getString(R.string.apply_su_delay_summary), ((i+1)*10)));
-            entryValues[i] = String.valueOf((i+1)*10000);
+            entries[i] = (String.format(getString(R.string.apply_su_delay_summary), ((i + 1) * 10)));
+            entryValues[i] = String.valueOf((i + 1) * 10000);
         }
         mApplySuDelay.setEntries(entries);
         mApplySuDelay.setEntryValues(entryValues);

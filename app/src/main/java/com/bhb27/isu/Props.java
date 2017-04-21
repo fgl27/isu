@@ -19,8 +19,10 @@
  */
 package com.bhb27.isu;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -87,26 +89,24 @@ Preference.OnPreferenceChangeListener {
             mForceAllSafe = (Preference) findPreference("force_all_safe");
             mForceAllUnsafe = (Preference) findPreference("force_all_unsafe");
 
-            mForceAllSafe.setOnPreferenceClickListener(new  Preference.OnPreferenceClickListener() {
+            mForceAllSafe.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    Tools.resetallprop(executableFilePath, true, getActivity());
-                    updateState();
+                    new Execute().execute("green");
                     return true;
                 }
             });
-            mForceAllUnsafe.setOnPreferenceClickListener(new  Preference.OnPreferenceClickListener() {
+            mForceAllUnsafe.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    Tools.resetallprop(executableFilePath, false, getActivity());
-                    updateState();
+                    new Execute().execute("red");
                     return true;
                 }
             });
 
             mBuildFingerprint = (Preference) findPreference(Constants.robuildfingerprint);
             originalIcon = mBuildFingerprint.getIcon();
-            mBuildFingerprint.setOnPreferenceClickListener(new  Preference.OnPreferenceClickListener() {
+            mBuildFingerprint.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     // main dialog ask what to change
@@ -146,7 +146,7 @@ Preference.OnPreferenceChangeListener {
         }
 
         mPropsAny = (Preference) findPreference("props_any");
-        mPropsAny.setOnPreferenceClickListener(new  Preference.OnPreferenceClickListener() {
+        mPropsAny.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 AnyPropDialog();
@@ -155,7 +155,7 @@ Preference.OnPreferenceChangeListener {
         });
 
         mPropsAnyList = (Preference) findPreference("props_any_list");
-        mPropsAnyList.setOnPreferenceClickListener(new  Preference.OnPreferenceClickListener() {
+        mPropsAnyList.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 listdialog();
@@ -480,5 +480,39 @@ Preference.OnPreferenceChangeListener {
                     }
                 }).show();
         updateState();
+    }
+
+    private class Execute extends AsyncTask < String, Void, Void > {
+        private ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setTitle(getString(R.string.app_name));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(String...params) {
+            if (params[0].equals("green")) {
+                progressDialog.setMessage(String.format(getString(R.string.setting_all),
+                    getString(R.string.know_props)) + getString(R.string.safe) + "...");
+                Tools.resetallprop(executableFilePath, true, getActivity());
+            } else if (params[0].equals("red")) {
+                progressDialog.setMessage(String.format(getString(R.string.setting_all),
+                    getString(R.string.know_props)) + getString(R.string.unsafe) + "...");
+                Tools.resetallprop(executableFilePath, false, getActivity());
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            progressDialog.dismiss();
+            updateState();
+        }
     }
 }

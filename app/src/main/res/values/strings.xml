@@ -114,6 +114,7 @@
     <string name="know_props">Known Props</string>
     <string name="apply">Apply</string>
     <string name="cancel">Cancel</string>
+    <string name="setting_all">Setting all %s to a \n</string>
     <string name="fingerprint_help">\n\nYours current ro.build.fingerprint is the same as yours ro.bootimage.build.fingerprint\nThis on a custom ROM means you are not using a authentic ro.build.fingerprint and that may be a reason for a safety net fail</string>
 
     <!--Widget-->
