@@ -30,6 +30,7 @@ import com.bhb27.isu.tools.Tools;
 public class BootService extends Service {
 
     private static final String TAG = "iSu_BootService";
+    private boolean isCMSU;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -45,6 +46,7 @@ public class BootService extends Service {
     private void init() {
         String executableFilePath = getFilesDir().getPath() + "/";
         Tools.PatchSepolicy(executableFilePath, this);
+        isCMSU = Tools.SuVersionBool(Tools.SuVersion(this));
         if (Tools.getBoolean("prop_run", false, this) && Tools.getBoolean("apply_props", false, this)) {
             if (Tools.SuVersionBool(Tools.SuVersion(this)))
                 Tools.stripsu(executableFilePath, this);
@@ -53,7 +55,7 @@ public class BootService extends Service {
             Tools.applyDbProp(this, executableFilePath);
         }
         Tools.WriteSettings(this);
-        if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && (!Tools.ReadSystemPatch(this)))
+        if (isCMSU && (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && !Tools.ReadSystemPatch(this))
             Tools.SystemPatch(executableFilePath, this);
         Log.d(TAG, " Run");
         stopSelf();

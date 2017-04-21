@@ -88,44 +88,45 @@ public class Checks extends PreferenceFragment {
         mSuStatus.setSummary(suVersion);
         mSuStatus.setIcon(Tools.SuVersionBool(suVersion) ? R.drawable.ok : R.drawable.warning);
 
-        if (isCMSU)
-            mChecks.removePreference(mChecksView);
-
         mRebootStatus = (Preference) getPreferenceManager().findPreference("reboot_status");
-        if (Tools.RebootSupport(executableFilePath, getActivity()) || Tools.KernelSupport(getActivity())) {
-            mRebootStatus.setSummary(getString(R.string.ok));
-            mRebootStatus.setIcon(R.drawable.ok);
-        } else {
-            mRebootStatus.setSummary(getString(R.string.missing));
-            mRebootStatus.setIcon(R.drawable.warning);
-            mRebootStatus.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle)
-                        .setTitle(getString(R.string.reboot_support))
-                        .setMessage(getString(R.string.reboot_support_missing))
-                        .setPositiveButton(getString(R.string.download_folder),
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    try {
-                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.androidfilehost.com/?w=files&flid=120360")));
-                                    } catch (ActivityNotFoundException ex) {
-                                        Tools.DoAToast(getString(R.string.no_browser), getActivity());
+
+        if (isCMSU) {
+            mChecks.removePreference(mChecksView);
+            if (Tools.RebootSupport(executableFilePath, getActivity()) || Tools.KernelSupport(getActivity())) {
+                mRebootStatus.setSummary(getString(R.string.ok));
+                mRebootStatus.setIcon(R.drawable.ok);
+            } else {
+                mRebootStatus.setSummary(getString(R.string.missing));
+                mRebootStatus.setIcon(R.drawable.warning);
+                mRebootStatus.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle)
+                            .setTitle(getString(R.string.reboot_support))
+                            .setMessage(getString(R.string.reboot_support_missing))
+                            .setPositiveButton(getString(R.string.download_folder),
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        try {
+                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.androidfilehost.com/?w=files&flid=120360")));
+                                        } catch (ActivityNotFoundException ex) {
+                                            Tools.DoAToast(getString(R.string.no_browser), getActivity());
+                                        }
                                     }
-                                }
-                            })
-                        .setNegativeButton(getString(R.string.dismiss),
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    return;
-                                }
-                            }).show();
-                    return true;
-                }
-            });
-        }
+                                })
+                            .setNegativeButton(getString(R.string.dismiss),
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        return;
+                                    }
+                                }).show();
+                        return true;
+                    }
+                });
+            }
+        } else mChecks.removePreference(mRebootStatus);
 
         mLog = (Preference) getPreferenceManager().findPreference("check_log");
         mLog.setOnPreferenceClickListener(new OnPreferenceClickListener() {
