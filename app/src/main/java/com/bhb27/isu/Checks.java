@@ -49,7 +49,6 @@ import com.bhb27.isu.bootservice.MainService;
 import com.bhb27.isu.perapp.PerAppMonitor;
 import com.bhb27.isu.perapp.Per_App;
 import com.bhb27.isu.tools.Constants;
-import com.bhb27.isu.tools.RootUtils;
 import com.bhb27.isu.tools.SafetyNetHelper;
 import com.bhb27.isu.tools.Tools;
 import com.bhb27.isu.tools.RootUtils;
@@ -154,11 +153,7 @@ public class Checks extends PreferenceFragment {
         super.onResume();
         if (rootAccess != Tools.rootAccess(getActivity())) {
             rootAccess = Tools.rootAccess(getActivity());
-            RootUtils.closeSU();
-            RootUtils.closeISU();
-            Tools.DoAToast(getString(R.string.reloading), getActivity());
-            Tools.SendBroadcast("updateMainReceiver", getActivity());
-            getActivity().startActivity(new Intent(getActivity(), Main.class));
+            Tools.updateMain(getActivity(), (String.format(getString(R.string.reloading), getString(R.string.su_access))));
         }
     }
 

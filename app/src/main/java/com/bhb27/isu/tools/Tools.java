@@ -30,6 +30,7 @@ import android.content.res.AssetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.provider.Settings;
@@ -60,6 +61,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.bhb27.isu.Main;
 import com.bhb27.isu.R;
 import com.bhb27.isu.perapp.PropDB;
 import com.bhb27.isu.tools.RootFile;
@@ -85,6 +87,22 @@ public class Tools implements Constants {
             else
                 return false;
         }
+    }
+
+    public static void updateMain(Context context, String toast) {
+        RootUtils.closeSU();
+        RootUtils.closeISU();
+        DoAToast(toast, context);
+        SendBroadcast("updateMainReceiver", context);
+        context.startActivity(new Intent(context, Main.class));
+    }
+
+    @SuppressWarnings("deprecation")
+    public static String sysLocale() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            return Resources.getSystem().getConfiguration().getLocales().get(0).getLanguage();
+        else
+            return Resources.getSystem().getConfiguration().locale.getLanguage();
     }
 
     public static boolean ReadSystemPatch(Context context) {

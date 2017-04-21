@@ -21,7 +21,6 @@
     <string name="generating_log">Generating a Log&#8230;</string>
     <string name="generating_log_move">Log file saved at:\n\n%s</string>
     <string name="cant_generating">Can\'t generate a log no write permission to storage</string>
-    <string name="reloading">SU Access has changed reloading the application!</string>
 
     <!-- controls -->
     <string name="app_name" translatable="false" >iSu</string>
@@ -50,6 +49,8 @@
     <string name="apply_su">Deactivate SU at boot</string>
     <string name="apply_su_delay">Deactivate SU Delay</string>
     <string name="apply_su_delay_summary">%d seconds</string>
+    <string name="application">Application</string>
+    <string name="force_english_language">Force language to English</string>
 
     <!--Monitor-->
     <string name="set_per_app">App monitor</string>
@@ -144,6 +145,9 @@
     <string name="disable">Disabled</string>
     <string name="props_apply_boot">Apply changes to props on boot</string>
     <string name="su_not_supported">SU version not supported</string>
+    <string name="su_access">SU Access</string>
+    <string name="language">Default language</string>
+    <string name="reloading">%s has changed reloading the application!</string>
 
     <!--  props -->
     <string name="robuildtags" translatable="false" >ro.build.tags *</string>

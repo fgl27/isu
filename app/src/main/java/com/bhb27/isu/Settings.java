@@ -21,32 +21,39 @@ package com.bhb27.isu;
 
 import android.os.Bundle;
 
+import android.support.v7.preference.Preference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.PreferenceCategory;
-import android.support.v7.preference.PreferenceScreen;
 import android.support.v7.preference.Preference.OnPreferenceChangeListener;
 import android.support.v14.preference.PreferenceFragment;
+import android.support.v14.preference.SwitchPreference;
 
 import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.tools.RootUtils;
 import com.bhb27.isu.tools.Tools;
 
-public class Settings extends PreferenceFragment {
+public class Settings extends PreferenceFragment implements
+Preference.OnPreferenceChangeListener {
 
     private String suVersion;
     private boolean isCMSU;
-    private PreferenceScreen mPreferenceScreen;
-    private PreferenceCategory mSettingsSU, mSettings, mSettingsNotifications, mSettingsSelinux, mSettingsDebug;
+    private Preference mSettingsView;
+    private PreferenceCategory mSettingsPref, mSettingsSU, mSettingsNotifications, mSettingsSelinux, mSettingsDebug;
     private ListPreference mApplySuDelay;
+    private SwitchPreference mSettingsForceEnglish;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         getPreferenceManager().setSharedPreferencesName(Constants.PREF_NAME);
         addPreferencesFromResource(R.xml.settings);
 
+        mSettingsPref = (PreferenceCategory) findPreference("settings_pref");
+        mSettingsView = (Preference) findPreference("settings_view");
+        mSettingsForceEnglish = (SwitchPreference) findPreference("forceenglish");
+        mSettingsForceEnglish.setOnPreferenceChangeListener(this);
+        update();
+
         mSettingsSU = (PreferenceCategory) findPreference("su_settings_pref");
-        mPreferenceScreen = (PreferenceScreen) findPreference("settings_preferencescreen");
-        mSettings = (PreferenceCategory) findPreference("settings_pref_view");
         mSettingsNotifications = (PreferenceCategory) findPreference("notifications_settings_pref");
         mSettingsSelinux = (PreferenceCategory) findPreference("selinux_settings_pref");
         mSettingsDebug = (PreferenceCategory) findPreference("anddebug_settings_pref");
@@ -71,15 +78,30 @@ public class Settings extends PreferenceFragment {
             mSettingsSelinux.setEnabled(false);
             mSettingsDebug.setEnabled(false);
         } else
-            mPreferenceScreen.removePreference(mSettings);
+            mSettingsPref.removePreference(mSettingsView);
     }
 
     public void onResume() {
         super.onResume();
+        update();
     }
 
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object objValue) {
+        if (preference == mSettingsForceEnglish) {
+            Tools.updateMain(getActivity(), (String.format(getString(R.string.reloading), getString(R.string.language))));
+        }
+        return true;
+    }
+
+    @SuppressWarnings("deprecation")
+    public void update() {
+        if (Tools.sysLocale().startsWith("en"))
+            mSettingsForceEnglish.setEnabled(false);
     }
 }

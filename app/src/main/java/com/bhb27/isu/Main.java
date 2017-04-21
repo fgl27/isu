@@ -53,8 +53,14 @@ public class Main extends AppCompatActivity {
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     @Override
+    protected void attachBaseContext(Context context) {
+        super.attachBaseContext(CustomContextWrapper.wrap(context));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.main);
         String cmiyc = Tools.readString("cmiyc", null, this);
         if (cmiyc == null || cmiyc.isEmpty())

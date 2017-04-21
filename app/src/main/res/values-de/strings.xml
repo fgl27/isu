@@ -20,7 +20,6 @@
     <string name="generating_log">Erzeuge Log&#8230;</string>
     <string name="generating_log_move">Logdatei gespeichert:\n\n%s</string>
     <string name="cant_generating">Kann kein Log erzeugen, da Speicher-Schreibzugriffsrechte fehlen.</string>
-    <string name="reloading">SU-Zugriff hat sich geändert, Anwendung wird neugestartet!</string>
 
     <!-- controls -->
     <string name="su_switch">Ändere SU Status</string>
@@ -140,6 +139,7 @@
     <string name="disable">Ausschalten</string>
     <string name="props_apply_boot">Änderungen an Props beim Booten anwenden</string>
     <string name="su_not_supported">SU-Version wird nicht unterstützt</string>
+    <string name="reloading">%s SU-Zugriff hat sich geändert, Anwendung wird neugestartet!</string>
 
     <!-- about -->
     <string name="about">Über</string>
