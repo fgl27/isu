@@ -25,6 +25,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -341,15 +342,6 @@ public class Tools implements Constants {
         return false;
     }
 
-    public static void WriteSettings(Context context) {
-        if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") != 0) {
-            if (SuBinary())
-                RootUtils.runCommand("pm grant com.bhb27.isu android.permission.WRITE_SECURE_SETTINGS");
-            else
-                RootUtils.runICommand("pm grant com.bhb27.isu android.permission.WRITE_SECURE_SETTINGS", context);
-        }
-    }
-
     public static void setSummaryColor(Preference preference, String summary, int color, Context context) {
         String final_color = "#" + Integer.toHexString(ContextCompat.getColor(context, color) & 0x00ffffff);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
@@ -373,16 +365,25 @@ public class Tools implements Constants {
     }
 
     public static void AndroidDebugSet(Boolean isChecked, Context context) {
-        if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == 0)
+        if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == PackageManager.PERMISSION_GRANTED)
             Settings.Global.putInt(context.getContentResolver(),
                 Settings.Global.ADB_ENABLED, isChecked ? 1 : 0);
         Log.d(TAG, "Change ADB isChecked = " + isChecked + " ADB = " + AndroidDebugState(context));
     }
 
     public static boolean AndroidDebugState(Context context) {
-        if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == 0)
+        if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == PackageManager.PERMISSION_GRANTED)
             return (Settings.Global.getInt(context.getContentResolver(), Settings.Global.ADB_ENABLED, 0) != 0);
         return false;
+    }
+
+    public static void WriteSettings(Context context) {
+        if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") != PackageManager.PERMISSION_GRANTED) {
+            if (SuBinary())
+                RootUtils.runCommand("pm grant com.bhb27.isu android.permission.WRITE_SECURE_SETTINGS");
+            else
+                RootUtils.runICommand("pm grant com.bhb27.isu android.permission.WRITE_SECURE_SETTINGS", context);
+        }
     }
 
     public static void SwitchSelinux(boolean isChecked, Context context) {
@@ -524,7 +525,7 @@ public class Tools implements Constants {
 
         NotificationCompat.Builder notification = new NotificationCompat.Builder(context);
         notification.setSmallIcon(R.drawable.ic_notification);
-        notification.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.big_icon));
+        notification.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher));
         notification.setContentTitle(context.getString(R.string.notification_title));
         notification.setOngoing(true);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
