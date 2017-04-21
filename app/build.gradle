@@ -1,9 +1,8 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda' 
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "26.0.0-rc1"
 
     defaultConfig {
         applicationId "com.bhb27.isu"
@@ -23,6 +22,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    dexOptions {
+        preDexLibraries = true
+    }
     lintOptions {
         abortOnError false
 	disable 'UnsafeNativeCodeLocation', //UnsafeNativeCodeLocation: Native code outside library directory libsupol and supolicy
@@ -31,11 +33,6 @@ android {
                 'ProtectedPermissions', //ProtectedPermissions: Using system app permission
                 'MissingTranslation', //Who cares? I don't know all the languages
                 'PluralsCandidate' //the string start at a plural
-    }
-    retrolambda {
-        javaVersion JavaVersion.VERSION_1_7
-        defaultMethods false
-        incremental true
     }
     productFlavors {
     }
