@@ -20,11 +20,13 @@
 package com.bhb27.isu;
 
 import android.os.Bundle;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceScreen;
-import android.preference.ListPreference;
 
-import com.bhb27.isu.preferencefragment.PreferenceFragment;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.PreferenceCategory;
+import android.support.v7.preference.PreferenceScreen;
+import android.support.v7.preference.Preference.OnPreferenceChangeListener;
+import android.support.v14.preference.PreferenceFragment;
+
 import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.tools.RootUtils;
 import com.bhb27.isu.tools.Tools;
@@ -38,20 +40,18 @@ public class Settings extends PreferenceFragment {
     private ListPreference mApplySuDelay;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         getPreferenceManager().setSharedPreferencesName(Constants.PREF_NAME);
         addPreferencesFromResource(R.xml.settings);
-        getActivity().setTheme(R.style.Switch_theme);
 
-        mSettingsSU = (PreferenceCategory) getPreferenceManager().findPreference("su_settings_pref");
-        mPreferenceScreen = (PreferenceScreen) getPreferenceManager().findPreference("settings_preferencescreen");
-        mSettings = (PreferenceCategory) getPreferenceManager().findPreference("settings_pref_view");
-        mSettingsNotifications = (PreferenceCategory) getPreferenceManager().findPreference("notifications_settings_pref");
-        mSettingsSelinux = (PreferenceCategory) getPreferenceManager().findPreference("selinux_settings_pref");
-        mSettingsDebug = (PreferenceCategory) getPreferenceManager().findPreference("anddebug_settings_pref");
+        mSettingsSU = (PreferenceCategory) findPreference("su_settings_pref");
+        mPreferenceScreen = (PreferenceScreen) findPreference("settings_preferencescreen");
+        mSettings = (PreferenceCategory) findPreference("settings_pref_view");
+        mSettingsNotifications = (PreferenceCategory) findPreference("notifications_settings_pref");
+        mSettingsSelinux = (PreferenceCategory) findPreference("selinux_settings_pref");
+        mSettingsDebug = (PreferenceCategory) findPreference("anddebug_settings_pref");
 
-        mApplySuDelay = (ListPreference) getPreferenceManager().findPreference("apply_su_delay");
+        mApplySuDelay = (ListPreference) findPreference("apply_su_delay");
 
         CharSequence[] entries = new CharSequence[6];
         CharSequence[] entryValues = new CharSequence[6];

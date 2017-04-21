@@ -23,17 +23,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.SwitchPreference;
-import android.preference.PreferenceCategory;
-import android.preference.Preference.OnPreferenceClickListener;
 import android.util.Log;
+
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.Preference.OnPreferenceChangeListener;
+import android.support.v7.preference.PreferenceCategory;
+import android.support.v14.preference.PreferenceFragment;
+import android.support.v14.preference.SwitchPreference;
 
 import java.util.List;
 import java.util.ArrayList;
 
-import com.bhb27.isu.preferencefragment.PreferenceFragment;
 import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.tools.Tools;
 import com.bhb27.isu.perapp.PerAppMonitor;
@@ -49,22 +49,20 @@ public class Monitor extends PreferenceFragment {
     private boolean isCMSU;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         getPreferenceManager().setSharedPreferencesName(Constants.PREF_NAME);
         addPreferencesFromResource(R.xml.monitor);
-        getActivity().setTheme(R.style.Switch_theme);
 
         suVersion = Tools.SuVersion(getActivity());
         isCMSU = Tools.SuVersionBool(suVersion);
 
-        mMonitor = (PreferenceCategory) getPreferenceManager().findPreference("monitor_su");
+        mMonitor = (PreferenceCategory) findPreference("monitor_su");
 
-        mPerAppDontCare = (Preference) getPreferenceManager().findPreference("per_app_dontcare");
-        mPerAppActive = (Preference) getPreferenceManager().findPreference("per_app_active");
-        mAutoRestart = (SwitchPreference) getPreferenceManager().findPreference("auto_restart_su");
-        mPerAppDeactive = (Preference) getPreferenceManager().findPreference("per_app_deactive");
-        mMonitorView = (Preference) getPreferenceManager().findPreference("per_app_view");
+        mPerAppDontCare = (Preference) findPreference("per_app_dontcare");
+        mPerAppActive = (Preference) findPreference("per_app_active");
+        mAutoRestart = (SwitchPreference) findPreference("auto_restart_su");
+        mPerAppDeactive = (Preference) findPreference("per_app_deactive");
+        mMonitorView = (Preference) findPreference("per_app_view");
 
         if (!isCMSU) {
             mPerAppDontCare.setEnabled(false);
@@ -74,7 +72,7 @@ public class Monitor extends PreferenceFragment {
         } else {
             mMonitor.removePreference(mMonitorView);
 
-            mPerAppDontCare.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            mPerAppDontCare.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     PerAppDialog("dont");
@@ -82,7 +80,7 @@ public class Monitor extends PreferenceFragment {
                 }
             });
 
-            mPerAppActive.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            mPerAppActive.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     PerAppDialog("Su");
@@ -90,7 +88,7 @@ public class Monitor extends PreferenceFragment {
                 }
             });
 
-            mPerAppDeactive.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            mPerAppDeactive.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     PerAppDialog("iSu");

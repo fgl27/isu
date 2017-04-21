@@ -32,10 +32,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceCategory;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.Preference.OnPreferenceChangeListener;
+import android.support.v7.preference.PreferenceCategory;
+import android.support.v14.preference.PreferenceFragment;
 import android.util.Log;
 
 import java.io.File;
@@ -48,7 +48,6 @@ import com.bhb27.isu.Main;
 import com.bhb27.isu.bootservice.MainService;
 import com.bhb27.isu.perapp.PerAppMonitor;
 import com.bhb27.isu.perapp.Per_App;
-import com.bhb27.isu.preferencefragment.PreferenceFragment;
 import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.tools.RootUtils;
 import com.bhb27.isu.tools.SafetyNetHelper;
@@ -69,26 +68,24 @@ public class Checks extends PreferenceFragment {
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         getPreferenceManager().setSharedPreferencesName(Constants.PREF_NAME);
         addPreferencesFromResource(R.xml.checks);
         rootAccess = Tools.rootAccess(getActivity());
-        getActivity().setTheme(R.style.Switch_theme);
         getActivity().startService(new Intent(getActivity(), MainService.class));
         executableFilePath = getActivity().getFilesDir().getPath() + "/";
 
         suVersion = Tools.SuVersion(getActivity());
         isCMSU = Tools.SuVersionBool(suVersion);
 
-        mChecks = (PreferenceCategory) getPreferenceManager().findPreference("checks_su");
-        mChecksView = (Preference) getPreferenceManager().findPreference("checks_view");
+        mChecks = (PreferenceCategory) findPreference("checks_su");
+        mChecksView = (Preference) findPreference("checks_view");
 
-        mSuStatus = (Preference) getPreferenceManager().findPreference("su_status");
+        mSuStatus = (Preference) findPreference("su_status");
         mSuStatus.setSummary(suVersion);
         mSuStatus.setIcon(Tools.SuVersionBool(suVersion) ? R.drawable.ok : R.drawable.warning);
 
-        mRebootStatus = (Preference) getPreferenceManager().findPreference("reboot_status");
+        mRebootStatus = (Preference) findPreference("reboot_status");
 
         if (isCMSU) {
             mChecks.removePreference(mChecksView);
@@ -98,7 +95,7 @@ public class Checks extends PreferenceFragment {
             } else {
                 mRebootStatus.setSummary(getString(R.string.missing));
                 mRebootStatus.setIcon(R.drawable.warning);
-                mRebootStatus.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                mRebootStatus.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                         new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle)
@@ -128,8 +125,8 @@ public class Checks extends PreferenceFragment {
             }
         } else mChecks.removePreference(mRebootStatus);
 
-        mLog = (Preference) getPreferenceManager().findPreference("check_log");
-        mLog.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        mLog = (Preference) findPreference("check_log");
+        mLog.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 if (check_writeexternalstorage())
@@ -140,8 +137,8 @@ public class Checks extends PreferenceFragment {
             }
         });
 
-        mSafetyNet = (Preference) getPreferenceManager().findPreference("safety_net");
-        mSafetyNet.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        mSafetyNet = (Preference) findPreference("safety_net");
+        mSafetyNet.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 mSafetyNet.setIcon(R.drawable.test);

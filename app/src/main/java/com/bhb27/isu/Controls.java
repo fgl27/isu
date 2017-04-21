@@ -25,12 +25,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
-import android.preference.Preference;
-import android.preference.PreferenceCategory;
-import android.preference.SwitchPreference;
-import android.preference.Preference.OnPreferenceClickListener;
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.Preference.OnPreferenceChangeListener;
+import android.support.v7.preference.PreferenceCategory;
+import android.support.v14.preference.PreferenceFragment;
+import android.support.v14.preference.SwitchPreference;
 
-import com.bhb27.isu.preferencefragment.PreferenceFragment;
 import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.tools.Tools;
 
@@ -44,27 +44,25 @@ Preference.OnPreferenceChangeListener {
     private boolean isCMSU;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         getPreferenceManager().setSharedPreferencesName(Constants.PREF_NAME);
         addPreferencesFromResource(R.xml.controls);
-        getActivity().setTheme(R.style.Switch_theme);
 
         suVersion = Tools.SuVersion(getActivity());
         isCMSU = Tools.SuVersionBool(suVersion);
 
-        mControls = (PreferenceCategory) getPreferenceManager().findPreference("controls_su");
+        mControls = (PreferenceCategory) findPreference("controls_su");
 
-        mSuSwitch = (SwitchPreference) getPreferenceManager().findPreference("su_switch");
+        mSuSwitch = (SwitchPreference) findPreference("su_switch");
         mSuSwitch.setOnPreferenceChangeListener(this);
 
-        mSelSwitch = (SwitchPreference) getPreferenceManager().findPreference("selinux_switch");
+        mSelSwitch = (SwitchPreference) findPreference("selinux_switch");
         mSelSwitch.setOnPreferenceChangeListener(this);
 
-        mDebug = (SwitchPreference) getPreferenceManager().findPreference("android_debug");
+        mDebug = (SwitchPreference) findPreference("android_debug");
         mDebug.setOnPreferenceChangeListener(this);
 
-        mControlsView = (Preference) getPreferenceManager().findPreference("controls_view");
+        mControlsView = (Preference) findPreference("controls_view");
 
         updateState();
     }

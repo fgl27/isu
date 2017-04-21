@@ -4,6 +4,7 @@
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="preferenceTheme">@style/Pref_theme</item>
     </style>
     <style name="button" parent="@android:style/Widget.Button">
         <item name="android:gravity">center_vertical|center_horizontal</item>
@@ -21,7 +22,7 @@
     <style name="AlertDialogCustom" parent="android:Theme.Material.Light.Dialog.Alert">
       <item name="android:colorAccent">@color/colorAccent</item>
     </style>
-    <style name="Switch_theme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Pref_theme" parent="android:Theme.Material.Settings">
         <item name="colorControlActivated">@color/colorNew</item>
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>

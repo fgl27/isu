@@ -23,22 +23,24 @@ import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceClickListener;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.view.Gravity;
 import android.widget.TextView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.AppCompatCheckBox;
+
+import android.support.v7.preference.Preference;
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference.OnPreferenceChangeListener;
+import android.support.v14.preference.PreferenceFragment;
+
 import java.util.List;
 import java.util.ArrayList;
 
-import com.bhb27.isu.preferencefragment.PreferenceFragment;
 import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.tools.Tools;
 import com.bhb27.isu.perapp.PropDB;
@@ -54,11 +56,9 @@ Preference.OnPreferenceChangeListener {
     private Drawable originalIcon;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         getPreferenceManager().setSharedPreferencesName(Constants.PREF_NAME);
         addPreferencesFromResource(R.xml.props);
-        getActivity().setTheme(R.style.Switch_theme);
 
         suVersion = Tools.SuVersion(getActivity());
         isCMSU = Tools.SuVersionBool(suVersion);
@@ -68,7 +68,7 @@ Preference.OnPreferenceChangeListener {
         String temp_value;
         for (int i = 0; i < Constants.props.length; i++) {
             temp_value = "";
-            props[i] = (ListPreference) getPreferenceManager().findPreference(Constants.props[i]);
+            props[i] = (ListPreference) findPreference(Constants.props[i]);
             props[i].setOnPreferenceChangeListener(this);
             temp_value = Tools.getprop(Constants.props[i]);
             CharSequence[] entries = {
@@ -84,10 +84,10 @@ Preference.OnPreferenceChangeListener {
             props[i].setEntries(entries);
             props[i].setEntryValues(entryValues);
 
-            mForceAllSafe = (Preference) getPreferenceManager().findPreference("force_all_safe");
-            mForceAllUnsafe = (Preference) getPreferenceManager().findPreference("force_all_unsafe");
+            mForceAllSafe = (Preference) findPreference("force_all_safe");
+            mForceAllUnsafe = (Preference) findPreference("force_all_unsafe");
 
-            mForceAllSafe.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            mForceAllSafe.setOnPreferenceClickListener(new  Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     Tools.resetallprop(executableFilePath, true, getActivity());
@@ -95,7 +95,7 @@ Preference.OnPreferenceChangeListener {
                     return true;
                 }
             });
-            mForceAllUnsafe.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            mForceAllUnsafe.setOnPreferenceClickListener(new  Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     Tools.resetallprop(executableFilePath, false, getActivity());
@@ -104,9 +104,9 @@ Preference.OnPreferenceChangeListener {
                 }
             });
 
-            mBuildFingerprint = (Preference) getPreferenceManager().findPreference(Constants.robuildfingerprint);
+            mBuildFingerprint = (Preference) findPreference(Constants.robuildfingerprint);
             originalIcon = mBuildFingerprint.getIcon();
-            mBuildFingerprint.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            mBuildFingerprint.setOnPreferenceClickListener(new  Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     // main dialog ask what to change
@@ -145,8 +145,8 @@ Preference.OnPreferenceChangeListener {
             });
         }
 
-        mPropsAny = (Preference) getPreferenceManager().findPreference("props_any");
-        mPropsAny.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        mPropsAny = (Preference) findPreference("props_any");
+        mPropsAny.setOnPreferenceClickListener(new  Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 AnyPropDialog();
@@ -154,8 +154,8 @@ Preference.OnPreferenceChangeListener {
             }
         });
 
-        mPropsAnyList = (Preference) getPreferenceManager().findPreference("props_any_list");
-        mPropsAnyList.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        mPropsAnyList = (Preference) findPreference("props_any_list");
+        mPropsAnyList.setOnPreferenceClickListener(new  Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 listdialog();

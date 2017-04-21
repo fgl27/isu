@@ -154,9 +154,4 @@
     <string name="no_email_client">Brak klienta poczty zainstalowanego na urządzeniu.</string>
     <string name="no_browser">Brak przeglądarki internetowej zainstalowanej na urządzeniu.</string>
 
-    <!--  Strings for possible PreferenceActivity Back/Next buttons -->
-    <string name="back_button_label">Poprzedni</string>
-    <string name="next_button_label">Następny</string>
-    <!-- Optional button to Skip a PreferenceActivity [CHAR LIMIT=20] -->
-    <string name="skip_button_label">Pomiń</string>
 </resources>

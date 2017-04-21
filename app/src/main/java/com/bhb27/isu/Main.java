@@ -33,9 +33,9 @@ import android.widget.TextView;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.TabLayout;
 
@@ -64,7 +64,7 @@ public class Main extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        viewPager.setAdapter(new TabsExamplePagerAdapter(getSupportFragmentManager()));
+        viewPager.setAdapter(new TabsPagerAdapter(getFragmentManager()));
         viewPager.setOffscreenPageLimit(getTitles().length);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -99,12 +99,12 @@ public class Main extends AppCompatActivity {
         } catch (IllegalArgumentException ignored) {}
     }
 
-    public class TabsExamplePagerAdapter extends FragmentPagerAdapter {
+    public class TabsPagerAdapter extends FragmentPagerAdapter {
 
         String titles[] = getTitles();
         private Fragment frags[] = new Fragment[titles.length];
 
-        public TabsExamplePagerAdapter(FragmentManager fragmentManager) {
+        public TabsPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
             frags[0] = new Checks();
             frags[1] = new Controls();
