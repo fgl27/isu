@@ -149,8 +149,6 @@
     <string name="version_summary">Eine einfache App, um nach Wunsch SU zu deaktivieren und Sicherheitsüberprüfungen einiger Apps zu bestehen. Funktioniert aktuell nur mit der SU-Anwendung von ROMs auf Basis von CM/LOS.</string>
     <string name="xda_summary">XDA Supportforum Seite</string>
     <string name="email">E-Mail</string>
-    <string name="email_summary">fglfgl27@gmail.com</string>
-    <string name="github">GitHub</string>
     <string name="no_email_client">Auf dem Gerät ist kein E-Mail Client installiert.</string>
     <string name="no_browser">Auf diesem Gerät ist kein Browser installiert.</string>
 

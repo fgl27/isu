@@ -10,10 +10,9 @@
     <string name="safetyNet_pass">Sucesso</string>
     <string name="safetyNet_untested">Não testado, clique para testar</string>
     <string name="safetyNet_testing">Testando&#8230; Se demorar muito clique novamente!</string>
-    <string name="su_not_cm">Versão atual do SU não suportada.\nAlgumas funções do aplicativo só funcionam com SU CM-SU</string>
+    <string name="su_not_cm">Versão atual do SU não suportada.\nAlgumas funções do aplicativo só funcionão com SU CM-SU</string>
     <string name="reboot_support">Suporte de reboot</string>
     <string name="reboot_support_missing">O Suporte de reboot é necessário para evitar de perder o acesso ao SU apos um reboot com SU desativado. No android Nougat o aplicativo consegue adicionar o suporte, no Marshmallow ou mais antigo é necessário instalar um arquivo via TWRP, clique na PASTA DE DOWNLOADS para acessar os arquivos</string>
-    <string name="ok">OK</string>
     <string name="missing">Ausênte! Clique aqui para entender</string>
     <string name="download_folder">Pasta de Downloads</string>
     <string name="checks_log">Gere um .zip com logs que podem ajudar a entender os erros, falhas etc&#8230;</string>
@@ -37,24 +36,27 @@
     <!-- Settings -->
     <string name="notification_title">SU esta desativado, ativar o SU?</string>
     <string name="notification_switch">Mostra uma notificação quando o SU esta desativado</string>
+    <string name="toast_notification_switch">Mostra uma notificação Show Toast quando muda o estado do SU</string>
     <string name="yes">Sim</string>
     <string name="dismiss">Descartar</string>
     <string name="notifications">Notificações</string>
     <string name="activate_anddebug">Android debugging ativado</string>
     <string name="deactivate_anddebug">Android debugging desativado</string>
     <string name="not_available">Não disponível</string>
-   <string name="activate_selinux">SELinux setado para Enforcing</string>
-   <string name="deactivate_selinux">SELinux setado para Permissive</string>
     <string name="apply_su">Desativar SU apos o BOOT</string>
     <string name="apply_su_delay">Atraso para desativar o SU</string>
     <string name="apply_su_delay_summary">%d segundos</string>
+    <string name="application">Aplicativo</string>
+    <string name="force_english_language">Forçar a linguá para Inglês</string>
 
     <!--Monitor-->
     <string name="set_per_app">Monitor de aplicativos</string>
     <string name="service_per_app">iSu monitor de aplicativos</string>
-    <string name="per_app_title_isu">Selecione os apps que quando iniciados iram desativar SU:</string>
-    <string name="per_app_title_su">Selecione os apps que quando iniciados iram ativar SU:</string>
+    <string name="per_app_title_isu">Selecione os apps que quando iniciados irão desativar SU:</string>
+    <string name="per_app_title_su">Selecione os apps que quando iniciados irão ativar SU:</string>
     <string name="accessibility_service_desc">Um serviço para monitorar quando um aplicativo é iniciado e desativar ou ativar o SU</string>
+   <string name="activate_selinux">SELinux setado para Enforcing</string>
+   <string name="deactivate_selinux">SELinux setado para Permissive</string>
     <string name="per_app_active">Ativando SU</string>
     <string name="per_app_deactive">Desativando SU</string>
     <string name="per_app_default_deactivate">Desativa o SU para qualquer app se o SU esta ativado</string>
@@ -63,7 +65,7 @@
     <string name="auto_restart_su_summary">Se este estiver ativado, o SU será ativada automática quando deixar o aplicativo que desativou SU</string>
     <string name="per_app_click">Clique para</string>
     <string name="per_app_dontcare">Lista não troca</string>
-    <string name="per_app_dontcare_summary">Selecione os aplicativos que não terão efeito no monitor.\nComo funciona:\nSelecione aplicativo que não precisão acesso a ROOT e não bloqueio acesso se tiver ROOT, e são usado por aplicativos ROOT ou que bloqueiam o acesso ao ROOT, exemplo aplicativos de teclado ou de sobreposição de funções</string>
+    <string name="per_app_dontcare_summary">Selecione os aplicativos que não terão efeito no monitor.\nComo funciona:\nSelecione aplicativo que não precisão acesso a ROOT e não bloqueio acesso se tiver ROOT, e são usado por aplicativos ROOT ou que bloqueião o acesso ao ROOT, exemplo aplicativos de teclado ou de sobreposição de funções</string>
 
     <!--Prop-->
     <string name="prop_editor">Editor de Props</string>
@@ -105,12 +107,14 @@
     <string name="ro_props">Editor somente leitura</string>
     <string name="props_any_list">Listar suas mudanças aos ro.props</string>
     <string name="props_any_list_dialog_title">Lista de props que você alterou</string>
-    <string name="props_any_list_dialog_summary">Os ro.props abaixo iram ser aplicados no boot se você habilitar nas configurações  %s</string>
+    <string name="props_any_list_dialog_summary">Os ro.props abaixo irão ser aplicados no boot se você habilitar nas configurações  %s</string>
     <string name="props_no_changes">Nenhuma mudança feita!</string>
     <string name="props_any_no_selected">Nenhum prop selecionado!</string>
     <string name="know_props">Props conhecidos</string>
     <string name="apply">Aplicar</string>
     <string name="cancel">Cancelar</string>
+    <string name="setting_all">Setando todos %s para \n</string>
+    <string name="fingerprint_help">\n\nO atual valor de ro.build.fingerprint é o mesmo que ro.bootimage.build.fingerprint\nIsto em uma custom ROM significa que o ro.build.fingerprint não é autêntico e pode ser a razão de uma falha de um teste da safety net</string>
 
     <!--Widget-->
     <string name="horizontal">Horizontal</string>
@@ -139,6 +143,9 @@
     <string name="disable">Desabilitado</string>
     <string name="props_apply_boot">Aplicar as mudanças nos props no boot</string>
     <string name="su_not_supported">Versão do SU não suportada</string>
+    <string name="su_access">Acesso SU</string>
+    <string name="language">Ligua padrão</string>
+    <string name="reloading">%s mudou recarregando o aplicativo!</string>
 
     <!-- about -->
     <string name="about">Sobre</string>

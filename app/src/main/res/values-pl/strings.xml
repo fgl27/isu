@@ -149,8 +149,6 @@
     <string name="version_summary">Prosta aplikacja do wyłączenia SU, aby przejść pomyślnie test Safety Net niektórym aplikacjom. Na dzień dzisiejszy działa tylko z binariami SU, w ROM-ach opartych na CM/LOS.</string>
     <string name="xda_summary">Temat wsparcia na forum XDA</string>
     <string name="email">Email</string>
-    <string name="email_summary">fglfgl27@gmail.com</string>
-    <string name="github">GitHub</string>
     <string name="no_email_client">Brak klienta poczty zainstalowanego na urządzeniu.</string>
     <string name="no_browser">Brak przeglądarki internetowej zainstalowanej na urządzeniu.</string>
 

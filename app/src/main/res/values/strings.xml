@@ -13,7 +13,6 @@
     <string name="su_not_cm">Current SU is not supported.\nSome app functions only works with CM-SU</string>
     <string name="reboot_support">Reboot support</string>
     <string name="reboot_support_missing">The reboot support is need to avoid you losing SU after a reboot with SU deactivated. In Android Nougat the app can add that support, in Marshmallow or older is need to flash a file, click on DOWNLOAD FOLDER below to get that files</string>
-    <string name="ok">OK</string>
     <string name="missing">Missing! Click here to understand</string>
     <string name="download_folder">Download Folder</string>
     <string name="checks_log">Generate a .zip with logs that can help to understand fails, bugs, etc&#8230;</string>
@@ -23,7 +22,6 @@
     <string name="cant_generating">Can\'t generate a log no write permission to storage</string>
 
     <!-- controls -->
-    <string name="app_name" translatable="false" >iSu</string>
     <string name="su_switch">Change SU state</string>
     <string name="su_state">SU state</string>
     <string name="device_not_root">Root access not available</string>
@@ -45,7 +43,6 @@
     <string name="activate_anddebug">Activated Android debugging</string>
     <string name="deactivate_anddebug">Deactivated Android debugging</string>
     <string name="not_available">Not Available</string>
-    <string name="activate_selinux">SELinux Set to Enforcing</string>
     <string name="apply_su">Deactivate SU at boot</string>
     <string name="apply_su_delay">Deactivate SU Delay</string>
     <string name="apply_su_delay_summary">%d seconds</string>
@@ -58,6 +55,7 @@
     <string name="per_app_title_isu">Select the apps that will deactivate SU when started</string>
     <string name="per_app_title_su">Select the apps that will activate SU when started</string>
     <string name="accessibility_service_desc">A Service to monitor when foreground app starts and activate or deactivate SU.</string>
+    <string name="activate_selinux">SELinux Set to Enforcing</string>
     <string name="deactivate_selinux">SELinux Set to Permissive</string>
     <string name="per_app_default_deactivate">Deactivate SU to any app if SU is activated</string>
     <string name="per_app_default_activate">Activated SU to any app if SU is deactivated</string>
@@ -149,6 +147,22 @@
     <string name="language">Default language</string>
     <string name="reloading">%s has changed reloading the application!</string>
 
+    <!-- about -->
+    <string name="about">About</string>
+    <string name="dev_info">Developer information:</string>
+    <string name="git_summary">This is a open source app check it on my github\ngithub.com/bhb27/isu</string>
+    <string name="version">Version:</string>
+    <string name="version_summary">A simple app to deactivate SU at will and pass safety verification for some apps, today it works only on SU binary of CM/LOS base ROM\'s.</string>
+    <string name="xda_summary">XDA support forum site</string>
+    <string name="no_email_client">There is no email client installed on the device.</string>
+    <string name="no_browser">There is no web browser installed on the device.</string>
+
+    <!--  Maybe common to all languages -->
+    <string name="ok">OK</string>
+    <string name="email">Email</string>
+    <!--  translatable false  or common to all languages -->
+    <string name="github" translatable="false" >GitHub</string>
+    <string name="email_summary" translatable="false" >fglfgl27@gmail.com</string>
     <!--  props -->
     <string name="robuildtags" translatable="false" >ro.build.tags *</string>
     <string name="rodebuggable" translatable="false" >ro.debuggable</string>
@@ -162,24 +176,11 @@
     <string name="robootselinux" translatable="false" >ro.boot.selinux</string>
     <string name="robuildfingerprint" translatable="false" >ro.build.fingerprint</string>
 
-    <!-- about -->
-    <string name="about">About</string>
-    <string name="dev_info">Developer information:</string>
-    <string name="git_summary">This is a open source app check it on my github\ngithub.com/bhb27/isu</string>
-    <string name="version">Version:</string>
-    <string name="version_summary">A simple app to deactivate SU at will and pass safety verification for some apps, today it works only on SU binary of CM/LOS base ROM\'s.</string>
-    <string name="xda_summary">XDA support forum site</string>
-    <string name="email">Email</string>
-    <string name="email_summary">fglfgl27@gmail.com</string>
-    <string name="github">GitHub</string>
-    <string name="no_email_client">There is no email client installed on the device.</string>
-    <string name="no_browser">There is no web browser installed on the device.</string>
-
     <!--About images-->
     <string name="github_icon" translatable="false" >Git hub icon</string>
     <string name="xda_icon" translatable="false" >XDA icon</string>
     <string name="gmail_icon" translatable="false" >Gmail icon</string>
     <!--Main image-->
     <string name="isu_icon" translatable="false" >iSu icon</string>
-
+    <string name="app_name" translatable="false" >iSu</string>
 </resources>
