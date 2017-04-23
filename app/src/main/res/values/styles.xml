@@ -22,7 +22,7 @@
     <style name="AlertDialogCustom" parent="android:Theme.Material.Light.Dialog.Alert">
       <item name="android:colorAccent">@color/colorAccent</item>
     </style>
-    <style name="Pref_theme" parent="android:Theme.Material.Settings">
+    <style name="Pref_theme" parent="PreferenceThemeOverlay.v14.Material">
         <item name="colorControlActivated">@color/colorNew</item>
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
