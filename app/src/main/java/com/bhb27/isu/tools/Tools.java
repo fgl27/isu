@@ -25,16 +25,18 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.RemoteViews;
@@ -250,6 +252,18 @@ public class Tools implements Constants {
         return false;
     }
 
+    public static void SimpleDialog(String message, Context context) {
+        new AlertDialog.Builder(context, R.style.AlertDialogStyle)
+            .setMessage(message)
+            .setNegativeButton(context.getString(R.string.dismiss),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        return;
+                    }
+                }).show();
+    }
+
     public static void killapp(String app, Context context) {
         String executableFilePath = context.getFilesDir().getPath() + "/";
         String appRunning = RootUtils.runCommand("ps | grep " + app);
@@ -286,15 +300,14 @@ public class Tools implements Constants {
             if (getBoolean("isu_notification", false, context))
                 DoNotification(context);
         }
-        ChangeSUToast(isChecked, context);
+        ChangeSUToast(isChecked, context, (isChecked ? context.getString(R.string.per_app_active) : context.getString(R.string.per_app_deactive)));
         Log.d(TAG, "Change SU isChecked = " + isChecked + " SU path " +
             RootUtils.runICommand(isChecked ? "which su" : "which " + Tools.readString("cmiyc", null, context), context));
         updateAllWidgetsLayouts(context);
     }
 
-    public static void ChangeSUToast(boolean isChecked, Context context) {
+    public static void ChangeSUToast(boolean isChecked, Context context, String Toast) {
         boolean su = SuBinary();
-        String Toast = (su ? context.getString(R.string.per_app_active) : context.getString(R.string.per_app_deactive));
         if (getBoolean("selinux_settings_switch", false, context)) {
             String selinux_su_off = readString("selinux_su_off", null, context);
             String selinux_su_on = readString("selinux_su_on", null, context);
@@ -339,7 +352,7 @@ public class Tools implements Constants {
                 }
             }
         }
-        if (getBoolean("toast_notifications", true, context))
+        if (!Toast.isEmpty() && getBoolean("toast_notifications", true, context))
             DoAToast("iSu " + Toast + "!", context);
         SendBroadcast("updateControlsReceiver", context);
     }

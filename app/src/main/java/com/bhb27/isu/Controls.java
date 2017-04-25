@@ -38,7 +38,7 @@ public class Controls extends PreferenceFragment implements
 Preference.OnPreferenceChangeListener {
 
     private SwitchPreference mSuSwitch, mSelSwitch, mDebug;
-    private Preference mControlsView;
+    private Preference mControlsView, mTasker;
     private PreferenceCategory mControls;
     private String suVersion;
     private boolean isCMSU;
@@ -63,6 +63,25 @@ Preference.OnPreferenceChangeListener {
         mDebug.setOnPreferenceChangeListener(this);
 
         mControlsView = (Preference) findPreference("controls_view");
+
+        mTasker = (Preference) findPreference("tasker");
+        mTasker.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                String options = Constants.TASKER_SU_ON + "\n" + Constants.TASKER_SU_OFF + "\n" + Constants.TASKER_SU_INV + "\n\n" +
+                    Constants.TASKER_SELINUX_ON + "\n" + Constants.TASKER_SELINUX_OFF + "\n" + Constants.TASKER_SELINUX_INV + "\n\n" +
+                    Constants.TASKER_DEBUG_ON + "\n" + Constants.TASKER_DEBUG_OFF + "\n" + Constants.TASKER_DEBUG_INV + "\n\n" +
+                    getString(R.string.tasker_help_extra_description) +
+                    "su = " + getString(R.string.su_switch) + "\n" +
+                    "selinux = " + getString(R.string.selinux_switch) + "\n" +
+                    "debug = " + getString(R.string.anddebug_change) + "\n\n" +
+                    "on = " + String.format(getString(R.string.tasker_help_extra_state), getString(R.string.activated)) +
+                    "off = " + String.format(getString(R.string.tasker_help_extra_state), getString(R.string.deactivated)) +
+                    "inverse = " + getString(R.string.tasker_help_inv);
+                Tools.SimpleDialog(String.format(getString(R.string.tasker_help), options), getActivity());
+                return true;
+            }
+        });
 
         updateState();
     }

@@ -51,4 +51,13 @@
             android:defaultValue="false"
             android:title="@string/anddebug_change" />
     </PreferenceCategory>
+    <PreferenceCategory
+        android:key="tasker_pref"
+        android:title="@string/tasker" >
+        <Preference
+            android:key="tasker"
+            android:summary="@string/tasker_summary"
+            android:icon="@drawable/tasker"
+            android:persistent="false" />
+    </PreferenceCategory>
 </PreferenceScreen>

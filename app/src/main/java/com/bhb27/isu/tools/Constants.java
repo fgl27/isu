@@ -36,6 +36,17 @@ public interface Constants {
     String YES_ACTION = "YES_ACTION";
     String DISSMISS_ACTION = "DISSMISS_ACTION";
 
+    // tasker
+    String TASKER_SU_ON = "isu.su.on";
+    String TASKER_SU_OFF = "isu.su.off";
+    String TASKER_SU_INV = "isu.su.inverse";
+    String TASKER_SELINUX_ON = "isu.selinux.on";
+    String TASKER_SELINUX_OFF = "isu.selinux.off";
+    String TASKER_SELINUX_INV = "isu.selinux.inverse";
+    String TASKER_DEBUG_ON = "isu.debug.on";
+    String TASKER_DEBUG_OFF = "isu.debug.off";
+    String TASKER_DEBUG_INV = "isu.debug.inverse";
+
     String BUILD_PROP = "system/build.prop";
 
     String PAY = "com.google.android.apps.walletnfcrel";

@@ -84,10 +84,24 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".notification.NotificationReceiver" android:exported="false" >
+        <receiver android:name=".notification.NotificationReceiver" android:exported="false" android:process=":background" >
             <intent-filter>
                 <action android:name="YES_ACTION"/>
                 <action android:name="DISSMISS_ACTION"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".tasker.TaskerReceiver" android:exported="true" android:process=":background" >
+            <intent-filter>
+                <action android:name="isu.su.on"/>
+                <action android:name="isu.su.off"/>
+                <action android:name="isu.su.inverse"/>
+                <action android:name="isu.selinux.on"/>
+                <action android:name="isu.selinux.off"/>
+                <action android:name="isu.selinux.inverse"/>
+                <action android:name="isu.debug.on"/>
+                <action android:name="isu.debug.off"/>
+                <action android:name="isu.debug.inverse"/>
             </intent-filter>
         </receiver>
 

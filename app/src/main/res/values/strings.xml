@@ -32,6 +32,12 @@
     <string name="anddebug_switch">Android debugging</string>
     <string name="anddebug_change">Change Android debugging state</string>
     <string name="check_settings">Check SETTINGS for extra controls actions base on SU state</string>
+    <string name="tasker">Tasker</string>
+    <string name="tasker_summary">iSu controls can be controlled via Tasker\nClick here to see how</string>
+    <string name="tasker_help">Use the bellow intents as a \u0022Action\u0022 in a new task (System - Send intent *):\n\n%s \n* 	Only thing to add or change on the new task is the \u0022Action\u0022 all the other option can be the default of tasker, in doubt check xda thread link in about</string>
+    <string name="tasker_help_extra_description">Descriptions:\n\n</string>
+    <string name="tasker_help_extra_state">Set to \u0022%s\u0022 state\n</string>
+    <string name="tasker_help_inv">Always inverses the current state\n</string>
 
     <!-- Settings -->
     <string name="notification_title">SU is deactivated, activate SU?</string>

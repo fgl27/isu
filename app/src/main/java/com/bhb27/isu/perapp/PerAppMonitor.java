@@ -75,7 +75,7 @@ public class PerAppMonitor extends AccessibilityService {
             dont_profile = Per_App.app_profile_info(packageName, getApplicationContext()).get(1);
         else dont_profile = "";
         if (dont_profile.equals("dont")) {
-           Log.d(TAG, "Profile = " + dont_profile + " app " + packageName);
+            Log.d(TAG, "Profile = " + dont_profile + " app " + packageName);
         } else {
             if (Tools.getBoolean("auto_restart_su", false, this)) {
                 if (!packageName.equals(last_package) && !packageName.equals("com.android.systemui")) {
@@ -90,7 +90,7 @@ public class PerAppMonitor extends AccessibilityService {
                     last_package = packageName;
                     time = System.currentTimeMillis();
                     change();
-                    Log.d(TAG, "auto restart profile " + last_profile + " packageName = " + packageName );
+                    Log.d(TAG, "auto restart profile " + last_profile + " packageName = " + packageName);
                 }
             } else {
                 if (!Per_App.app_profile_exists(packageName, getApplicationContext())) {
@@ -105,7 +105,7 @@ public class PerAppMonitor extends AccessibilityService {
                     last_profile = info.get(1);
                     time = System.currentTimeMillis();
                     change();
-                    Log.d(TAG, "normal profile " + last_profile + " packageName = " + packageName );
+                    Log.d(TAG, "normal profile " + last_profile + " packageName = " + packageName);
                 }
             }
         }
@@ -117,54 +117,7 @@ public class PerAppMonitor extends AccessibilityService {
             Tools.SwitchSu(true, true, this);
         } else if (last_profile.equals("iSu") && Tools.SuBinary())
             Tools.SwitchSu(false, true, this);
-        else {
-            String Toast = "";
-            if (Tools.getBoolean("selinux_settings_switch", false, this)) {
-                String selinux_su_off = Tools.readString("selinux_su_off", null, this);
-                String selinux_su_on = Tools.readString("selinux_su_on", null, this);
-                boolean selinux = Tools.isSELinuxActive(this);
-                if (last_profile.equals("iSu")) {
-                    if (!selinux && selinux_su_off.equals("0")) {
-                        Tools.SwitchSelinux(true, this);
-                        Toast = Toast + "\n" + getString(R.string.activate_selinux);
-                    } else if (selinux && selinux_su_off.equals("1")) {
-                        Tools.SwitchSelinux(false, this);
-                        Toast = Toast + "\n" + getString(R.string.deactivate_selinux);
-                    }
-                } else if (last_profile.equals("Su")) {
-                    if (!selinux && selinux_su_on.equals("0")) {
-                        Tools.SwitchSelinux(true, this);
-                        Toast = Toast + "\n" + getString(R.string.activate_selinux);
-                    } else if (selinux && selinux_su_on.equals("1")) {
-                        Tools.SwitchSelinux(false, this);
-                        Toast = Toast + "\n" + getString(R.string.deactivate_selinux);
-                    }
-                }
-            }
-            if (Tools.getBoolean("anddebug_settings", false, this)) {
-                String anddebug_su_off = Tools.readString("anddebug_su_off", null, this);
-                String anddebug_su_on = Tools.readString("anddebug_su_on", null, this);
-                boolean anddebug = Tools.AndroidDebugState(this);
-                if (last_profile.equals("iSu")) {
-                    if (!anddebug && anddebug_su_on.equals("1")) {
-                        Tools.AndroidDebugSet(true, this);
-                        Toast = Toast + "\n" + getString(R.string.activate_anddebug);
-                    } else if (anddebug && anddebug_su_on.equals("0")) {
-                        Tools.AndroidDebugSet(false, this);
-                        Toast = Toast + "\n" + getString(R.string.deactivate_anddebug);
-                    }
-                } else if (last_profile.equals("Su")) {
-                    if (!anddebug && anddebug_su_off.equals("1")) {
-                        Tools.AndroidDebugSet(true, this);
-                        Toast = Toast + "\n" + getString(R.string.activate_anddebug);
-                    } else if (anddebug && anddebug_su_off.equals("0")) {
-                        Tools.AndroidDebugSet(false, this);
-                        Toast = Toast + "\n" + getString(R.string.deactivate_anddebug);
-                    }
-                }
-            }
-            if (Tools.getBoolean("toast_notifications", true, this) && !Toast.isEmpty())
-                Tools.DoAToast("iSu " + Toast + "!", this);
-        }
+        else if (last_profile.equals("Su") || last_profile.equals("iSu"))
+            Tools.ChangeSUToast(last_profile.equals("Su") ? true : false, this, "");
     }
 }

@@ -288,7 +288,7 @@ public class Checks extends PreferenceFragment {
         protected void onPostExecute(String zip) {
             super.onPostExecute(zip);
             progressDialog.dismiss();
-            LogResultDialog(String.format(getString(R.string.generating_log_move), zip));
+            Tools.SimpleDialog(String.format(getString(R.string.generating_log_move), zip), getActivity());
         }
     }
 
@@ -304,18 +304,6 @@ public class Checks extends PreferenceFragment {
         Date date = new Date();
         String Final_Date = "_" + dateformate.format(date);
         return Final_Date;
-    }
-
-    public void LogResultDialog(String message) {
-        new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle)
-            .setMessage(message)
-            .setNegativeButton(getString(R.string.dismiss),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        return;
-                    }
-                }).show();
     }
 
     @TargetApi(23 | 24 | 25)
