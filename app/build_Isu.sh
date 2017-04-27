@@ -25,7 +25,7 @@ KEY_FOLDER="$HOME"/android/temp/sign/fgl.key;
 KEY_PASS=$(</"$HOME"/android/temp/sign/pass);
 
 # make kernel_zip
-MKZIP=1;
+MKZIP=0;
 # make zip only used if you have the need to make a zip of this a flash zip template is need
 # Auto sign zip Download from my folder link below extract and set the folder below on yours machine
 # https://www.androidfilehost.com/?fid=312978532265364585

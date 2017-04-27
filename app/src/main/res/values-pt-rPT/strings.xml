@@ -32,6 +32,11 @@
     <string name="anddebug_switch">Android debugging</string>
     <string name="anddebug_change">Mudar o estado do Android debugging</string>
     <string name="check_settings">Verifique as CONFIGURAÇÕES para controles extras baseados no estado do SU</string>
+    <string name="tasker_summary">Os controles do iSu podem ser controlados via Tasker\nClique aqui para ver como</string>
+    <string name="tasker_help">Use os Intents abaixo como uma \u0022Ação\u0022 em uma nova tarefa (Sistema - Enviar Intent):\n\n%s \n*A unia coisa a adicionar ou mudar na nova tarefa é a \u0022Ação\u0022 todas outras opções podem ficar na posição original ou vazias, em duvida confira o forum de suporte XDA link no Sobre.</string>
+    <string name="tasker_help_extra_description">Descrições:\n\n</string>
+    <string name="tasker_help_extra_state">Troca para a posição \u0022%s\u0022\n</string>
+    <string name="tasker_help_inv">Sempre inverte o atual valor\n</string>
 
     <!-- Settings -->
     <string name="notification_title">SU esta desativado, ativar o SU?</string>
