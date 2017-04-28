@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <!-- checks -->
+    <string name="safety_net">Test Safety Net</string>
     <string name="safetyNet_connection_failed">Nie można połączyć się z Google API</string>
     <string name="safetyNet_connection_suspended">Połączenie z Google API zostało zawieszone</string>
     <string name="safetyNet_error">Nie można sprawdzić SafetyNet, brak internetu?</string>
@@ -12,7 +13,6 @@
     <string name="su_not_cm">Obecny SU nie jest obsługiwany.\nNiektóre funkcje aplikacji działają tylko z CM-SU</string>
     <string name="reboot_support">Wsparcie ponownego uruchomienia</string>
     <string name="reboot_support_missing">Wsparcie ponownego uruchomienia jest wymagane, aby nie stracić SU po ponownym uruchomieniu urządzenia, gdy SU był wyłączony. W Androidzie Nougat aplikacja jest wspierana, w Marshmallow lub starszym wymagane jest zainstalowanie pliku (przez Recovery). Kliknij FOLDER POBIERANIA, aby uzyskać pliki</string>
-    <string name="ok">OK</string>
     <string name="missing">Czegoś brakuje! Kliknij tutaj, aby zrozumieć</string>
     <string name="download_folder">Folder pobierania</string>
     <string name="checks_log">Wygeneruj .zip z logami, które pomogą rozwiązać problemy, błędy itp.&#8230;</string>
@@ -32,6 +32,11 @@
     <string name="anddebug_switch">Debugowanie Android</string>
     <string name="anddebug_change">Zmień stan debugowania Android</string>
     <string name="check_settings">Sprawdź USTAWIENIA dla kontroli dodatkowych akcji w oparciu o stan SU</string>
+    <string name="tasker_summary">iSu może być kontrolowany przez Tasker\nKliknij, aby zobaczyć jak</string>
+    <string name="tasker_help">Use the bellow intents as a \u0022Action\u0022 in a new task (System - Send intent *):\n\n%s \n* 	Only thing to add or change on the new task is the \u0022Action\u0022 all the other option can be the default of tasker, in doubt check xda thread link in about</string>
+    <string name="tasker_help_extra_description">Opisy:\n\n</string>
+    <string name="tasker_help_extra_state">Ustaw na stan \u0022%s\u0022\n</string>
+    <string name="tasker_help_inv">Zawsze odwróć aktualny stan\n</string>
 
     <!-- Settings -->
     <string name="notification_title">SU wyłączony, włączyć SU?</string>
@@ -43,10 +48,11 @@
     <string name="activate_anddebug">Debugowanie Android włączone</string>
     <string name="deactivate_anddebug">Debugowanie Android wyłączone</string>
     <string name="not_available">Niedostępne</string>
-    <string name="activate_selinux">SELinux ustawiony na Restrykcyjny</string>
     <string name="apply_su">Wyłącz SU podczas uruchomienia</string>
     <string name="apply_su_delay">Opóźnienie wyłączenia SU</string>
     <string name="apply_su_delay_summary">%d sek.</string>
+    <string name="application">Aplikacja</string>
+    <string name="force_english_language">Wymuś język angielski</string>
 
     <!--Monitor-->
     <string name="set_per_app">Monitor aplikacji</string>
@@ -54,6 +60,7 @@
     <string name="per_app_title_isu">Wybierz aplikacje, które wyłączą SU, gdy zostaną uruchomione</string>
     <string name="per_app_title_su">Wybierz aplikacje, które włączą SU, gdy zostaną uruchomione</string>
     <string name="accessibility_service_desc">Usługa do monitorowania, gdy aplikacja zostanie uruchomiona i włączy lub wyłączy SU.</string>
+    <string name="activate_selinux">SELinux ustawiony na Restrykcyjny</string>
     <string name="deactivate_selinux">SELinux ustawiony na Pobłażliwy</string>
     <string name="per_app_default_deactivate">Wyłącz SU dla każdej aplikacji, jeśli SU jest włączony</string>
     <string name="per_app_default_activate">Włącz SU dla każdej aplikacji, jeśli SU jest wyłączony</string>
@@ -78,7 +85,6 @@
     <string name="unsafe">Niebezpieczna wartość</string>
     <string name="force_all">Wymuś ustawienie wszystkich znanych Props</string>
     <string name="force_all_summary">Kliknij poniżej, aby ustawić wszystkie znane Props na wybraną wartość:</string>
-    <string name="safety_net">Test Safety Net</string>
     <string name="states">Lista znanych Props</string>
     <string name="special_props">Specjalne Props</string>
     <string name="special_props_summary">\nJeśli po zmianie specjalnych Props i po ponownym uruchomieniu przywracana jest oryginalna wartość ROM-u, należy poprosić autora ROM-u, aby to naprawił\nKliknij poniżej, aby to zmienić</string>
@@ -112,6 +118,8 @@
     <string name="know_props">Znane Props</string>
     <string name="apply">Zastosuj</string>
     <string name="cancel">Anuluj</string>
+    <string name="setting_all">Ustaw wszystkie %s na \n</string>
+    <string name="fingerprint_help">\n\nObecny ro.build.fingerprint jest taki sam jak ro.bootimage.build.fingerprint\nOznacza to Custom ROM, tzn. nie jest używany autentyczny ro.build.fingerprint i to może być powodem nie przejścia Safety Net</string>
 
     <!--Widget-->
     <string name="horizontal">Poziomy</string>
@@ -140,6 +148,9 @@
     <string name="disable">Wyłączone</string>
     <string name="props_apply_boot">Zastosuj zmiany Props podczas uruchomienia</string>
     <string name="su_not_supported">Nieobsługiwana wersja SU</string>
+    <string name="su_access">Dostęp SU</string>
+    <string name="language">Domyślny język</string>
+    <string name="reloading">%s zmieniono, przeładowywanie aplikacji!</string>
 
     <!-- about -->
     <string name="about">O aplikacji</string>
@@ -148,7 +159,6 @@
     <string name="version">Wersja:</string>
     <string name="version_summary">Prosta aplikacja do wyłączenia SU, aby przejść pomyślnie test Safety Net niektórym aplikacjom. Na dzień dzisiejszy działa tylko z binariami SU, w ROM-ach opartych na CM/LOS.</string>
     <string name="xda_summary">Temat wsparcia na forum XDA</string>
-    <string name="email">Email</string>
     <string name="no_email_client">Brak klienta poczty zainstalowanego na urządzeniu.</string>
     <string name="no_browser">Brak przeglądarki internetowej zainstalowanej na urządzeniu.</string>
 
