@@ -4,8 +4,6 @@ A simple app to hide SU and pass safety net verification, today it works only on
 
 ![isu_A01_Screenshot](https://raw.githubusercontent.com/bhb27/isu/master/screenshots/A01.png)
 ![isu_A02_Screenshot](https://raw.githubusercontent.com/bhb27/isu/master/screenshots/A02.png)
-![isu_A03_Screenshot](https://raw.githubusercontent.com/bhb27/isu/master/screenshots/A03.png)
-![isu_A04_Screenshot](https://raw.githubusercontent.com/bhb27/isu/master/screenshots/A04.png)
 
 ## Report a bug request device support
 
