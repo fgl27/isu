@@ -220,6 +220,7 @@ public class Tools implements Constants {
                 } else {
                     RootUtils.runCommand("cp -f " + executableFilePath + filename + " /data/" + filename);
                     RootUtils.runCommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_restart);
+                    RootUtils.runCommand("chmod 0755 /data/restart");
                 }
             } else {
                 if (filename.contains("superuser")) {
@@ -227,18 +228,36 @@ public class Tools implements Constants {
                 } else {
                     RootUtils.runICommand("cp -f " + executableFilePath + filename + " /data/" + filename, context);
                     RootUtils.runICommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_restart, context);
+                    RootUtils.runICommand("chmod 0755 /data/restart", context);
                 }
             }
         }
 
     }
 
-    public static void subackup(Context context) {
+    public static void subackup(String executableFilePath, Context context) {
+        boolean su = SuBinary();
         if (!NewexistFile("/data/backup_isu", true, context)) {
-            if (SuBinary())
+            if (su)
                 RootUtils.runCommand("cp -f " + xbin_su + " /data/backup_isu");
             else
                 RootUtils.runICommand("cp -f /system/xbin/" + readString("cmiyc", null, context) + " /data/backup_isu", context);
+        }
+        if (!NewexistFile("/data/restart", true, context)) {
+            if (su) {
+                RootUtils.runCommand("cp -f " + executableFilePath + init_restart + " /data/restart");
+                RootUtils.runCommand("chmod 0755 /data/restart");
+            } else {
+                RootUtils.runICommand("cp -f " + executableFilePath + init_restart + " /data/restart", context);
+                RootUtils.runICommand("chmod 0755 /data/restart", context);
+            }
+        }
+        if (su) {
+            Log.d(TAG, "backup_restart = " + RootUtils.runCommand(executableFilePath + "busybox ls -l /data/restart"));
+            Log.d(TAG, "backup_isu = " + RootUtils.runCommand(executableFilePath + "busybox ls -l /data/backup_isu"));
+        } else {
+            Log.d(TAG, "backup_restart = " + RootUtils.runICommand(executableFilePath + "busybox ls -l /data/restart", context));
+            Log.d(TAG, "backup_isu = " + RootUtils.runICommand(executableFilePath + "busybox ls -l /data/backup_isu", context));
         }
     }
 

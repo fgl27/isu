@@ -60,7 +60,7 @@ public class MainService extends Service {
             if (Tools.NewexistFile(Constants.bin_su, true, this))
                 Tools.delbinsu(this);
 
-            Tools.subackup(this);
+            Tools.subackup(executableFilePath, this);
         }
 
         // Create a blank profiles.json to prevent logspam.
