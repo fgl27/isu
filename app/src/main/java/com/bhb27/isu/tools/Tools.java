@@ -74,6 +74,13 @@ import com.bhb27.isu.widgetservice.Widgetsu;
 
 public class Tools implements Constants {
 
+    public static String runCommand(String command, boolean su, Context context) {
+        if (su)
+            return RootUtils.runCommand(command);
+        else
+            return RootUtils.runICommand(command, context);
+    }
+
     public static boolean KernelSupport(Context context) {
         String kernel_support_rc, kernel_support_sh;
         if (SuBinary()) {

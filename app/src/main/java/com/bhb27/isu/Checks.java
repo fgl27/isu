@@ -22,6 +22,7 @@ package com.bhb27.isu;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -39,6 +40,7 @@ import android.support.v14.preference.PreferenceFragment;
 import android.util.Log;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -51,7 +53,6 @@ import com.bhb27.isu.perapp.Per_App;
 import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.tools.SafetyNetHelper;
 import com.bhb27.isu.tools.Tools;
-import com.bhb27.isu.tools.RootUtils;
 
 import org.zeroturnaround.zip.ZipUtil;
 
@@ -129,7 +130,7 @@ public class Checks extends PreferenceFragment {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 if (check_writeexternalstorage())
-                    new Execute().execute();
+                    new Execute(getActivity()).execute();
                 else
                     Tools.DoAToast(getString(R.string.cant_generating), getActivity());
                 return true;
@@ -207,15 +208,21 @@ public class Checks extends PreferenceFragment {
         mSafetyNet.setIcon(image);
     }
 
-    private class Execute extends AsyncTask < Void, Void, String > {
+    private static class Execute extends AsyncTask < Void, Void, String > {
         private ProgressDialog progressDialog;
+        private WeakReference<Context> contextRef;
+
+        public Execute (Context context){
+             contextRef = new WeakReference<>(context);;
+        }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(getActivity(), R.style.AlertDialogStyle);
-            progressDialog.setTitle(getString(R.string.app_name));
-            progressDialog.setMessage(getString(R.string.generating_log));
+            Context mContext = contextRef.get();
+            progressDialog = new ProgressDialog(mContext, R.style.AlertDialogStyle);
+            progressDialog.setTitle(mContext.getString(R.string.app_name));
+            progressDialog.setMessage(mContext.getString(R.string.generating_log));
             progressDialog.setCancelable(false);
             progressDialog.show();
         }
@@ -223,6 +230,8 @@ public class Checks extends PreferenceFragment {
         @Override
         protected String doInBackground(Void...params) {
             boolean su = Tools.SuBinary();
+            Context mContext = contextRef.get();
+            String executableFilePath = mContext.getFilesDir().getPath() + "/";
             String sdcard = Environment.getExternalStorageDirectory().getPath();
             String log_folder = sdcard + "/iSu_Logs/";
             String log_temp_folder = sdcard + "/iSu_Logs/tmpziplog/";
@@ -234,51 +243,51 @@ public class Checks extends PreferenceFragment {
             String getpropC = "getprop ";
 
             String isuconfig = log_temp_folder + "iSu_config.txt";
-            String data_folder = getActivity().getFilesDir().getParentFile().getAbsolutePath();
+            String data_folder = mContext.getFilesDir().getParentFile().getAbsolutePath();
             String perappjson = "per_app.json Accessibility Enabled = " +
-                Per_App.isAccessibilityEnabled(getActivity(), PerAppMonitor.accessibilityId) + "\n";
+                Per_App.isAccessibilityEnabled(mContext, PerAppMonitor.accessibilityId) + "\n";
             String propjson = "\n\nprop.json\n";
             String prefs = "\n\nprefs\n";
             String paths = "\n\npaths\n";
 
-            if (!Tools.NewexistFile(log_folder, true, getActivity())) {
+            if (!Tools.NewexistFile(log_folder, true, mContext)) {
                 File dir = new File(log_folder);
                 dir.mkdir();
             }
-            if (Tools.NewexistFile(log_temp_folder, true, getActivity())) {
-                runCommand("rm -rf " + log_temp_folder, su);
+            if (Tools.NewexistFile(log_temp_folder, true, mContext)) {
+                Tools.runCommand("rm -rf " + log_temp_folder, su, mContext);
                 File dir = new File(log_temp_folder);
                 dir.mkdir();
             } else {
                 File dir = new File(log_temp_folder);
                 dir.mkdir();
             }
-            runCommand(logcatC + " > " + logcat, su);
-            runCommand(dmesgC + " > " + log_temp_folder + "dmesg.txt", su);
-            runCommand(getpropC + " > " + log_temp_folder + "getprop.txt", su);
-            runCommand("echo '" + perappjson + "' >> " + isuconfig, su);
-            runCommand("cat " + executableFilePath + "per_app.json >> " + isuconfig, su);
-            runCommand("echo '" + propjson + "' >> " + isuconfig, su);
-            runCommand("cat " + executableFilePath + "prop.json >> " + isuconfig, su);
-            runCommand("echo '" + prefs + "' >> " + isuconfig, su);
-            runCommand("cat " + data_folder + "/shared_prefs/" + Constants.PREF_NAME + ".xml >> " + isuconfig, su);
-            runCommand("echo '" + paths + "' >> " + isuconfig, su);
-            runCommand("echo '" + log_folder + "' >> " + isuconfig, su);
-            runCommand("echo '" + data_folder + "' >> " + isuconfig, su);
-            runCommand("rm -rf " + log_temp_folder + "logcat_wile.txt", su);
+            Tools.runCommand(logcatC + " > " + logcat, su, mContext);
+            Tools.runCommand(dmesgC + " > " + log_temp_folder + "dmesg.txt", su, mContext);
+            Tools.runCommand(getpropC + " > " + log_temp_folder + "getprop.txt", su, mContext);
+            Tools.runCommand("echo '" + perappjson + "' >> " + isuconfig, su, mContext);
+            Tools.runCommand("cat " + executableFilePath + "per_app.json >> " + isuconfig, su, mContext);
+            Tools.runCommand("echo '" + propjson + "' >> " + isuconfig, su, mContext);
+            Tools.runCommand("cat " + executableFilePath + "prop.json >> " + isuconfig, su, mContext);
+            Tools.runCommand("echo '" + prefs + "' >> " + isuconfig, su, mContext);
+            Tools.runCommand("cat " + data_folder + "/shared_prefs/" + Constants.PREF_NAME + ".xml >> " + isuconfig, su, mContext);
+            Tools.runCommand("echo '" + paths + "' >> " + isuconfig, su, mContext);
+            Tools.runCommand("echo '" + log_folder + "' >> " + isuconfig, su, mContext);
+            Tools.runCommand("echo '" + data_folder + "' >> " + isuconfig, su, mContext);
+            Tools.runCommand("rm -rf " + log_temp_folder + "logcat_wile.txt", su, mContext);
             // ZipUtil doesn’t understand folder name that end with /
             // Logcat some times is too long and the zip logcat.txt may be empty, do some check
             while (true) {
                 ZipUtil.pack(new File(sdcard + "/iSu_Logs/tmpziplog"), new File(zip_file));
                 ZipUtil.unpackEntry(new File(zip_file), "logcat.txt", new File(tmplogcat));
-                if (Tools.compareFiles(logcat, tmplogcat, true, getActivity())) {
+                if (Tools.compareFiles(logcat, tmplogcat, true, mContext)) {
                     Log.d(Constants.TAG, "ziped logcat.txt is ok");
-                    runCommand("rm -rf " + log_temp_folder, su);
+                    Tools.runCommand("rm -rf " + log_temp_folder, su, mContext);
                     break;
                 } else {
                     Log.d(Constants.TAG, "logcat.txt is nok");
-                    runCommand("rm -rf " + zip_file, su);
-                    runCommand("rm -rf " + tmplogcat, su);
+                    Tools.runCommand("rm -rf " + zip_file, su, mContext);
+                    Tools.runCommand("rm -rf " + tmplogcat, su, mContext);
                 }
             }
             return zip_file;
@@ -287,19 +296,13 @@ public class Checks extends PreferenceFragment {
         @Override
         protected void onPostExecute(String zip) {
             super.onPostExecute(zip);
+            Context mContext = contextRef.get();
             progressDialog.dismiss();
-            Tools.SimpleDialog(String.format(getString(R.string.generating_log_move), zip), getActivity());
+            Tools.SimpleDialog(String.format(mContext.getString(R.string.generating_log_move), zip), mContext);
         }
     }
 
-    public void runCommand(String command, boolean su) {
-        if (su)
-            RootUtils.runCommand(command);
-        else
-            RootUtils.runICommand(command, getActivity());
-    }
-
-    public String getDate() {
+    public static String getDate() {
         DateFormat dateformate = new SimpleDateFormat("MMM_dd_yyyy_HH_mm", Locale.US);
         Date date = new Date();
         String Final_Date = "_" + dateformate.format(date);

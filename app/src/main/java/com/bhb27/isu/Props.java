@@ -20,7 +20,11 @@
 package com.bhb27.isu;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -40,6 +44,7 @@ import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference.OnPreferenceChangeListener;
 import android.support.v14.preference.PreferenceFragment;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -92,14 +97,14 @@ Preference.OnPreferenceChangeListener {
             mForceAllSafe.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    new Execute().execute("green");
+                    new Execute(getActivity()).execute("green");
                     return true;
                 }
             });
             mForceAllUnsafe.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    new Execute().execute("red");
+                    new Execute(getActivity()).execute("red");
                     return true;
                 }
             });
@@ -184,6 +189,9 @@ Preference.OnPreferenceChangeListener {
     @Override
     public void onPause() {
         super.onPause();
+        try {
+            getActivity().unregisterReceiver(updatePropsReceiver);
+        } catch (IllegalArgumentException ignored) {}
     }
 
     @Override
@@ -262,6 +270,13 @@ Preference.OnPreferenceChangeListener {
         updateState();
     }
 
+    private final BroadcastReceiver updatePropsReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateState();
+        }
+    };
+
     private void updateState() {
         String[] value = new String[Constants.props.length];
         String summary = "";
@@ -291,6 +306,10 @@ Preference.OnPreferenceChangeListener {
             mBuildFingerprint.setSummary(RoBuildFingerprint + getString(R.string.fingerprint_apply));
             mBuildFingerprint.setIcon(ContextCompat.getDrawable(getActivity(), R.drawable.exclamation));
         }
+
+        try {
+            getActivity().registerReceiver(updatePropsReceiver, new IntentFilter("updatePropsReceiver"));
+        } catch (NullPointerException ignored) {}
     }
 
     private void AnyPropDialog() {
@@ -482,28 +501,36 @@ Preference.OnPreferenceChangeListener {
         updateState();
     }
 
-    private class Execute extends AsyncTask < String, Void, Void > {
+    private static class Execute extends AsyncTask < String, Void, Void > {
         private ProgressDialog progressDialog;
+        private WeakReference<Context> contextRef;
+
+        public Execute (Context context){
+             contextRef = new WeakReference<>(context);;
+        }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(getActivity(), R.style.AlertDialogStyle);
-            progressDialog.setTitle(getString(R.string.app_name));
+            Context mContext = contextRef.get();
+            progressDialog = new ProgressDialog(mContext, R.style.AlertDialogStyle);
+            progressDialog.setTitle(mContext.getString(R.string.app_name));
             progressDialog.setCancelable(false);
             progressDialog.show();
         }
 
         @Override
         protected Void doInBackground(String...params) {
+            Context mContext = contextRef.get();
+            String executableFilePath = mContext.getFilesDir().getPath() + "/";
             if (params[0].equals("green")) {
-                progressDialog.setMessage(String.format(getString(R.string.setting_all),
-                    getString(R.string.know_props)) + getString(R.string.safe) + "...");
-                Tools.resetallprop(executableFilePath, true, getActivity());
+                progressDialog.setMessage(String.format(mContext.getString(R.string.setting_all),
+                    mContext.getString(R.string.know_props)) + mContext.getString(R.string.safe) + "...");
+                Tools.resetallprop(executableFilePath, true, mContext);
             } else if (params[0].equals("red")) {
-                progressDialog.setMessage(String.format(getString(R.string.setting_all),
-                    getString(R.string.know_props)) + getString(R.string.unsafe) + "...");
-                Tools.resetallprop(executableFilePath, false, getActivity());
+                progressDialog.setMessage(String.format(mContext.getString(R.string.setting_all),
+                    mContext.getString(R.string.know_props)) + mContext.getString(R.string.unsafe) + "...");
+                Tools.resetallprop(executableFilePath, false, mContext);
             }
             return null;
         }
@@ -511,8 +538,9 @@ Preference.OnPreferenceChangeListener {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            Context mContext = contextRef.get();
             progressDialog.dismiss();
-            updateState();
+            Tools.SendBroadcast("updatePropsReceiver", mContext);
         }
     }
 }
