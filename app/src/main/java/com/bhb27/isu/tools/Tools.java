@@ -82,20 +82,11 @@ public class Tools implements Constants {
     }
 
     public static boolean KernelSupport(Context context) {
-        String kernel_support_rc, kernel_support_sh;
-        if (SuBinary()) {
-            kernel_support_rc = RootUtils.runCommand("grep -r -i " + patchM + " *.rc ") + "";
-            if (kernel_support_rc.contains(patchM))
-                return true;
-            else
-                return false;
-        } else {
-            kernel_support_rc = RootUtils.runICommand("grep -r -i " + patchM + " *.rc ", context) + "";
-            if (kernel_support_rc.contains(patchM))
-                return true;
-            else
-                return false;
-        }
+        String kernel_support_rc = runCommand("grep -r -i " + patchM + " *.rc ", SuBinary(), context) + "";
+        if (kernel_support_rc.contains(patchM))
+            return true;
+        else
+            return false;
     }
 
     public static void updateMain(Context context, String toast) {
@@ -115,11 +106,7 @@ public class Tools implements Constants {
     }
 
     public static boolean ReadSystemPatch(Context context) {
-        String reboot_support_rc = "", reboot_support_sh = "";
-        if (SuBinary())
-            reboot_support_rc = RootUtils.runCommand("grep -i " + patchN + " system/etc/init/superuser.rc") + "";
-        else
-            reboot_support_rc = RootUtils.runICommand("grep -i " + patchN + " system/etc/init/superuser.rc", context) + "";
+        String reboot_support_rc = runCommand("grep -i " + patchN + " system/etc/init/superuser.rc", SuBinary(), context) + "";
         if (reboot_support_rc.contains(patchN))
             return true;
         return false;
@@ -127,36 +114,21 @@ public class Tools implements Constants {
 
     public static void SystemPatch(String executableFilePath, Context context) {
         String seclabel = "";
-        if (SuBinary()) {
-            seclabel = RootUtils.runCommand("cat system/etc/init/superuser.rc | grep seclabel | head -1");
-            RootUtils.runCommand("mount -o rw,remount /system");
-            RootUtils.runCommand("chmod 0755" + executableFilePath + "restart");
-            RootUtils.runCommand("cp -f " + executableFilePath + init_superuser + " /system/etc/init/superuser.rc");
-            RootUtils.runCommand(executableFilePath + "busybox sed -i '/seclabel/c\\    " + seclabel + "' system/etc/init/superuser.rc ");
-            //            RootUtils.runCommand(executableFilePath + "busybox sed -i 's/YYYY\\b/" + Tools.readString("cmiyc", null, context) + "/g' system/etc/init/superuser.rc ");
-            RootUtils.runCommand("chmod 0644" + " /system/etc/init/superuser.rc");
-            if (NewexistFile("/system/xbin/isush", true, context))
-                RootUtils.runCommand("rm -rf /system/xbin/isush");
-            RootUtils.runCommand("mount -o ro,remount /system");
-        } else {
-            seclabel = RootUtils.runICommand("cat system/etc/init/superuser.rc | grep seclabel | head -1", context);
-            RootUtils.runICommand("mount -o rw,remount /system", context);
-            RootUtils.runICommand("chmod 0755" + executableFilePath + "restart", context);
-            RootUtils.runICommand("cp -f " + executableFilePath + init_superuser + " /system/etc/init/superuser.rc", context);
-            RootUtils.runICommand(executableFilePath + "busybox sed -i '/seclabel/c\\    " + seclabel + "' system/etc/init/superuser.rc ", context);
-            //            RootUtils.runICommand(executableFilePath + "busybox sed -i 's/YYYY\\b/" + Tools.readString("cmiyc", null, context) + "/g' system/etc/init/superuser.rc ", context);
-            RootUtils.runICommand("chmod 0644" + " /system/etc/init/superuser.rc", context);
-            if (NewexistFile("/system/xbin/isush", true, context))
-                RootUtils.runICommand("rm -rf /system/xbin/isush", context);
-            RootUtils.runICommand("mount -o ro,remount /system", context);
-        }
+        boolean su = SuBinary();
+        seclabel = runCommand("cat system/etc/init/superuser.rc | grep seclabel | head -1", su, context);
+        runCommand("mount -o rw,remount /system", su, context);
+        runCommand("chmod 0755" + executableFilePath + "restart", su, context);
+        runCommand("cp -f " + executableFilePath + init_superuser + " /system/etc/init/superuser.rc", su, context);
+        runCommand(executableFilePath + "busybox sed -i '/seclabel/c\\    " + seclabel + "' system/etc/init/superuser.rc ", su, context);
+        //            RootUtils.runCommand(executableFilePath + "busybox sed -i 's/YYYY\\b/" + readString("cmiyc", null, context) + "/g' system/etc/init/superuser.rc ");
+        runCommand("chmod 0644" + " /system/etc/init/superuser.rc", su, context);
+        if (NewexistFile("/system/xbin/isush", true, context))
+            runCommand("rm -rf /system/xbin/isush", su, context);
+        runCommand("mount -o ro,remount /system", su, context);
     }
 
     public static void PatchSepolicy(String executableFilePath, Context context) {
-        if (SuBinary())
-            RootUtils.runCommand("LD_LIBRARY_PATH=" + executableFilePath + " " + executableFilePath + sepolicy);
-        else
-            RootUtils.runICommand("LD_LIBRARY_PATH=" + executableFilePath + " " + executableFilePath + sepolicy, context);
+        runCommand("LD_LIBRARY_PATH=" + executableFilePath + " " + executableFilePath + sepolicy, SuBinary(), context);
     }
 
     public static void updateAllWidgetsLayouts(Context context) {
@@ -220,23 +192,14 @@ public class Tools implements Constants {
         execFile.setExecutable(true);
         Log.d(TAG, "Copy success: " + filename);
         if (filename.contains("restart") || filename.contains("superuser")) {
-            if (SuBinary()) {
-                if (filename.contains("superuser")) {
-                    Log.d(TAG, "Copy success: supersu if");
-                    RootUtils.runCommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_superuser);
-                } else {
-                    RootUtils.runCommand("cp -f " + executableFilePath + filename + " /data/" + filename);
-                    RootUtils.runCommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_restart);
-                    RootUtils.runCommand("chmod 0755 /data/restart");
-                }
+            boolean su = SuBinary();
+            if (filename.contains("superuser")) {
+                Log.d(TAG, "Copy success: supersu if");
+                runCommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_superuser, su, context);
             } else {
-                if (filename.contains("superuser")) {
-                    RootUtils.runICommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_superuser, context);
-                } else {
-                    RootUtils.runICommand("cp -f " + executableFilePath + filename + " /data/" + filename, context);
-                    RootUtils.runICommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_restart, context);
-                    RootUtils.runICommand("chmod 0755 /data/restart", context);
-                }
+                runCommand("cp -f " + executableFilePath + filename + " /data/" + filename, su, context);
+                runCommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_restart, su, context);
+                runCommand("chmod 0755 /data/restart", su, context);
             }
         }
 
@@ -244,28 +207,14 @@ public class Tools implements Constants {
 
     public static void subackup(String executableFilePath, Context context) {
         boolean su = SuBinary();
-        if (!NewexistFile("/data/backup_isu", true, context)) {
-            if (su)
-                RootUtils.runCommand("cp -f " + xbin_su + " /data/backup_isu");
-            else
-                RootUtils.runICommand("cp -f /system/xbin/" + readString("cmiyc", null, context) + " /data/backup_isu", context);
-        }
+        if (!NewexistFile("/data/backup_isu", true, context))
+            runCommand("cp -f " + xbin_su + " /data/backup_isu", su, context);
         if (!NewexistFile("/data/restart", true, context)) {
-            if (su) {
-                RootUtils.runCommand("cp -f " + executableFilePath + init_restart + " /data/restart");
-                RootUtils.runCommand("chmod 0755 /data/restart");
-            } else {
-                RootUtils.runICommand("cp -f " + executableFilePath + init_restart + " /data/restart", context);
-                RootUtils.runICommand("chmod 0755 /data/restart", context);
-            }
+            runCommand("cp -f " + executableFilePath + init_restart + " /data/restart", su, context);
+            runCommand("chmod 0755 /data/restart", su, context);
         }
-        if (su) {
-            Log.d(TAG, "backup_restart = " + RootUtils.runCommand(executableFilePath + "busybox ls -l /data/restart"));
-            Log.d(TAG, "backup_isu = " + RootUtils.runCommand(executableFilePath + "busybox ls -l /data/backup_isu"));
-        } else {
-            Log.d(TAG, "backup_restart = " + RootUtils.runICommand(executableFilePath + "busybox ls -l /data/restart", context));
-            Log.d(TAG, "backup_isu = " + RootUtils.runICommand(executableFilePath + "busybox ls -l /data/backup_isu", context));
-        }
+        Log.d(TAG, "backup_restart = " + runCommand(executableFilePath + "busybox ls -l /data/restart", su, context));
+        Log.d(TAG, "backup_isu = " + runCommand(executableFilePath + "busybox ls -l /data/backup_isu", su, context));
     }
 
     public static boolean rootAccess(Context context) {
@@ -291,24 +240,20 @@ public class Tools implements Constants {
     }
 
     public static void killapp(String app, Context context) {
+        boolean su = SuBinary();
         String executableFilePath = context.getFilesDir().getPath() + "/";
-        String appRunning = RootUtils.runCommand("ps | grep " + app);
-        String UID = RootUtils.runCommand(executableFilePath + "busybox ps | grep " +
-            app + " | head -1  | cut -d' ' -f1 ");
+        String appRunning = runCommand("ps | grep " + app, su, context);
+        String UID = runCommand(executableFilePath + "busybox ps | grep " +
+            app + " | head -1  | cut -d' ' -f1 ", su, context);
         if (appRunning.contains(app))
-            RootUtils.runCommand("kill " + UID);
+            runCommand("kill " + UID, su, context);
     }
 
     public static void delbinsu(Context context) {
-        if (SuBinary()) {
-            RootUtils.runCommand("mount -o rw,remount /system");
-            RootUtils.runCommand("rm -rf " + bin_su);
-            RootUtils.runCommand("mount -o ro,remount /system");
-        } else {
-            RootUtils.runICommand("mount -o rw,remount /system", context);
-            RootUtils.runICommand("rm -rf " + bin_su, context);
-            RootUtils.runICommand("mount -o ro,remount /system", context);
-        }
+        boolean su = SuBinary();
+        runCommand("mount -o rw,remount /system", su, context);
+        runCommand("rm -rf " + bin_su, su, context);
+        runCommand("mount -o ro,remount /system", su, context);
     }
 
     public static void SwitchSu(boolean isChecked, boolean AppMonitor, Context context) {
@@ -328,12 +273,11 @@ public class Tools implements Constants {
         }
         ChangeSUToast(isChecked, context, (isChecked ? context.getString(R.string.per_app_active) : context.getString(R.string.per_app_deactive)));
         Log.d(TAG, "Change SU isChecked = " + isChecked + " SU path " +
-            RootUtils.runICommand(isChecked ? "which su" : "which " + Tools.readString("cmiyc", null, context), context));
+            RootUtils.runICommand(isChecked ? "which su" : "which " + readString("cmiyc", null, context), context));
         updateAllWidgetsLayouts(context);
     }
 
     public static void ChangeSUToast(boolean isChecked, Context context, String Toast) {
-        boolean su = SuBinary();
         if (getBoolean("selinux_settings_switch", false, context)) {
             String selinux_su_off = readString("selinux_su_off", null, context);
             String selinux_su_on = readString("selinux_su_on", null, context);
@@ -435,19 +379,12 @@ public class Tools implements Constants {
     }
 
     public static void WriteSettings(Context context) {
-        if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") != PackageManager.PERMISSION_GRANTED) {
-            if (SuBinary())
-                RootUtils.runCommand("pm grant com.bhb27.isu android.permission.WRITE_SECURE_SETTINGS");
-            else
-                RootUtils.runICommand("pm grant com.bhb27.isu android.permission.WRITE_SECURE_SETTINGS", context);
-        }
+        if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") != PackageManager.PERMISSION_GRANTED)
+            runCommand("pm grant com.bhb27.isu android.permission.WRITE_SECURE_SETTINGS", SuBinary(), context);
     }
 
     public static void SwitchSelinux(boolean isChecked, Context context) {
-        if (SuBinary())
-            RootUtils.runCommand(Constants.SETENFORCE + (isChecked ? " 1" : " 0"));
-        else
-            RootUtils.runICommand(Constants.SETENFORCE + (isChecked ? " 1" : " 0"), context);
+        runCommand(Constants.SETENFORCE + (isChecked ? " 1" : " 0"), SuBinary(), context);
         Log.d(TAG, "Change SELinux isChecked = " + isChecked + " State = " + getSELinuxStatus(context));
         updateAllWidgetsLayouts(context);
     }
@@ -466,7 +403,7 @@ public class Tools implements Constants {
         if (su) {
             su_bin_version = RootUtils.runCommand("su --version") + "";
         } else if (!su)
-            su_bin_version = RootUtils.runICommand(Tools.readString("cmiyc", null, context) + " --version", context) + "";
+            su_bin_version = RootUtils.runICommand(readString("cmiyc", null, context) + " --version", context) + "";
         else
             su_bin_version = RootUtils.runCommand("su --version") + "";
 
@@ -485,12 +422,8 @@ public class Tools implements Constants {
     }
 
     public static String[] getallprop(String path, Context context) {
-        String GetProps;
-        if (SuBinary())
-            GetProps = RootUtils.runCommand("getprop | grep 'ro\\.' | " + path + "busybox  sed 's/\\].*//' | " + path + "busybox  sed 's/\\[//'");
-        else
-            GetProps = RootUtils.runICommand("getprop | grep 'ro\\.' | " + path + "busybox  sed 's/\\].*//' | " + path + "busybox  sed 's/\\[//'", context);
-
+        String GetProps = runCommand("getprop | grep 'ro\\.' | " + path + "busybox  sed 's/\\].*//' | " +
+            path + "busybox  sed 's/\\[//'", SuBinary(), context);
         String[] result = GetProps.split("\n");
         Log.d(TAG, "all props = " + result);
         Log.d(TAG, "all props = " + GetProps);
@@ -503,24 +436,17 @@ public class Tools implements Constants {
     }
 
     public static void resetprop(String path, String prop, String value, Context context, boolean force) {
-        if (value.isEmpty()) {
-            if (SuBinary())
-                RootUtils.runCommand(path + "resetprop" + abi() + " --delete -n " + prop);
-            else
-                RootUtils.runICommand(path + "resetprop" + abi() + " --delete -n " + prop, context);
-        } else {
+        boolean su = SuBinary();
+        if (value.isEmpty())
+            runCommand(path + "resetprop" + abi() + " --delete -n " + prop, su, context);
+        else {
             String prop_cmd = prop + " " + value;
             String bp_prop_value = "";
             String bp_prop = "";
-            if (SuBinary()) {
-                RootUtils.runCommand(path + "resetprop" + abi() + " -v -n " + prop_cmd);
-                bp_prop_value = bp_prop_value + RootUtils.runCommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f2");
-                bp_prop = bp_prop + RootUtils.runCommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f1");
-            } else {
-                RootUtils.runICommand(path + "resetprop" + abi() + " -v -n " + prop_cmd, context);
-                bp_prop_value = bp_prop_value + RootUtils.runICommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f2", context);
-                bp_prop = bp_prop + RootUtils.runICommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f1", context);
-            }
+            runCommand(path + "resetprop" + abi() + " -v -n " + prop_cmd, su, context);
+            bp_prop_value = bp_prop_value + runCommand("cat system/build.prop | grep " + prop +
+                " | head -1 | cut -d= -f2", su, context);
+            bp_prop = bp_prop + runCommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f1", su, context);
             if (bp_prop.contains(prop) && !bp_prop_value.equals(value))
                 overwritebp(prop, bp_prop_value, prop, value, path, context);
             else if (force)
@@ -531,43 +457,29 @@ public class Tools implements Constants {
 
     public static boolean PropIsinbp(String prop, Context context) {
         String bp_prop = "";
-        if (SuBinary())
-            bp_prop = bp_prop + RootUtils.runCommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f1");
-        else
-            bp_prop = bp_prop + RootUtils.runICommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f1", context);
+        bp_prop = bp_prop + runCommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f1", SuBinary(), context);
         if (bp_prop.contains(prop))
             return true;
         return false;
     }
 
     public static void overwritebp(String oldKey, String oldValue, String newKey, String newValue, String path, Context context) {
+        boolean su = SuBinary();
         String oldvalue = oldKey + "=" + oldValue;
         String newvalue = newKey + "=" + newValue;
         String command = "old=" + oldvalue + " && " + "new=" + newvalue + " && " + path + "busybox sed -i -r \"s%$old%$new%g\" " + BUILD_PROP;
-        if (SuBinary()) {
-            RootUtils.runCommand("mount -o rw,remount /system");
-            RootUtils.runCommand(command);
-            RootUtils.runCommand("mount -o ro,remount /system");
-        } else {
-            RootUtils.runICommand("mount -o rw,remount /system", context);
-            RootUtils.runICommand(command, context);
-            RootUtils.runICommand("mount -o ro,remount /system", context);
-        }
+        runCommand("mount -o rw,remount /system", su, context);
+        runCommand(command, su, context);
+        runCommand("mount -o ro,remount /system", su, context);
         Log.d(TAG, "overwritebp " + command);
     }
 
     public static void forcewritebp(String propvalue, Context context) {
-        if (SuBinary()) {
-            RootUtils.runCommand("mount -o rw,remount /system");
-            RootUtils.runCommand("echo '\n' >> " + BUILD_PROP);
-            RootUtils.runCommand("echo " + propvalue + " >> " + BUILD_PROP);
-            RootUtils.runCommand("mount -o ro,remount /system");
-        } else {
-            RootUtils.runICommand("mount -o rw,remount /system", context);
-            RootUtils.runICommand("echo '\n' >> " + BUILD_PROP, context);
-            RootUtils.runICommand("echo " + propvalue + " >> " + BUILD_PROP, context);
-            RootUtils.runICommand("mount -o ro,remount /system", context);
-        }
+        boolean su = SuBinary();
+        runCommand("mount -o rw,remount /system", su, context);
+        runCommand("echo '\n' >> " + BUILD_PROP, su, context);
+        runCommand("echo " + propvalue + " >> " + BUILD_PROP, su, context);
+        runCommand("mount -o ro,remount /system", su, context);
         Log.d(TAG, "forcewritebp " + propvalue);
     }
 
@@ -621,10 +533,7 @@ public class Tools implements Constants {
 
     public static String getSELinuxStatus(Context context) {
         String result = "";
-        if (SuBinary())
-            result = RootUtils.runCommand(GETENFORCE);
-        else
-            result = RootUtils.runICommand(GETENFORCE, context);
+        result = runCommand(GETENFORCE, SuBinary(), context);
         if (result != null) {
             if (result.equals("Enforcing")) return "Enforcing";
             else if (result.equals("Permissive")) return "Permissive";
@@ -633,37 +542,39 @@ public class Tools implements Constants {
     }
 
     public static void stripsu(String executableFilePath, Context context) {
+        boolean su = SuBinary();
         String ro_tochange = "";
         String stripro = "ro.cm.version";
         String stripto = "no.cm.version";
-        if (SuBinary()) {
-            ro_tochange = ro_tochange + RootUtils.runCommand(executableFilePath + "busybox strings " + xbin_su + " | grep " + stripro);
-            if (ro_tochange.contains(stripro)) {
-                RootUtils.runCommand("mount -o rw,remount /system");
-                RootUtils.runCommand(executableFilePath + "busybox sed -i 's/" + stripro + "/" + stripto + "/g' " + xbin_su);
-                RootUtils.runCommand("mount -o ro,remount /system");
-                Log.d(TAG, "stripsu ro_tochange = " + ro_tochange);
-            } else Log.d(TAG, "not stripsu ro_tochange = " + ro_tochange);
-        } else {
-            ro_tochange = ro_tochange + RootUtils.runICommand(executableFilePath + "busybox strings system/xbin/" + Tools.readString("cmiyc", null, context) + " | grep " + stripro, context);
-            if (ro_tochange.contains(stripro)) {
-                RootUtils.runICommand("mount -o rw,remount /system", context);
-                RootUtils.runICommand(executableFilePath + "busybox sed -i 's/" + stripro + "/" + stripto + "/g' system/xbin/" + Tools.readString("cmiyc", null, context), context);
-                RootUtils.runICommand("mount -o ro,remount /system", context);
-                Log.d(TAG, "stripsu ro_tochange = " + ro_tochange);
-            } else Log.d(TAG, "not stripsu ro_tochange = " + ro_tochange);
-        }
+        if (su)
+            ro_tochange = ro_tochange + runCommand(executableFilePath + "busybox strings " +
+                xbin_su + " | grep " + stripro, su, context);
+        else
+            ro_tochange = ro_tochange + runCommand(executableFilePath + "busybox strings system/xbin/" + readString("cmiyc", null, context) + " | grep " + stripro, su, context);
+        if (ro_tochange.contains(stripro)) {
+            runCommand("mount -o rw,remount /system", su, context);
+            if (su)
+                runCommand(executableFilePath + "busybox sed -i 's/" + stripro +
+                    "/" + stripto + "/g' " + xbin_su, su, context);
+            else
+                runCommand(executableFilePath + "busybox sed -i 's/" + stripro +
+                    "/" + stripto + "/g' system/xbin/" + readString("cmiyc", null, context), su, context);
+            runCommand("mount -o ro,remount /system", su, context);
+            Log.d(TAG, "stripsu ro_tochange = " + ro_tochange);
+        } else Log.d(TAG, "not stripsu ro_tochange = " + ro_tochange);
     }
 
     public static void stripapp(String executableFilePath, String app, String[] strip_old, Context context) {
+        boolean su = SuBinary();
         String app_path = "";
-        app_path = app_path + RootUtils.runCommand("pm path " + app + "| head -n1 | cut -d: -f2");
-        RootUtils.runCommand("pm install -r " + app_path);
+        app_path = app_path + runCommand("pm path " + app + "| head -n1 | cut -d: -f2", su, context);
+        runCommand("pm install -r " + app_path, su, context);
         for (int i = 0; i < strip_old.length; i++)
             sedstring(executableFilePath, app, String.valueOf(strip_old[i]), context);
     }
 
     public static void sedstring(String executableFilePath, String app, String strip_old, Context context) {
+        boolean su = SuBinary();
         String odex = "";
         String strip_new;
         String app_path = "";
@@ -673,17 +584,10 @@ public class Tools implements Constants {
         strip_char[strip_char.length - 1] = ChangeLetter(strip_char[strip_char.length - 1]);
         strip_new = String.valueOf(strip_char);
 
-        if (SuBinary()) {
-            app_path = "" + RootUtils.runCommand("pm path " + app + "| head -n1 | cut -d: -f2");
-            app_path = app_path.substring(0, app_path.length() - 8) + "oat/*/base.odex";
-            RootUtils.runCommand(executableFilePath + "busybox sed -i -r 's/" + strip_old + "/" + strip_new + "/g' " + app_path);
-            Log.d(TAG, " sedstring app " + app_path);
-        } else {
-            app_path = "" + RootUtils.runICommand("pm path " + app + "| head -n1 | cut -d: -f2", context);
-            app_path = app_path.substring(0, app_path.length() - 8) + "oat/*/base.odex";
-            RootUtils.runICommand(executableFilePath + "busybox sed -i -r 's/" + strip_old + "/" + strip_new + "/g' " + app_path, context);
-            Log.d(TAG, " sedstring app " + app_path);
-        }
+        app_path = "" + runCommand("pm path " + app + "| head -n1 | cut -d: -f2", su, context);
+        app_path = app_path.substring(0, app_path.length() - 8) + "oat/*/base.odex";
+        runCommand(executableFilePath + "busybox sed -i -r 's/" + strip_old + "/" + strip_new + "/g' " + app_path, su, context);
+        Log.d(TAG, " sedstring app " + app_path);
     }
 
     public static char ChangeLetter(char letter) {

@@ -210,10 +210,10 @@ public class Checks extends PreferenceFragment {
 
     private static class Execute extends AsyncTask < Void, Void, String > {
         private ProgressDialog progressDialog;
-        private WeakReference<Context> contextRef;
+        private WeakReference < Context > contextRef;
 
-        public Execute (Context context){
-             contextRef = new WeakReference<>(context);;
+        public Execute(Context context) {
+            contextRef = new WeakReference < > (context);;
         }
 
         @Override
