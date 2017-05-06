@@ -257,23 +257,21 @@ public class Tools implements Constants {
     }
 
     public static void SwitchSu(boolean isChecked, boolean AppMonitor, Context context) {
+        runCommand("mount -o rw,remount /system", !isChecked, context);
         if (isChecked) {
-            RootUtils.runICommand("mount -o rw,remount /system", context);
             RootUtils.runICommand("mv -f " + "/system/xbin/" + readString("cmiyc", null, context) + " " + xbin_su, context);
-            RootUtils.runCommand("mount -o ro,remount /system");
             ClearAllNotification(context);
         } else {
             if (!AppMonitor)
                 killapp(Constants.PAY, context);
-            RootUtils.runCommand("mount -o rw,remount /system");
             RootUtils.runCommand("mv -f " + xbin_su + " " + "/system/xbin/" + readString("cmiyc", null, context));
-            RootUtils.runICommand("mount -o ro,remount /system", context);
             if (getBoolean("isu_notification", false, context))
                 DoNotification(context);
         }
+        runCommand("mount -o ro,remount /system", isChecked, context);
         ChangeSUToast(isChecked, context, (isChecked ? context.getString(R.string.per_app_active) : context.getString(R.string.per_app_deactive)));
         Log.d(TAG, "Change SU isChecked = " + isChecked + " SU path " +
-            RootUtils.runICommand(isChecked ? "which su" : "which " + readString("cmiyc", null, context), context));
+            runCommand(isChecked ? "which su" : "which " + readString("cmiyc", null, context), isChecked, context));
         updateAllWidgetsLayouts(context);
     }
 
