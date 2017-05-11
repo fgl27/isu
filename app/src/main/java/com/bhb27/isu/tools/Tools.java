@@ -269,6 +269,8 @@ public class Tools implements Constants {
                 DoNotification(context);
         }
         runCommand("mount -o ro,remount /system", isChecked, context);
+        if (!AppMonitor)
+            saveLong(SWICH_DELAY, System.currentTimeMillis(), context);
         ChangeSUToast(isChecked, context, (isChecked ? context.getString(R.string.per_app_active) : context.getString(R.string.per_app_deactive)));
         Log.d(TAG, "Change SU isChecked = " + isChecked + " SU path " +
             runCommand(isChecked ? "which su" : "which " + readString("cmiyc", null, context), isChecked, context));
@@ -652,6 +654,14 @@ public class Tools implements Constants {
 
     public static void saveString(String name, String value, Context context) {
         context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit().putString(name, value).apply();
+    }
+    
+     public static long getLong(String name, long defaults, Context context) {
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getLong(name, defaults);
+    }
+
+    public static void saveLong(String name, long value, Context context) {
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit().putLong(name, value).apply();
     }
 
     public static void saveprop(Context context) {

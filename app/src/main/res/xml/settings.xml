@@ -48,6 +48,16 @@
             android:dialogTitle="@string/apply_su_delay" />
     </PreferenceCategory>
     <PreferenceCategory
+        android:key="monitor_settings"
+        android:title="@string/set_per_app">
+        <ListPreference
+            android:key="allow_delay"
+            android:defaultValue="10000"
+            android:title="@string/monitor_delay"
+            android:summary="@string/monitor_delay_summary"
+            android:dialogTitle="@string/monitor_delay" />
+    </PreferenceCategory>
+    <PreferenceCategory
         android:key="props_settings_pref"
         android:title="@string/props">
         <SwitchPreference

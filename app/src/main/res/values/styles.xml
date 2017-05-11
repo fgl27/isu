@@ -5,6 +5,7 @@
         <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:colorAccent">@color/colorAccent</item>
         <item name="preferenceTheme">@style/Pref_theme</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogStyle</item>
     </style>
     <style name="button" parent="@android:style/Widget.Button">
         <item name="android:gravity">center_vertical|center_horizontal</item>

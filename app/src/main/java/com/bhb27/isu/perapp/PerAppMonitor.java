@@ -27,6 +27,7 @@ import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 
 import com.bhb27.isu.tools.Tools;
+import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.R;
 
 import java.util.ArrayList;
@@ -38,30 +39,38 @@ import java.util.List;
 public class PerAppMonitor extends AccessibilityService {
 
     private static final String TAG = "iSu" + PerAppMonitor.class.getSimpleName();
-    public static String accessibilityId, sPackageName;
+    public static String accessibilityId, sPackageName, allowdelayS;
     String last_package = "", last_profile = "", dont_profile = "";
-    long time = System.currentTimeMillis();
+    long time = System.currentTimeMillis(), SwitchSuDelay;
+    private int systemdelay = 3500, allowdelay;
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         AccessibilityServiceInfo serviceInfo = this.getServiceInfo();
         accessibilityId = serviceInfo.getId();
+        //delay check after change su using another tool
+        allowdelayS = Tools.readString("allow_delay", null, this);
+        allowdelayS = (allowdelayS != null ? allowdelayS : "0");
+        allowdelay = Integer.valueOf(allowdelayS);
+        SwitchSuDelay = Tools.getLong(Constants.SWICH_DELAY, 0, this);
 
         PackageManager localPackageManager = getPackageManager();
         Intent intent = new Intent("android.intent.action.MAIN");
         intent.addCategory("android.intent.category.HOME");
         String launcher = localPackageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY).activityInfo.packageName;
 
-        if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED && event.getPackageName() != null) {
+        if ((SwitchSuDelay + allowdelay) > System.currentTimeMillis())
+            Log.d(TAG, "(SwitchSuDelay + allowdelay) > System.currentTimeMillis() " +
+                  (SwitchSuDelay + allowdelay) + " > " + System.currentTimeMillis());
+        else if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED && event.getPackageName() != null) {
             sPackageName = event.getPackageName().toString();
             Log.d(TAG, "Package Name is " + sPackageName + " time " + (System.currentTimeMillis() - time));
-            if ((System.currentTimeMillis() - time) < 2000) {
+            if ((System.currentTimeMillis() - time) < systemdelay) {
                 if (!sPackageName.equals(launcher) && !sPackageName.equals("com.android.systemui")) {
                     process_window_change(sPackageName);
                 }
-            } else if ((System.currentTimeMillis() - time) >= 2000) {
+            } else
                 process_window_change(sPackageName);
-            }
         }
     }
 

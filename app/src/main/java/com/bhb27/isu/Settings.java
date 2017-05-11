@@ -38,8 +38,8 @@ Preference.OnPreferenceChangeListener {
     private String suVersion;
     private boolean isCMSU;
     private Preference mSettingsView;
-    private PreferenceCategory mSettingsPref, mSettingsSU, mSettingsNotifications, mSettingsSelinux, mSettingsDebug;
-    private ListPreference mApplySuDelay;
+    private PreferenceCategory mSettingsPref, mSettingsSU, mSettingsMonitor, mSettingsNotifications, mSettingsSelinux, mSettingsDebug;
+    private ListPreference mApplySuDelay, mApplyMonitorDelay;
     private SwitchPreference mSettingsForceEnglish;
 
     @Override
@@ -54,26 +54,43 @@ Preference.OnPreferenceChangeListener {
         update();
 
         mSettingsSU = (PreferenceCategory) findPreference("su_settings_pref");
+        mSettingsMonitor = (PreferenceCategory) findPreference("monitor_settings");
         mSettingsNotifications = (PreferenceCategory) findPreference("notifications_settings_pref");
         mSettingsSelinux = (PreferenceCategory) findPreference("selinux_settings_pref");
         mSettingsDebug = (PreferenceCategory) findPreference("anddebug_settings_pref");
 
         mApplySuDelay = (ListPreference) findPreference("apply_su_delay");
+        mApplyMonitorDelay = (ListPreference) findPreference("allow_delay");
 
-        CharSequence[] entries = new CharSequence[6];
-        CharSequence[] entryValues = new CharSequence[6];
+        CharSequence[] entriesSuDelay = new CharSequence[6];
+        CharSequence[] entryValuesSuDelay = new CharSequence[6];
         for (int i = 0; i < 6; i++) {
-            entries[i] = (String.format(getString(R.string.apply_su_delay_summary), ((i + 1) * 10)));
-            entryValues[i] = String.valueOf((i + 1) * 10000);
+            entriesSuDelay[i] = (String.format(getString(R.string.apply_su_delay_summary), ((i + 1) * 10)));
+            entryValuesSuDelay[i] = String.valueOf((i + 1) * 10000);
         }
-        mApplySuDelay.setEntries(entries);
-        mApplySuDelay.setEntryValues(entryValues);
+        mApplySuDelay.setEntries(entriesSuDelay);
+        mApplySuDelay.setEntryValues(entryValuesSuDelay);
+        
+        CharSequence[] entriesMonitorDelay = new CharSequence[7];
+        CharSequence[] entryValuesMonitorDelay = new CharSequence[7];
+         for (int i = 0; i < 7; i++) {
+            if (i == 0) {
+                entriesMonitorDelay[i] = getString(R.string.disable);
+                entryValuesMonitorDelay[i] = String.valueOf(i);                
+            } else {
+                entriesMonitorDelay[i] = (String.format(getString(R.string.apply_su_delay_summary), ((i) * 5)));
+                entryValuesMonitorDelay[i] = String.valueOf((i) * 5000);
+            }
+        }
+        mApplyMonitorDelay.setEntries(entriesMonitorDelay);
+        mApplyMonitorDelay.setEntryValues(entryValuesMonitorDelay);
 
         suVersion = Tools.SuVersion(getActivity());
         isCMSU = Tools.SuVersionBool(suVersion);
 
         if (!isCMSU) {
             mSettingsSU.setEnabled(false);
+            mSettingsMonitor.setEnabled(false);
             mSettingsNotifications.setEnabled(false);
             mSettingsSelinux.setEnabled(false);
             mSettingsDebug.setEnabled(false);

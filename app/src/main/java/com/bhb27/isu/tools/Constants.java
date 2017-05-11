@@ -35,6 +35,8 @@ public interface Constants {
 
     String YES_ACTION = "YES_ACTION";
     String DISSMISS_ACTION = "DISSMISS_ACTION";
+    
+    String SWICH_DELAY = "monitor_delay";
 
     // tasker
     String TASKER_SU_ON = "isu.su.on";

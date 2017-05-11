@@ -19,7 +19,7 @@
     <string name="log">Log</string>
     <string name="generating_log">Generating a Log&#8230;</string>
     <string name="generating_log_move">Log file saved at:\n\n%s</string>
-    <string name="cant_generating">Can\'t generate a log no write permission to storage</string>
+    <string name="cant_generating">Can\'t generate a log, missing write permission to storage</string>
 
     <!-- controls -->
     <string name="su_switch">Change SU state</string>
@@ -70,13 +70,15 @@
     <string name="per_app_active">Activate SU</string>
     <string name="per_app_deactive">Deactivate SU</string>
     <string name="per_app_dontcare">Don\'t Care List</string>
-    <string name="per_app_dontcare_summary">Select the apps that will have no effect to App monitor, when the app start.\nHow this works:\nSelect apps that are nor Root nor UnRoot apps, and are used by or are displayed above a Root or UnRoot app, example Keyboard or function overlay apps</string>
+    <string name="per_app_dontcare_summary">Select the apps that will not have effect to App monitor, when the app start.\nHow this works:\nSelect apps that are nor Root nor UnRoot apps, and are used by or are displayed above a Root or UnRoot app, example Keyboard or function overlay apps</string>
+    <string name="monitor_delay">Monitor pause delay</string>
+    <string name="monitor_delay_summary">Monitor will pause for chosen time (current %s) when SU is change by widget, tile or controls</string>
 
     <!--Prop-->
     <string name="prop_editor">Props Editor</string>
     <string name="prop_editor_summary">Some apps may block the access base on the value of the below known props</string>
     <string name="unknown">Unknown</string>
-    <string name="in_prop_summary">Click on a individual Prop to change it\nProps with * need a reboot after change to take full effect</string>
+    <string name="in_prop_summary">Click on an individual Prop to change it\nProps with * need a reboot after change to take full effect</string>
     <string name="props_ok">Known safe value</string>
     <string name="props_nok">Known unsafe value</string>
     <string name="props_unknown">Unknown value</string>
@@ -88,7 +90,7 @@
     <string name="states">Known props list</string>
     <string name="special_props">Special Props</string>
     <string name="special_props_summary">\nIf after the change of a special prop and a reboot the new value is reverted to original ROM value you need request the developer of the ROM to fix it\nClick on the below to change it</string>
-    <string name="fingerprint_dialog_title">Choose a option:</string>
+    <string name="fingerprint_dialog_title">Choose an option:</string>
     <string name="fingerprint_dialog_summary">Known safe:\nKnown Safe value for this prop for a nexus device\n\nPersonalized:\nEdit current value or Write a new value for this prop (example yours device stock ROM value for this)</string>
     <string name="fingerprint_dialog_know_safe">Known safe</string>
     <string name="fingerprint_dialog_personalized">Personalized</string>
@@ -100,7 +102,7 @@
     <string name="props_any">List all ro.props and select some to edit</string>
     <string name="edit">edit</string>
     <string name="props_any_edit_dialog_title">Props to edit</string>
-    <string name="props_any_edit_dialog_summary">Forcing a prop to build.prop in most case make it persistent after boot, but is possible that some android tool overwrite the value during bootup that is way iSu will apply changes after boot</string>
+    <string name="props_any_edit_dialog_summary">Forcing a prop to build.prop in most case make it persistent after boot, but is possible that some android tool overwrite the value during boot up that is way iSu will apply changes after boot</string>
     <string name="props_any_edit_dialog_force_bp">Force this prop to build.prop</string>
     <string name="props_any_edit_dialog_already_bp">This prop is already on build.prop</string>
     <string name="edited_text_ro">No changes for prop %s New value was empty</string>
@@ -112,14 +114,14 @@
     <string name="ro_props">Read Only editor</string>
     <string name="props_any_list">List yours changes to ro.props</string>
     <string name="props_any_list_dialog_title">List of props that you changed</string>
-    <string name="props_any_list_dialog_summary">The below ro.props will be apply on boot if you enable in Setting %s</string>
+    <string name="props_any_list_dialog_summary">The below ro.props will be applied on boot if you enable in Setting %s</string>
     <string name="props_no_changes">No changes made!</string>
     <string name="props_any_no_selected">No props selected!</string>
     <string name="know_props">Known Props</string>
     <string name="apply">Apply</string>
     <string name="cancel">Cancel</string>
     <string name="setting_all">Setting all %s to a \n</string>
-    <string name="fingerprint_help">\n\nYours current ro.build.fingerprint is the same as yours ro.bootimage.build.fingerprint\nThis on a custom ROM means you are not using a authentic ro.build.fingerprint and that may be a reason for a safety net fail</string>
+    <string name="fingerprint_help">\n\nYours current ro.build.fingerprint is the same as yours ro.bootimage.build.fingerprint\nThis on a custom ROM means you are not using an authentic ro.build.fingerprint and that may be a reason for a safety net fail</string>
 
     <!--Widget-->
     <string name="horizontal">Horizontal</string>
@@ -155,12 +157,12 @@
     <!-- about -->
     <string name="about">About</string>
     <string name="dev_info">Developer information:</string>
-    <string name="git_summary">This is a open source app check it on my github\ngithub.com/bhb27/isu</string>
+    <string name="git_summary">This is an open source application check it on my github\ngithub.com/bhb27/isu</string>
     <string name="version">Version:</string>
     <string name="version_summary">A simple app to deactivate SU at will and pass safety verification for some apps, today it works only on SU binary of CM/LOS base ROM\'s.</string>
     <string name="xda_summary">XDA support forum site</string>
-    <string name="no_email_client">There is no email client installed on the device.</string>
-    <string name="no_browser">There is no web browser installed on the device.</string>
+    <string name="no_email_client">There is none email client installed on the device.</string>
+    <string name="no_browser">There is none web browser installed on the device.</string>
 
     <!--  Maybe common to all languages -->
     <string name="ok">OK</string>
