@@ -150,6 +150,7 @@ public class Checks extends PreferenceFragment {
         updatesafety(-10);
     }
 
+    @Override
     public void onResume() {
         super.onResume();
         if (rootAccess != Tools.rootAccess(getActivity())) {

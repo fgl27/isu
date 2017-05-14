@@ -90,6 +90,7 @@ public class Main extends AppCompatActivity {
         } catch (NullPointerException ignored) {}
     }
 
+    @Override
     public void onResume() {
         super.onResume();
         try {

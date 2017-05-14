@@ -98,6 +98,7 @@ Preference.OnPreferenceChangeListener {
             mSettingsPref.removePreference(mSettingsView);
     }
 
+    @Override
     public void onResume() {
         super.onResume();
         update();

@@ -30,9 +30,6 @@ import com.bhb27.isu.tools.Tools;
 import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by joe on 3/2/16.
  */
@@ -80,7 +77,8 @@ public class PerAppMonitor extends AccessibilityService {
     }
 
     private void process_window_change(String packageName) {
-        if (Per_App.app_profile_exists(packageName, getApplicationContext()))
+        boolean profile_exists = (Per_App.app_profile_exists(packageName, getApplicationContext()));
+        if (profile_exists)
             dont_profile = Per_App.app_profile_info(packageName, getApplicationContext()).get(1);
         else dont_profile = "";
         if (dont_profile.equals("dont")) {
@@ -88,32 +86,28 @@ public class PerAppMonitor extends AccessibilityService {
         } else {
             if (Tools.getBoolean("auto_restart_su", false, this)) {
                 if (!packageName.equals(last_package) && !packageName.equals("com.android.systemui")) {
-                    if (!Per_App.app_profile_exists(packageName, getApplicationContext()))
+                    if (!profile_exists)
                         last_profile = "Su";
                     else {
-                        ArrayList < String > info = new ArrayList < String > ();
                         // Item 0 is package name Item 1 is the profile ID
-                        info = Per_App.app_profile_info(packageName, getApplicationContext());
-                        last_profile = info.get(1);
+                        last_profile = Per_App.app_profile_info(packageName, getApplicationContext()).get(1);
                     }
+                    change();
                     last_package = packageName;
                     time = System.currentTimeMillis();
-                    change();
                     Log.d(TAG, "auto restart profile " + last_profile + " packageName = " + packageName);
-                }
+                } else Log.d(TAG, "auto_restart_su true but last_package = " + last_package + " and packageName = " + packageName);
             } else {
-                if (!Per_App.app_profile_exists(packageName, getApplicationContext())) {
+                if (!profile_exists) {
                     packageName = "Default";
                     Log.d(TAG, "Profile does not exist. Using Default");
                 }
-                if (Per_App.app_profile_exists(packageName, getApplicationContext())) {
-                    ArrayList < String > info = new ArrayList < String > ();
+                if (profile_exists) {
                     // Item 0 is package name Item 1 is the profile ID
-                    info = Per_App.app_profile_info(packageName, getApplicationContext());
-                    last_package = packageName;
-                    last_profile = info.get(1);
+                    last_profile = Per_App.app_profile_info(packageName, getApplicationContext()).get(1);
                     time = System.currentTimeMillis();
                     change();
+                    last_package = packageName;
                     Log.d(TAG, "normal profile " + last_profile + " packageName = " + packageName);
                 }
             }
