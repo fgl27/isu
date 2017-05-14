@@ -41,7 +41,7 @@ import com.bhb27.isu.perapp.Per_App;
 
 public class Monitor extends PreferenceFragment {
 
-    private Preference mPerAppDontCare, mPerAppActive, mPerAppDeactive, mMonitorView;
+    private Preference mPerAppDontCare, mPerAppActive, mPerAppDeactive, mMonitorView, mMonitorWarning;
     private PreferenceCategory mMonitor;
     private SwitchPreference mAutoRestart;
     private AlertDialog.Builder mPerAppDialog;
@@ -63,49 +63,73 @@ public class Monitor extends PreferenceFragment {
         mAutoRestart = (SwitchPreference) findPreference("auto_restart_su");
         mPerAppDeactive = (Preference) findPreference("per_app_deactive");
         mMonitorView = (Preference) findPreference("per_app_view");
+        mMonitorWarning = (Preference) findPreference("per_app_warning");
 
-        if (!isCMSU) {
-            mPerAppDontCare.setEnabled(false);
-            mPerAppActive.setEnabled(false);
-            mAutoRestart.setEnabled(false);
-            mPerAppDeactive.setEnabled(false);
-        } else {
-            mMonitor.removePreference(mMonitorView);
-
-            mPerAppDontCare.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    PerAppDialog("dont");
-                    return true;
-                }
-            });
-
-            mPerAppActive.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    PerAppDialog("Su");
-                    return true;
-                }
-            });
-
-            mPerAppDeactive.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    PerAppDialog("iSu");
-                    return true;
-                }
-            });
-        }
+        updateState();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        updateState();
     }
 
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    private void updateState() {
+        if (!isCMSU) {
+            updatePrefs(false);
+            mMonitor.removePreference(mMonitorWarning);
+        } else {
+            mMonitor.removePreference(mMonitorView);
+            mMonitor.addPreference(mMonitorWarning);
+            if (!Per_App.isAccessibilityEnabled(getActivity(), PerAppMonitor.accessibilityId)) {
+                updatePrefs(false);
+                mMonitorWarning.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        startActivityForResult(new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS), 0);
+                        return true;
+                    }
+                });
+            } else {
+                mMonitor.removePreference(mMonitorWarning);
+                updatePrefs(true);
+                mPerAppDontCare.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        PerAppDialog("dont");
+                        return true;
+                    }
+                });
+
+                mPerAppActive.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        PerAppDialog("Su");
+                        return true;
+                    }
+                });
+
+                mPerAppDeactive.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        PerAppDialog("iSu");
+                        return true;
+                    }
+                });
+            }
+        }
+    }
+
+    private void updatePrefs(boolean state) {
+        mPerAppDontCare.setEnabled(state);
+        mPerAppActive.setEnabled(state);
+        mAutoRestart.setEnabled(state);
+        mPerAppDeactive.setEnabled(state);
     }
 
     private void PerAppDialog(String id) {

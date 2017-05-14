@@ -31,6 +31,11 @@
             android:summary="@string/su_not_cm"
             android:icon="@drawable/warning"
             android:persistent="false" />
+        <Preference
+            android:key="per_app_warning"
+            android:summary="@string/monitor_warning"
+            android:icon="@drawable/warning"
+            android:persistent="false" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="per_app_dontcare_pref"
