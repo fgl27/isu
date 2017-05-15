@@ -117,11 +117,11 @@ public class Tools implements Constants {
         boolean su = SuBinary();
         seclabel = runCommand("cat system/etc/init/superuser.rc | grep seclabel | head -1", su, context);
         runCommand("mount -o rw,remount /system", su, context);
-        runCommand("chmod 0755" + executableFilePath + "restart", su, context);
+        runCommand("chmod 755" + executableFilePath + "restart", su, context);
         runCommand("cp -f " + executableFilePath + init_superuser + " /system/etc/init/superuser.rc", su, context);
         runCommand(executableFilePath + "busybox sed -i '/seclabel/c\\    " + seclabel + "' system/etc/init/superuser.rc ", su, context);
         //            RootUtils.runCommand(executableFilePath + "busybox sed -i 's/YYYY\\b/" + readString("cmiyc", null, context) + "/g' system/etc/init/superuser.rc ");
-        runCommand("chmod 0644" + " /system/etc/init/superuser.rc", su, context);
+        runCommand("chmod 644" + " /system/etc/init/superuser.rc", su, context);
         if (NewexistFile("/system/xbin/isush", true, context))
             runCommand("rm -rf /system/xbin/isush", su, context);
         runCommand("mount -o ro,remount /system", su, context);
@@ -199,7 +199,7 @@ public class Tools implements Constants {
             } else {
                 runCommand("cp -f " + executableFilePath + filename + " /data/" + filename, su, context);
                 runCommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_restart, su, context);
-                runCommand("chmod 0755 /data/restart", su, context);
+                runCommand("chmod 755 /data/restart", su, context);
             }
         }
 
@@ -211,8 +211,8 @@ public class Tools implements Constants {
             runCommand("cp -f " + xbin_su + " /data/backup_isu", su, context);
         if (!NewexistFile("/data/restart", true, context)) {
             runCommand("cp -f " + executableFilePath + init_restart + " /data/restart", su, context);
-            runCommand("chmod 0755 /data/restart", su, context);
         }
+        runCommand("chmod 755 /data/restart", su, context);
         Log.d(TAG, "backup_restart = " + runCommand(executableFilePath + "busybox ls -l /data/restart", su, context));
         Log.d(TAG, "backup_isu = " + runCommand(executableFilePath + "busybox ls -l /data/backup_isu", su, context));
     }

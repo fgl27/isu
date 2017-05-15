@@ -46,6 +46,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import com.bhb27.isu.BuildConfig;
 import com.bhb27.isu.Main;
 import com.bhb27.isu.bootservice.MainService;
 import com.bhb27.isu.perapp.PerAppMonitor;
@@ -275,6 +276,8 @@ public class Checks extends PreferenceFragment {
             Tools.runCommand("echo '" + paths + "' >> " + isuconfig, su, mContext);
             Tools.runCommand("echo '" + log_folder + "' >> " + isuconfig, su, mContext);
             Tools.runCommand("echo '" + data_folder + "' >> " + isuconfig, su, mContext);
+            Tools.runCommand((su ? "which su" : "which " + Tools.readString("cmiyc", null, mContext)) + " >> " + isuconfig, su, mContext);
+            Tools.runCommand("echo 'iSu version " + BuildConfig.VERSION_NAME + "' >> " + isuconfig, su, mContext);
             Tools.runCommand("rm -rf " + log_temp_folder + "logcat_wile.txt", su, mContext);
             // ZipUtil doesn’t understand folder name that end with /
             // Logcat some times is too long and the zip logcat.txt may be empty, do some check
