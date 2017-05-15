@@ -71,8 +71,8 @@
     <string name="per_app_deactive">Deactivate SU</string>
     <string name="per_app_dontcare">Don\'t Care List</string>
     <string name="per_app_dontcare_summary">Select the apps that will not have effect to App monitor, when the app start.\nHow this works:\nSelect apps that are nor Root nor UnRoot apps, and are used by or are displayed above a Root or UnRoot app, example Keyboard or function overlay apps</string>
-    <string name="monitor_delay">Monitor pause delay</string>
-    <string name="monitor_delay_summary">Monitor will pause for chosen time (current %s) when SU is change by widget, tile or controls</string>
+    <string name="monitor_delay">Monitor delay</string>
+    <string name="monitor_delay_summary">Monitor will delay for chosen time (current %s) when SU is change by widget, tile or controls</string>
     <string name="monitor_warning">App monitor Accessibility service is disabled\nTo use this service is need to enable it in \u0022system settings accessibility\u0022 \nClick here to open it</string>
 
     <!--Prop-->

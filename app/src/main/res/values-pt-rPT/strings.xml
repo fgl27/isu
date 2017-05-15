@@ -71,6 +71,9 @@
     <string name="per_app_click">Clique para</string>
     <string name="per_app_dontcare">Lista não troca</string>
     <string name="per_app_dontcare_summary">Selecione os aplicativos que não terão efeito no monitor.\nComo funciona:\nSelecione aplicativo que não precisão acesso a ROOT e não bloqueio acesso se tiver ROOT, e são usado por aplicativos ROOT ou que bloqueião o acesso ao ROOT, exemplo aplicativos de teclado ou de sobreposição de funções</string>
+    <string name="monitor_delay">Atraso do monitor</string>
+    <string name="monitor_delay_summary">O monitor pausara por um tempo escolhido (atual %s) quando SU é mudado por um widget, tile ou pelos controles</string>
+    <string name="monitor_warning">O serviço de monitor da aplicação está desativado\nPara utilizar este, é necessário ativá-lo em \u0022Configurar acessibilidade\u0022 \nClique aqui para abri</string>
 
     <!--Prop-->
     <string name="prop_editor">Editor de Props</string>
