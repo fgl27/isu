@@ -67,6 +67,7 @@ fi;
 
 ./gradlew clean
 echo -e "\n The above is just the cleaning build start now\n";
+rm -rf app/build/outputs/apk/**
 ./gradlew build
 
 if [ ! -e ./app/build/outputs/apk/app-release-unsigned.apk ]; then
