@@ -177,16 +177,15 @@ public class Per_App {
     }
 
     public static boolean isAccessibilityEnabled(Context context, String id) {
-
+        if (id == null) return false;
         AccessibilityManager am = (AccessibilityManager) context
             .getSystemService(Context.ACCESSIBILITY_SERVICE);
 
         List < AccessibilityServiceInfo > runningServices = am
             .getEnabledAccessibilityServiceList(AccessibilityEvent.TYPES_ALL_MASK);
         for (AccessibilityServiceInfo service: runningServices) {
-            if (id != null && id.equals(service.getId())) {
+            if (id.equals(service.getId()))
                 return true;
-            }
         }
 
         return false;

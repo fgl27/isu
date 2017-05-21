@@ -21,6 +21,7 @@ package com.bhb27.isu.perapp;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.util.Log;
@@ -36,47 +37,51 @@ import com.bhb27.isu.R;
 public class PerAppMonitor extends AccessibilityService {
 
     private static final String TAG = "iSu" + PerAppMonitor.class.getSimpleName();
-    public static String accessibilityId, sPackageName, allowdelayS;
+    public static String accessibilityId, sPackageName;
     String last_package = "", last_profile = "", dont_profile = "";
-    long time = System.currentTimeMillis(), SwitchSuDelay;
-    private int systemdelay = 3500, allowdelay;
+    long time = System.currentTimeMillis(), SwitchSuDelay, delaysResult = 0;
+    private int systemdelay = 3500, allowdelay = 0;
+    private Context context;
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        AccessibilityServiceInfo serviceInfo = this.getServiceInfo();
-        accessibilityId = serviceInfo.getId();
+        context = this;
+        accessibilityId = this.getServiceInfo().getId();
+
+        if (event.getEventType() != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED || event.getPackageName() == null)
+            return;
+
         //delay check after su was changed using another tool
-        allowdelayS = Tools.readString("allow_delay", null, this);
-        allowdelayS = (allowdelayS != null ? allowdelayS : "0");
-        allowdelay = Integer.valueOf(allowdelayS);
-        SwitchSuDelay = Tools.getLong(Constants.SWICH_DELAY, 0, this);
+        allowdelay = Integer.valueOf(Tools.readString("allow_delay", "0", context));
+        SwitchSuDelay = Tools.getLong(Constants.SWICH_DELAY, 0, context);
+        delaysResult = (SwitchSuDelay + allowdelay);
 
-        PackageManager localPackageManager = getPackageManager();
-        Intent intent = new Intent("android.intent.action.MAIN");
-        intent.addCategory("android.intent.category.HOME");
-        String launcher = localPackageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY).activityInfo.packageName;
-
-        if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED && event.getPackageName() != null) {
-            if ((SwitchSuDelay + allowdelay) > System.currentTimeMillis())
-                Log.d(TAG, "current delay result " +
-                    ((SwitchSuDelay + allowdelay) - System.currentTimeMillis()) + " mseconds");
-            else {
-                sPackageName = event.getPackageName().toString();
-                Log.d(TAG, "Package Name is " + sPackageName + " time " + (System.currentTimeMillis() - time));
-                if (sPackageName.equals("com.bhb27.isu") || sPackageName.equals("com.android.systemui"))
-                    return;
-                else if ((System.currentTimeMillis() - time) < systemdelay) {
-                    if (!sPackageName.equals(launcher))
-                        process_window_change(sPackageName);
-                } else
+        if (delaysResult > System.currentTimeMillis())
+            Log.d(TAG, "current delay result " +
+                (delaysResult - System.currentTimeMillis()) + " mseconds");
+        else {
+            sPackageName = event.getPackageName().toString();
+            Log.d(TAG, "Package Name is " + sPackageName + " time " + (System.currentTimeMillis() - time));
+            if (sPackageName.equals("com.bhb27.isu") || sPackageName.equals("com.android.systemui"))
+                return;
+            else if ((System.currentTimeMillis() - time) < systemdelay) {
+                if (!sPackageName.equals(UserLauncher()))
                     process_window_change(sPackageName);
-            }
+            } else
+                process_window_change(sPackageName);
         }
     }
 
     @Override
     public void onInterrupt() {
 
+    }
+
+    public String UserLauncher() {
+        PackageManager localPackageManager = getPackageManager();
+        Intent intent = new Intent("android.intent.action.MAIN");
+        intent.addCategory("android.intent.category.HOME");
+        return localPackageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY).activityInfo.packageName;
     }
 
     private void process_window_change(String packageName) {
@@ -87,7 +92,7 @@ public class PerAppMonitor extends AccessibilityService {
         if (dont_profile.equals("dont")) {
             Log.d(TAG, "Profile = " + dont_profile + " app " + packageName);
         } else {
-            if (Tools.getBoolean("auto_restart_su", false, this)) {
+            if (Tools.getBoolean("auto_restart_su", false, context)) {
                 if (!packageName.equals(last_package)) {
                     if (!profile_exists)
                         last_profile = "Su";
@@ -120,10 +125,10 @@ public class PerAppMonitor extends AccessibilityService {
     public void change() {
         //active deactive su selinux
         if (last_profile.equals("Su") && !Tools.SuBinary()) {
-            Tools.SwitchSu(true, true, this);
+            Tools.SwitchSu(true, true, context);
         } else if (last_profile.equals("iSu") && Tools.SuBinary())
-            Tools.SwitchSu(false, true, this);
+            Tools.SwitchSu(false, true, context);
         else if (last_profile.equals("Su") || last_profile.equals("iSu"))
-            Tools.ChangeSUToast(last_profile.equals("Su") ? true : false, this, "");
+            Tools.ChangeSUToast(last_profile.equals("Su") ? true : false, context, "");
     }
 }
