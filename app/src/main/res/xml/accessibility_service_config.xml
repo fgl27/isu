@@ -20,8 +20,8 @@
  */-->
 <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
     android:description="@string/accessibility_service_desc"
-    android:accessibilityEventTypes="typeAllMask"
+    android:accessibilityEventTypes="typeWindowStateChanged"
     android:accessibilityFlags="flagDefault|flagIncludeNotImportantViews"
-    android:accessibilityFeedbackType="feedbackSpoken"
+    android:accessibilityFeedbackType="feedbackVisual"
     android:notificationTimeout="100"
     android:canRetrieveWindowContent="true" />
