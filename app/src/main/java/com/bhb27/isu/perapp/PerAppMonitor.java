@@ -45,7 +45,7 @@ public class PerAppMonitor extends AccessibilityService {
     public void onAccessibilityEvent(AccessibilityEvent event) {
         AccessibilityServiceInfo serviceInfo = this.getServiceInfo();
         accessibilityId = serviceInfo.getId();
-        //delay check after change su using another tool
+        //delay check after su was changed using another tool
         allowdelayS = Tools.readString("allow_delay", null, this);
         allowdelayS = (allowdelayS != null ? allowdelayS : "0");
         allowdelay = Integer.valueOf(allowdelayS);
@@ -56,18 +56,21 @@ public class PerAppMonitor extends AccessibilityService {
         intent.addCategory("android.intent.category.HOME");
         String launcher = localPackageManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY).activityInfo.packageName;
 
-        if ((SwitchSuDelay + allowdelay) > System.currentTimeMillis())
-            Log.d(TAG, "(SwitchSuDelay + allowdelay) > System.currentTimeMillis() " +
-                  (SwitchSuDelay + allowdelay) + " > " + System.currentTimeMillis());
-        else if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED && event.getPackageName() != null) {
-            sPackageName = event.getPackageName().toString();
-            Log.d(TAG, "Package Name is " + sPackageName + " time " + (System.currentTimeMillis() - time));
-            if ((System.currentTimeMillis() - time) < systemdelay) {
-                if (!sPackageName.equals(launcher) && !sPackageName.equals("com.android.systemui")) {
+        if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED && event.getPackageName() != null) {
+            if ((SwitchSuDelay + allowdelay) > System.currentTimeMillis())
+                Log.d(TAG, "current delay result " +
+                    ((SwitchSuDelay + allowdelay) - System.currentTimeMillis()) + " mseconds");
+            else {
+                sPackageName = event.getPackageName().toString();
+                Log.d(TAG, "Package Name is " + sPackageName + " time " + (System.currentTimeMillis() - time));
+                if (sPackageName.equals("com.bhb27.isu") || sPackageName.equals("com.android.systemui"))
+                    return;
+                else if ((System.currentTimeMillis() - time) < systemdelay) {
+                    if (!sPackageName.equals(launcher))
+                        process_window_change(sPackageName);
+                } else
                     process_window_change(sPackageName);
-                }
-            } else
-                process_window_change(sPackageName);
+            }
         }
     }
 
@@ -85,7 +88,7 @@ public class PerAppMonitor extends AccessibilityService {
             Log.d(TAG, "Profile = " + dont_profile + " app " + packageName);
         } else {
             if (Tools.getBoolean("auto_restart_su", false, this)) {
-                if (!packageName.equals(last_package) && !packageName.equals("com.android.systemui")) {
+                if (!packageName.equals(last_package)) {
                     if (!profile_exists)
                         last_profile = "Su";
                     else {
