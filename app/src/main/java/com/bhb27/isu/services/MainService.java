@@ -17,7 +17,7 @@
  * along with iSu.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.bhb27.isu.bootservice;
+package com.bhb27.isu.services;
 
 import android.app.Service;
 import android.os.Build;

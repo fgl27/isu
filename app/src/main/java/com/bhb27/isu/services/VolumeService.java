@@ -17,7 +17,7 @@
  * along with iSu.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.bhb27.isu.bootservice;
+package com.bhb27.isu.services;
 
 import android.app.Service;
 import android.os.Build;
@@ -26,11 +26,12 @@ import android.util.Log;
 import android.content.Intent;
 
 import com.bhb27.isu.tools.Tools;
+import com.bhb27.isu.perapp.PerAppMonitor;
+import com.bhb27.isu.perapp.Per_App;
 
-public class BootService extends Service {
+public class VolumeService extends Service {
 
-    private static final String TAG = "iSu_BootService";
-    private boolean isCMSU;
+    private static final String TAG = "iSu_volume";
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -40,24 +41,10 @@ public class BootService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        init();
-    }
-
-    private void init() {
-        String executableFilePath = getFilesDir().getPath() + "/";
-        Tools.PatchSepolicy(executableFilePath, this);
-        isCMSU = Tools.SuVersionBool(Tools.SuVersion(this));
-        if (Tools.getBoolean("prop_run", false, this) && Tools.getBoolean("apply_props", false, this)) {
-            if (isCMSU) Tools.stripsu(executableFilePath, this);
-            Log.d(TAG, " Apply props");
-            Tools.applyprop(this, executableFilePath);
-            Tools.applyDbProp(this, executableFilePath);
-        }
-        Tools.WriteSettings(this);
-        if (isCMSU && (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && !Tools.ReadSystemPatch(this))
-            Tools.SystemPatch(executableFilePath, this);
-        if (isCMSU) Tools.subackup(executableFilePath, this);
-        Log.d(TAG, " Run");
+        if (!Per_App.isAccessibilityEnabled(this, PerAppMonitor.accessibilityId))
+           stopSelf();
+        else
+          Tools.runCommand("input swipe 300 300 400 300" , Tools.SuBinary(), this);
         stopSelf();
     }
 

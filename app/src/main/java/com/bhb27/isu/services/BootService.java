@@ -1,5 +1,5 @@
 /*
- * Copyright (C) Felipe de Leon <fglfgl27@gmail.com>
+ * Copyright (C) 2016-2017 Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of iSu.
  *
@@ -17,21 +17,20 @@
  * along with iSu.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.bhb27.isu.bootservice;
+package com.bhb27.isu.services;
 
 import android.app.Service;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 import android.content.Intent;
 
-import java.io.File;
-import java.io.IOException;
-
 import com.bhb27.isu.tools.Tools;
 
-public class SuService extends Service {
+public class BootService extends Service {
 
-    private static final String TAG = "iSu_SUService";
+    private static final String TAG = "iSu_services";
+    private boolean isCMSU;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -45,14 +44,20 @@ public class SuService extends Service {
     }
 
     private void init() {
-        int sleep = Integer.valueOf(Tools.readString("apply_su_delay", null, this));
-        try {
-            Thread.sleep(sleep);
-        } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
+        String executableFilePath = getFilesDir().getPath() + "/";
+        Tools.PatchSepolicy(executableFilePath, this);
+        isCMSU = Tools.SuVersionBool(Tools.SuVersion(this));
+        if (Tools.getBoolean("prop_run", false, this) && Tools.getBoolean("apply_props", false, this)) {
+            if (isCMSU) Tools.stripsu(executableFilePath, this);
+            Log.d(TAG, " Apply props");
+            Tools.applyprop(this, executableFilePath);
+            Tools.applyDbProp(this, executableFilePath);
         }
-        Tools.SwitchSu(false, false, this);
-        Log.d(TAG, " RUN sleep " + sleep);
+        Tools.WriteSettings(this);
+        if (isCMSU && (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && !Tools.ReadSystemPatch(this))
+            Tools.SystemPatch(executableFilePath, this);
+        if (isCMSU) Tools.subackup(executableFilePath, this);
+        Log.d(TAG, " Run");
         stopSelf();
     }
 

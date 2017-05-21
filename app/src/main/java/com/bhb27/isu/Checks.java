@@ -48,7 +48,7 @@ import java.util.Locale;
 
 import com.bhb27.isu.BuildConfig;
 import com.bhb27.isu.Main;
-import com.bhb27.isu.bootservice.MainService;
+import com.bhb27.isu.services.MainService;
 import com.bhb27.isu.perapp.PerAppMonitor;
 import com.bhb27.isu.perapp.Per_App;
 import com.bhb27.isu.tools.Constants;

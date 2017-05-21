@@ -78,7 +78,7 @@
                 android:resource="@xml/accessibility_service_config" />
         </service>
 
-        <receiver android:name=".bootservice.BootBroadcastReceiver">
+        <receiver android:name=".services.BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -125,9 +125,10 @@
             </intent-filter>
        </service>
 
-       <service android:enabled="true" android:name=".bootservice.BootService" />
-       <service android:enabled="true" android:name=".bootservice.MainService" />
-       <service android:enabled="true" android:name=".bootservice.SuService" />
+       <service android:enabled="true" android:name=".services.services" />
+       <service android:enabled="true" android:name=".services.MainService" />
+       <service android:enabled="true" android:name=".services.SuService" />
+       <service android:enabled="true" android:name=".services.VolumeService" />
 
         <meta-data
             android:name="com.google.android.gms.version"
