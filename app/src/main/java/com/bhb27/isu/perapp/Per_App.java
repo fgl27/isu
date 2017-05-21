@@ -74,8 +74,11 @@ public class Per_App {
         final List < ApplicationInfo > packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 
         for (ApplicationInfo packageInfo: packages) {
-            App app = new App(String.valueOf(packageInfo.loadLabel(pm)), packageInfo.packageName);
-            applist.add(app);
+            String app_com = packageInfo.packageName;
+            if (!app_com.contains("com.bhb27.isu") && !app_com.contains("com.android.systemui")) {
+                App app = new App(String.valueOf(packageInfo.loadLabel(pm)), app_com);
+                applist.add(app);
+            }
         }
 
         Collections.sort(applist);
