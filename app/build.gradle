@@ -8,8 +8,8 @@ android {
         applicationId "com.bhb27.isu"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 36
-        versionName "4.6"
+        versionCode 37
+        versionName "4.7"
     }
     buildTypes {
         release {
