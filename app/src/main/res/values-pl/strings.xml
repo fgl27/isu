@@ -71,7 +71,10 @@
     <string name="per_app_deactive">Wyłącz SU</string>
     <string name="per_app_dontcare">Lista obojętnych aplikacji</string>
     <string name="per_app_dontcare_summary">Wybierz aplikacje, które nie mają wpływu na Monitor aplikacji, gdy zostaną uruchomione.\nJak to działa:\nWybierz aplikacje z dostępem ROOT lub nie, które są wyświetlane nad tymi aplikacjami, np. klawiatura lub funkcje wyświetlania nad innymi aplikacjami</string>
-
+    <string name="monitor_delay">Monitor opóźnienia</string>
+    <string name="monitor_delay_summary">Monitor opóźni na wybrany czas (obecnie %s), gdy SU zostanie zmieniony przez widżet, przełącznik lub kontrolę</string>
+    <string name="monitor_warning">Usługa monitorowania aplikacji jest wyłączona\nAby korzystać z tej usługi, musisz ją włączyć w \u0022Ułatwienia dostępu\u0022 \nKliknij tutaj, aby otworzyć</string>
+	
     <!--Prop-->
     <string name="prop_editor">Edytor Props</string>
     <string name="prop_editor_summary">Niektóre aplikacje mogą blokować dostęp na podstawie stanu poniższych oznaczeń Prop</string>
