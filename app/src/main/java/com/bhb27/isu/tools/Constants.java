@@ -22,16 +22,16 @@ public interface Constants {
     String bin_su = "/system/bin/su";
     String xbin_su = "/system/xbin/su";
 
-    String init_superuser = "superuser42";
-    String init_restart = "restart42";
+    String init_superuser = "superuser48";
+    String init_restart = "restart48";
     //TODO Always Update supersu init  when change below
-    String patchN = "isupatch42";
+    String patchN = "isupatch48";
     String patchM = "isupatch42";
 
     String GETENFORCE = "getenforce";
     String SETENFORCE = "setenforce";
 
-    String sepolicy = "supolicy --live \"allow untrusted_app superuser_device:sock_file { write }\" \"allow untrusted_app sudaemon:unix_stream_socket { connectto }\" \"allow untrusted_app anr_data_file:dir { read }\" \"allow untrusted_app system_data_file:file { getattr open read }\" \"allow untrusted_app su_exec:file { execute write getattr setattr execute_no_trans }\";";
+    String sepolicy = "supolicy --live \"allow shell sudaemon:unix_stream_socket { connectto }\" \"allow shell superuser_device:sock_file { write }\" \"allow untrusted_app superuser_device:sock_file { write }\" \"allow untrusted_app sudaemon:unix_stream_socket { connectto }\" \"allow untrusted_app anr_data_file:dir { read }\" \"allow untrusted_app system_data_file:file { getattr open read }\" \"allow untrusted_app su_exec:file { execute write getattr setattr execute_no_trans }\";";
 
     String YES_ACTION = "YES_ACTION";
     String DISSMISS_ACTION = "DISSMISS_ACTION";

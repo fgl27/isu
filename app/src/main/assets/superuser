@@ -17,11 +17,11 @@ on property:persist.sys.root_access=2
 on property:persist.sys.root_access=3
     start su_daemon
 
-# isupatch42
+# isupatch48
 on boot
     start restart
 
-service restart /data/restart --daemon
+service restart /system/xbin/restart --daemon
     user root
     group root
     disabled
