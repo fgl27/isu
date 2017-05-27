@@ -279,6 +279,8 @@ public class Tools implements Constants {
         Log.d(TAG, "Change SU isChecked = " + isChecked + " SU path " +
             runCommand(isChecked ? "which su" : "which " + readString("cmiyc", null, context), isChecked, context));
         updateAllWidgetsLayouts(context);
+        RootUtils.closeSU();
+        RootUtils.closeISU();
     }
 
     public static void ChangeSUToast(boolean isChecked, Context context, String Toast) {

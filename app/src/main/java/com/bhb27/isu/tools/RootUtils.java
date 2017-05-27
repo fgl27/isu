@@ -92,7 +92,7 @@ public class RootUtils {
 
     public static void closeISU() {
         if (isu != null) isu.close();
-        su = null;
+        isu = null;
     }
 
     public static String runCommand(String command) {
