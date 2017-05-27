@@ -24,6 +24,8 @@
     <!-- controls -->
     <string name="su_switch">Change SU state</string>
     <string name="su_state">SU state</string>
+    <string name="selinux_state">SELinux state</string>
+    <string name="adb_state">Android debugging state</string>
     <string name="device_not_root">Root access not available</string>
     <string name="activated">Activated</string>
     <string name="deactivated">Deactivated</string>

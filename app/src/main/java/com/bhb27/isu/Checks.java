@@ -195,7 +195,12 @@ public class Checks extends PreferenceFragment {
                 break;
             case 0:
                 image = R.drawable.warning;
-                result = getString(R.string.safetyNet_fail);
+                result = getString(R.string.safetyNet_fail) + "\n" + getString(R.string.su_state) +
+                ": " + (Tools.SuBinary() ? getString(R.string.activated) : getString(R.string.deactivated)) +
+                "\n" + getString(R.string.selinux_state) +
+                ": " + (Tools.isSELinuxActive(getActivity()) ? getString(R.string.enforcing) : getString(R.string.permissive)) +
+                "\n" + getString(R.string.adb_state) +
+                ": " + (Tools.AndroidDebugState(getActivity()) ? getString(R.string.activated) : getString(R.string.deactivated));
                 break;
             case 1:
             default:
