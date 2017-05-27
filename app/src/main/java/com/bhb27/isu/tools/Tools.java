@@ -396,6 +396,7 @@ public class Tools implements Constants {
         runCommand(Constants.SETENFORCE + (isChecked ? " 1" : " 0"), SuBinary(), context);
         Log.d(TAG, "Change SELinux isChecked = " + isChecked + " State = " + getSELinuxStatus(context));
         updateAllWidgetsLayouts(context);
+        closeSU();
     }
 
     public static boolean SuVersionBool(String suVersion) {
