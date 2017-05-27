@@ -52,6 +52,7 @@ public class SuService extends Service {
             Thread.currentThread().interrupt();
         }
         Tools.SwitchSu(false, false, this);
+        Tools.closeSU();
         Log.d(TAG, " RUN sleep " + sleep);
         stopSelf();
     }

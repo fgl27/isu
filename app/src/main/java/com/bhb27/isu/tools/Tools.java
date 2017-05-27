@@ -90,11 +90,15 @@ public class Tools implements Constants {
     }
 
     public static void updateMain(Context context, String toast) {
-        RootUtils.closeSU();
-        RootUtils.closeISU();
+        closeSU();
         DoAToast(toast, context);
         SendBroadcast("updateMainReceiver", context);
         context.startActivity(new Intent(context, Main.class));
+    }
+
+    public static void closeSU() {
+        RootUtils.closeSU();
+        RootUtils.closeISU();
     }
 
     @SuppressWarnings("deprecation")
@@ -279,8 +283,7 @@ public class Tools implements Constants {
         Log.d(TAG, "Change SU isChecked = " + isChecked + " SU path " +
             runCommand(isChecked ? "which su" : "which " + readString("cmiyc", null, context), isChecked, context));
         updateAllWidgetsLayouts(context);
-        RootUtils.closeSU();
-        RootUtils.closeISU();
+        closeSU();
     }
 
     public static void ChangeSUToast(boolean isChecked, Context context, String Toast) {

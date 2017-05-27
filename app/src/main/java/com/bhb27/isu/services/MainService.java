@@ -81,6 +81,7 @@ public class MainService extends Service {
             }
         }
         Log.d(TAG, " Run");
+        Tools.closeSU();
         stopSelf();
     }
 

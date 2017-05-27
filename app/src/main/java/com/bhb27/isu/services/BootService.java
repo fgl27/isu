@@ -57,6 +57,7 @@ public class BootService extends Service {
         if (isCMSU && (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && !Tools.ReadSystemPatch(this))
             Tools.SystemPatch(executableFilePath, this);
         if (isCMSU) Tools.subackup(executableFilePath, this);
+        Tools.closeSU();
         Log.d(TAG, " Run");
         stopSelf();
     }
