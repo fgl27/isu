@@ -184,6 +184,7 @@
     <string name="robuildselinux" translatable="false" >ro.build.selinux</string>
     <string name="robootselinux" translatable="false" >ro.boot.selinux</string>
     <string name="robuildfingerprint" translatable="false" >ro.build.fingerprint</string>
+    <string name="robootwarranty_bit" translatable="false" >ro.boot.warranty_bit</string>
 
     <!--About images-->
     <string name="github_icon" translatable="false" >Git hub icon</string>

@@ -136,5 +136,10 @@
             android:title="@string/robootselinux"
             android:summary="%s"
             android:dialogTitle="@string/robootselinux" />
+        <ListPreference
+            android:key="ro.boot.warranty_bit"
+            android:title="@string/robootwarranty_bit"
+            android:summary="%s"
+            android:dialogTitle="@string/robootwarranty_bit" />
     </PreferenceCategory>
 </PreferenceScreen>
