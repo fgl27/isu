@@ -107,6 +107,7 @@ Preference.OnPreferenceChangeListener {
     @Override
     public void onPause() {
         super.onPause();
+        Tools.closeSU();
     }
 
     @Override

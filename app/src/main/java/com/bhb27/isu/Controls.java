@@ -98,6 +98,7 @@ Preference.OnPreferenceChangeListener {
         try {
             getActivity().unregisterReceiver(updateControlsReceiver);
         } catch (IllegalArgumentException ignored) {}
+        Tools.closeSU();
     }
 
     @Override

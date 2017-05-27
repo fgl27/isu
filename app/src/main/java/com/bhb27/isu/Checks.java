@@ -163,6 +163,7 @@ public class Checks extends PreferenceFragment {
     @Override
     public void onPause() {
         super.onPause();
+        Tools.closeSU();
     }
 
     public void checkSafetyNet() {

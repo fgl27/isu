@@ -104,6 +104,7 @@ public class Main extends AppCompatActivity {
         try {
             this.unregisterReceiver(updateMainReceiver);
         } catch (IllegalArgumentException ignored) {}
+        Tools.closeSU();
     }
 
     public class TabsPagerAdapter extends FragmentPagerAdapter {

@@ -77,6 +77,7 @@ public class Monitor extends PreferenceFragment {
     @Override
     public void onPause() {
         super.onPause();
+        Tools.closeSU();
     }
 
     private void updateState() {
