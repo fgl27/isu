@@ -24,7 +24,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.service.quicksettings.TileService;
 
-import com.bhb27.isu.Main;
+import com.bhb27.isu.Start;
 import com.bhb27.isu.R;
 import com.bhb27.isu.tools.Tools;
 
@@ -50,8 +50,7 @@ public class QuickTileiSu extends TileService {
     }
 
     private void launch() {
-        Intent intent = new Intent(this, Main.class);
-        startActivity(intent);
+        startActivityAndCollapse(new Intent(this, Start.class));
     }
 
 }
