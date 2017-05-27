@@ -30,7 +30,7 @@ public class Start extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.startActivity(new Intent(this, Main.class));
+        this.startActivity(new Intent(this, Main.class).setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
         finish();
     }
 
