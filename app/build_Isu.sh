@@ -68,7 +68,7 @@ fi;
 ./gradlew clean
 echo -e "\n The above is just the cleaning build start now\n";
 rm -rf app/build/outputs/apk/**
-./gradlew build
+./gradlew build 2>&1 | tee build_log.txt
 
 if [ ! -e ./app/build/outputs/apk/app-release-unsigned.apk ]; then
 	echo -e "\nApp not build$\n"
@@ -103,7 +103,14 @@ fi;
 
 END2="$(date)";
 END=$(date +%s.%N);
-echo -e "\nScript start $START2";
-echo -e "End $END2 \n";
-echo -e "\nTotal time elapsed of the script: $(echo "($END - $START) / 60"|bc ):$(echo "(($END - $START) - (($END - $START) / 60) * 60)"|bc ) (minutes:seconds).\n";
 
+if [ -e "$OUT_FOLDER"/"$APP_FINAL_NAME" ]; then
+	echo -e "\nLint issues:\n";
+	grep issues build_log.txt;
+
+	echo -e "\nApp saved at $OUT_FOLDER"/"$APP_FINAL_NAME\n"
+fi;
+rm -rf build_log.txt
+echo -e "*** Build END ***"
+echo -e "\nTotal elapsed time of the script: $(echo "($END - $START) / 60"|bc ):$(echo "(($END - $START) - (($END - $START) / 60) * 60)"|bc ) (minutes:seconds).\n";
+exit 1;
