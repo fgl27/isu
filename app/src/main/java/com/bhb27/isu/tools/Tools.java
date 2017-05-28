@@ -63,7 +63,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.bhb27.isu.Main;
+import com.bhb27.isu.Start;
 import com.bhb27.isu.R;
 import com.bhb27.isu.perapp.PropDB;
 import com.bhb27.isu.tools.RootFile;
@@ -93,7 +93,7 @@ public class Tools implements Constants {
         closeSU();
         DoAToast(toast, context);
         SendBroadcast("updateMainReceiver", context);
-        context.startActivity(new Intent(context, Main.class));
+        context.startActivity(new Intent(context, Start.class));
     }
 
     public static void closeSU() {
