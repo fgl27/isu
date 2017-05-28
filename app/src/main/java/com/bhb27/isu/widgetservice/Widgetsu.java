@@ -56,6 +56,7 @@ public class Widgetsu extends AppWidgetProvider {
         }
         if (su)
             Tools.updateAllWidgets(false, context, R.layout.widget_layoutsu, Widgetsu.class);
+        Tools.closeSU();
     }
 
     @Override

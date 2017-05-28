@@ -59,6 +59,7 @@ public class Widgetv extends AppWidgetProvider {
         }
         if (su)
             Tools.updateAllWidgets(true, context, R.layout.widget_layoutv, Widgetv.class);
+        Tools.closeSU();
     }
 
     @Override

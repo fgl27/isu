@@ -59,6 +59,7 @@ public class Widgeth extends AppWidgetProvider {
         }
         if (su)
             Tools.updateAllWidgets(true, context, R.layout.widget_layouth, Widgeth.class);
+        Tools.closeSU();
     }
 
     @Override

@@ -46,6 +46,11 @@ public class QuickTileSU extends TileService {
     }
 
     @Override
+    public void onStopListening() {
+        Tools.closeSU();
+    }
+
+    @Override
     public void onClick() {
         super.onClick();
         boolean su_version = (Tools.SuVersionBool(Tools.SuVersion(this)));
