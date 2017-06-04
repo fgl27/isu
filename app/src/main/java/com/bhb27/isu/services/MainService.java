@@ -90,19 +90,24 @@ public class MainService extends Service {
         if (!Tools.NewexistFile(executableFilePath + "resetprop", true, context) ||
             !Tools.NewexistFile(executableFilePath + "resetproparm64", true, context) ||
             !Tools.NewexistFile(executableFilePath + "resetpropx86", true, context) ||
-            !Tools.NewexistFile(executableFilePath + "busybox", true, context)) {
+            !Tools.NewexistFile(executableFilePath + "busybox", true, context) ||
+            !Tools.NewexistFile(executableFilePath + "busyboxx86", true, context)) {
             Tools.extractAssets(executableFilePath, "resetprop", context);
             Tools.extractAssets(executableFilePath, "resetproparm64", context);
             Tools.extractAssets(executableFilePath, "resetpropx86", context);
             Tools.extractAssets(executableFilePath, "busybox", context);
+            Tools.extractAssets(executableFilePath, "busyboxx86", context);
         }
     }
 
     public void Sepolicy(Context context) {
         if (!Tools.NewexistFile(executableFilePath + "libsupol.so", true, context) ||
             !Tools.NewexistFile(executableFilePath + "supolicy", true, context)) {
-            Tools.extractAssets(executableFilePath, "libsupol.so", context);
-            Tools.extractAssets(executableFilePath, "supolicy", context);
+            boolean su = Tools.SuBinary();
+            Tools.extractAssets(executableFilePath, "libsupol" + Tools.abiX() + ".so", context);
+            Tools.extractAssets(executableFilePath, "supolicy" + Tools.abiX() , context);
+            Tools.runCommand("mv -f " + executableFilePath + "libsupol" + Tools.abiX() + ".so " + executableFilePath + "libsupol.so", su, context);
+            Tools.runCommand("mv -f " + executableFilePath + "supolicy" + Tools.abiX() + " " + executableFilePath + "supolicy", su, context);
         }
         Tools.PatchSepolicy(executableFilePath, context);
     }
