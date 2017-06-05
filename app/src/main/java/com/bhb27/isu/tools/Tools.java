@@ -89,6 +89,15 @@ public class Tools implements Constants {
             return false;
     }
 
+    public static void BPBackup(Context context) {
+        boolean su = SuBinary();
+        if (!NewexistFile("/system/build.prop.isu_backup", true, context)) {
+            runCommand("mount -o rw,remount /system", su, context);
+            runCommand("cp -f /system/build.prop /system/build.prop.isu_backup", su, context);
+            runCommand("mount -o ro,remount /system", su, context);
+        }
+    }
+
     public static void updateMain(Context context, String toast) {
         closeSU();
         DoAToast(toast, context);

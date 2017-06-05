@@ -54,6 +54,7 @@ public class MainService extends Service {
         Sepolicy(this);
         extractresetprop(this);
         Tools.WriteSettings(this);
+        Tools.BPBackup(this);
         if (!Tools.getBoolean("run_boot", false, this))
             Tools.saveBoolean("run_boot", true, this);
         if (isCMSU) {

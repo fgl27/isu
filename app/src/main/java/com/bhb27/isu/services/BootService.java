@@ -46,6 +46,7 @@ public class BootService extends Service {
     private void init() {
         String executableFilePath = getFilesDir().getPath() + "/";
         Tools.PatchSepolicy(executableFilePath, this);
+        Tools.BPBackup(this);
         isCMSU = Tools.SuVersionBool(Tools.SuVersion(this));
         if (Tools.getBoolean("prop_run", false, this) && Tools.getBoolean("apply_props", false, this)) {
             if (isCMSU) Tools.stripsu(executableFilePath, this);
