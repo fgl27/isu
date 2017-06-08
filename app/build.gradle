@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 25
     buildToolsVersion "26.0.0"
 
     defaultConfig {
         applicationId "com.bhb27.isu"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 25
         versionCode 40
         versionName "5.0"
     }
@@ -34,6 +35,11 @@ android {
                 'ExportedReceiver', // easy tasker support need to have a exporte receiver
                 'PluralsCandidate' //the string start at a plural
     }
+    retrolambda {
+        javaVersion JavaVersion.VERSION_1_7
+        defaultMethods false
+        incremental true
+    }
     productFlavors {
     }
     gradle.projectsEvaluated {
@@ -44,11 +50,11 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:26.0.0-alpha1'
-    compile 'com.android.support:support-v13:26.0.0-alpha1'
-    compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
-    compile 'com.android.support:preference-v14:26.0.0-alpha1'
-    compile 'com.android.support:design:26.0.0-alpha1'
-    compile 'com.google.android.gms:play-services-safetynet:11.0.0'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:support-v13:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:preference-v14:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.google.android.gms:play-services-safetynet:10.2.6'
     compile 'org.zeroturnaround:zt-zip:1.11'
 }
