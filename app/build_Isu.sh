@@ -107,6 +107,8 @@ END=$(date +%s.%N);
 if [ -e "$OUT_FOLDER"/"$APP_FINAL_NAME" ]; then
 	echo -e "\nLint issues:\n";
 	grep issues build_log.txt;
+	echo -e "\nBuild deprecation:\n";
+	grep deprecation build_log.txt;
 
 	echo -e "\nApp saved at $OUT_FOLDER"/"$APP_FINAL_NAME\n"
 fi;
