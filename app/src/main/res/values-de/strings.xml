@@ -2,9 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- checks -->
     <string name="safety_net">SafetyNet Test</string>
-    <string name="safetyNet_connection_failed">Verbindung zur Google API nicht möglich</string>
-    <string name="safetyNet_connection_suspended">Verbindung zur Google API wurde eingestellt</string>
-    <string name="safetyNet_error">SafetyNet-Abfrage nicht möglich, kein Internet?</string>
+    <string name="safetyNet_no_response">SafetyNet-Abfrage nicht möglich, kein Internet?</string>
     <string name="safetyNet_fail">Fehlgeschlagen, CTS-Profil-Fehlanpassung</string>
     <string name="safetyNet_pass">Bestanden</string>
     <string name="safetyNet_untested">Ungetestet, zum Testen drücken</string>

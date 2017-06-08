@@ -65,6 +65,7 @@ public class Checks extends PreferenceFragment {
     private String suVersion, executableFilePath, result;
     private int image;
     private boolean isCMSU, rootAccess;
+    public SafetyNetHelper.Result SNCheckResult;
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
@@ -148,7 +149,6 @@ public class Checks extends PreferenceFragment {
                 return true;
             }
         });
-        updatesafety(-10);
     }
 
     @Override
@@ -167,46 +167,39 @@ public class Checks extends PreferenceFragment {
     }
 
     public void checkSafetyNet() {
-        new SafetyNetHelper(getActivity()) {
+        new SafetyNetHelper(Main.FragmentActivityWeakReference.get()) {
             @Override
-            public void handleResults(int i) {
-                updatesafety(i);
+            public void handleResults(Result result) {
+                SNCheckResult = result;
+                updatesafety();
             }
         }.requestTest();
     }
 
-    public void updatesafety(int i) {
-        switch (i) {
-            case -10:
-                image = R.drawable.interrogation;
-                result = getString(R.string.safetyNet_untested);
-                break;
-            case -3:
-                image = R.drawable.interrogation;
-                result = getString(R.string.safetyNet_connection_suspended);
-                break;
-            case -2:
-                image = R.drawable.interrogation;
-                result = getString(R.string.safetyNet_connection_failed);
-                break;
-            case -1:
-                image = R.drawable.warning;
-                result = getString(R.string.safetyNet_error);
-                break;
-            case 0:
-                image = R.drawable.warning;
-                result = getString(R.string.safetyNet_fail) + "\n\n" + getString(R.string.su_state) +
-                ": " + (Tools.SuBinary() ? getString(R.string.activated) : getString(R.string.deactivated)) +
-                "\n" + getString(R.string.selinux_state) +
-                ": " + (Tools.isSELinuxActive(getActivity()) ? getString(R.string.enforcing) : getString(R.string.permissive)) +
-                "\n" + getString(R.string.adb_state) +
-                ": " + (Tools.AndroidDebugState(getActivity()) ? getString(R.string.activated) : getString(R.string.deactivated));
-                break;
-            case 1:
-            default:
+    public void updatesafety() {
+        if (SNCheckResult.failed) {
+            image = R.drawable.interrogation;
+            result = SNCheckResult.errmsg;
+        } else {
+            boolean pass = (SNCheckResult.ctsProfile && SNCheckResult.basicIntegrity);
+            result = getString(R.string.safetyNet_check_success) +
+                (pass ? " " + getString(R.string.safetyNet_pass) : " " + getString(R.string.safetyNet_fail));
+            result += "\n" + ("ctsProfile: " + SNCheckResult.ctsProfile);
+            result += "\n" + ("basicIntegrity: " + SNCheckResult.basicIntegrity);
+
+            if (pass)
                 image = R.drawable.ok;
-                result = getString(R.string.safetyNet_pass);
-                break;
+            else {
+                image = R.drawable.warning;
+                if (isCMSU)
+                    result += "\n\n" + getString(R.string.su_state) +
+                    ": " + (Tools.SuBinary() ? getString(R.string.activated) : getString(R.string.deactivated)) +
+                    "\n" + getString(R.string.selinux_state) +
+                    ": " + (Tools.isSELinuxActive(getActivity()) ? getString(R.string.enforcing) : getString(R.string.permissive)) +
+                    "\n" + getString(R.string.adb_state) +
+                    ": " + (Tools.AndroidDebugState(getActivity()) ? getString(R.string.activated) : getString(R.string.deactivated));
+
+            }
         }
         update();
     }
@@ -221,7 +214,7 @@ public class Checks extends PreferenceFragment {
         private WeakReference < Context > contextRef;
 
         public Execute(Context context) {
-            contextRef = new WeakReference < > (context);;
+            contextRef = new WeakReference < > (context);
         }
 
         @Override

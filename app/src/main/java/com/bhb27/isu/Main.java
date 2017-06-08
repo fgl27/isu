@@ -32,12 +32,15 @@ import android.view.View;
 import android.widget.TextView;
 
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.widget.Toolbar;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.support.v4.app.FragmentActivity;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.TabLayout;
+
+import java.lang.ref.WeakReference;
 
 import com.bhb27.isu.AboutActivity;
 import com.bhb27.isu.Checks;
@@ -47,8 +50,9 @@ import com.bhb27.isu.Props;
 import com.bhb27.isu.Settings;
 import com.bhb27.isu.tools.Tools;
 
-public class Main extends AppCompatActivity {
+public class Main extends FragmentActivity {
 
+    public static WeakReference<FragmentActivity> FragmentActivityWeakReference;
     private TextView mAbout;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
@@ -60,6 +64,7 @@ public class Main extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FragmentActivityWeakReference = new WeakReference<FragmentActivity>(this);
 
         setContentView(R.layout.main);
         String cmiyc = Tools.readString("cmiyc", null, this);
@@ -67,7 +72,7 @@ public class Main extends AppCompatActivity {
             Tools.saveString("cmiyc", Tools.random4(), this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setActionBar(toolbar);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(new TabsPagerAdapter(getFragmentManager()));
@@ -171,4 +176,5 @@ public class Main extends AppCompatActivity {
             finish();
         }
     };
+
 }

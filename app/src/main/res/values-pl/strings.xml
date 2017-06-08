@@ -3,9 +3,7 @@
 
     <!-- checks -->
     <string name="safety_net">Test Safety Net</string>
-    <string name="safetyNet_connection_failed">Nie można połączyć się z Google API</string>
-    <string name="safetyNet_connection_suspended">Połączenie z Google API zostało zawieszone</string>
-    <string name="safetyNet_error">Nie można sprawdzić SafetyNet, brak internetu?</string>
+    <string name="safetyNet_no_response">Nie można sprawdzić SafetyNet, brak internetu?</string>
     <string name="safetyNet_fail">Niepowodzenie, niezgodność profilu CTS</string>
     <string name="safetyNet_pass">Powodzenie</string>
     <string name="safetyNet_untested">Nie testowano. Kliknij, aby przetestować</string>

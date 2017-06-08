@@ -42,6 +42,7 @@
         <Preference
             android:key="safety_net"
             android:title="@string/safety_net"
+            android:summary="@string/safetyNet_untested"
             android:persistent="false" />
     </PreferenceCategory>
     <PreferenceCategory

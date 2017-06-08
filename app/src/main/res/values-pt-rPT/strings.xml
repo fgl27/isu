@@ -2,10 +2,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <!-- checks -->
-    <string name="safety_net">Teste de Safety Net</string>
-    <string name="safetyNet_connection_failed">Não foi possível conectar com serviço Google</string>
-    <string name="safetyNet_connection_suspended">Conectar com serviço Google interrompida</string>
-    <string name="safetyNet_error">Não é possível verificar a SafetyNet, sem acesso a internet?</string>
+    <string name="safety_net">Checar de Safety Net</string>
+    <string name="safetyNet_no_response">Não é possível verificar a SafetyNet, sem acesso a internet?</string>
     <string name="safetyNet_fail">Falha, Incompatibilidade do perfil CTS</string>
     <string name="safetyNet_pass">Sucesso</string>
     <string name="safetyNet_untested">Não testado, clique para testar</string>

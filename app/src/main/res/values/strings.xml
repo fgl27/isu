@@ -2,12 +2,14 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <!-- checks -->
-    <string name="safety_net">Safety Net test</string>
-    <string name="safetyNet_connection_failed">Cannot connect to Google API</string>
-    <string name="safetyNet_connection_suspended">Connection to Google API was suspended</string>
-    <string name="safetyNet_error">Cannot check SafetyNet, no Internet?</string>
-    <string name="safetyNet_fail">Failed, CTS profile mismatch</string>
+    <string name="safety_net">Safety Net check</string>
+    <string name="safetyNet_no_response">Cannot check SafetyNet, no Internet?</string>
+    <string name="safetyNet_check_success">Check Success\n\nResult:</string>
+    <string name="safetyNet_fail">Failed</string>
     <string name="safetyNet_pass">Passed</string>
+    <string name="safetyNet_network_loss">Network connection loss</string>
+    <string name="safetyNet_service_disconnected">Service has been killed</string>
+    <string name="safetyNet_res_invalid">The response is invalid</string>
     <string name="safetyNet_untested">Untested, Click to test</string>
     <string name="safetyNet_testing">Testing&#8230; If it take too long click again!</string>
     <string name="su_not_cm">Current SU is not supported.\nSome app functions only works with CM-SU</string>
