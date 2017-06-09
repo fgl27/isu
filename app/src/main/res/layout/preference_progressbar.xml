@@ -1,0 +1,84 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:gravity="center_vertical" >
+
+    <ImageView
+        android:id="@+android:id/icon"
+        android:contentDescription="@string/isu_icon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"/>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dip"
+        android:layout_marginEnd="6dip"
+        android:layout_marginTop="6dip"
+        android:layout_marginBottom="6dip"
+        android:layout_weight="1">
+
+        <!-- (start) I added this part. -->
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="@color/colorAccent" />
+
+        <TextView android:id="@+id/progresBar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_alignStart="@id/title"
+            android:text="@string/safety_net"
+            android:textSize="16sp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:ellipsize="marquee"
+            android:maxLines="1"
+            android:fadingEdge="horizontal"
+            android:layout_toEndOf="@+id/progressBar" />
+
+        <TextView android:id="@+id/progresBar_summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/progresBar_title"
+            android:layout_alignStart="@id/progresBar_title"
+            android:text="@string/safetyNet_testing"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorSecondary"
+            android:maxLines="4"
+            android:layout_toEndOf="@+id/progressBar" />
+
+        <!-- (end) I added this part. -->
+
+        <TextView android:id="@+android:id/title"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:maxLines="1"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal" />
+
+        <TextView android:id="@+id/summary"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_below="@android:id/title"
+            android:layout_alignStart="@android:id/title"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="?android:attr/textColorSecondary"
+            android:maxLines="4" />
+
+    </RelativeLayout>
+
+    <!-- Preference should place its actual preference widget here. -->
+    <LinearLayout android:id="@+id/widget_frame"
+         android:layout_width="wrap_content"
+         android:layout_height="match_parent"
+         android:gravity="center_vertical"
+         android:orientation="vertical"/>
+
+</LinearLayout>

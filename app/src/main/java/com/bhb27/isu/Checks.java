@@ -59,9 +59,8 @@ import org.zeroturnaround.zip.ZipUtil;
 
 public class Checks extends PreferenceFragment {
 
-    private Preference mSuStatus, mRebootStatus, mSafetyNet, mLog;
-    private Preference mChecksView;
-    private PreferenceCategory mChecks;
+    private Preference mSuStatus, mRebootStatus, mSafetyNet, mLog, mSafetyNet_remove, mChecksView;
+    private PreferenceCategory mChecks, mSafety;
     private String suVersion, executableFilePath, result;
     private int image;
     private boolean isCMSU, rootAccess;
@@ -81,6 +80,7 @@ public class Checks extends PreferenceFragment {
         isCMSU = Tools.SuVersionBool(suVersion);
 
         mChecks = (PreferenceCategory) findPreference("checks_su");
+        mSafety = (PreferenceCategory) findPreference("safety");
         mChecksView = (Preference) findPreference("checks_view");
 
         mSuStatus = (Preference) findPreference("su_status");
@@ -139,12 +139,15 @@ public class Checks extends PreferenceFragment {
             }
         });
 
+        mSafetyNet_remove = (Preference) findPreference("safety_net_remove");
+        mSafetyNet_remove.setLayoutResource(R.layout.preference_progressbar);
+        mSafety.removePreference(mSafetyNet_remove);
         mSafetyNet = (Preference) findPreference("safety_net");
         mSafetyNet.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                mSafetyNet.setIcon(R.drawable.test);
-                mSafetyNet.setSummary(getString(R.string.safetyNet_testing));
+                mSafety.removePreference(mSafetyNet);
+                mSafety.addPreference(mSafetyNet_remove);
                 checkSafetyNet();
                 return true;
             }
@@ -191,20 +194,22 @@ public class Checks extends PreferenceFragment {
                 image = R.drawable.ok;
             else {
                 image = R.drawable.warning;
-                if (isCMSU)
+                if (isCMSU) {
                     result += "\n\n" + getString(R.string.su_state) + ": ";
                     result += (Tools.SuBinary() ? getString(R.string.activated) : getString(R.string.deactivated)) + "\n";
                     result += getString(R.string.selinux_state) + ": ";
                     result += (Tools.isSELinuxActive(getActivity()) ? getString(R.string.enforcing) : getString(R.string.permissive)) + "\n";
                     result += getString(R.string.adb_state) + ": ";
                     result += (Tools.AndroidDebugState(getActivity()) ? getString(R.string.activated) : getString(R.string.deactivated));
-
+                }
             }
         }
         update();
     }
 
     public void update() {
+        mSafety.removePreference(mSafetyNet_remove);
+        mSafety.addPreference(mSafetyNet);
         mSafetyNet.setSummary(result);
         mSafetyNet.setIcon(image);
     }
@@ -332,4 +337,5 @@ public class Checks extends PreferenceFragment {
         }
         return false;
     }
+
 }
