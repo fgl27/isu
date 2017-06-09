@@ -182,22 +182,22 @@ public class Checks extends PreferenceFragment {
             result = SNCheckResult.errmsg;
         } else {
             boolean pass = (SNCheckResult.ctsProfile && SNCheckResult.basicIntegrity);
-            result = getString(R.string.safetyNet_check_success) +
-                (pass ? " " + getString(R.string.safetyNet_pass) : " " + getString(R.string.safetyNet_fail));
-            result += "\n" + ("ctsProfile: " + SNCheckResult.ctsProfile);
-            result += "\n" + ("basicIntegrity: " + SNCheckResult.basicIntegrity);
+            String pass_result = (pass ? " " + getString(R.string.safetyNet_pass) : " " + getString(R.string.safetyNet_fail));
+            result = getString(R.string.safetyNet_check_success) + pass_result;
+            result += "\n" + ("ctsProfile: " + pass_result);
+            result += "\n" + ("basicIntegrity: " + pass_result);
 
             if (pass)
                 image = R.drawable.ok;
             else {
                 image = R.drawable.warning;
                 if (isCMSU)
-                    result += "\n\n" + getString(R.string.su_state) +
-                    ": " + (Tools.SuBinary() ? getString(R.string.activated) : getString(R.string.deactivated)) +
-                    "\n" + getString(R.string.selinux_state) +
-                    ": " + (Tools.isSELinuxActive(getActivity()) ? getString(R.string.enforcing) : getString(R.string.permissive)) +
-                    "\n" + getString(R.string.adb_state) +
-                    ": " + (Tools.AndroidDebugState(getActivity()) ? getString(R.string.activated) : getString(R.string.deactivated));
+                    result += "\n\n" + getString(R.string.su_state) + ": ";
+                    result += (Tools.SuBinary() ? getString(R.string.activated) : getString(R.string.deactivated)) + "\n";
+                    result += getString(R.string.selinux_state) + ": ";
+                    result += (Tools.isSELinuxActive(getActivity()) ? getString(R.string.enforcing) : getString(R.string.permissive)) + "\n";
+                    result += getString(R.string.adb_state) + ": ";
+                    result += (Tools.AndroidDebugState(getActivity()) ? getString(R.string.activated) : getString(R.string.deactivated));
 
             }
         }

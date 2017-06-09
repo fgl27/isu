@@ -4,7 +4,7 @@
     <!-- checks -->
     <string name="safety_net">Test Safety Net</string>
     <string name="safetyNet_no_response">Nie można sprawdzić SafetyNet, brak internetu?</string>
-    <string name="safetyNet_fail">Niepowodzenie, niezgodność profilu CTS</string>
+    <string name="safetyNet_fail">Niepowodzenie</string>
     <string name="safetyNet_pass">Powodzenie</string>
     <string name="safetyNet_untested">Nie testowano. Kliknij, aby przetestować</string>
     <string name="safetyNet_testing">Testowanie&#8230; Jeśli zajmie to zbyt dużo czasu, kliknij ponownie!</string>

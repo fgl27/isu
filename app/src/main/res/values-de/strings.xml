@@ -3,7 +3,7 @@
     <!-- checks -->
     <string name="safety_net">SafetyNet Test</string>
     <string name="safetyNet_no_response">SafetyNet-Abfrage nicht möglich, kein Internet?</string>
-    <string name="safetyNet_fail">Fehlgeschlagen, CTS-Profil-Fehlanpassung</string>
+    <string name="safetyNet_fail">Fehlgeschlagen</string>
     <string name="safetyNet_pass">Bestanden</string>
     <string name="safetyNet_untested">Ungetestet, zum Testen drücken</string>
     <string name="safetyNet_testing">Testing&#8230; Wenn es zu lange dauert, erneut drücken!</string>
