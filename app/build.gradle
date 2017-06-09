@@ -9,8 +9,8 @@ android {
         applicationId "com.bhb27.isu"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 40
-        versionName "5.0"
+        versionCode 41
+        versionName "5.1"
     }
     buildTypes {
         release {
