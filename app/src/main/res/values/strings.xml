@@ -2,9 +2,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <!-- checks -->
-    <string name="safety_net">Safety Net check</string>
+    <string name="safety_net">Safety Net test</string>
     <string name="safetyNet_no_response">Cannot check SafetyNet, no Internet?</string>
-    <string name="safetyNet_check_success">Check Success\n\nResult:</string>
+    <string name="safetyNet_check_success">Test successful\n\nResult:</string>
     <string name="safetyNet_fail">Failed</string>
     <string name="safetyNet_pass">Passed</string>
     <string name="safetyNet_network_loss">Network connection loss</string>

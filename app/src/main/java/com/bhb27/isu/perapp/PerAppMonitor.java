@@ -93,18 +93,16 @@ public class PerAppMonitor extends AccessibilityService {
             Log.d(TAG, "Profile = " + dont_profile + " app " + packageName);
         } else {
             if (Tools.getBoolean("auto_restart_su", false, context)) {
-                if (!packageName.equals(last_package)) {
-                    if (!profile_exists)
-                        last_profile = "Su";
-                    else {
-                        // Item 0 is package name Item 1 is the profile ID
-                        last_profile = Per_App.app_profile_info(packageName, getApplicationContext()).get(1);
-                    }
-                    change();
-                    last_package = packageName;
-                    time = System.currentTimeMillis();
-                    Log.d(TAG, "auto restart profile " + last_profile + " packageName = " + packageName);
-                } else Log.d(TAG, "auto_restart_su true but last_package = " + last_package + " and packageName = " + packageName);
+                if (!profile_exists)
+                    last_profile = "Su";
+                else {
+                    // Item 0 is package name Item 1 is the profile ID
+                    last_profile = Per_App.app_profile_info(packageName, getApplicationContext()).get(1);
+                }
+                change();
+                last_package = packageName;
+                time = System.currentTimeMillis();
+                Log.d(TAG, "auto restart profile " + last_profile + " packageName = " + packageName);
             } else {
                 if (!profile_exists) {
                     packageName = "Default";
