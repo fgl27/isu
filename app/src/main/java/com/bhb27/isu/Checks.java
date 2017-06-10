@@ -186,9 +186,11 @@ public class Checks extends PreferenceFragment {
         } else {
             boolean pass = (SNCheckResult.ctsProfile && SNCheckResult.basicIntegrity);
             String pass_result = (pass ? " " + getString(R.string.safetyNet_pass) : " " + getString(R.string.safetyNet_fail));
+            String cts_result = (SNCheckResult.ctsProfile ? " " + getString(R.string.safetyNet_pass) : " " + getString(R.string.safetyNet_fail));
+            String basicI_result = (SNCheckResult.basicIntegrity ? " " + getString(R.string.safetyNet_pass) : " " + getString(R.string.safetyNet_fail));
             result = getString(R.string.safetyNet_check_success) + pass_result;
-            result += "\n" + ("ctsProfile: " + pass_result);
-            result += "\n" + ("basicIntegrity: " + pass_result);
+            result += "\n" + ("ctsProfile: " + cts_result);
+            result += "\n" + ("basicIntegrity: " + basicI_result);
 
             if (pass)
                 image = R.drawable.ok;
