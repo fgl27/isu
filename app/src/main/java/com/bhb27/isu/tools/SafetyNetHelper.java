@@ -87,6 +87,7 @@ implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.Connectio
                         ret.basicIntegrity = decoded.getBoolean("basicIntegrity");
                         ret.failed = false;
                     } catch (JSONException e) {
+                        Log.d(Constants.TAG, "SN: result JSONException");
                         ret.errmsg = mActivity.getString(R.string.safetyNet_res_invalid);
                     }
                 } else {
