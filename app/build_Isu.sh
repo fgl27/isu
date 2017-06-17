@@ -20,6 +20,11 @@ SDK_DIR="sdk.dir=$SDK_FOLDER";
 #jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -storepass <yours_password> -keystore <file_path.apk> <new_file_path.apk> <chose_a_alias>
 #check
 # jarsigner -verify -verbose -certs <my_application.apk>
+# for play auto sign tool
+#java -jar pepk.jar --keystore=fgl.key --alias=felipe_leon --output=fgl.keystore --encryptionkey=eb10fe8f7c7c9df715022017b00c6471f8ba8170b13049a11e6c09ffe3056a104a3bbe4ac5a955f4ba4fe93fc8cef27558a3eb9d2a529a2092761fb833b656cd48b9de6a
+#keytool -genkey -v -keystore fgl_pem.key -alias felipe_leon -keyalg RSA -keysize 2048 -validity 10000
+#
+#keytool -export -rfc -keystore fgl_pem.key -alias felipe_leon -file fgl_pem.pem
 SIGN=1;
 KEY_FOLDER="$HOME"/android/temp/sign/fgl.key;
 KEY_PASS=$(</"$HOME"/android/temp/sign/pass);

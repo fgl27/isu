@@ -507,7 +507,7 @@ Preference.OnPreferenceChangeListener {
         private WeakReference<Context> contextRef;
 
         public Execute (Context context){
-             contextRef = new WeakReference<>(context);;
+             contextRef = new WeakReference<>(context);
         }
 
         @Override
