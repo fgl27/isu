@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Willi Ye <williye97@gmail.com>
+ * Copyright (C) 2016-2017 Felipe de Leon <fglfgl27@gmail.com>
  *
  * This file is part of Kernel Adiutor.
  *
@@ -132,8 +132,8 @@ public class Tools implements Constants {
         runCommand("mount -o rw,remount /system", su, context);
         runCommand("chmod 755" + executableFilePath + "restart", su, context);
         runCommand("cp -f " + executableFilePath + init_superuser + " /system/etc/init/superuser.rc", su, context);
-        runCommand(executableFilePath + "busybox" + abiX() + "sed -i '/seclabel/c\\    " + seclabel + "' system/etc/init/superuser.rc ", su, context);
-        //            RootUtils.runCommand(executableFilePath + "busybox" + abiX() + "sed -i 's/YYYY\\b/" + readString("cmiyc", null, context) + "/g' system/etc/init/superuser.rc ");
+        runCommand(executableFilePath + "busybox" + abiX() + " sed -i '/seclabel/c\\    " + seclabel + "' system/etc/init/superuser.rc ", su, context);
+        //            RootUtils.runCommand(executableFilePath + "busybox" + abiX() + " sed -i 's/YYYY\\b/" + readString("cmiyc", null, context) + "/g' system/etc/init/superuser.rc ");
         runCommand("chmod 644" + " /system/etc/init/superuser.rc", su, context);
         if (NewexistFile("/system/xbin/isush", true, context))
             runCommand("rm -rf /system/xbin/isush", su, context);
@@ -229,8 +229,8 @@ public class Tools implements Constants {
             runCommand("cp -f " + executableFilePath + init_restart + " /system/xbin/restart", su, context);
         }
         runCommand("chmod 755 /system/xbin/restart", su, context);
-        Log.d(TAG, "backup_restart = " + runCommand(executableFilePath + "busybox" + abiX() + "ls -l /system/xbin/restart", su, context));
-        Log.d(TAG, "backup_isu = " + runCommand(executableFilePath + "busybox" + abiX() + "ls -l /data/backup_isu", su, context));
+        Log.d(TAG, "backup_restart = " + runCommand(executableFilePath + "busybox" + abiX() + " ls -l /system/xbin/restart", su, context));
+        Log.d(TAG, "backup_isu = " + runCommand(executableFilePath + "busybox" + abiX() + " ls -l /data/backup_isu", su, context));
         runCommand("mount -o ro,remount /system", su, context);
     }
 
@@ -260,7 +260,7 @@ public class Tools implements Constants {
         boolean su = SuBinary();
         String executableFilePath = context.getFilesDir().getPath() + "/";
         String appRunning = runCommand("ps | grep " + app, su, context);
-        String UID = runCommand(executableFilePath + "busybox" + abiX() + "ps | grep " +
+        String UID = runCommand(executableFilePath + "busybox" + abiX() + " ps | grep " +
             app + " | head -1  | cut -d' ' -f1 ", su, context);
         if (appRunning.contains(app))
             runCommand("kill " + UID, su, context);
@@ -492,7 +492,7 @@ public class Tools implements Constants {
         boolean su = SuBinary();
         String oldvalue = oldKey + "=" + oldValue;
         String newvalue = newKey + "=" + newValue;
-        String command = "old=" + oldvalue + " && " + "new=" + newvalue + " && " + path + "busybox" + abiX() + "sed -i -r \"s%$old%$new%g\" " + BUILD_PROP;
+        String command = "old=" + oldvalue + " && " + "new=" + newvalue + " && " + path + "busybox" + abiX() + " sed -i -r \"s%$old%$new%g\" " + BUILD_PROP;
         runCommand("mount -o rw,remount /system", su, context);
         runCommand(command, su, context);
         runCommand("mount -o ro,remount /system", su, context);
@@ -569,24 +569,42 @@ public class Tools implements Constants {
     public static void stripsu(String executableFilePath, Context context) {
         boolean su = SuBinary();
         String ro_tochange = "";
-        String stripro = "ro.cm.version";
-        String stripto = "no.cm.version";
+        String stripro = "ro.debuggable";
+        String stripto = "no.debuggable";
         if (su)
-            ro_tochange = ro_tochange + runCommand(executableFilePath + "busybox" + abiX() + "strings " +
+            ro_tochange = ro_tochange + runCommand(executableFilePath + "busybox" + abiX() + " strings " +
                 xbin_su + " | grep " + stripro, su, context);
         else
-            ro_tochange = ro_tochange + runCommand(executableFilePath + "busybox" + abiX() + "strings system/xbin/" + readString("cmiyc", null, context) + " | grep " + stripro, su, context);
+            ro_tochange = ro_tochange + runCommand(executableFilePath + "busybox" + abiX() + " strings system/xbin/" + readString("cmiyc", null, context) + " | grep " + stripro, su, context);
         if (ro_tochange.contains(stripro)) {
             runCommand("mount -o rw,remount /system", su, context);
             if (su)
-                runCommand(executableFilePath + "busybox" + abiX() + "sed -i 's/" + stripro +
+                runCommand(executableFilePath + "busybox" + abiX() + " sed -i 's/" + stripro +
                     "/" + stripto + "/g' " + xbin_su, su, context);
             else
-                runCommand(executableFilePath + "busybox" + abiX() + "sed -i 's/" + stripro +
+                runCommand(executableFilePath + "busybox" + abiX() + " sed -i 's/" + stripro +
                     "/" + stripto + "/g' system/xbin/" + readString("cmiyc", null, context), su, context);
             runCommand("mount -o ro,remount /system", su, context);
             Log.d(TAG, "stripsu ro_tochange = " + ro_tochange);
         } else Log.d(TAG, "not stripsu ro_tochange = " + ro_tochange);
+        if (!getprop("no.debuggable").equals("1"))
+            resetprop(executableFilePath, "no.debuggable", "1", context, false);
+    }
+
+    public static void stripadb(String executableFilePath, Context context) {
+        boolean su = SuBinary();
+        String stripro = "ro.debuggable";
+        String stripto = "no.debuggable";
+        String ro_tochange = "" + runCommand(executableFilePath + "busybox" + abiX() + " strings sbin/adbd | grep " + stripro, su, context);
+        if (ro_tochange.contains(stripro)) {
+            runCommand("mount -o rw,remount /", su, context);
+             runCommand(executableFilePath + "busybox" + abiX() + " sed -i 's/" + stripro +
+                    "/" + stripto + "/g' sbin/adbd", su, context);
+            runCommand("mount -o ro,remount /", su, context);
+            Log.d(TAG, "stripadb ro_tochange = " + ro_tochange);
+        } else Log.d(TAG, "not stripadb ro_tochange = " + ro_tochange);
+        if (!getprop("no.debuggable").equals("1"))
+            resetprop(executableFilePath, "no.debuggable", "1", context, false);
     }
 
     public static void stripapp(String executableFilePath, String app, String[] strip_old, Context context) {
@@ -611,7 +629,7 @@ public class Tools implements Constants {
 
         app_path = "" + runCommand("pm path " + app + "| head -n1 | cut -d: -f2", su, context);
         app_path = app_path.substring(0, app_path.length() - 8) + "oat/*/base.odex";
-        runCommand(executableFilePath + "busybox" + abiX() + "sed -i -r 's/" + strip_old + "/" + strip_new + "/g' " + app_path, su, context);
+        runCommand(executableFilePath + "busybox" + abiX() + " sed -i -r 's/" + strip_old + "/" + strip_new + "/g' " + app_path, su, context);
         Log.d(TAG, " sedstring app " + app_path);
     }
 

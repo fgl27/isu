@@ -140,7 +140,7 @@ Preference.OnPreferenceChangeListener {
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    // iner personalized dialog
+                                    // inner personalized dialog
                                     editonepropdialog(Constants.robuildfingerprint);
                                     return;
                                 }
@@ -168,15 +168,7 @@ Preference.OnPreferenceChangeListener {
             }
         });
 
-        Runnable runThread = new Runnable() {
-            public void run() {
-                if (Tools.SuVersionBool(Tools.SuVersion(getActivity())))
-                    Tools.stripsu(executableFilePath, getActivity());
-                Tools.saveBoolean("prop_run", true, getActivity());
-            }
-        };
-        new Thread(runThread).start();
-
+        Tools.saveBoolean("prop_run", true, getActivity());
         updateState();
     }
 
@@ -201,6 +193,10 @@ Preference.OnPreferenceChangeListener {
             if (preference == props[i]) {
                 String value = (String) objValue;
                 updateprop(Constants.props[i], value);
+                if (Constants.props[i].equals("ro.debuggable") && value.equals("0")) {
+                    Tools.stripadb(executableFilePath, getActivity());
+                    Tools.stripsu(executableFilePath, getActivity());
+                }
             }
         }
         return true;
@@ -388,7 +384,7 @@ Preference.OnPreferenceChangeListener {
         propDB.putApp(app, id);
         propDB.commit(getActivity());
     }
-    //TODO fix this odd loking variables
+    //TODO fix this odd looking variables
     public String List_props() {
         PropDB propDB = new PropDB(getActivity());
         List < PropDB.PerAppItem > PropItem = propDB.getAllProps();
@@ -504,10 +500,10 @@ Preference.OnPreferenceChangeListener {
 
     private static class Execute extends AsyncTask < String, Void, Void > {
         private ProgressDialog progressDialog;
-        private WeakReference<Context> contextRef;
+        private WeakReference < Context > contextRef;
 
-        public Execute (Context context){
-             contextRef = new WeakReference<>(context);
+        public Execute(Context context) {
+            contextRef = new WeakReference < > (context);
         }
 
         @Override
@@ -528,6 +524,8 @@ Preference.OnPreferenceChangeListener {
                 progressDialog.setMessage(String.format(mContext.getString(R.string.setting_all),
                     mContext.getString(R.string.know_props)) + mContext.getString(R.string.safe) + "...");
                 Tools.resetallprop(executableFilePath, true, mContext);
+                Tools.stripadb(executableFilePath, mContext);
+                Tools.stripsu(executableFilePath, mContext);
             } else if (params[0].equals("red")) {
                 progressDialog.setMessage(String.format(mContext.getString(R.string.setting_all),
                     mContext.getString(R.string.know_props)) + mContext.getString(R.string.unsafe) + "...");

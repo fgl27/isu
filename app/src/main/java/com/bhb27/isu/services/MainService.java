@@ -1,7 +1,7 @@
 /*
  * Copyright (C) Felipe de Leon <fglfgl27@gmail.com>
  *
- * This file is part of iSu.
+ * context file is part of iSu.
  *
  * iSu is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 package com.bhb27.isu.services;
 
 import android.app.Service;
+import android.content.Context;
 import android.os.Build;
 import android.os.IBinder;
 import android.content.Context;
@@ -49,19 +50,20 @@ public class MainService extends Service {
     }
 
     private void init() {
+        Context context = this;
         executableFilePath = getFilesDir().getPath() + "/";
-        isCMSU = Tools.SuVersionBool(Tools.SuVersion(this));
-        Sepolicy(this);
-        extractresetprop(this);
-        Tools.WriteSettings(this);
-        Tools.BPBackup(this);
-        if (!Tools.getBoolean("run_boot", false, this))
-            Tools.saveBoolean("run_boot", true, this);
+        isCMSU = Tools.SuVersionBool(Tools.SuVersion(context));
+        Sepolicy(context);
+        extractresetprop(context);
+        Tools.WriteSettings(context);
+        Tools.BPBackup(context);
+        if (!Tools.getBoolean("run_boot", false, context))
+            Tools.saveBoolean("run_boot", true, context);
         if (isCMSU) {
-            if (Tools.NewexistFile(Constants.bin_su, true, this))
-                Tools.delbinsu(this);
+            if (Tools.NewexistFile(Constants.bin_su, true, context))
+                Tools.delbinsu(context);
 
-            Tools.subackup(executableFilePath, this);
+            Tools.subackup(executableFilePath, context);
         }
 
         // Create a blank profiles.json to prevent logspam.
@@ -106,7 +108,7 @@ public class MainService extends Service {
             !Tools.NewexistFile(executableFilePath + "supolicy", true, context)) {
             boolean su = Tools.SuBinary();
             Tools.extractAssets(executableFilePath, "libsupol" + Tools.abiX() + ".so", context);
-            Tools.extractAssets(executableFilePath, "supolicy" + Tools.abiX() , context);
+            Tools.extractAssets(executableFilePath, "supolicy" + Tools.abiX(), context);
             Tools.runCommand("mv -f " + executableFilePath + "libsupol" + Tools.abiX() + ".so " + executableFilePath + "libsupol.so", su, context);
             Tools.runCommand("mv -f " + executableFilePath + "supolicy" + Tools.abiX() + " " + executableFilePath + "supolicy", su, context);
         }

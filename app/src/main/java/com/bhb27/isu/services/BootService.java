@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2016-2017 Felipe de Leon <fglfgl27@gmail.com>
  *
- * This file is part of iSu.
+ * context file is part of iSu.
  *
  * iSu is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 package com.bhb27.isu.services;
 
 import android.app.Service;
+import android.content.Context;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
@@ -44,20 +45,24 @@ public class BootService extends Service {
     }
 
     private void init() {
+        Context context = this;
         String executableFilePath = getFilesDir().getPath() + "/";
-        Tools.PatchSepolicy(executableFilePath, this);
-        Tools.BPBackup(this);
-        isCMSU = Tools.SuVersionBool(Tools.SuVersion(this));
-        if (Tools.getBoolean("prop_run", false, this) && Tools.getBoolean("apply_props", false, this)) {
-            if (isCMSU) Tools.stripsu(executableFilePath, this);
-            Log.d(TAG, " Apply props");
-            Tools.applyprop(this, executableFilePath);
-            Tools.applyDbProp(this, executableFilePath);
+        Tools.PatchSepolicy(executableFilePath, context);
+        Tools.BPBackup(context);
+        isCMSU = Tools.SuVersionBool(Tools.SuVersion(context));
+        if (Tools.getBoolean("prop_run", false, context) && Tools.getBoolean("apply_props", false, context)) {
+            Log.d(TAG, " Applying props");
+            Tools.applyprop(context, executableFilePath);
+            Tools.applyDbProp(context, executableFilePath);
+            if (isCMSU && Tools.readString("ro.debuggable", null, context).equals("0")) {
+                Tools.stripadb(executableFilePath, context);
+                Tools.stripsu(executableFilePath, context);
+            }
         }
-        Tools.WriteSettings(this);
-        if (isCMSU && (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && !Tools.ReadSystemPatch(this))
-            Tools.SystemPatch(executableFilePath, this);
-        if (isCMSU) Tools.subackup(executableFilePath, this);
+        Tools.WriteSettings(context);
+        if (isCMSU && (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && !Tools.ReadSystemPatch(context))
+            Tools.SystemPatch(executableFilePath, context);
+        if (isCMSU) Tools.subackup(executableFilePath, context);
         Tools.closeSU();
         Log.d(TAG, " Run");
         stopSelf();
