@@ -496,7 +496,7 @@ public class Tools implements Constants {
         runCommand("mount -o rw,remount /system", su, context);
         runCommand(command, su, context);
         runCommand("mount -o ro,remount /system", su, context);
-        Log.d(TAG, "overwritebp " + command);
+        Log.d(TAG, "overwritebp " + "old = " + oldvalue + " new = " + newvalue);
     }
 
     public static void forcewritebp(String propvalue, Context context) {
