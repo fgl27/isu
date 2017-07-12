@@ -26,7 +26,10 @@
 -dontnote org.apache.http.**
 -dontnote android.net.http.**
 
+# google proguard rules add this
 -dontnote com.google.android.gms.**
+-dontnote android.widget.Toolbar
+-dontnote android.support.v7.widget.Toolbar
 
 -keep class org.spongycastle.** { *; }
 -dontwarn javax.naming.**
