@@ -22,9 +22,11 @@ package com.bhb27.isu;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.Manifest;
 import android.net.Uri;
@@ -40,7 +42,13 @@ import android.support.v14.preference.PreferenceFragment;
 import android.util.Log;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -54,16 +62,17 @@ import com.bhb27.isu.perapp.Per_App;
 import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.tools.SafetyNetHelper;
 import com.bhb27.isu.tools.Tools;
+import com.bhb27.isu.BuildConfig;
 
 import org.zeroturnaround.zip.ZipUtil;
 
 public class Checks extends PreferenceFragment {
 
-    private Preference mSuStatus, mRebootStatus, mSafetyNet, mLog, mSafetyNet_remove, mChecksView;
-    private PreferenceCategory mChecks, mSafety;
+    private Preference mSuStatus, mRebootStatus, mSafetyNet, mLog, mSafetyNet_remove, mChecksView, mUpdate, mUpdate_remove;
+    private PreferenceCategory mChecks, mSafety, mChecksUpdates;
     private String suVersion, executableFilePath, result;
     private int image;
-    private boolean isCMSU, rootAccess;
+    private boolean isCMSU, rootAccess, update_removed;
     public SafetyNetHelper.Result SNCheckResult;
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
@@ -81,6 +90,7 @@ public class Checks extends PreferenceFragment {
 
         mChecks = (PreferenceCategory) findPreference("checks_su");
         mSafety = (PreferenceCategory) findPreference("safety");
+        mChecksUpdates = (PreferenceCategory) findPreference("checks_update");
         mChecksView = (Preference) findPreference("checks_view");
 
         mSuStatus = (Preference) findPreference("su_status");
@@ -88,6 +98,12 @@ public class Checks extends PreferenceFragment {
         mSuStatus.setIcon(Tools.SuVersionBool(suVersion) ? R.drawable.ok : R.drawable.warning);
 
         mRebootStatus = (Preference) findPreference("reboot_status");
+
+        mUpdate = (Preference) findPreference("update");
+
+        mUpdate_remove = (Preference) findPreference("update_remove");
+        mUpdate_remove.setLayoutResource(R.layout.preference_progressbar_two);
+        mChecksUpdates.removePreference(mUpdate_remove);
 
         if (isCMSU) {
             mChecks.removePreference(mChecksView);
@@ -152,6 +168,11 @@ public class Checks extends PreferenceFragment {
                 return true;
             }
         });
+
+        try {
+            getActivity().registerReceiver(updateChecksReceiver, new IntentFilter("updateChecksReceiver"));
+        } catch (NullPointerException ignored) {}
+        new RequestTask(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
     }
 
     @Override
@@ -161,11 +182,15 @@ public class Checks extends PreferenceFragment {
             rootAccess = Tools.rootAccess(getActivity());
             Tools.updateMain(getActivity(), (String.format(getString(R.string.reloading), getString(R.string.su_access))));
         }
+        new RequestTask(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        try {
+            getActivity().unregisterReceiver(updateChecksReceiver);
+        } catch (IllegalArgumentException ignored) {}
         Tools.closeSU();
     }
 
@@ -340,4 +365,100 @@ public class Checks extends PreferenceFragment {
         return false;
     }
 
+    private static class RequestTask extends AsyncTask < String, String, String > {
+        private WeakReference < Context > contextRef;
+
+        public RequestTask(Context context) {
+            contextRef = new WeakReference < > (context);
+        }
+
+        @Override
+        protected String doInBackground(String...site) {
+            try {
+                String webPage = site[0];
+                URL url = new URL(webPage);
+                URLConnection urlConnection = url.openConnection();
+                InputStream is = urlConnection.getInputStream();
+                InputStreamReader isr = new InputStreamReader(is);
+
+                int numCharsRead;
+                char[] charArray = new char[1024];
+                StringBuffer sb = new StringBuffer();
+                while ((numCharsRead = isr.read(charArray)) > 0) {
+                    sb.append(charArray, 0, numCharsRead);
+                }
+                String result = sb.toString();
+                return result;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Context mContext = contextRef.get();
+            if (result != null && !result.isEmpty()) {
+                String[] sitesplit = result.split(",");
+                Tools.saveString("last_app_version", sitesplit[0], mContext);
+                Tools.saveString("last_app_link", sitesplit[1], mContext);
+            } else {
+                Tools.saveString("last_app_version", "", mContext);
+                Tools.saveString("last_app_link", "", mContext);
+            }
+            Tools.SendBroadcast("updateChecksReceiver", mContext);
+        }
+    }
+
+    private final BroadcastReceiver updateChecksReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateState();
+        }
+    };
+
+    private void updateState() {
+        if (update_removed) {
+            mChecksUpdates.removePreference(mUpdate_remove);
+            mChecksUpdates.addPreference(mUpdate);
+            update_removed = false;
+        }
+        String version = Tools.readString("last_app_version", null, getActivity());
+        String link = Tools.readString("last_app_link", null, getActivity());
+        if (version != null && !version.isEmpty() && link != null && !link.isEmpty()) {
+            if (!BuildConfig.VERSION_NAME.equals(version)) {
+                mUpdate.setSummary(String.format(getString(R.string.update_summary_out), version) + " " + BuildConfig.VERSION_NAME + getString(R.string.update_link));
+                mUpdate.setIcon(R.drawable.warning);
+                mUpdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        try {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
+                        } catch (ActivityNotFoundException ex) {
+                            Tools.DoAToast(getString(R.string.no_browser), getActivity());
+                        }
+                        return true;
+                    }
+                });
+            } else if (BuildConfig.VERSION_NAME.equals(version)) {
+                mUpdate.setSummary(getString(R.string.update_summary_up));
+                mUpdate.setIcon(R.drawable.ok);
+            }
+        } else {
+            mUpdate.setSummary(getString(R.string.update_summary_fail));
+            mUpdate.setIcon(R.drawable.interrogation);
+            mUpdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    update_removed = true;
+                    mChecksUpdates.removePreference(mUpdate);
+                    mChecksUpdates.addPreference(mUpdate_remove);
+                    new RequestTask(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
+                    return true;
+                }
+            });
+        }
+    }
 }

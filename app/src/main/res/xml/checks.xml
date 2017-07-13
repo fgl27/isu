@@ -18,7 +18,8 @@
  * along with iSu.  If not, see <http://www.gnu.org/licenses/>.
  *
  */-->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" xmlns:settings="http://schemas.android.com/apk/res/com.android.settings">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" xmlns:settings="http://schemas.android.com/apk/res/com.android.settings"
+    android:key="checksScreen">
     <PreferenceCategory
         android:key="checks_su"
         android:title="@string/su_state">
@@ -34,6 +35,17 @@
         <Preference
             android:key="reboot_status"
             android:title="@string/reboot_support"
+            android:persistent="false" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="checks_update"
+        android:title="@string/update">
+        <Preference
+            android:key="update_remove"
+            android:persistent="false" />
+        <Preference
+            android:key="update"
+            android:title="@string/update_title"
             android:persistent="false" />
     </PreferenceCategory>
     <PreferenceCategory

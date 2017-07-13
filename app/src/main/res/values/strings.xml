@@ -22,6 +22,13 @@
     <string name="generating_log">Generating a Log&#8230;</string>
     <string name="generating_log_move">Log file saved at:\n\n%s</string>
     <string name="cant_generating">Can\'t generate a log, missing write permission to storage</string>
+    <string name="update">Update</string>
+    <string name="update_title">Update Status</string>
+    <string name="update_summary_out">iSu is Outdated\nLatest app version is %s, but you are running version</string>
+    <string name="update_summary_up">iSu is uptodate</string>
+    <string name="update_summary_fail">Could not verify, click to try again</string>
+    <string name="update_link">\n\nClick here to open iSu download page</string>
+    <string name="update_checking">Checking&#8230; It may take a few seconds.</string>
 
     <!-- controls -->
     <string name="su_switch">Change SU state</string>
