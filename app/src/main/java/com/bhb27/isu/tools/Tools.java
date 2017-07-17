@@ -587,8 +587,8 @@ public class Tools implements Constants {
             runCommand("mount -o ro,remount /system", su, context);
             Log.d(TAG, "stripsu ro_tochange = " + ro_tochange);
         } else Log.d(TAG, "not stripsu ro_tochange = " + ro_tochange);
-        if (!getprop("no.debuggable").equals("1"))
-            resetprop(executableFilePath, "no.debuggable", "1", context, false);
+        if (!getprop(stripto).equals("1"))
+            resetprop(executableFilePath, stripto, "1", context, true);
     }
 
     public static void stripadb(String executableFilePath, Context context) {
@@ -603,8 +603,8 @@ public class Tools implements Constants {
             runCommand("mount -o ro,remount /", su, context);
             Log.d(TAG, "stripadb ro_tochange = " + ro_tochange);
         } else Log.d(TAG, "not stripadb ro_tochange = " + ro_tochange);
-        if (!getprop("no.debuggable").equals("1"))
-            resetprop(executableFilePath, "no.debuggable", "1", context, false);
+        if (!getprop(stripto).equals("1"))
+            resetprop(executableFilePath, stripto, "1", context, true);
     }
 
     public static void stripapp(String executableFilePath, String app, String[] strip_old, Context context) {
