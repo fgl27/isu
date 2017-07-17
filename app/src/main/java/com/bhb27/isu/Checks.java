@@ -100,6 +100,7 @@ public class Checks extends PreferenceFragment {
         mRebootStatus = (Preference) findPreference("reboot_status");
 
         mUpdate = (Preference) findPreference("update");
+        updateStateNoInternet();
 
         mUpdate_remove = (Preference) findPreference("update_remove");
         mUpdate_remove.setLayoutResource(R.layout.preference_progressbar_two);
@@ -428,7 +429,9 @@ public class Checks extends PreferenceFragment {
         String version = Tools.readString("last_app_version", null, getActivity());
         String link = Tools.readString("last_app_link", null, getActivity());
         if (version != null && !version.isEmpty() && link != null && !link.isEmpty()) {
-            if (!BuildConfig.VERSION_NAME.equals(version)) {
+            double versionDownload = Float.valueOf(version);
+            double versionApp = Float.valueOf(BuildConfig.VERSION_NAME);
+            if (versionDownload > versionApp) {
                 mUpdate.setSummary(String.format(getString(R.string.update_summary_out), version) + " " + BuildConfig.VERSION_NAME + getString(R.string.update_link));
                 mUpdate.setIcon(R.drawable.warning);
                 mUpdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -442,11 +445,14 @@ public class Checks extends PreferenceFragment {
                         return true;
                     }
                 });
-            } else if (BuildConfig.VERSION_NAME.equals(version)) {
+            } else if (versionDownload <= versionApp) {
                 mUpdate.setSummary(getString(R.string.update_summary_up));
                 mUpdate.setIcon(R.drawable.ok);
             }
-        } else {
+        } else updateStateNoInternet();
+    }
+
+    private void updateStateNoInternet() {
             mUpdate.setSummary(getString(R.string.update_summary_fail));
             mUpdate.setIcon(R.drawable.interrogation);
             mUpdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -459,6 +465,5 @@ public class Checks extends PreferenceFragment {
                     return true;
                 }
             });
-        }
     }
 }
