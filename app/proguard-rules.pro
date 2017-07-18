@@ -40,3 +40,5 @@
 
 # retrolambda
 -dontwarn java.lang.invoke.*
+
+-dontwarn okhttp3.**

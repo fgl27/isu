@@ -42,14 +42,8 @@ import android.support.v14.preference.PreferenceFragment;
 import android.util.Log;
 
 import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.text.DateFormat;
+	import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -65,6 +59,9 @@ import com.bhb27.isu.tools.Tools;
 import com.bhb27.isu.BuildConfig;
 
 import org.zeroturnaround.zip.ZipUtil;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class Checks extends PreferenceFragment {
 
@@ -375,24 +372,13 @@ public class Checks extends PreferenceFragment {
 
         @Override
         protected String doInBackground(String...site) {
+            String webPage = site[0];
             try {
-                String webPage = site[0];
-                URL url = new URL(webPage);
-                URLConnection urlConnection = url.openConnection();
-                InputStream is = urlConnection.getInputStream();
-                InputStreamReader isr = new InputStreamReader(is);
-
-                int numCharsRead;
-                char[] charArray = new char[1024];
-                StringBuffer sb = new StringBuffer();
-                while ((numCharsRead = isr.read(charArray)) > 0) {
-                    sb.append(charArray, 0, numCharsRead);
-                }
-                String result = sb.toString();
-                return result;
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+                OkHttpClient client = new OkHttpClient.Builder().build();
+                Request request = new Request.Builder().url(webPage).build();
+                Response response = client.newCall(request).execute();
+                return response.body().string();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
@@ -411,7 +397,9 @@ public class Checks extends PreferenceFragment {
             }
             Tools.SendBroadcast("updateChecksReceiver", mContext);
         }
+
     }
+
 
     private final BroadcastReceiver updateChecksReceiver = new BroadcastReceiver() {
         @Override
@@ -448,22 +436,30 @@ public class Checks extends PreferenceFragment {
             } else if (versionDownload <= versionApp) {
                 mUpdate.setSummary(getString(R.string.update_summary_up));
                 mUpdate.setIcon(R.drawable.ok);
+                mUpdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        //do nothing just to prevent clicks
+                        return true;
+                    }
+                });
             }
         } else updateStateNoInternet();
     }
 
     private void updateStateNoInternet() {
-            mUpdate.setSummary(getString(R.string.update_summary_fail));
-            mUpdate.setIcon(R.drawable.interrogation);
-            mUpdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    update_removed = true;
-                    mChecksUpdates.removePreference(mUpdate);
-                    mChecksUpdates.addPreference(mUpdate_remove);
-                    new RequestTask(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
-                    return true;
-                }
-            });
+        mUpdate.setSummary(getString(R.string.update_summary_fail));
+        mUpdate.setIcon(R.drawable.interrogation);
+        mUpdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                update_removed = true;
+                mChecksUpdates.removePreference(mUpdate);
+                mChecksUpdates.addPreference(mUpdate_remove);
+                new RequestTask(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
+                return true;
+            }
+        });
     }
+
 }
