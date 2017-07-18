@@ -54,10 +54,8 @@ public class BootService extends Service {
             Log.d(TAG, " Applying props");
             Tools.applyprop(context, executableFilePath);
             Tools.applyDbProp(context, executableFilePath);
-            if (isCMSU && Tools.readString("ro.debuggable", null, context).equals("0")) {
+            if (isCMSU && Tools.readString("ro.debuggable", null, context).equals("0"))
                 Tools.stripadb(executableFilePath, context);
-                Tools.stripsu(executableFilePath, context);
-            }
         }
         Tools.WriteSettings(context);
         if (isCMSU && (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && !Tools.ReadSystemPatch(context))

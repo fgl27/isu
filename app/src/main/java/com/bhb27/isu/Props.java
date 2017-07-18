@@ -193,10 +193,8 @@ Preference.OnPreferenceChangeListener {
             if (preference == props[i]) {
                 String value = (String) objValue;
                 updateprop(Constants.props[i], value);
-                if (Constants.props[i].equals("ro.debuggable") && value.equals("0")) {
+                if (Constants.props[i].equals("ro.debuggable") && value.equals("0"))
                     Tools.stripadb(executableFilePath, getActivity());
-                    Tools.stripsu(executableFilePath, getActivity());
-                }
             }
         }
         return true;
