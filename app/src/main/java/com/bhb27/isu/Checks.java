@@ -127,7 +127,7 @@ public class Checks extends PreferenceFragment {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 if (check_writeexternalstorage())
-                    new Tools.LogSu(getActivity()).execute();
+                    new Tools.LogToZip(getActivity()).execute();
                 else
                     Tools.DoAToast(getString(R.string.cant_generating), getActivity());
                 return true;

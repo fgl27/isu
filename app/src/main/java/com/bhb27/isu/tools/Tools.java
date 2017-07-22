@@ -695,6 +695,16 @@ public class Tools implements Constants {
         return "";
     }
 
+    public static void runShellCommand(String command) {
+        try {
+            StringBuffer output = new StringBuffer();
+            Process p = Runtime.getRuntime().exec(new String[]{"bash","-c",command});
+            p.waitFor();
+        } catch (InterruptedException | IOException e) {
+            Log.d(TAG, "catch exception runShellCommand");
+        }
+    }
+
     public static boolean getBoolean(String name, boolean defaults, Context context) {
         try {
             return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getBoolean(name, defaults);
@@ -886,11 +896,11 @@ public class Tools implements Constants {
         }
     }
 
-    public static class LogSu extends AsyncTask < Void, Void, String > {
+    public static class LogToZip extends AsyncTask < Void, Void, String > {
         private ProgressDialog progressDialog;
         private WeakReference < Context > contextRef;
 
-        public LogSu(Context context) {
+        public LogToZip(Context context) {
             contextRef = new WeakReference < > (context);
         }
 
@@ -909,6 +919,7 @@ public class Tools implements Constants {
         protected String doInBackground(Void...params) {
             boolean su = SuBinary();
             Context mContext = contextRef.get();
+            boolean canSU = rootAccess(mContext);
             String executableFilePath = mContext.getFilesDir().getPath() + "/";
             String sdcard = Environment.getExternalStorageDirectory().getPath();
             String log_folder = sdcard + "/iSu_Logs/";
@@ -928,33 +939,53 @@ public class Tools implements Constants {
             String prefs = "\n\nprefs\n";
             String paths = "\n\npaths\n";
 
-            if (!NewexistFile(log_folder, true, mContext)) {
-                File dir = new File(log_folder);
-                dir.mkdir();
-            }
             if (NewexistFile(log_temp_folder, true, mContext)) {
-                runCommand("rm -rf " + log_temp_folder, su, mContext);
+                if (canSU)
+                    runCommand("rm -rf " + log_temp_folder, su, mContext);
+                else
+                    runShellCommand("rm -rf " + log_temp_folder);
                 File dir = new File(log_temp_folder);
                 dir.mkdir();
             } else {
                 File dir = new File(log_temp_folder);
                 dir.mkdir();
             }
-            runCommand(logcatC + " > " + logcat, su, mContext);
-            runCommand(dmesgC + " > " + log_temp_folder + "dmesg.txt", su, mContext);
-            runCommand(getpropC + " > " + log_temp_folder + "getprop.txt", su, mContext);
-            runCommand("echo '" + perappjson + "' >> " + isuconfig, su, mContext);
-            runCommand("cat " + executableFilePath + "per_app.json >> " + isuconfig, su, mContext);
-            runCommand("echo '" + propjson + "' >> " + isuconfig, su, mContext);
-            runCommand("cat " + executableFilePath + "prop.json >> " + isuconfig, su, mContext);
-            runCommand("echo '" + prefs + "' >> " + isuconfig, su, mContext);
-            runCommand("cat " + data_folder + "/shared_prefs/" + Constants.PREF_NAME + ".xml >> " + isuconfig, su, mContext);
-            runCommand("echo '" + paths + "' >> " + isuconfig, su, mContext);
-            runCommand("echo '" + log_folder + "' >> " + isuconfig, su, mContext);
-            runCommand("echo '" + data_folder + "' >> " + isuconfig, su, mContext);
-            runCommand((su ? "which su" : "which " + readString("cmiyc", null, mContext)) + " >> " + isuconfig, su, mContext);
-            runCommand("echo 'iSu version " + BuildConfig.VERSION_NAME + "' >> " + isuconfig, su, mContext);
-            runCommand("rm -rf " + log_temp_folder + "logcat_wile.txt", su, mContext);
+            if (canSU) {
+                runCommand(logcatC + " > " + logcat, su, mContext);
+                runCommand(dmesgC + " > " + log_temp_folder + "dmesg.txt", su, mContext);
+                runCommand(getpropC + " > " + log_temp_folder + "getprop.txt", su, mContext);
+                runCommand("echo '" + perappjson + "' >> " + isuconfig, su, mContext);
+                runCommand("cat " + executableFilePath + "per_app.json >> " + isuconfig, su, mContext);
+                runCommand("echo '" + propjson + "' >> " + isuconfig, su, mContext);
+                runCommand("cat " + executableFilePath + "prop.json >> " + isuconfig, su, mContext);
+                runCommand("echo '" + prefs + "' >> " + isuconfig, su, mContext);
+                runCommand("cat " + data_folder + "/shared_prefs/" + Constants.PREF_NAME + ".xml >> " + isuconfig, su, mContext);
+                runCommand("echo '" + paths + "' >> " + isuconfig, su, mContext);
+                runCommand("echo '" + log_folder + "' >> " + isuconfig, su, mContext);
+                runCommand("echo '" + data_folder + "' >> " + isuconfig, su, mContext);
+                runCommand((su ? "which su" : "which " + readString("cmiyc", null, mContext)) + " >> " + isuconfig, su, mContext);
+                runCommand("echo 'iSu version " + BuildConfig.VERSION_NAME + "' >> " + isuconfig, su, mContext);
+                runCommand("rm -rf " + log_temp_folder + "logcat_wile.txt", su, mContext);
+            } else {
+                runShellCommand(logcatC + " > " + logcat);
+                if (runShell(dmesgC).isEmpty())
+                    runShellCommand("echo 'for security, system is preventing non-root users from reading the kernel log or it is empty' > " + log_temp_folder + "dmesg.txt");
+                else
+                    runShellCommand(dmesgC + " > " + log_temp_folder + "dmesg.txt");
+                runShellCommand(getpropC + " > " + log_temp_folder + "getprop.txt");
+                runShellCommand("echo '" + perappjson + "' >> " + isuconfig);
+                runShellCommand("cat " + executableFilePath + "per_app.json >> " + isuconfig);
+                runShellCommand("echo '" + propjson + "' >> " + isuconfig);
+                runShellCommand("cat " + executableFilePath + "prop.json >> " + isuconfig);
+                runShellCommand("echo '" + prefs + "' >> " + isuconfig);
+                runShellCommand("cat " + data_folder + "/shared_prefs/" + Constants.PREF_NAME + ".xml >> " + isuconfig);
+                runShellCommand("echo '" + paths + "' >> " + isuconfig);
+                runShellCommand("echo '" + log_folder + "' >> " + isuconfig);
+                runShellCommand("echo '" + data_folder + "' >> " + isuconfig);
+                runShellCommand((su ? "which su" : "which " + readString("cmiyc", null, mContext)) + " >> " + isuconfig);
+                runShellCommand("echo 'iSu version " + BuildConfig.VERSION_NAME + "' >> " + isuconfig);
+                runShellCommand("rm -rf " + log_temp_folder + "logcat_wile.txt");
+            }
             // ZipUtil doesn’t understand folder name that end with /
             // Logcat some times is too long and the zip logcat.txt may be empty, do some check
             while (true) {
@@ -962,12 +993,20 @@ public class Tools implements Constants {
                 ZipUtil.unpackEntry(new File(zip_file), "logcat.txt", new File(tmplogcat));
                 if (compareFiles(logcat, tmplogcat, true, mContext)) {
                     Log.d(Constants.TAG, "ziped logcat.txt is ok");
-                    runCommand("rm -rf " + log_temp_folder, su, mContext);
+                    if (canSU)
+                        runCommand("rm -rf " + log_temp_folder, su, mContext);
+                    else
+                        runShellCommand("rm -rf " + log_temp_folder);
                     break;
                 } else {
                     Log.d(Constants.TAG, "logcat.txt is nok");
-                    runCommand("rm -rf " + zip_file, su, mContext);
-                    runCommand("rm -rf " + tmplogcat, su, mContext);
+                    if (canSU) {
+                        runCommand("rm -rf " + zip_file, su, mContext);
+                        runCommand("rm -rf " + tmplogcat, su, mContext);
+                    } else {
+                        runShellCommand("rm -rf " + zip_file);
+                        runShellCommand("rm -rf " + tmplogcat);
+                    }
                 }
             }
             return zip_file;
