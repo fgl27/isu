@@ -23,6 +23,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -33,7 +34,9 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
@@ -59,18 +62,31 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.lang.ref.WeakReference;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
+import com.bhb27.isu.BuildConfig;
 import com.bhb27.isu.Start;
 import com.bhb27.isu.R;
+import com.bhb27.isu.perapp.PerAppMonitor;
+import com.bhb27.isu.perapp.Per_App;
 import com.bhb27.isu.perapp.PropDB;
 import com.bhb27.isu.tools.RootFile;
 import com.bhb27.isu.tools.RootUtils;
 import com.bhb27.isu.widgetservice.Widgeth;
 import com.bhb27.isu.widgetservice.Widgetv;
 import com.bhb27.isu.widgetservice.Widgetsu;
+
+import org.zeroturnaround.zip.ZipUtil;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class Tools implements Constants {
 
@@ -868,5 +884,145 @@ public class Tools implements Constants {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static class LogSu extends AsyncTask < Void, Void, String > {
+        private ProgressDialog progressDialog;
+        private WeakReference < Context > contextRef;
+
+        public LogSu(Context context) {
+            contextRef = new WeakReference < > (context);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Context mContext = contextRef.get();
+            progressDialog = new ProgressDialog(mContext, R.style.AlertDialogStyle);
+            progressDialog.setTitle(mContext.getString(R.string.app_name));
+            progressDialog.setMessage(mContext.getString(R.string.generating_log));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Void...params) {
+            boolean su = SuBinary();
+            Context mContext = contextRef.get();
+            String executableFilePath = mContext.getFilesDir().getPath() + "/";
+            String sdcard = Environment.getExternalStorageDirectory().getPath();
+            String log_folder = sdcard + "/iSu_Logs/";
+            String log_temp_folder = sdcard + "/iSu_Logs/tmpziplog/";
+            String zip_file = sdcard + "/iSu_Logs/" + "iSu_log" + getDate() + ".zip";
+            String logcat = log_temp_folder + "logcat.txt";
+            String tmplogcat = log_temp_folder + "tmplogcat.txt";
+            String logcatC = "logcat -d ";
+            String dmesgC = "dmesg ";
+            String getpropC = "getprop ";
+
+            String isuconfig = log_temp_folder + "iSu_config.txt";
+            String data_folder = mContext.getFilesDir().getParentFile().getAbsolutePath();
+            String perappjson = "per_app.json Accessibility Enabled = " +
+                Per_App.isAccessibilityEnabled(mContext, PerAppMonitor.accessibilityId) + "\n";
+            String propjson = "\n\nprop.json\n";
+            String prefs = "\n\nprefs\n";
+            String paths = "\n\npaths\n";
+
+            if (!NewexistFile(log_folder, true, mContext)) {
+                File dir = new File(log_folder);
+                dir.mkdir();
+            }
+            if (NewexistFile(log_temp_folder, true, mContext)) {
+                runCommand("rm -rf " + log_temp_folder, su, mContext);
+                File dir = new File(log_temp_folder);
+                dir.mkdir();
+            } else {
+                File dir = new File(log_temp_folder);
+                dir.mkdir();
+            }
+            runCommand(logcatC + " > " + logcat, su, mContext);
+            runCommand(dmesgC + " > " + log_temp_folder + "dmesg.txt", su, mContext);
+            runCommand(getpropC + " > " + log_temp_folder + "getprop.txt", su, mContext);
+            runCommand("echo '" + perappjson + "' >> " + isuconfig, su, mContext);
+            runCommand("cat " + executableFilePath + "per_app.json >> " + isuconfig, su, mContext);
+            runCommand("echo '" + propjson + "' >> " + isuconfig, su, mContext);
+            runCommand("cat " + executableFilePath + "prop.json >> " + isuconfig, su, mContext);
+            runCommand("echo '" + prefs + "' >> " + isuconfig, su, mContext);
+            runCommand("cat " + data_folder + "/shared_prefs/" + Constants.PREF_NAME + ".xml >> " + isuconfig, su, mContext);
+            runCommand("echo '" + paths + "' >> " + isuconfig, su, mContext);
+            runCommand("echo '" + log_folder + "' >> " + isuconfig, su, mContext);
+            runCommand("echo '" + data_folder + "' >> " + isuconfig, su, mContext);
+            runCommand((su ? "which su" : "which " + readString("cmiyc", null, mContext)) + " >> " + isuconfig, su, mContext);
+            runCommand("echo 'iSu version " + BuildConfig.VERSION_NAME + "' >> " + isuconfig, su, mContext);
+            runCommand("rm -rf " + log_temp_folder + "logcat_wile.txt", su, mContext);
+            // ZipUtil doesn’t understand folder name that end with /
+            // Logcat some times is too long and the zip logcat.txt may be empty, do some check
+            while (true) {
+                ZipUtil.pack(new File(sdcard + "/iSu_Logs/tmpziplog"), new File(zip_file));
+                ZipUtil.unpackEntry(new File(zip_file), "logcat.txt", new File(tmplogcat));
+                if (compareFiles(logcat, tmplogcat, true, mContext)) {
+                    Log.d(Constants.TAG, "ziped logcat.txt is ok");
+                    runCommand("rm -rf " + log_temp_folder, su, mContext);
+                    break;
+                } else {
+                    Log.d(Constants.TAG, "logcat.txt is nok");
+                    runCommand("rm -rf " + zip_file, su, mContext);
+                    runCommand("rm -rf " + tmplogcat, su, mContext);
+                }
+            }
+            return zip_file;
+        }
+
+        @Override
+        protected void onPostExecute(String zip) {
+            super.onPostExecute(zip);
+            Context mContext = contextRef.get();
+            progressDialog.dismiss();
+            SimpleDialog(String.format(mContext.getString(R.string.generating_log_move), zip), mContext);
+        }
+    }
+
+    public static String getDate() {
+        DateFormat dateformate = new SimpleDateFormat("MMM_dd_yyyy_HH_mm", Locale.US);
+        Date date = new Date();
+        String Final_Date = "_" + dateformate.format(date);
+        return Final_Date;
+    }
+
+    public static class CheckUpdate extends AsyncTask < String, String, String > {
+        private WeakReference < Context > contextRef;
+
+        public CheckUpdate(Context context) {
+            contextRef = new WeakReference < > (context);
+        }
+
+        @Override
+        protected String doInBackground(String...site) {
+            String webPage = site[0];
+            try {
+                OkHttpClient client = new OkHttpClient.Builder().build();
+                Request request = new Request.Builder().url(webPage).build();
+                Response response = client.newCall(request).execute();
+                return response.body().string();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Context mContext = contextRef.get();
+            if (result != null && !result.isEmpty()) {
+                String[] sitesplit = result.split(",");
+                saveString("last_app_version", sitesplit[0], mContext);
+                saveString("last_app_link", sitesplit[1], mContext);
+            } else {
+                saveString("last_app_version", "", mContext);
+                saveString("last_app_link", "", mContext);
+            }
+            SendBroadcast("updateChecksReceiver", mContext);
+        }
+
     }
 }
