@@ -523,7 +523,6 @@ Preference.OnPreferenceChangeListener {
                     mContext.getString(R.string.know_props)) + mContext.getString(R.string.safe) + "...");
                 Tools.resetallprop(executableFilePath, true, mContext);
                 Tools.stripadb(executableFilePath, mContext);
-                Tools.stripsu(executableFilePath, mContext);
             } else if (params[0].equals("red")) {
                 progressDialog.setMessage(String.format(mContext.getString(R.string.setting_all),
                     mContext.getString(R.string.know_props)) + mContext.getString(R.string.unsafe) + "...");
