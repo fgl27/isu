@@ -24,6 +24,8 @@ import com.bhb27.isu.R;
 public abstract class SafetyNetHelper
 implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
+    private static boolean isRunning = false;
+
     private GoogleApiClient mGoogleApiClient;
     private Result ret;
     protected FragmentActivity mActivity;
@@ -31,17 +33,20 @@ implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.Connectio
     public SafetyNetHelper(FragmentActivity activity) {
         ret = new Result();
         mActivity = activity;
-        mGoogleApiClient = new GoogleApiClient.Builder(activity)
-            .enableAutoManage(activity, this)
-            .addApi(SafetyNet.API)
-            .addConnectionCallbacks(this)
-            .build();
     }
 
     // Entry point to start test
     public void requestTest() {
+        if (isRunning)
+            return;
         // Connect Google Service
+        mGoogleApiClient = new GoogleApiClient.Builder(mActivity)
+                .enableAutoManage(mActivity, this)
+                .addApi(SafetyNet.API)
+                .addConnectionCallbacks(this)
+                .build();
         mGoogleApiClient.connect();
+        isRunning = true;
     }
 
     @Override
@@ -97,6 +102,7 @@ implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.Connectio
                 // Disconnect
                 mGoogleApiClient.stopAutoManage(mActivity);
                 mGoogleApiClient.disconnect();
+                isRunning = false;
                 handleResults(ret);
             });
     }
