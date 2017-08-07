@@ -939,7 +939,12 @@ public class Tools implements Constants {
             String prefs = "\n\nprefs\n";
             String paths = "\n\npaths\n";
 
-            if (NewexistFile(log_temp_folder, true, mContext)) {
+            if (!NewexistFile(log_folder, true, mContext) || !NewexistFile(log_folder, false, mContext)) {
+                File dir = new File(log_folder);
+                dir.mkdir();
+            }
+
+            if (NewexistFile(log_temp_folder, true, mContext) || NewexistFile(log_temp_folder, false, mContext)) {
                 if (canSU)
                     runCommand("rm -rf " + log_temp_folder, su, mContext);
                 else
@@ -950,6 +955,7 @@ public class Tools implements Constants {
                 File dir = new File(log_temp_folder);
                 dir.mkdir();
             }
+
             if (canSU) {
                 runCommand(logcatC + " > " + logcat, su, mContext);
                 runCommand(dmesgC + " > " + log_temp_folder + "dmesg.txt", su, mContext);
