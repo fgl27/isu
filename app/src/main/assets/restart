@@ -27,7 +27,6 @@ if [ -e /system/xbin/su ]; then
 fi
 
 echo 'isu_init: isu init.sh start boot ok' > /dev/kmsg;
-mount -o ro,remount /system;
 umount /system;
 exit
 

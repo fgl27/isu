@@ -39,7 +39,6 @@ if [ "$1" = "boot" ]; then
 	fi
 
 	echo 'isu_init: isu init.sh start boot ok' > /dev/kmsg;
-	mount -o ro,remount /system;
 	umount /system;
 # enforce selinux need to pass safety net only apply after boot complete
 elif [ "$1" = "boot_completed" ]; then
