@@ -368,6 +368,9 @@ public class Tools implements Constants {
                 return true;
             if (!NewexistFile(executableFilePath + init_superuser, true, context) ||
                 !NewexistFile(executableFilePath + init_restart, true, context)) {
+                boolean su = SuBinary();
+                runCommand("rm -rf " + executableFilePath + "superuser*", su, context);
+                runCommand("rm -rf " + executableFilePath + "restart*", su, context);
                 extractAssets(executableFilePath, "superuser", context);
                 extractAssets(executableFilePath, "restart", context);
             }
