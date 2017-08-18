@@ -104,6 +104,7 @@ if [ $MKZIP == 1 ]; then
 
 	echo -e "\ncleaning sed\n"
 	sed -i '/	setenforce 0/c\	setenforce 1\;' "$ANYKERNEL"/ramdisk/sbin/restart.sh;
+	cd -
 fi;
 
 END2="$(date)";

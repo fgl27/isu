@@ -22,11 +22,11 @@ public interface Constants {
     String bin_su = "/system/bin/su";
     String xbin_su = "/system/xbin/su";
 
-    String init_superuser = "superuser49";
-    String init_restart = "restart49";
+    String init_superuser = "superuser56";
+    String init_restart = "restart56";
     //TODO Always Update supersu init  when change below
-    String patchN = "isupatch49";
-    String patchM = "isupatch42";
+    String patchN = "isupatch56";
+    String patchM = "isupatch56";
 
     String GETENFORCE = "getenforce";
     String SETENFORCE = "setenforce";

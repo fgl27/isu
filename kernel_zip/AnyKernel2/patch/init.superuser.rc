@@ -14,7 +14,7 @@ on property:persist.sys.root_access=1
 on property:persist.sys.root_access=3
     start su_daemon
 
-# isupatch42
+# isupatch56
 on boot
     start restartb
 
