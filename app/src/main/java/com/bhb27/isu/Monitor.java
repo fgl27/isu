@@ -116,6 +116,8 @@ Preference.OnPreferenceChangeListener {
             mMonitor.addPreference(mMonitorWarning);
             if (!Per_App.isAccessibilityEnabled(getActivity(), PerAppMonitor.accessibilityId)) {
                 updatePrefs(false);
+                mMonitorWarning.setIcon(R.drawable.warning);
+                mMonitorWarning.setSummary(getString(R.string.monitor_warning));
                 mMonitorWarning.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
@@ -124,8 +126,16 @@ Preference.OnPreferenceChangeListener {
                     }
                 });
             } else {
-                mMonitor.removePreference(mMonitorWarning);
                 updatePrefs(true);
+                mMonitorWarning.setIcon(R.drawable.ok);
+                mMonitorWarning.setSummary(getString(R.string.monitor_ok));
+                mMonitorWarning.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        startActivityForResult(new Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS), 0);
+                        return true;
+                    }
+                });
                 mPerAppDontCare.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
