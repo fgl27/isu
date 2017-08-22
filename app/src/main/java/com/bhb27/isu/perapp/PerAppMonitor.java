@@ -102,7 +102,18 @@ public class PerAppMonitor extends AccessibilityService {
                 change();
                 last_package = packageName;
                 time = System.currentTimeMillis();
-                Log.d(TAG, "auto restart profile " + last_profile + " packageName = " + packageName);
+                Log.d(TAG, "auto re-activate profile " + last_profile + " packageName = " + packageName);
+            } else if (Tools.getBoolean("auto_restart_isu", false, context)) {
+                if (!profile_exists)
+                    last_profile = "iSu";
+                else {
+                    // Item 0 is package name Item 1 is the profile ID
+                    last_profile = Per_App.app_profile_info(packageName, getApplicationContext()).get(1);
+                }
+                change();
+                last_package = packageName;
+                time = System.currentTimeMillis();
+                Log.d(TAG, "auto re-deactivate profile " + last_profile + " packageName = " + packageName);
             } else {
                 if (!profile_exists) {
                     packageName = "Default";

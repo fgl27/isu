@@ -39,11 +39,12 @@ import com.bhb27.isu.tools.Tools;
 import com.bhb27.isu.perapp.PerAppMonitor;
 import com.bhb27.isu.perapp.Per_App;
 
-public class Monitor extends PreferenceFragment {
+public class Monitor extends PreferenceFragment implements
+Preference.OnPreferenceChangeListener {
 
     private Preference mPerAppDontCare, mPerAppActive, mPerAppDeactive, mMonitorView, mMonitorWarning;
     private PreferenceCategory mMonitor;
-    private SwitchPreference mAutoRestart;
+    private SwitchPreference mAutoRestartSU, mAutoRestartISU;
     private AlertDialog.Builder mPerAppDialog;
     private String TAG = Constants.TAG, suVersion;
     private boolean isCMSU;
@@ -60,10 +61,14 @@ public class Monitor extends PreferenceFragment {
 
         mPerAppDontCare = (Preference) findPreference("per_app_dontcare");
         mPerAppActive = (Preference) findPreference("per_app_active");
-        mAutoRestart = (SwitchPreference) findPreference("auto_restart_su");
+        mAutoRestartSU = (SwitchPreference) findPreference("auto_restart_su");
+        mAutoRestartISU = (SwitchPreference) findPreference("auto_restart_isu");
         mPerAppDeactive = (Preference) findPreference("per_app_deactive");
         mMonitorView = (Preference) findPreference("per_app_view");
         mMonitorWarning = (Preference) findPreference("per_app_warning");
+
+        mAutoRestartSU.setOnPreferenceChangeListener(this);
+        mAutoRestartISU.setOnPreferenceChangeListener(this);
 
         updateState();
     }
@@ -78,6 +83,28 @@ public class Monitor extends PreferenceFragment {
     public void onPause() {
         super.onPause();
         Tools.closeSU();
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object objValue) {
+        if (preference == mAutoRestartISU) {
+            boolean isChecked = (Boolean) objValue;
+            boolean restartsu = Tools.getBoolean("auto_restart_su", false, getActivity());
+            if (isChecked && restartsu) {
+                Tools.saveBoolean("auto_restart_su", !isChecked, getActivity());
+                mAutoRestartSU.setChecked(!isChecked);
+                Tools.DoAToast(getString(R.string.auto_restart_vice_versa), getActivity());
+            }
+        } else if (preference == mAutoRestartSU) {
+            boolean isChecked = (Boolean) objValue;
+            boolean restartisu = Tools.getBoolean("auto_restart_isu", false, getActivity());
+            if (isChecked && restartisu) {
+                Tools.saveBoolean("auto_restart_isu", !isChecked, getActivity());
+                mAutoRestartISU.setChecked(!isChecked);
+                Tools.DoAToast(getString(R.string.auto_restart_vice_versa), getActivity());
+            }
+        }
+        return true;
     }
 
     private void updateState() {
@@ -129,7 +156,8 @@ public class Monitor extends PreferenceFragment {
     private void updatePrefs(boolean state) {
         mPerAppDontCare.setEnabled(state);
         mPerAppActive.setEnabled(state);
-        mAutoRestart.setEnabled(state);
+        mAutoRestartSU.setEnabled(state);
+        mAutoRestartISU.setEnabled(state);
         mPerAppDeactive.setEnabled(state);
     }
 

@@ -68,5 +68,10 @@
             android:title="@string/per_app_click"
             android:summary="@string/per_app_title_su"
             android:persistent="false" />
+        <SwitchPreference
+            android:key="auto_restart_isu"
+            android:defaultValue="false"
+            android:title="@string/auto_restart_isu"
+            android:summary="@string/auto_restart_isu_summary" />
 </PreferenceCategory>
 </PreferenceScreen>
