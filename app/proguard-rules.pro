@@ -41,4 +41,6 @@
 # retrolambda
 -dontwarn java.lang.invoke.*
 
+# squareup.okhttp3
 -dontwarn okhttp3.**
+-dontnote okhttp3.**
