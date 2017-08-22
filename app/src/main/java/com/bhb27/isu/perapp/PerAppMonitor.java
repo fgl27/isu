@@ -24,6 +24,7 @@ import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 
@@ -39,7 +40,7 @@ public class PerAppMonitor extends AccessibilityService {
     private static final String TAG = "iSu" + PerAppMonitor.class.getSimpleName();
     public static String accessibilityId, sPackageName;
     String last_package = "", last_profile = "", dont_profile = "";
-    long time = System.currentTimeMillis(), SwitchSuDelay, delaysResult = 0;
+    long time = System.currentTimeMillis(), SwitchSuDelay, delaysResult = 0, bootTime = 0;
     private int systemdelay = 3500, allowdelay = 0;
     private Context context;
 
@@ -55,6 +56,7 @@ public class PerAppMonitor extends AccessibilityService {
         allowdelay = Integer.valueOf(Tools.readString("allow_delay", "0", context));
         SwitchSuDelay = Tools.getLong(Constants.SWICH_DELAY, 0, context);
         delaysResult = (SwitchSuDelay + allowdelay);
+        bootTime = SystemClock.elapsedRealtime();
 
         if (delaysResult > System.currentTimeMillis())
             Log.d(TAG, "current delay result " +
@@ -110,7 +112,8 @@ public class PerAppMonitor extends AccessibilityService {
                     // Item 0 is package name Item 1 is the profile ID
                     last_profile = Per_App.app_profile_info(packageName, getApplicationContext()).get(1);
                 }
-                change();
+                if (bootTime > 90000)
+                    change();
                 last_package = packageName;
                 time = System.currentTimeMillis();
                 Log.d(TAG, "auto re-deactivate profile " + last_profile + " packageName = " + packageName);
