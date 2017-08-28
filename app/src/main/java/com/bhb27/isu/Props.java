@@ -19,7 +19,6 @@
  */
 package com.bhb27.isu;
 
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -51,6 +50,8 @@ import java.util.ArrayList;
 import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.tools.Tools;
 import com.bhb27.isu.perapp.PropDB;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 public class Props extends PreferenceFragment implements
 Preference.OnPreferenceChangeListener {
@@ -497,7 +498,7 @@ Preference.OnPreferenceChangeListener {
     }
 
     private static class Execute extends AsyncTask < String, Void, Void > {
-        private ProgressDialog progressDialog;
+        private MaterialDialog progressDialog;
         private WeakReference < Context > contextRef;
 
         public Execute(Context context) {
@@ -508,10 +509,11 @@ Preference.OnPreferenceChangeListener {
         protected void onPreExecute() {
             super.onPreExecute();
             Context mContext = contextRef.get();
-            progressDialog = new ProgressDialog(mContext, R.style.AlertDialogStyle);
-            progressDialog.setTitle(mContext.getString(R.string.app_name));
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+            progressDialog = new MaterialDialog.Builder(mContext)
+            .title(mContext.getString(R.string.app_name))
+            .progress(true, 0)
+            .canceledOnTouchOutside(false)
+            .show();
         }
 
         @Override
@@ -519,12 +521,12 @@ Preference.OnPreferenceChangeListener {
             Context mContext = contextRef.get();
             String executableFilePath = mContext.getFilesDir().getPath() + "/";
             if (params[0].equals("green")) {
-                progressDialog.setMessage(String.format(mContext.getString(R.string.setting_all),
+                progressDialog.setContent(String.format(mContext.getString(R.string.setting_all),
                     mContext.getString(R.string.know_props)) + mContext.getString(R.string.safe) + "...");
                 Tools.resetallprop(executableFilePath, true, mContext);
                 Tools.stripadb(executableFilePath, mContext);
             } else if (params[0].equals("red")) {
-                progressDialog.setMessage(String.format(mContext.getString(R.string.setting_all),
+                progressDialog.setContent(String.format(mContext.getString(R.string.setting_all),
                     mContext.getString(R.string.know_props)) + mContext.getString(R.string.unsafe) + "...");
                 Tools.resetallprop(executableFilePath, false, mContext);
             }

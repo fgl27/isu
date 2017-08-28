@@ -23,7 +23,6 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -84,6 +83,7 @@ import com.bhb27.isu.widgetservice.Widgeth;
 import com.bhb27.isu.widgetservice.Widgetv;
 import com.bhb27.isu.widgetservice.Widgetsu;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import org.zeroturnaround.zip.ZipUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -901,7 +901,7 @@ public class Tools implements Constants {
     }
 
     public static class LogToZip extends AsyncTask < Void, Void, String > {
-        private ProgressDialog progressDialog;
+        private MaterialDialog progressDialog;
         private WeakReference < Context > contextRef;
 
         public LogToZip(Context context) {
@@ -912,11 +912,12 @@ public class Tools implements Constants {
         protected void onPreExecute() {
             super.onPreExecute();
             Context mContext = contextRef.get();
-            progressDialog = new ProgressDialog(mContext, R.style.AlertDialogStyle);
-            progressDialog.setTitle(mContext.getString(R.string.app_name));
-            progressDialog.setMessage(mContext.getString(R.string.generating_log));
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+            progressDialog = new MaterialDialog.Builder(mContext)
+            .title(mContext.getString(R.string.app_name))
+            .content(mContext.getString(R.string.generating_log))
+            .progress(true, 0)
+            .canceledOnTouchOutside(false)
+            .show();
         }
 
         @Override
