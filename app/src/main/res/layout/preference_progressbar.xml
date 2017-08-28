@@ -32,8 +32,8 @@
         <TextView android:id="@+id/progresBar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/title"
-            android:layout_alignStart="@id/title"
+            android:layout_below="@android:id/title"
+            android:layout_alignStart="@android:id/title"
             android:text="@string/safety_net"
             android:textSize="16sp"
             android:textColor="?android:attr/textColorPrimary"
@@ -55,7 +55,7 @@
 
         <!-- (end) I added this part. -->
 
-        <TextView android:id="@+id/title"
+        <TextView android:id="@+android:id/title"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:singleLine="true"
@@ -66,8 +66,8 @@
         <TextView android:id="@+id/summary"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_below="@id/title"
-            android:layout_alignStart="@id/title"
+            android:layout_below="@android:id/title"
+            android:layout_alignStart="@android:id/title"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorSecondary"
             android:maxLines="4" />
