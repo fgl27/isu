@@ -44,7 +44,7 @@ ZIPALIGN_FOLDER=$SDK_FOLDER/build-tools/$TOOLVERSION/zipalign;
 
 # out app folder and out app name
 VERSION=$(grep versionName "$FOLDER"/app/build.gradle | head -n1 | cut -d\" -f2 | sed 's/\./_/');
-OUT_FOLDER="$FOLDER"/app/build/outputs/apk;
+OUT_FOLDER="$FOLDER"/app/build/outputs/apk/release;
 APP_FINAL_NAME=iSu_$VERSION.apk;
 
 #kernel_zip
@@ -75,7 +75,7 @@ echo -e "\n The above is just the cleaning build start now\n";
 rm -rf app/build/outputs/apk/**
 ./gradlew build 2>&1 | tee build_log.txt
 
-if [ ! -e ./app/build/outputs/apk/app-release-unsigned.apk ]; then
+if [ ! -e ./app/build/outputs/apk/release/app-release-unsigned.apk ]; then
 	echo -e "\nApp not build$\n"
 	exit 1;
 elif [ $SIGN == 1 ]; then
