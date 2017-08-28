@@ -44,3 +44,6 @@
 # squareup.okhttp3
 -dontwarn okhttp3.**
 -dontnote okhttp3.**
+
+# afollestad.material-dialogs
+-dontnote com.afollestad.materialdialogs.**
