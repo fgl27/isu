@@ -537,7 +537,7 @@ public class Tools implements Constants {
 
     public static void DoNotification(Context context) {
 
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(context);
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(context, "iSu_SU_state");
         notification.setSmallIcon(R.drawable.ic_notification);
         notification.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher));
         notification.setContentTitle(context.getString(R.string.notification_title));
