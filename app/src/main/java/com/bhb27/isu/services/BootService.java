@@ -57,6 +57,11 @@ public class BootService extends Service {
             if (isCMSU && Tools.readString("ro.debuggable", null, context).equals("0"))
                 Tools.stripadb(executableFilePath, context);
         }
+        if (Tools.getBoolean("fake_selinux_switch", false, context)) {
+            Log.d(TAG, " fake_selinux");
+            Tools.FakeSelinux(context);
+            Tools.SwitchSelinux(true, context);
+        }
         Tools.WriteSettings(context);
         if (isCMSU && (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && !Tools.ReadSystemPatch(context))
             Tools.SystemPatch(executableFilePath, context);

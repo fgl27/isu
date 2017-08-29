@@ -40,6 +40,8 @@
     <string name="deactivated">Deactivated</string>
     <string name="su_version">Su version</string>
     <string name="selinux_switch">Change SELinux state</string>
+    <string name="fake_selinux_switch">Fake Enforce SELinux</string>
+    <string name="fake_selinux_switch_summary">For devices that have problem with SELinux enforced (boot up in permissive), enable this to fake enforce SELinux, this can only be reverted by disabling this option and rebooting</string>
     <string name="anddebug_switch">Android debugging</string>
     <string name="anddebug_change">Change Android debugging state</string>
     <string name="check_settings">Check SETTINGS for extra controls actions base on SU state</string>

@@ -159,16 +159,13 @@ public class Tools implements Constants {
 
     public static void PatchSepolicy(String executableFilePath, Context context) {
         boolean su = SuBinary();
-        String result = "";
         if (!NewexistFile(executableFilePath + "magisk", true, context)) {
             extractAssets(executableFilePath, "magisk" + abi(), context);
             runCommand("mv -f " + executableFilePath + "magisk" + abi() + " " + executableFilePath + "magisk", su, context);
         }
         runCommand("mount -o rw,remount /", su, context);
-        for (int i = 0; i < MagiskPolicy.length; i++) {
-            result = runCommand(executableFilePath + "magisk magiskpolicy " + MagiskPolicy[i], su, context);
-            Log.d(TAG, "PS " + i + " " + result);
-        }
+        for (int i = 0; i < MagiskPolicy.length; i++)
+            Log.d(TAG, "PS " + i + " " + runCommand(executableFilePath + "magisk magiskpolicy " + MagiskPolicy[i], su, context));
         runCommand("mount -o ro,remount /", su, context);
     }
 
@@ -432,6 +429,15 @@ public class Tools implements Constants {
             runCommand("pm grant com.bhb27.isu android.permission.WRITE_SECURE_SETTINGS", SuBinary(), context);
     }
 
+    public static void FakeSelinux(Context context) {
+        String executableFilePath = context.getFilesDir().getPath() + "/";
+        boolean su = SuBinary();
+        runCommand("mount -o rw,remount /", su, context);
+        runCommand(executableFilePath + "magisk magiskpolicy --live \"permissive *\"", su, context);
+        runCommand("mount -o ro,remount /", su, context);
+        closeSU();
+    }
+
     public static void SwitchSelinux(boolean isChecked, Context context) {
         runCommand(Constants.SETENFORCE + (isChecked ? " 1" : " 0"), SuBinary(), context);
         Log.d(TAG, "Change SELinux isChecked = " + isChecked + " State = " + getSELinuxStatus(context));
@@ -467,7 +473,7 @@ public class Tools implements Constants {
         String abi_version = getprop("ro.product.cpu.abi");
         String abi_version_2 = getprop("ro.product.cpu.abi2");
         String abi_version_l = getprop("ro.product.cpu.abi");
-        String abi_result = "";//arm default
+        String abi_result = ""; //arm default
         if (abi_version.contains("x86") || abi_version_2.contains("x86")) abi_result = "x86";
         else if (abi_version.contains("arm64") || abi_version_l.contains("arm64")) abi_result = "arm64";
         else if (abi_version.contains("x86_64") || abi_version_l.contains("x86_64")) abi_result = "x64";
@@ -632,8 +638,8 @@ public class Tools implements Constants {
         String ro_tochange = "" + runCommand(executableFilePath + "busybox" + " strings sbin/adbd | grep " + stripro, su, context);
         if (ro_tochange.contains(stripro)) {
             runCommand("mount -o rw,remount /", su, context);
-             runCommand(executableFilePath + "busybox" + " sed -i 's/" + stripro +
-                    "/" + stripto + "/g' sbin/adbd", su, context);
+            runCommand(executableFilePath + "busybox" + " sed -i 's/" + stripro +
+                "/" + stripto + "/g' sbin/adbd", su, context);
             runCommand("mount -o ro,remount /", su, context);
             Log.d(TAG, "stripadb ro_tochange = " + ro_tochange);
         } else Log.d(TAG, "not stripadb ro_tochange = " + ro_tochange);
@@ -716,7 +722,11 @@ public class Tools implements Constants {
     public static void runShellCommand(String command) {
         try {
             StringBuffer output = new StringBuffer();
-            Process p = Runtime.getRuntime().exec(new String[]{"bash","-c",command});
+            Process p = Runtime.getRuntime().exec(new String[] {
+                "bash",
+                "-c",
+                command
+            });
             p.waitFor();
         } catch (InterruptedException | IOException e) {
             Log.d(TAG, "catch exception runShellCommand");
@@ -742,8 +752,8 @@ public class Tools implements Constants {
     public static void saveString(String name, String value, Context context) {
         context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit().putString(name, value).apply();
     }
-    
-     public static long getLong(String name, long defaults, Context context) {
+
+    public static long getLong(String name, long defaults, Context context) {
         return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getLong(name, defaults);
     }
 
@@ -927,11 +937,11 @@ public class Tools implements Constants {
             super.onPreExecute();
             Context mContext = contextRef.get();
             progressDialog = new MaterialDialog.Builder(mContext)
-            .title(mContext.getString(R.string.app_name))
-            .content(mContext.getString(R.string.generating_log))
-            .progress(true, 0)
-            .canceledOnTouchOutside(false)
-            .show();
+                .title(mContext.getString(R.string.app_name))
+                .content(mContext.getString(R.string.generating_log))
+                .progress(true, 0)
+                .canceledOnTouchOutside(false)
+                .show();
         }
 
         @Override

@@ -37,7 +37,7 @@ import com.bhb27.isu.tools.Tools;
 public class Controls extends PreferenceFragment implements
 Preference.OnPreferenceChangeListener {
 
-    private SwitchPreference mSuSwitch, mSelSwitch, mDebug;
+    private SwitchPreference mSuSwitch, mSelSwitch, mFakeSelSwitch, mDebug;
     private Preference mControlsView, mTasker;
     private PreferenceCategory mControls;
     private String suVersion;
@@ -58,6 +58,9 @@ Preference.OnPreferenceChangeListener {
 
         mSelSwitch = (SwitchPreference) findPreference("selinux_switch");
         mSelSwitch.setOnPreferenceChangeListener(this);
+
+        mFakeSelSwitch = (SwitchPreference) findPreference("fake_selinux_switch");
+        mFakeSelSwitch.setOnPreferenceChangeListener(this);
 
         mDebug = (SwitchPreference) findPreference("android_debug");
         mDebug.setOnPreferenceChangeListener(this);
@@ -111,6 +114,14 @@ Preference.OnPreferenceChangeListener {
         if (preference == mSelSwitch) {
             boolean isChecked = (Boolean) objValue;
             Tools.SwitchSelinux(isChecked, getActivity());
+        }
+
+        if (preference == mFakeSelSwitch) {
+            boolean isChecked = (Boolean) objValue;
+            if (isChecked) {
+                Tools.FakeSelinux(getActivity());
+                Tools.SwitchSelinux(isChecked, getActivity());
+            }
         }
 
         if (preference == mDebug) {

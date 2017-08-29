@@ -42,6 +42,10 @@
         <SwitchPreference
             android:key="selinux_switch"
             android:title="@string/selinux_switch" />
+        <SwitchPreference
+            android:key="fake_selinux_switch"
+            android:title="@string/fake_selinux_switch"
+            android:summary="@string/fake_selinux_switch_summary" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="anddebug_switchs"
