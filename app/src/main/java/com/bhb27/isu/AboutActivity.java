@@ -38,8 +38,10 @@ import com.bhb27.isu.BuildConfig;
 
 public class AboutActivity extends Activity {
     // in order of appearance
-    TextView version_number, email, email_summary, xda, git, git_summary;
+    TextView version_number, email, email_summary, xda, git, git_summary, app_license, appcompat_v7, busybox,
+    design, magiskpolicy, material_dialogs, okhttp, play_safetynet, preference_v14, resetprop, support_v4, support_v13, ztzip;
     ImageView ic_gmail, ic_xda, ic_git;
+    private String SUBJECT;
 
     private Context AboutContext = null;
 
@@ -53,7 +55,7 @@ public class AboutActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_fragment);
         AboutContext = this;
-        final String SUBJECT = getString(R.string.app_name) + " " +
+        SUBJECT = getString(R.string.app_name) + " " +
             BuildConfig.VERSION_NAME + " (" + Build.MODEL + " " + Build.VERSION.RELEASE + ")";
 
         LinearLayout layout = (LinearLayout) findViewById(R.id.aboutLayout);
@@ -73,60 +75,52 @@ public class AboutActivity extends Activity {
         git = (TextView) findViewById(R.id.git);
         git_summary = (TextView) findViewById(R.id.git_summary);
 
+        app_license = (TextView) findViewById(R.id.app_license);
+        appcompat_v7 = (TextView) findViewById(R.id.appcompat_v7);
+        busybox = (TextView) findViewById(R.id.busybox);
+        design = (TextView) findViewById(R.id.design);
+        magiskpolicy = (TextView) findViewById(R.id.magiskpolicy);
+        material_dialogs = (TextView) findViewById(R.id.material_dialogs);
+        okhttp = (TextView) findViewById(R.id.okhttp);
+        play_safetynet = (TextView) findViewById(R.id.play_safetynet);
+        preference_v14 = (TextView) findViewById(R.id.preference_v14);
+        resetprop = (TextView) findViewById(R.id.resetprop);
+        support_v4 = (TextView) findViewById(R.id.support_v4);
+        support_v13 = (TextView) findViewById(R.id.support_v13);
+        ztzip = (TextView) findViewById(R.id.ztzip);
+
         email.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com"))
-                        .putExtra(Intent.EXTRA_SUBJECT, SUBJECT));
-                } catch (ActivityNotFoundException ex) {
-                    Tools.DoAToast(getString(R.string.no_email_client), AboutContext);
-                }
+                email(AboutContext);
             }
         });
 
         email_summary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com"))
-                        .putExtra(Intent.EXTRA_SUBJECT, SUBJECT));
-                } catch (ActivityNotFoundException ex) {
-                    Tools.DoAToast(getString(R.string.no_email_client), AboutContext);
-                }
+                email(AboutContext);
             }
         });
 
         xda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://forum.xda-developers.com/android/apps-games/isu-simple-app-to-deactivate-activate-t3478348")));
-                } catch (ActivityNotFoundException ex) {
-                    Tools.DoAToast(getString(R.string.no_browser), AboutContext);
-                }
+                browser("http://forum.xda-developers.com/android/apps-games/isu-simple-app-to-deactivate-activate-t3478348", AboutContext);
             }
         });
 
         git.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/bhb27/isu")));
-                } catch (ActivityNotFoundException ex) {
-                    Tools.DoAToast(getString(R.string.no_browser), AboutContext);
-                }
+                browser("https://github.com/bhb27/isu", AboutContext);
             }
         });
 
         git_summary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/bhb27/isu")));
-                } catch (ActivityNotFoundException ex) {
-                    Tools.DoAToast(getString(R.string.no_browser), AboutContext);
-                }
+                browser("https://github.com/bhb27/isu", AboutContext);
             }
         });
 
@@ -138,36 +132,132 @@ public class AboutActivity extends Activity {
         ic_gmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com"))
-                        .putExtra(Intent.EXTRA_SUBJECT, SUBJECT));
-                } catch (ActivityNotFoundException ex) {
-                    Tools.DoAToast(getString(R.string.no_email_client), AboutContext);
-                }
+                email(AboutContext);
             }
         });
 
         ic_xda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://forum.xda-developers.com/android/apps-games/isu-simple-app-to-deactivate-activate-t3478348")));
-                } catch (ActivityNotFoundException ex) {
-                    Tools.DoAToast(getString(R.string.no_browser), AboutContext);
-                }
+                browser("http://forum.xda-developers.com/android/apps-games/isu-simple-app-to-deactivate-activate-t3478348", AboutContext);
             }
         });
 
         ic_git.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/bhb27/isu")));
-                } catch (ActivityNotFoundException ex) {
-                    Tools.DoAToast(getString(R.string.no_browser), AboutContext);
-                }
+                browser("https://github.com/bhb27/isu", AboutContext);
             }
         });
+
+        app_license.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                browser("https://github.com/bhb27/isu/blob/master/LICENSE", AboutContext);
+            }
+        });
+
+        appcompat_v7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                browser("https://developer.android.com/topic/libraries/support-library/packages.html#v7-appcompat", AboutContext);
+            }
+        });
+
+        busybox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                browser("https://forum.xda-developers.com/showthread.php?t=2239421", AboutContext);
+            }
+        });
+
+        design.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                browser("https://developer.android.com/topic/libraries/support-library/packages.html#design", AboutContext);
+            }
+        });
+
+        magiskpolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                browser("https://github.com/topjohnwu/Magisk#credits", AboutContext);
+            }
+        });
+
+        material_dialogs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                browser("https://github.com/afollestad/material-dialogs", AboutContext);
+            }
+        });
+
+        okhttp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                browser("https://github.com/square/okhttp", AboutContext);
+            }
+        });
+
+        play_safetynet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                browser("https://developers.google.com/android/guides/setup#ensure_devices_have_the_google_play_services_apk", AboutContext);
+            }
+        });
+
+        preference_v14.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                browser("https://developer.android.com/topic/libraries/support-library/packages.html#v14-preference", AboutContext);
+            }
+        });
+
+
+        resetprop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                browser("https://github.com/topjohnwu/Magisk#credits", AboutContext);
+            }
+        });
+
+        support_v4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                browser("https://developer.android.com/topic/libraries/support-library/packages.html#v4", AboutContext);
+            }
+        });
+
+        support_v13.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                browser("https://developer.android.com/topic/libraries/support-library/packages.html#v13", AboutContext);
+            }
+        });
+
+        ztzip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                browser("https://github.com/zeroturnaround/zt-zip", AboutContext);
+            }
+        });
+
     }
 
+    public void browser(String site, Context context) {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(site)));
+        } catch (ActivityNotFoundException ex) {
+            Tools.DoAToast(getString(R.string.no_browser), context);
+        }
+    }
+
+    public void email(Context context) {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com"))
+                .putExtra(Intent.EXTRA_SUBJECT, SUBJECT));
+        } catch (ActivityNotFoundException ex) {
+            Tools.DoAToast(getString(R.string.no_email_client), context);
+        }
+    }
 }
