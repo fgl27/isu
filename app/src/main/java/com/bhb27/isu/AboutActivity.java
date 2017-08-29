@@ -213,7 +213,6 @@ public class AboutActivity extends Activity {
             }
         });
 
-
         resetprop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

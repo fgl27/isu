@@ -32,13 +32,8 @@ $ cd isu
 $ ./gradlew build
 ```
 
-I particularly prefer to use this .sh to build all in one shot
+I particularly prefer to use this .sh to build
  [iSu Build Script](https://github.com/bhb27/isu/blob/master/app/build_Isu.sh)
-
-## Credits
-
-* I use some ROOT function of Kernel adiutor original from [Grarak](https://github.com/Grarak/KernelAdiutor)
-* I use AnyKernel2 to implemented Reboot Service Support [AnyKernel2](https://github.com/osm0sis/AnyKernel2)
 
 ## License
 
@@ -56,3 +51,22 @@ I particularly prefer to use this .sh to build all in one shot
     
     You should have received a copy of the GNU General Public License
     along with iSu.  If not, see <http://www.gnu.org/licenses/>.
+
+## Credits
+
+* ROOT function of Kernel adiutor original 2015 version from [by Grarak](https://github.com/Grarak/KernelAdiutor)
+* For the Kernel_reboot_support was used AnyKernel2 [by AnyKernel2](https://github.com/osm0sis/AnyKernel2)
+* Appcompat v7 Library [by google](https://developer.android.com/topic/libraries/support-library/packages.html#v7-appcompat)
+
+* Busybox Binary, the Swiss Army Knife of Embedded Linux [by Denys Vlasenko, build by Chris Renshaw aka osm0sis](https://forum.xda-developers.com/showthread.php?t=2239421)
+* Design Library [by google](https://developer.android.com/topic/libraries/support-library/packages.html#design)
+* MagiskPolicy Binary, sepolicy injection utility [by John Wu aka topjohnwu](https://github.com/topjohnwu/Magisk#credits)
+* Material Dialogs Library, a beautiful, fluid, and customizable dialogs API [by Aidan Follestad](https://github.com/afollestad/material-dialogs)
+* okhttp Library, HTTP+HTTP/2 client for Android and Java applications [by Square](https://github.com/square/okhttp)
+* Play Services Safetynet Library [by google](https://developers.google.com/android/guides/setup#ensure_devices_have_the_google_play_services_apk)
+* Preference v14 Library [by google](https://developer.android.com/topic/libraries/support-library/packages.html#v14-preference)
+* Resetprop Binary, to Manipulate any system props [by John Wu aka topjohnwu](https://github.com/topjohnwu/Magisk#credits)
+* Support v4 Library [by google](https://developer.android.com/topic/libraries/support-library/packages.html#v4)
+* Support v13 Library [by google](https://developer.android.com/topic/libraries/support-library/packages.html#v13)
+* ZeroTurnaround ZIP Library [by zeroturnaround](https://github.com/zeroturnaround/zt-zip)
+
