@@ -54,10 +54,9 @@ I particularly prefer to use this .sh to build
 
 ## Credits
 
-* ROOT function of Kernel adiutor original 2015 version from [by Grarak](https://github.com/Grarak/KernelAdiutor)
+* ROOT function of Kernel adiutor original 2015 version [by Grarak](https://github.com/Grarak/KernelAdiutor)
 * For the Kernel_reboot_support was used AnyKernel2 [by AnyKernel2](https://github.com/osm0sis/AnyKernel2)
 * Appcompat v7 Library [by google](https://developer.android.com/topic/libraries/support-library/packages.html#v7-appcompat)
-
 * Busybox Binary, the Swiss Army Knife of Embedded Linux [by Denys Vlasenko, build by Chris Renshaw aka osm0sis](https://forum.xda-developers.com/showthread.php?t=2239421)
 * Design Library [by google](https://developer.android.com/topic/libraries/support-library/packages.html#design)
 * MagiskPolicy Binary, sepolicy injection utility [by John Wu aka topjohnwu](https://github.com/topjohnwu/Magisk#credits)
