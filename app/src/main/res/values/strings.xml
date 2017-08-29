@@ -80,7 +80,7 @@
     <string name="auto_restart_su">Automatic Re-Activate SU</string>
     <string name="auto_restart_su_summary">If this switch is on, will automatic active SU when leave the app that deactivated SU</string>
     <string name="auto_restart_isu">Automatic Re-Deactivate SU</string>
-    <string name="auto_restart_isu_summary">If this switch is on, will automatic deactive SU when leave the app that activated SU</string>
+    <string name="auto_restart_isu_summary">If this switch is on, will automatic deactivate SU when leave the app that activated SU</string>
     <string name="auto_restart_vice_versa">Atomatic activate and deactivate can\'t be enable at the same time</string>
     <string name="per_app_click">Click to</string>
     <string name="per_app_active">Activate SU</string>
