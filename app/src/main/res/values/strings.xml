@@ -179,6 +179,19 @@
     <string name="xda_summary">XDA support forum site</string>
     <string name="no_email_client">There is none email client installed on the device.</string>
     <string name="no_browser">There is none web browser installed on the device.</string>
+    <string name="app_license">iSu is licensed under the GNU General Public License v3.0, and uses following libraries:</string>
+    <string name="appcompat_v7" translatable="false">Appcompat v7 Library (by google)</string>
+    <string name="support_v4" translatable="false">Support v4 Library (by google)</string>
+    <string name="support_v13" translatable="false">Support v13 Library (by google)</string>
+    <string name="preference_v14" translatable="false">Preference v14 Library (by google)</string>
+    <string name="design" translatable="false">Design Library (by google)</string>
+    <string name="play_safetynet" translatable="false">Play Services Safetynet Library (by google)</string>
+    <string name="ztzip" translatable="false">ZeroTurnaround ZIP Library (by zeroturnaround)</string>
+    <string name="okhttp" translatable="false">okhttp Library, HTTP+HTTP/2 client for Android and Java applications (by Square)</string>
+    <string name="material_dialogs" translatable="false">Material Dialogs Library, A beautiful, fluid, and customizable dialogs API (by Aidan Follestad)</string>
+    <string name="resetprop" translatable="false">Resetprop Binary, to Manipulate any system props (by John Wu aka topjohnwu)</string>
+    <string name="busybox" translatable="false">Busybox Binary, The Swiss Army Knife of Embedded Linux (by Denys Vlasenko, build by Chris Renshaw aka osm0sis)</string>
+    <string name="sepolicy_inject" translatable="false">sepolicy-inject and sesearch Binary, unofficial port of setools to Android with additional sepolicy-inject utility by Joshua Brindle (by Michal Krenek aka xmikos)</string>
 
     <!--  Maybe common to all languages -->
     <string name="ok">OK</string>

@@ -143,6 +143,137 @@
             android:layout_gravity="center"
             android:gravity="center" />
         <TextView
+            android:id="@+id/app_license"
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/text_white"
+            android:text="@string/app_license"
+            android:layout_gravity="center"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/appcompat_v7"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/text_white"
+            android:text="@string/appcompat_v7"
+            android:layout_gravity="center"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/busybox"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/text_white"
+            android:text="@string/busybox"
+            android:layout_gravity="center"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/design"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/text_white"
+            android:text="@string/design"
+            android:layout_gravity="center"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/material_dialogs"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/text_white"
+            android:text="@string/material_dialogs"
+            android:layout_gravity="center"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/okhttp"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/text_white"
+            android:text="@string/okhttp"
+            android:layout_gravity="center"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/play_safetynet"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/text_white"
+            android:text="@string/play_safetynet"
+            android:layout_gravity="center"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/preference_v14"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/text_white"
+            android:text="@string/preference_v14"
+            android:layout_gravity="center"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/resetprop"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/text_white"
+            android:text="@string/resetprop"
+            android:layout_gravity="center"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/sepolicy_inject"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/text_white"
+            android:text="@string/sepolicy_inject"
+            android:layout_gravity="center"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/support_v4"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/text_white"
+            android:text="@string/support_v4"
+            android:layout_gravity="center"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/support_v13"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/text_white"
+            android:text="@string/support_v13"
+            android:layout_gravity="center"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/ztzip"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/text_white"
+            android:text="@string/ztzip"
+            android:layout_gravity="center"
+            android:gravity="center" />
+        <TextView
             android:layout_marginTop="100dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
