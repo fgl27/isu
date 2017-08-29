@@ -126,9 +126,9 @@
             </intent-filter>
        </service>
 
-       <service android:enabled="true" android:name=".services.BootService" />
-       <service android:enabled="true" android:name=".services.MainService" />
-       <service android:enabled="true" android:name=".services.SuService" />
+       <service android:enabled="true" android:process=":background" android:name=".services.BootService" />
+       <service android:enabled="true" android:process=":background" android:name=".services.MainService" />
+       <service android:enabled="true" android:process=":background" android:name=".services.SuService" />
 
         <meta-data
             android:name="com.google.android.gms.version"

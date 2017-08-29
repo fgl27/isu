@@ -149,8 +149,8 @@ public class Tools implements Constants {
         runCommand("mount -o rw,remount /system", su, context);
         runCommand("chmod 755" + executableFilePath + "restart", su, context);
         runCommand("cp -f " + executableFilePath + init_superuser + " /system/etc/init/superuser.rc", su, context);
-        runCommand(executableFilePath + "busybox" + abiX() + " sed -i '/seclabel/c\\    " + seclabel + "' system/etc/init/superuser.rc ", su, context);
-        //            RootUtils.runCommand(executableFilePath + "busybox" + abiX() + " sed -i 's/YYYY\\b/" + readString("cmiyc", null, context) + "/g' system/etc/init/superuser.rc ");
+        runCommand(executableFilePath + "busybox" + " sed -i '/seclabel/c\\    " + seclabel + "' system/etc/init/superuser.rc ", su, context);
+        //            RootUtils.runCommand(executableFilePath + "busybox" + " sed -i 's/YYYY\\b/" + readString("cmiyc", null, context) + "/g' system/etc/init/superuser.rc ");
         runCommand("chmod 644" + " /system/etc/init/superuser.rc", su, context);
         if (NewexistFile("/system/xbin/isush", true, context))
             runCommand("rm -rf /system/xbin/isush", su, context);
@@ -159,18 +159,16 @@ public class Tools implements Constants {
 
     public static void PatchSepolicy(String executableFilePath, Context context) {
         boolean su = SuBinary();
-        if (!NewexistFile(executableFilePath + "sepolicy-inject", true, context) ||
-            !NewexistFile(executableFilePath + "sesearch", true, context)) {
-            extractAssets(executableFilePath, "sepolicy-inject" + abiX(), context);
-            extractAssets(executableFilePath, "sesearch" + abiX(), context);
-            runCommand("mv -f " + executableFilePath + "sepolicy-inject" + abiX() + " " + executableFilePath + "sepolicy-inject", su, context);
-            runCommand("mv -f " + executableFilePath + "sesearch" + abiX() + " " + executableFilePath + "sesearch", su, context);
+        String result = "";
+        if (!NewexistFile(executableFilePath + "magisk", true, context)) {
+            extractAssets(executableFilePath, "magisk" + abi(), context);
+            runCommand("mv -f " + executableFilePath + "magisk" + abi() + " " + executableFilePath + "magisk", su, context);
         }
         runCommand("mount -o rw,remount /", su, context);
-        for (int i = 0; i < sepolicy_inject.length; i++)
-            runCommand(executableFilePath + "sepolicy-inject " + sepolicy_inject[i], su, context);
-        for (int i = 0; i < sesearch.length; i++)
-            Log.d(TAG, runCommand(executableFilePath + "sesearch " + sesearch[i], su, context));
+        for (int i = 0; i < MagiskPolicy.length; i++) {
+            result = runCommand(executableFilePath + "magisk magiskpolicy " + MagiskPolicy[i], su, context);
+            Log.d(TAG, "PS " + i + " " + result);
+        }
         runCommand("mount -o ro,remount /", su, context);
     }
 
@@ -229,7 +227,7 @@ public class Tools implements Constants {
             if (outStream != null) outStream.close();
 
         } catch (IOException e) {
-            Log.e(TAG, "Failed to copy asset file: " + filename, e);
+            Log.d(TAG, "Failed to copy asset file: " + filename);
         }
         File execFile = new File(InerexecutableFilePath);
         execFile.setExecutable(true);
@@ -259,8 +257,8 @@ public class Tools implements Constants {
             runCommand("cp -f " + executableFilePath + init_restart + " /system/xbin/restart", su, context);
         }
         runCommand("chmod 755 /system/xbin/restart", su, context);
-        Log.d(TAG, "backup_restart = " + runCommand(executableFilePath + "busybox" + abiX() + " ls -l /system/xbin/restart", su, context));
-        Log.d(TAG, "backup_isu = " + runCommand(executableFilePath + "busybox" + abiX() + " ls -l /data/backup_isu", su, context));
+        Log.d(TAG, "backup_restart = " + runCommand(executableFilePath + "busybox" + " ls -l /system/xbin/restart", su, context));
+        Log.d(TAG, "backup_isu = " + runCommand(executableFilePath + "busybox" + " ls -l /data/backup_isu", su, context));
         runCommand("mount -o ro,remount /system", su, context);
     }
 
@@ -290,7 +288,7 @@ public class Tools implements Constants {
         boolean su = SuBinary();
         String executableFilePath = context.getFilesDir().getPath() + "/";
         String appRunning = runCommand("ps | grep " + app, su, context);
-        String UID = runCommand(executableFilePath + "busybox" + abiX() + " ps | grep " +
+        String UID = runCommand(executableFilePath + "busybox" + " ps | grep " +
             app + " | head -1  | cut -d' ' -f1 ", su, context);
         if (appRunning.contains(app))
             runCommand("kill " + UID, su, context);
@@ -467,9 +465,12 @@ public class Tools implements Constants {
 
     public static String abi() {
         String abi_version = getprop("ro.product.cpu.abi");
-        String abi_result = "";
-        if (abi_version.contains("x86")) abi_result = "x86";
-        if (abi_version.contains("arm64")) abi_result = "arm64";
+        String abi_version_2 = getprop("ro.product.cpu.abi2");
+        String abi_version_l = getprop("ro.product.cpu.abi");
+        String abi_result = "";//arm default
+        if (abi_version.contains("x86") || abi_version_2.contains("x86")) abi_result = "x86";
+        else if (abi_version.contains("arm64") || abi_version_l.contains("arm64")) abi_result = "arm64";
+        else if (abi_version.contains("x86_64") || abi_version_l.contains("x86_64")) abi_result = "x64";
         return abi_result;
     }
 
@@ -480,8 +481,8 @@ public class Tools implements Constants {
     }
 
     public static String[] getallprop(String path, Context context) {
-        String GetProps = runCommand("getprop | grep 'ro\\.' | " + path + "busybox" + abiX() + " sed 's/\\].*//' | " +
-            path + "busybox" + abiX() + " sed 's/\\[//'", SuBinary(), context);
+        String GetProps = runCommand("getprop | grep 'ro\\.' | " + path + "busybox" + " sed 's/\\].*//' | " +
+            path + "busybox" + " sed 's/\\[//'", SuBinary(), context);
         String[] result = GetProps.split("\n");
         Log.d(TAG, "all props = " + result);
         Log.d(TAG, "all props = " + GetProps);
@@ -496,12 +497,12 @@ public class Tools implements Constants {
     public static void resetprop(String path, String prop, String value, Context context, boolean force) {
         boolean su = SuBinary();
         if (value.isEmpty())
-            runCommand(path + "resetprop" + abi() + " --delete -n " + prop, su, context);
+            runCommand(path + "magisk resetprop --delete -n " + prop, su, context);
         else {
             String prop_cmd = prop + " " + value;
             String bp_prop_value = "";
             String bp_prop = "";
-            runCommand(path + "resetprop" + abi() + " -v -n " + prop_cmd, su, context);
+            runCommand(path + "magisk resetprop -v -n " + prop_cmd, su, context);
             bp_prop_value = bp_prop_value + runCommand("cat system/build.prop | grep " + prop +
                 " | head -1 | cut -d= -f2", su, context);
             bp_prop = bp_prop + runCommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f1", su, context);
@@ -525,7 +526,7 @@ public class Tools implements Constants {
         boolean su = SuBinary();
         String oldvalue = oldKey + "=" + oldValue;
         String newvalue = newKey + "=" + newValue;
-        String command = "old=" + oldvalue + " && " + "new=" + newvalue + " && " + path + "busybox" + abiX() + " sed -i -r \"s%$old%$new%g\" " + BUILD_PROP;
+        String command = "old=" + oldvalue + " && " + "new=" + newvalue + " && " + path + "busybox" + " sed -i -r \"s%$old%$new%g\" " + BUILD_PROP;
         runCommand("mount -o rw,remount /system", su, context);
         runCommand(command, su, context);
         runCommand("mount -o ro,remount /system", su, context);
@@ -605,17 +606,17 @@ public class Tools implements Constants {
         String stripro = "ro.debuggable";
         String stripto = "no.debuggable";
         if (su)
-            ro_tochange = ro_tochange + runCommand(executableFilePath + "busybox" + abiX() + " strings " +
+            ro_tochange = ro_tochange + runCommand(executableFilePath + "busybox" + " strings " +
                 xbin_su + " | grep " + stripro, su, context);
         else
-            ro_tochange = ro_tochange + runCommand(executableFilePath + "busybox" + abiX() + " strings system/xbin/" + readString("cmiyc", null, context) + " | grep " + stripro, su, context);
+            ro_tochange = ro_tochange + runCommand(executableFilePath + "busybox" + " strings system/xbin/" + readString("cmiyc", null, context) + " | grep " + stripro, su, context);
         if (ro_tochange.contains(stripro)) {
             runCommand("mount -o rw,remount /system", su, context);
             if (su)
-                runCommand(executableFilePath + "busybox" + abiX() + " sed -i 's/" + stripro +
+                runCommand(executableFilePath + "busybox" + " sed -i 's/" + stripro +
                     "/" + stripto + "/g' " + xbin_su, su, context);
             else
-                runCommand(executableFilePath + "busybox" + abiX() + " sed -i 's/" + stripro +
+                runCommand(executableFilePath + "busybox" + " sed -i 's/" + stripro +
                     "/" + stripto + "/g' system/xbin/" + readString("cmiyc", null, context), su, context);
             runCommand("mount -o ro,remount /system", su, context);
             Log.d(TAG, "stripsu ro_tochange = " + ro_tochange);
@@ -628,10 +629,10 @@ public class Tools implements Constants {
         boolean su = SuBinary();
         String stripro = "ro.debuggable";
         String stripto = "no.debuggable";
-        String ro_tochange = "" + runCommand(executableFilePath + "busybox" + abiX() + " strings sbin/adbd | grep " + stripro, su, context);
+        String ro_tochange = "" + runCommand(executableFilePath + "busybox" + " strings sbin/adbd | grep " + stripro, su, context);
         if (ro_tochange.contains(stripro)) {
             runCommand("mount -o rw,remount /", su, context);
-             runCommand(executableFilePath + "busybox" + abiX() + " sed -i 's/" + stripro +
+             runCommand(executableFilePath + "busybox" + " sed -i 's/" + stripro +
                     "/" + stripto + "/g' sbin/adbd", su, context);
             runCommand("mount -o ro,remount /", su, context);
             Log.d(TAG, "stripadb ro_tochange = " + ro_tochange);
@@ -662,7 +663,7 @@ public class Tools implements Constants {
 
         app_path = "" + runCommand("pm path " + app + "| head -n1 | cut -d: -f2", su, context);
         app_path = app_path.substring(0, app_path.length() - 8) + "oat/*/base.odex";
-        runCommand(executableFilePath + "busybox" + abiX() + " sed -i -r 's/" + strip_old + "/" + strip_new + "/g' " + app_path, su, context);
+        runCommand(executableFilePath + "busybox" + " sed -i -r 's/" + strip_old + "/" + strip_new + "/g' " + app_path, su, context);
         Log.d(TAG, " sedstring app " + app_path);
     }
 
@@ -801,15 +802,15 @@ public class Tools implements Constants {
             s = new StringBuilder();
             while ((line = buf.readLine()) != null) s.append(line).append("\n");
         } catch (FileNotFoundException ignored) {
-            Log.e(TAG, "File does not exist " + file);
+            Log.d(TAG, "File does not exist " + file);
         } catch (IOException e) {
-            Log.e(TAG, "Failed to read " + file);
+            Log.d(TAG, "Failed to read " + file);
         } finally {
             try {
                 if (fileReader != null) fileReader.close();
                 if (buf != null) buf.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.d(TAG, "IOException readFileN finally");
             }
         }
         return s == null ? null : s.toString().trim();
@@ -866,15 +867,15 @@ public class Tools implements Constants {
             s = new StringBuilder();
             while ((line = buf.readLine()) != null) s.append(line).append("\n");
         } catch (FileNotFoundException ignored) {
-            Log.e(TAG, "File does not exist " + file);
+            Log.d(TAG, "File does not exist " + file);
         } catch (IOException e) {
-            Log.e(TAG, "Failed to read " + file);
+            Log.d(TAG, "Failed to read " + file);
         } finally {
             try {
                 if (fileReader != null) fileReader.close();
                 if (buf != null) buf.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.d(TAG, "IOException readFile finally");
             }
         }
         return s == null ? null : s.toString().trim();
@@ -903,12 +904,12 @@ public class Tools implements Constants {
             writer.write(text);
             writer.flush();
         } catch (IOException e) {
-            Log.e(TAG, "Failed to write " + path);
+            Log.d(TAG, "Failed to write " + path);
         } finally {
             try {
                 if (writer != null) writer.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.d(TAG, "IOException writeFile finally");
             }
         }
     }

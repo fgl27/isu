@@ -31,32 +31,25 @@ public interface Constants {
     String GETENFORCE = "getenforce";
     String SETENFORCE = "setenforce";
 
-    String[] sepolicy_inject = new String[] {
-        " -s default_prop -t sudaemon -c default_prop -p write -P sepolicy",
-        " -s shell -t sudaemon -c unix_stream_socket -p connectto -P sepolicy",
-        " -s shell -t superuser_device -c sock_file -p write -P sepolicy",
-        " -s untrusted_app -t superuser_device -c sock_file -p write -P sepolicy",
-        " -s untrusted_app -t sudaemon -c unix_stream_socket -p connectto -P sepolicy",
-        " -s untrusted_app -t anr_data_file -c dir -p read -P sepolicy",
-        " -s untrusted_app -t system_data_file -c file -p getattr -P sepolicy",
-        " -s untrusted_app -t system_data_file -c file -p open -P sepolicy",
-        " -s untrusted_app -t system_data_file -c file -p read -P sepolicy",
-        " -s untrusted_app -t su_exec -c file -p execute -P sepolicy",
-        " -s untrusted_app -t su_exec -c file -p write -P sepolicy",
-        " -s untrusted_app -t su_exec -c file -p getattr -P sepolicy",
-        " -s untrusted_app -t su_exec -c file -p setattr -P sepolicy",
-        " -s untrusted_app -t su_exec -c file -p execute_no_trans -P sepolicy"
-    };
-
-    String[] sesearch = new String[] {
-        " -s default_prop -t sudaemon --allow",
-        " -s shell -t sudaemon --allow",
-        " -s shell -t superuser_device --allow",
-        " -s untrusted_app -t superuser_device --allow",
-        " -s untrusted_app -t sudaemon --allow",
-        " -s untrusted_app -t anr_data_file --allow",
-        " -s untrusted_app -t system_data_file --allow",
-        " -s untrusted_app -t su_exec --allow"
+    //"allow #source-class #target-class permission-class #permission" 
+    //Sections marked with '#' can be replaced with collections in curly brackets
+    //e.g: allow { source1 source2 } { target1 target2 } permission-class { permission1 permission2 }
+    //be aware if one thing from a bracket fail the line fail that is way is all separeted
+    String[] MagiskPolicy = new String[] {
+        " --live \"allow default_prop sudaemon default_prop write \"",
+        " --live \"allow shell sudaemon unix_stream_socket connectto \"",
+        " --live \"allow shell superuser_device sock_file write \"",
+        " --live \"allow untrusted_app superuser_device sock_file write \"",
+        " --live \"allow untrusted_app sudaemon unix_stream_socket connectto \"",
+        " --live \"allow untrusted_app anr_data_file dir read \"",
+        " --live \"allow untrusted_app system_data_file file getattr \"",
+        " --live \"allow untrusted_app system_data_file file open \"",
+        " --live \"allow untrusted_app system_data_file file read \"",
+        " --live \"allow untrusted_app su_exec file execute \"",
+        " --live \"allow untrusted_app su_exec file write \"",
+        " --live \"allow untrusted_app su_exec file getattr \"",
+        " --live \"allow untrusted_app su_exec file setattr \"",
+        " --live \"allow untrusted_app su_exec file execute_no_trans \""
     };
 
     String YES_ACTION = "YES_ACTION";

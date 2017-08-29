@@ -191,7 +191,7 @@
     <string name="material_dialogs" translatable="false">Material Dialogs Library, a beautiful, fluid, and customizable dialogs API (by Aidan Follestad)</string>
     <string name="resetprop" translatable="false">Resetprop Binary, to Manipulate any system props (by John Wu aka topjohnwu)</string>
     <string name="busybox" translatable="false">Busybox Binary, the Swiss Army Knife of Embedded Linux (by Denys Vlasenko, build by Chris Renshaw aka osm0sis)</string>
-    <string name="sepolicy_inject" translatable="false">Sepolicy-inject and Sesearch Binary, a unofficial port of setools to Android with additional sepolicy-inject utility by Joshua Brindle (by Michal Krenek aka xmikos)</string>
+    <string name="magiskpolicy" translatable="false">MagiskPolicy Binary, sepolicy injection utility (by John Wu aka topjohnwu)</string>
 
     <!--  Maybe common to all languages -->
     <string name="ok">OK</string>

@@ -60,7 +60,6 @@ public class Checks extends PreferenceFragment {
         getPreferenceManager().setSharedPreferencesName(Constants.PREF_NAME);
         addPreferencesFromResource(R.xml.checks);
         rootAccess = Tools.rootAccess(getActivity());
-        getActivity().startService(new Intent(getActivity(), MainService.class));
         executableFilePath = getActivity().getFilesDir().getPath() + "/";
 
         suVersion = Tools.SuVersion(getActivity());
@@ -152,6 +151,7 @@ public class Checks extends PreferenceFragment {
             getActivity().registerReceiver(updateChecksReceiver, new IntentFilter("updateChecksReceiver"));
         } catch (NullPointerException ignored) {}
         new Tools.CheckUpdate(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
+        getActivity().startService(new Intent(getActivity(), MainService.class));
     }
 
     @Override

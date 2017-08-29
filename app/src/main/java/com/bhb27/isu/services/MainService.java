@@ -54,7 +54,7 @@ public class MainService extends Service {
         executableFilePath = getFilesDir().getPath() + "/";
         isCMSU = Tools.SuVersionBool(Tools.SuVersion(context));
         Sepolicy(context);
-        extractresetprop(context);
+        extractBusybox(context);
         Tools.WriteSettings(context);
         Tools.BPBackup(context);
         if (!Tools.getBoolean("run_boot", false, context))
@@ -89,17 +89,10 @@ public class MainService extends Service {
     }
 
 
-    public void extractresetprop(Context context) {
-        if (!Tools.NewexistFile(executableFilePath + "resetprop", true, context) ||
-            !Tools.NewexistFile(executableFilePath + "resetproparm64", true, context) ||
-            !Tools.NewexistFile(executableFilePath + "resetpropx86", true, context) ||
-            !Tools.NewexistFile(executableFilePath + "busybox", true, context) ||
-            !Tools.NewexistFile(executableFilePath + "busyboxx86", true, context)) {
-            Tools.extractAssets(executableFilePath, "resetprop", context);
-            Tools.extractAssets(executableFilePath, "resetproparm64", context);
-            Tools.extractAssets(executableFilePath, "resetpropx86", context);
-            Tools.extractAssets(executableFilePath, "busybox", context);
-            Tools.extractAssets(executableFilePath, "busyboxx86", context);
+    public void extractBusybox(Context context) {
+        if (!Tools.NewexistFile(executableFilePath + "busybox", true, context)) {
+            Tools.extractAssets(executableFilePath, "busybox" + Tools.abiX(), context);
+            Tools.runCommand("mv -f " + executableFilePath + "busybox" + Tools.abiX() + " " + executableFilePath + "busybox", Tools.SuBinary(), context);
         }
     }
 
