@@ -158,7 +158,20 @@ public class Tools implements Constants {
     }
 
     public static void PatchSepolicy(String executableFilePath, Context context) {
-        runCommand("LD_LIBRARY_PATH=" + executableFilePath + " " + executableFilePath + sepolicy, SuBinary(), context);
+        boolean su = SuBinary();
+        if (!NewexistFile(executableFilePath + "sepolicy-inject", true, context) ||
+            !NewexistFile(executableFilePath + "sesearch", true, context)) {
+            extractAssets(executableFilePath, "sepolicy-inject" + abiX(), context);
+            extractAssets(executableFilePath, "sesearch" + abiX(), context);
+            runCommand("mv -f " + executableFilePath + "sepolicy-inject" + abiX() + " " + executableFilePath + "sepolicy-inject", su, context);
+            runCommand("mv -f " + executableFilePath + "sesearch" + abiX() + " " + executableFilePath + "sesearch", su, context);
+        }
+        runCommand("mount -o rw,remount /", su, context);
+        for (int i = 0; i < sepolicy_inject.length; i++)
+            runCommand(executableFilePath + "sepolicy-inject " + sepolicy_inject[i], su, context);
+        for (int i = 0; i < sesearch.length; i++)
+            Log.d(TAG, runCommand(executableFilePath + "sesearch " + sesearch[i], su, context));
+        runCommand("mount -o ro,remount /", su, context);
     }
 
     public static void updateAllWidgetsLayouts(Context context) {

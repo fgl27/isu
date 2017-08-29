@@ -104,14 +104,6 @@ public class MainService extends Service {
     }
 
     public void Sepolicy(Context context) {
-        if (!Tools.NewexistFile(executableFilePath + "libsupol.so", true, context) ||
-            !Tools.NewexistFile(executableFilePath + "supolicy", true, context)) {
-            boolean su = Tools.SuBinary();
-            Tools.extractAssets(executableFilePath, "libsupol" + Tools.abiX() + ".so", context);
-            Tools.extractAssets(executableFilePath, "supolicy" + Tools.abiX(), context);
-            Tools.runCommand("mv -f " + executableFilePath + "libsupol" + Tools.abiX() + ".so " + executableFilePath + "libsupol.so", su, context);
-            Tools.runCommand("mv -f " + executableFilePath + "supolicy" + Tools.abiX() + " " + executableFilePath + "supolicy", su, context);
-        }
         Tools.PatchSepolicy(executableFilePath, context);
     }
 

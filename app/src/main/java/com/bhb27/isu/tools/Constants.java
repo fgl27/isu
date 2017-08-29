@@ -31,7 +31,33 @@ public interface Constants {
     String GETENFORCE = "getenforce";
     String SETENFORCE = "setenforce";
 
-    String sepolicy = "supolicy --live \"allow default_prop sudaemon:default_prop { write }\" \"allow shell sudaemon:unix_stream_socket { connectto }\" \"allow shell superuser_device:sock_file { write }\" \"allow untrusted_app superuser_device:sock_file { write }\" \"allow untrusted_app sudaemon:unix_stream_socket { connectto }\" \"allow untrusted_app anr_data_file:dir { read }\" \"allow untrusted_app system_data_file:file { getattr open read }\" \"allow untrusted_app su_exec:file { execute write getattr setattr execute_no_trans }\";";
+    String[] sepolicy_inject = new String[] {
+        " -s default_prop -t sudaemon -c default_prop -p write -P sepolicy",
+        " -s shell -t sudaemon -c unix_stream_socket -p connectto -P sepolicy",
+        " -s shell -t superuser_device -c sock_file -p write -P sepolicy",
+        " -s untrusted_app -t superuser_device -c sock_file -p write -P sepolicy",
+        " -s untrusted_app -t sudaemon -c unix_stream_socket -p connectto -P sepolicy",
+        " -s untrusted_app -t anr_data_file -c dir -p read -P sepolicy",
+        " -s untrusted_app -t system_data_file -c file -p getattr -P sepolicy",
+        " -s untrusted_app -t system_data_file -c file -p open -P sepolicy",
+        " -s untrusted_app -t system_data_file -c file -p read -P sepolicy",
+        " -s untrusted_app -t su_exec -c file -p execute -P sepolicy",
+        " -s untrusted_app -t su_exec -c file -p write -P sepolicy",
+        " -s untrusted_app -t su_exec -c file -p getattr -P sepolicy",
+        " -s untrusted_app -t su_exec -c file -p setattr -P sepolicy",
+        " -s untrusted_app -t su_exec -c file -p execute_no_trans -P sepolicy"
+    };
+
+    String[] sesearch = new String[] {
+        " -s default_prop -t sudaemon --allow",
+        " -s shell -t sudaemon --allow",
+        " -s shell -t superuser_device --allow",
+        " -s untrusted_app -t superuser_device --allow",
+        " -s untrusted_app -t sudaemon --allow",
+        " -s untrusted_app -t anr_data_file --allow",
+        " -s untrusted_app -t system_data_file --allow",
+        " -s untrusted_app -t su_exec --allow"
+    };
 
     String YES_ACTION = "YES_ACTION";
     String DISSMISS_ACTION = "DISSMISS_ACTION";
