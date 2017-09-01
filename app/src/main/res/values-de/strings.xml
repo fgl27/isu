@@ -57,7 +57,6 @@
     <string name="per_app_default_activate">Aktiviere SU für jede App, wenn SU deaktiviert ist</string>
     <string name="auto_restart_su">Automatischer Neustart für SU</string>
     <string name="auto_restart_su_summary">Falls eingeschaltet, wird SU automatisch wieder aktiviert, wenn die App, die SU deaktiviert, beendet wird. </string>
-    <string name="per_app_click">Hier drücken</string>
     <string name="per_app_active">SU-Aktivierung</string>
     <string name="per_app_deactive">SU-Deaktivierung</string>
     <string name="per_app_dontcare">Don\'t Care Liste</string>

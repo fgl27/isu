@@ -71,7 +71,6 @@
     <string name="per_app_default_activate">Ativa o SU para qualquer app se o SU esta desativado</string>
     <string name="auto_restart_su">Reinício automático so SU</string>
     <string name="auto_restart_su_summary">Se este estiver ativado, o SU será ativada automática quando deixar o aplicativo que desativou SU</string>
-    <string name="per_app_click">Clique para</string>
     <string name="per_app_dontcare">Lista não troca</string>
     <string name="per_app_dontcare_summary">Selecione os aplicativos que não terão efeito no monitor.\nComo funciona:\nSelecione aplicativo que não precisão acesso a ROOT e não bloqueio acesso se tiver ROOT, e são usado por aplicativos ROOT ou que bloqueião o acesso ao ROOT, exemplo aplicativos de teclado ou de sobreposição de funções</string>
     <string name="monitor_delay">Atraso do monitor</string>

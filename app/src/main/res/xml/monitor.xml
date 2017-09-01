@@ -42,7 +42,7 @@
         android:title="@string/per_app_dontcare">
         <Preference
             android:key="per_app_dontcare"
-            android:title="@string/per_app_click"
+            android:title="@string/dontcare_list"
             android:summary="@string/per_app_dontcare_summary"
             android:persistent="false" />
     </PreferenceCategory>
@@ -51,7 +51,7 @@
         android:title="@string/per_app_deactive">
         <Preference
             android:key="per_app_deactive"
-            android:title="@string/per_app_click"
+            android:title="@string/deactivate_list"
             android:summary="@string/per_app_title_isu"
             android:persistent="false" />
         <SwitchPreference
@@ -65,7 +65,7 @@
         android:title="@string/per_app_active">
         <Preference
             android:key="per_app_active"
-            android:title="@string/per_app_click"
+            android:title="@string/activate_list"
             android:summary="@string/per_app_title_su"
             android:persistent="false" />
         <SwitchPreference

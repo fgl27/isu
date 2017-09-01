@@ -65,7 +65,7 @@
         android:title="@string/log">
         <Preference
             android:key="check_log"
-            android:title="@string/per_app_click"
+            android:title="@string/generate_log"
             android:summary="@string/checks_log"
             android:persistent="false" />
     </PreferenceCategory>

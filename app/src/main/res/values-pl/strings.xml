@@ -64,7 +64,6 @@
     <string name="per_app_default_activate">Włącz SU dla każdej aplikacji, jeśli SU jest wyłączony</string>
     <string name="auto_restart_su">Automatyczne włączenie SU</string>
     <string name="auto_restart_su_summary">Jeśli WŁĄCZONE, automatycznie włączy SU, jeśli wyjdziesz z aplikacji, która wyłączyła SU</string>
-    <string name="per_app_click">Kliknij</string>
     <string name="per_app_active">Włącz SU</string>
     <string name="per_app_deactive">Wyłącz SU</string>
     <string name="per_app_dontcare">Lista obojętnych aplikacji</string>

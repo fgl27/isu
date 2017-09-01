@@ -31,6 +31,7 @@
     <string name="update_summary_fail">Could not verify, click to try again</string>
     <string name="update_link">\n\nClick here to open iSu download page</string>
     <string name="update_checking">Checking&#8230; It may take a few seconds.</string>
+    <string name="generate_log">Generate a log</string>
 
     <!-- controls -->
     <string name="su_switch">Change SU state</string>
@@ -84,7 +85,9 @@
     <string name="auto_restart_isu">Automatic Re-Deactivate SU</string>
     <string name="auto_restart_isu_summary">If this switch is on, will automatic deactivate SU when leave the app that activated SU</string>
     <string name="auto_restart_vice_versa">Automatic activate and deactivate can\'t be enable at the same time</string>
-    <string name="per_app_click">Click to</string>
+    <string name="deactivate_list">Deactivate list</string>
+    <string name="activate_list">Activate list</string>
+    <string name="dontcare_list">Don\'t Care list</string>
     <string name="per_app_active">Activate SU</string>
     <string name="per_app_deactive">Deactivate SU</string>
     <string name="per_app_dontcare">Don\'t Care List</string>
