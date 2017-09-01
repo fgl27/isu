@@ -93,21 +93,19 @@
     <string name="monitor_ok">App monitor accessibility service is enable in \u0022system settings accessibility\u0022 \nClick here to open accessibility</string>
 
     <!--Prop-->
-    <string name="prop_editor">Props Editor</string>
-    <string name="prop_editor_summary">Some apps may block the access base on the value of the below known props</string>
     <string name="unknown">Unknown</string>
-    <string name="in_prop_summary">Click on an individual Prop to change it\nProps with * need a reboot after change to take full effect</string>
+    <string name="in_prop_summary">Click on the below to change a individual prop, Props with * need a reboot after change to take full effect</string>
     <string name="props_ok">Known safe value</string>
     <string name="props_nok">Known unsafe value</string>
     <string name="props_unknown">Unknown value</string>
-    <string name="props_unknown_summary">This means that your device doesn\'t have this prop.\nSet this to a safe value may help to pass a safety check</string>
+    <string name="props_unknown_summary">Yours device doesn\'t have this prop, this doesn\'t means a problem</string>
     <string name="safe">Safe value</string>
     <string name="unsafe">Unsafe value</string>
-    <string name="force_all">Force set all Known props</string>
+    <string name="unsafe_toast">Not recommended, if you really need to change, do it individually</string>
     <string name="force_all_summary">Click on the below to force all Known Props to the chosen value:</string>
-    <string name="states">Known props list</string>
+    <string name="know_prop_list">Known props list</string>
     <string name="special_props">Special Props</string>
-    <string name="special_props_summary">\nIf after the change of a special prop and a reboot the new value is reverted to original ROM value you need request the developer of the ROM to fix it\nClick on the below to change it</string>
+    <string name="special_props_summary">\nIf after the change of a special prop and a reboot the new value is reverted to original ROM value you need request the developer of the ROM to fix it</string>
     <string name="fingerprint_dialog_title">Choose an option:</string>
     <string name="fingerprint_dialog_summary">Known safe:\nKnown Safe value for this prop for a nexus device\n\nPersonalized:\nEdit current value or Write a new value for this prop (example yours device stock ROM value for this)</string>
     <string name="fingerprint_dialog_know_safe">Known safe</string>
@@ -117,7 +115,7 @@
     <string name="fingerprint_apply">\n\n*The value has changed reboot to apply</string>
     <string name="edited_text">The Personalized value can\'t be empty change not accepted</string>
     <string name="equals_values">No changes made, new value equal current ROM value!</string>
-    <string name="props_any">List all ro.props and select some to edit</string>
+
     <string name="edit">edit</string>
     <string name="props_any_edit_dialog_title">Props to edit</string>
     <string name="props_any_edit_dialog_summary">Forcing a prop to build.prop in most case make it persistent after boot, but is possible that some android tool overwrite the value during boot up that is way iSu will apply changes after boot</string>
@@ -130,7 +128,10 @@
     <string name="edited_text_sumary">\nSome props may only have a result after a reboot</string>
     <string name="empty">\n%s</string>
     <string name="ro_props">Read Only editor</string>
-    <string name="props_any_list">List yours changes to ro.props</string>
+    <string name="props_any">Edit</string>
+    <string name="props_any_summary">List all ro.props and select some to edit</string>
+    <string name="props_any_list">List</string>
+    <string name="props_any_list_summary">List yours changes to ro.props</string>
     <string name="props_any_list_dialog_title">List of props that you changed</string>
     <string name="props_any_list_dialog_summary">The below ro.props will be applied on boot if you enable in Setting %s</string>
     <string name="props_no_changes">No changes made!</string>

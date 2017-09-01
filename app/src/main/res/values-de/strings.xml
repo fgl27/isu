@@ -64,19 +64,15 @@
     <string name="per_app_dontcare_summary">Wähle die Apps aus, die keinen Einfluss auf den App Monitor haben, wenn sie starten.\nSo funktioniert es:\nWähle Apps, die weder Root noch UnRoot sind und die von Root bzw. UnRoot Apps benutzt oder als Overlay angezeigt werden könnten, wie z.B. Tastatur oder Overlay Apps</string>
 
     <!--Prop-->
-    <string name="prop_editor">Props Editor</string>
-    <string name="prop_editor_summary">Einige Apps blockieren den Zugriff in Abhängigkeit der Werte der untenstehenden bekannten Props</string>
     <string name="unknown">Unbekannt</string>
     <string name="in_prop_summary">Drücke auf eine einzelne Prop, um sie zu ändern\nProps mit * benötigen nach der Änderung einen Reboot</string>
     <string name="props_ok">Bekannter sicherer Wert</string>
     <string name="props_nok">Bekannter unsicherer Wert</string>
     <string name="props_unknown">Unbekannter Wert</string>
-    <string name="props_unknown_summary">Bedeutet, dass dein Gerät die Prop nicht besitzt. Auf einen sicheren Wert zu setzen, könnte helfen, Sicherheitschecks zu bestehen</string>
     <string name="safe">Sicherer Wert</string>
     <string name="unsafe">Unsicherer Wert</string>
-    <string name="force_all">Erzwinge das Setzen ALLER bekannten Props</string>
     <string name="force_all_summary">Drücke unten, um bei allen bekannten Props den gewählten Wert zu erzwingen:</string>
-    <string name="states">Liste der bekannten Props</string>
+    <string name="know_prop_list">Liste der bekannten Props</string>
     <string name="special_props">Spezielle Props</string>
     <string name="special_props_summary">\nWenn nach der Änderung einer speziellen Prop und einem Reboot der Wert wieder auf den Originalwert der ROM zurückgesetzt wurde, wende dich bitte an den Entwickler deiner ROM, um das beheben zu lassen.\nDrücke zum Ändern unten</string>
     <string name="fingerprint_dialog_title">Wähle eine Option:</string>

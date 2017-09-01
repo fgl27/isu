@@ -58,7 +58,7 @@ Preference.OnPreferenceChangeListener {
 
     private String executableFilePath, suVersion;
     private ListPreference[] props = new ListPreference[Constants.props.length];
-    private Preference mBuildFingerprint, mForceAllSafe, mForceAllUnsafe, mPropsAny, mPropsAnyList;
+    private Preference mBuildFingerprint, mForceAllSafe, mForceAllUnsafe, mForceAllUnknown, mPropsAny, mPropsAnyList;
     private boolean isCMSU;
     private AlertDialog.Builder mPerAppDialog;
     private Drawable originalIcon;
@@ -94,6 +94,7 @@ Preference.OnPreferenceChangeListener {
 
             mForceAllSafe = (Preference) findPreference("force_all_safe");
             mForceAllUnsafe = (Preference) findPreference("force_all_unsafe");
+            mForceAllUnknown = (Preference) findPreference("force_all_unknown");
 
             mForceAllSafe.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
@@ -106,6 +107,13 @@ Preference.OnPreferenceChangeListener {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     new Execute(getActivity()).execute("red");
+                    return true;
+                }
+            });
+            mForceAllUnknown.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Tools.DoAToast(getString(R.string.unsafe_toast), getActivity());
                     return true;
                 }
             });
@@ -279,6 +287,7 @@ Preference.OnPreferenceChangeListener {
         for (int i = 0; i < Constants.props.length; i++) {
             value[i] = Tools.getprop(Constants.props[i]);
             if (value[i] == null || value[i].isEmpty()) {
+                props[i].setValue("");
                 summary = getString(R.string.unknown);
                 props[i].setSummary(summary);
                 props[i].setIcon(R.drawable.interrogation);
@@ -541,4 +550,5 @@ Preference.OnPreferenceChangeListener {
             Tools.SendBroadcast("updatePropsReceiver", mContext);
         }
     }
+
 }

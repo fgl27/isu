@@ -74,19 +74,15 @@
     <string name="monitor_warning">Usługa monitorowania aplikacji jest wyłączona\nAby korzystać z tej usługi, musisz ją włączyć w \u0022Ułatwienia dostępu\u0022 \nKliknij tutaj, aby otworzyć</string>
 	
     <!--Prop-->
-    <string name="prop_editor">Edytor Props</string>
-    <string name="prop_editor_summary">Niektóre aplikacje mogą blokować dostęp na podstawie stanu poniższych oznaczeń Prop</string>
     <string name="unknown">Nieznane</string>
     <string name="in_prop_summary">Kliknij na danym Prop, aby go zmienić\nProp z * wymagają ponownego uruchomienia, aby zmiany odniosły pełny efekt</string>
     <string name="props_ok">Znana bezpieczna wartość</string>
     <string name="props_nok">Znana niebezpieczna wartość</string>
     <string name="props_unknown">Nieznana wartość</string>
-    <string name="props_unknown_summary">Oznacza to, że urządzenie nie ma tego Prop.\nUstawienie na bezpieczną wartość pomoże przejść pomyślnie test</string>
     <string name="safe">Bezpieczna wartość</string>
     <string name="unsafe">Niebezpieczna wartość</string>
-    <string name="force_all">Wymuś ustawienie wszystkich znanych Props</string>
     <string name="force_all_summary">Kliknij poniżej, aby ustawić wszystkie znane Props na wybraną wartość:</string>
-    <string name="states">Lista znanych Props</string>
+    <string name="know_prop_list">Lista znanych Props</string>
     <string name="special_props">Specjalne Props</string>
     <string name="special_props_summary">\nJeśli po zmianie specjalnych Props i po ponownym uruchomieniu przywracana jest oryginalna wartość ROM-u, należy poprosić autora ROM-u, aby to naprawił\nKliknij poniżej, aby to zmienić</string>
     <string name="fingerprint_dialog_title">Wybierz opcję:</string>

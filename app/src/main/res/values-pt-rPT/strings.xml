@@ -79,19 +79,15 @@
     <string name="monitor_warning">O serviço de monitor da aplicação está desativado\nPara utilizar este, é necessário ativá-lo em \u0022Configurar acessibilidade\u0022 \nClique aqui para abri</string>
 
     <!--Prop-->
-    <string name="prop_editor">Editor de Props</string>
-    <string name="prop_editor_summary">Alguns aplicativos podem bloquear o acesso baseado no valor dos props abaixo</string>
     <string name="unknown">Desconhecido</string>
     <string name="in_prop_summary">Clique em um prop individual para modificá-lo\nProps com * precisão um Reboot para a mudança ter efeito</string>
     <string name="props_ok">Valor seguro conhecido</string>
     <string name="props_nok">Valor inseguro conhecido</string>
     <string name="props_unknown">Valor desconhecido</string>
-    <string name="props_unknown_summary">Isto significa que o seu aparelho não tem este prop.\nDefina esto como um valor seguro pode ajudar a passar uma verificação de segurança</string>
     <string name="safe">Valor seguro</string>
     <string name="unsafe">Valor inseguro</string>
-    <string name="force_all">Setar todos props conhecidos</string>
     <string name="force_all_summary">Clique em uma opção abaixo para setar todos props conhecidos para o valor escolhido:</string>
-    <string name="states">Lista de props conhecidos</string>
+    <string name="know_prop_list">Lista de props conhecidos</string>
     <string name="special_props">Props especiais</string>
     <string name="special_props_summary">\nSe após a mudança de um prop especial e um reboot o novo valor é revertido para o valor original da ROM você precisa solicitar ao desenvolvedor da ROM para corrigi-lo\nClique abaixo para alterá-lo</string>
     <string name="fingerprint_dialog_title">Escolha uma opção:</string>

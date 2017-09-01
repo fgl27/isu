@@ -20,20 +20,16 @@
  */-->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" xmlns:settings="http://schemas.android.com/apk/res/com.android.settings">
     <PreferenceCategory
-        android:key="props_settings_pref"
-        android:title="@string/prop_editor">
-    </PreferenceCategory>
-    <PreferenceCategory
         android:key="props_ro"
         android:title="@string/ro_props">
         <Preference
             android:key="props_any"
-            android:title="@string/per_app_click"
-            android:summary="@string/props_any" />
+            android:title="@string/props_any"
+            android:summary="@string/props_any_summary" />
         <Preference
             android:key="props_any_list"
-            android:title="@string/per_app_click"
-            android:summary="@string/props_any_list" />
+            android:title="@string/props_any_list"
+            android:summary="@string/props_any_list_summary" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="props_special"
@@ -46,43 +42,28 @@
             android:title="@string/robuildfingerprint" />
     </PreferenceCategory>
     <PreferenceCategory
-        android:key="props_states"
-        android:title="@string/states">
-        <Preference
-            android:key="pref_states"
-            android:summary="@string/prop_editor_summary" />
-        <Preference
-            android:key="props_ok"
-            android:icon="@drawable/ok"
-            android:title="@string/props_ok" />
-        <Preference
-            android:key="props_nok"
-            android:icon="@drawable/warning"
-            android:title="@string/props_nok" />
-        <Preference
-            android:key="props_unknown"
-            android:icon="@drawable/interrogation"
-            android:title="@string/props_unknown"
-            android:summary="@string/props_unknown_summary" />
-    </PreferenceCategory>
-    <PreferenceCategory
-        android:key="force_all_pref"
-        android:title="@string/force_all">
+        android:key="know_props"
+        android:title="@string/know_props">
         <Preference
             android:key="force_all_description"
             android:summary="@string/force_all_summary" />
         <Preference
             android:key="force_all_safe"
             android:icon="@drawable/ok"
-            android:title="@string/safe" />
+            android:title="@string/props_ok" />
         <Preference
             android:key="force_all_unsafe"
             android:icon="@drawable/warning"
-            android:title="@string/unsafe" />
+            android:title="@string/props_nok" />
+        <Preference
+            android:key="force_all_unknown"
+            android:icon="@drawable/interrogation"
+            android:title="@string/props_unknown"
+            android:summary="@string/props_unknown_summary" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="props"
-        android:title="@string/know_props">
+        android:title="@string/know_prop_list">
         <Preference
             android:key="props_summary"
             android:summary="@string/in_prop_summary" />
