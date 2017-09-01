@@ -781,7 +781,7 @@ public class Tools implements Constants {
         String red = "";
         for (int i = 0; i < props_fail_sf.length; i++) {
             String value = getprop(props_fail_sf[i]);
-            if (!value.equals(props_fail_sf_OK[i])) {
+            if (!value.isEmpty() && !value.equals(props_fail_sf_OK[i])) {
                 if (red.isEmpty())
                     red = props_fail_sf[i] + "=" + value;
                 else

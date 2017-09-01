@@ -13,7 +13,7 @@
     <string name="safetyNet_untested">Untested, Click to test</string>
     <string name="safetyNet_testing">Testing&#8230; It may take a few seconds.</string>
     <string name="fail_reason">(reason of the fail)</string>
-    <string name="props_status_good">All known for SN good</string>
+    <string name="props_status_good">OK for Safety Net</string>
     <string name="su_not_cm">Current SU is not supported.\nSome app functions only works with CM-SU</string>
     <string name="reboot_support">Reboot support</string>
     <string name="reboot_support_missing">The reboot support is need to avoid you losing SU after a reboot with SU deactivated. In Android Nougat the app can add that support, in Marshmallow or older is need to flash a file, click on DOWNLOAD FOLDER below to get that files</string>
