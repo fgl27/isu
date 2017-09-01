@@ -117,4 +117,17 @@ public interface Constants {
         "permissive",
         "1"
     };
+
+    String[] props_fail_sf = new String[] {
+        "ro.boot.flash.locked",
+        "ro.boot.verifiedbootstate",
+        "ro.secure"
+    };
+
+    String[] props_fail_sf_OK = new String[] {
+        "1",
+        "green",
+        "1"
+    };
+
 }

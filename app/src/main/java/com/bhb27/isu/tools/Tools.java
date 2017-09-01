@@ -761,6 +761,42 @@ public class Tools implements Constants {
         context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit().putLong(name, value).apply();
     }
 
+    public static void logStatus(Context context) {
+        for (int i = 0; i < props.length; i++) {
+            String value = getprop(props[i]);
+            Log.d(TAG, props[i] + " = " + value + (value.equals(props_OK[i]) ? (value.isEmpty() ? " Empty" : " Green") : (value.isEmpty() ? " Empty" : " Red")));
+        }
+        String bootdfgp = getprop(robootbuildfingerprint);
+        String buildfgp = getprop(robuildfingerprint);
+        Log.d(TAG, robootbuildfingerprint + " = " + bootdfgp);
+        Log.d(TAG, robuildfingerprint + "           = " + buildfgp + (!bootdfgp.equals(buildfgp) ? " Green" : " Red"));
+        Log.d(TAG, "SU " + (SuBinary() ? context.getString(R.string.activated) : context.getString(R.string.deactivated)));
+        Log.d(TAG, "SELinux " + getSELinuxStatus(context));
+        Log.d(TAG, "ADB " + (AndroidDebugState(context) ? context.getString(R.string.activated) : context.getString(R.string.deactivated)));
+    }
+
+    public static String redProps() {
+        String red = "";
+        for (int i = 0; i < props_fail_sf.length; i++) {
+            String value = getprop(props_fail_sf[i]);
+            if (!value.equals(props_fail_sf_OK[i])) {
+                if (red.isEmpty())
+                    red = props_fail_sf[i] + "=" + value;
+                else
+                    red += ", " + props_fail_sf[i] + "=" + value;
+            }
+        }
+        String bootdfgp = getprop(robootbuildfingerprint);
+        String buildfgp = getprop(robuildfingerprint);
+        if (bootdfgp.equals(buildfgp)) {
+                if (red.isEmpty())
+                    red = robootbuildfingerprint + "=" + robuildfingerprint;
+                else
+                    red = ", " + robootbuildfingerprint + "=" + robuildfingerprint;
+        }
+        return red;
+    }
+
     public static void saveprop(Context context) {
         String value;
         for (int i = 0; i < props.length; i++) {

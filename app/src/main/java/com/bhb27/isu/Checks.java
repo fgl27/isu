@@ -143,6 +143,7 @@ public class Checks extends PreferenceFragment {
                 mSafety.removePreference(mSafetyNet);
                 mSafety.addPreference(mSafetyNet_remove);
                 checkSafetyNet();
+                Tools.logStatus(getActivity());
                 return true;
             }
         });
@@ -201,12 +202,20 @@ public class Checks extends PreferenceFragment {
             else {
                 image = R.drawable.warning;
                 if (isCMSU) {
-                    result += "\n\n" + getString(R.string.su_state) + ": ";
-                    result += (Tools.SuBinary() ? getString(R.string.activated) : getString(R.string.deactivated)) + "\n";
-                    result += getString(R.string.selinux_state) + ": ";
-                    result += (Tools.isSELinuxActive(getActivity()) ? getString(R.string.enforcing) : getString(R.string.permissive)) + "\n";
+                    boolean su = Tools.SuBinary();
+                    boolean selinux = Tools.isSELinuxActive(getActivity());
+                    result += "\n\n" + getString(R.string.su_state) + (su ? getString(R.string.fail_reason) + ":" : ":");
+                    result += (su ? getString(R.string.activated) : getString(R.string.deactivated)) + "\n";
+
+                    result += getString(R.string.selinux_state) + (!selinux ? getString(R.string.fail_reason) + ":" : ":");
+                    result += (selinux ? getString(R.string.enforcing) : getString(R.string.permissive)) + "\n";
+
                     result += getString(R.string.adb_state) + ": ";
-                    result += (Tools.AndroidDebugState(getActivity()) ? getString(R.string.activated) : getString(R.string.deactivated));
+                    result += (Tools.AndroidDebugState(getActivity()) ? getString(R.string.activated) : getString(R.string.deactivated)) + "\n";
+
+                    String redprops = Tools.redProps();
+                    result += getString(R.string.props) + (!redprops.isEmpty() ? getString(R.string.fail_reason) + ":" : ":");
+                    result += (redprops.isEmpty() ? getString(R.string.props_status_good) : " " + redprops);
                 }
             }
         }
