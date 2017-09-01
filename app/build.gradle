@@ -50,11 +50,11 @@ repositories {
 }
 
 dependencies {
-    api 'com.android.support:support-v4:26.0.1'
-    api 'com.android.support:support-v13:26.0.1'
-    api 'com.android.support:appcompat-v7:26.0.1'
-    api 'com.android.support:preference-v14:26.0.1'
-    api 'com.android.support:design:26.0.1'
+    api 'com.android.support:support-v4:26.0.2'
+    api 'com.android.support:support-v13:26.0.2'
+    api 'com.android.support:appcompat-v7:26.0.2'
+    api 'com.android.support:preference-v14:26.0.2'
+    api 'com.android.support:design:26.0.2'
     api 'com.google.android.gms:play-services-safetynet:10.2.6'
     api 'org.zeroturnaround:zt-zip:1.12'
     api 'com.squareup.okhttp3:okhttp:3.8.1'
