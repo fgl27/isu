@@ -25,6 +25,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -33,6 +34,7 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
@@ -795,6 +797,24 @@ public class Tools implements Constants {
                     red = ", " + robootbuildfingerprint + "=" + robuildfingerprint;
         }
         return red;
+    }
+
+
+    public static void browser(String site, Context context) {
+        try {
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(site)));
+        } catch (ActivityNotFoundException ex) {
+            DoAToast(context.getString(R.string.no_browser), context);
+        }
+    }
+
+    public static void email(Context context, String SUBJECT) {
+        try {
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com"))
+                .putExtra(Intent.EXTRA_SUBJECT, SUBJECT));
+        } catch (ActivityNotFoundException ex) {
+            Tools.DoAToast(context.getString(R.string.no_email_client), context);
+        }
     }
 
     public static void saveprop(Context context) {

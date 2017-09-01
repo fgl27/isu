@@ -20,7 +20,6 @@
 package com.bhb27.isu;
 
 import android.annotation.TargetApi;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,7 +27,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.Manifest;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -46,7 +44,7 @@ import com.bhb27.isu.tools.Tools;
 
 public class Checks extends PreferenceFragment {
 
-    private Preference mSuStatus, mRebootStatus, mSafetyNet, mLog, mSafetyNet_remove, mChecksView, mUpdate, mUpdate_remove;
+    private Preference mSuStatus, mRebootStatus, mSafetyNet, mLog, mSafetyNet_remove, mChecksView, mUpdate, mUpdate_remove, mHelp;
     private PreferenceCategory mChecks, mSafety, mChecksUpdates;
     private String suVersion, executableFilePath, result;
     private int image;
@@ -101,11 +99,7 @@ public class Checks extends PreferenceFragment {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        try {
-                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.androidfilehost.com/?w=files&flid=120360")));
-                                        } catch (ActivityNotFoundException ex) {
-                                            Tools.DoAToast(getString(R.string.no_browser), getActivity());
-                                        }
+                                        Tools.browser("https://www.androidfilehost.com/?w=files&flid=120360", getActivity());
                                     }
                                 })
                             .setNegativeButton(getString(R.string.dismiss),
@@ -144,6 +138,15 @@ public class Checks extends PreferenceFragment {
                 mSafety.addPreference(mSafetyNet_remove);
                 checkSafetyNet();
                 Tools.logStatus(getActivity());
+                return true;
+            }
+        });
+
+        mHelp = (Preference) findPreference("check_help");
+        mHelp.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Tools.browser("http://forum.xda-developers.com/android/apps-games/isu-simple-app-to-deactivate-activate-t3478348", getActivity());
                 return true;
             }
         });
@@ -275,11 +278,7 @@ public class Checks extends PreferenceFragment {
                 mUpdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        try {
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
-                        } catch (ActivityNotFoundException ex) {
-                            Tools.DoAToast(getString(R.string.no_browser), getActivity());
-                        }
+                        Tools.browser(link, getActivity());
                         return true;
                     }
                 });

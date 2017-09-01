@@ -21,9 +21,6 @@ package com.bhb27.isu;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.ActivityNotFoundException;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Build;
 import android.view.animation.AlphaAnimation;
@@ -92,35 +89,35 @@ public class AboutActivity extends Activity {
         email.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                email(AboutContext);
+                Tools.email(AboutContext, SUBJECT);
             }
         });
 
         email_summary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                email(AboutContext);
+                Tools.email(AboutContext, SUBJECT);
             }
         });
 
         xda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browser("http://forum.xda-developers.com/android/apps-games/isu-simple-app-to-deactivate-activate-t3478348", AboutContext);
+                Tools.browser("http://forum.xda-developers.com/android/apps-games/isu-simple-app-to-deactivate-activate-t3478348", AboutContext);
             }
         });
 
         git.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browser("https://github.com/bhb27/isu", AboutContext);
+                Tools.browser("https://github.com/bhb27/isu", AboutContext);
             }
         });
 
         git_summary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browser("https://github.com/bhb27/isu", AboutContext);
+                Tools.browser("https://github.com/bhb27/isu", AboutContext);
             }
         });
 
@@ -132,131 +129,115 @@ public class AboutActivity extends Activity {
         ic_gmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                email(AboutContext);
+                Tools.email(AboutContext, SUBJECT);
             }
         });
 
         ic_xda.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browser("http://forum.xda-developers.com/android/apps-games/isu-simple-app-to-deactivate-activate-t3478348", AboutContext);
+                Tools.browser("http://forum.xda-developers.com/android/apps-games/isu-simple-app-to-deactivate-activate-t3478348", AboutContext);
             }
         });
 
         ic_git.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browser("https://github.com/bhb27/isu", AboutContext);
+                Tools.browser("https://github.com/bhb27/isu", AboutContext);
             }
         });
 
         app_license.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browser("https://github.com/bhb27/isu/blob/master/LICENSE", AboutContext);
+                Tools.browser("https://github.com/bhb27/isu/blob/master/LICENSE", AboutContext);
             }
         });
 
         appcompat_v7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browser("https://developer.android.com/topic/libraries/support-library/packages.html#v7-appcompat", AboutContext);
+                Tools.browser("https://developer.android.com/topic/libraries/support-library/packages.html#v7-appcompat", AboutContext);
             }
         });
 
         busybox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browser("https://forum.xda-developers.com/showthread.php?t=2239421", AboutContext);
+                Tools.browser("https://forum.xda-developers.com/showthread.php?t=2239421", AboutContext);
             }
         });
 
         design.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browser("https://developer.android.com/topic/libraries/support-library/packages.html#design", AboutContext);
+                Tools.browser("https://developer.android.com/topic/libraries/support-library/packages.html#design", AboutContext);
             }
         });
 
         magiskpolicy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browser("https://github.com/topjohnwu/Magisk#credits", AboutContext);
+                Tools.browser("https://github.com/topjohnwu/Magisk#credits", AboutContext);
             }
         });
 
         material_dialogs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browser("https://github.com/afollestad/material-dialogs", AboutContext);
+                Tools.browser("https://github.com/afollestad/material-dialogs", AboutContext);
             }
         });
 
         okhttp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browser("https://github.com/square/okhttp", AboutContext);
+                Tools.browser("https://github.com/square/okhttp", AboutContext);
             }
         });
 
         play_safetynet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browser("https://developers.google.com/android/guides/setup#ensure_devices_have_the_google_play_services_apk", AboutContext);
+                Tools.browser("https://developers.google.com/android/guides/setup#ensure_devices_have_the_google_play_services_apk", AboutContext);
             }
         });
 
         preference_v14.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browser("https://developer.android.com/topic/libraries/support-library/packages.html#v14-preference", AboutContext);
+                Tools.browser("https://developer.android.com/topic/libraries/support-library/packages.html#v14-preference", AboutContext);
             }
         });
 
         resetprop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browser("https://github.com/topjohnwu/Magisk#credits", AboutContext);
+                Tools.browser("https://github.com/topjohnwu/Magisk#credits", AboutContext);
             }
         });
 
         support_v4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browser("https://developer.android.com/topic/libraries/support-library/packages.html#v4", AboutContext);
+                Tools.browser("https://developer.android.com/topic/libraries/support-library/packages.html#v4", AboutContext);
             }
         });
 
         support_v13.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browser("https://developer.android.com/topic/libraries/support-library/packages.html#v13", AboutContext);
+                Tools.browser("https://developer.android.com/topic/libraries/support-library/packages.html#v13", AboutContext);
             }
         });
 
         ztzip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                browser("https://github.com/zeroturnaround/zt-zip", AboutContext);
+                Tools.browser("https://github.com/zeroturnaround/zt-zip", AboutContext);
             }
         });
 
     }
 
-    public void browser(String site, Context context) {
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(site)));
-        } catch (ActivityNotFoundException ex) {
-            Tools.DoAToast(getString(R.string.no_browser), context);
-        }
-    }
-
-    public void email(Context context) {
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:fglfgl27@gmail.com"))
-                .putExtra(Intent.EXTRA_SUBJECT, SUBJECT));
-        } catch (ActivityNotFoundException ex) {
-            Tools.DoAToast(getString(R.string.no_email_client), context);
-        }
-    }
 }

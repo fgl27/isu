@@ -32,6 +32,7 @@
     <string name="update_link">\n\nClick here to open iSu download page</string>
     <string name="update_checking">Checking&#8230; It may take a few seconds.</string>
     <string name="generate_log">Generate a log</string>
+    <string name="help">Help</string>
 
     <!-- controls -->
     <string name="su_switch">Change SU state</string>
@@ -183,7 +184,8 @@
     <string name="git_summary">This is an open source application check it on my github\ngithub.com/bhb27/isu</string>
     <string name="version">Version:</string>
     <string name="version_summary">A simple app to help rooted devices to pass safety verification</string>
-    <string name="xda_summary">XDA support forum site</string>
+    <string name="xda_summary">XDA support forum</string>
+    <string name="xda_summary_summary">In case of help or how to click and go to support forum</string>
     <string name="no_email_client">There is none email client installed on the device.</string>
     <string name="no_browser">There is none web browser installed on the device.</string>
     <string name="app_license">iSu is licensed under the GNU General Public License v3.0, and uses following dependencies:</string>

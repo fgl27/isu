@@ -69,4 +69,13 @@
             android:summary="@string/checks_log"
             android:persistent="false" />
     </PreferenceCategory>
+    <PreferenceCategory
+        android:key="help"
+        android:title="@string/help">
+        <Preference
+            android:key="check_help"
+            android:title="@string/xda_summary"
+            android:summary="@string/xda_summary_summary"
+            android:persistent="false" />
+    </PreferenceCategory>
 </PreferenceScreen>
