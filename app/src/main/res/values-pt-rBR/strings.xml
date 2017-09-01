@@ -99,7 +99,6 @@
     <string name="fingerprint_apply">\n\n*O valor mudou de reinicie para aplicar</string>
     <string name="edited_text">O valor personalizado não pode estar vazio. Alteração não aceita</string>
     <string name="equals_values">Nenhuma alteração feita, valor novo igual ao valor atual da ROM!</string>
-    <string name="props_any">Listar todos ro.props e selecionar alguns para edição</string>
     <string name="edit">editar</string>
     <string name="props_any_edit_dialog_title">Props para editar</string>
     <string name="props_any_edit_dialog_summary">Forçar um prop para o build.prop na maioria dos casos o torná persistente após um reboot, mas é possível que algum arquivo de inicialização substitua o valor por isso o iSu pode forçar o prop ao valor selecionado no final do boot</string>

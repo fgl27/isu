@@ -17,7 +17,7 @@
     <string name="reboot_support_missing">The reboot support is need to avoid you losing SU after a reboot with SU deactivated. In Android Nougat the app can add that support, in Marshmallow or older is need to flash a file, click on DOWNLOAD FOLDER below to get that files</string>
     <string name="missing">Missing! Click here to understand</string>
     <string name="download_folder">Download Folder</string>
-    <string name="checks_log">Generate a .zip with logs that can help to understand fails, bugs, etc&#8230;</string>
+    <string name="checks_log">Generate a .zip with all logs that can help to understand fails, bugs, etc&#8230;</string>
     <string name="log">Log</string>
     <string name="generating_log">Generating a Log&#8230;</string>
     <string name="generating_log_move">Log file saved at:\n\n%s</string>
@@ -25,7 +25,7 @@
     <string name="update">Update</string>
     <string name="update_title">Update Status</string>
     <string name="update_summary_out">iSu is Outdated\nLatest app version is %s, but you are running version</string>
-    <string name="update_summary_up">iSu is uptodate</string>
+    <string name="update_summary_up">iSu is up-to-date</string>
     <string name="update_summary_fail">Could not verify, click to try again</string>
     <string name="update_link">\n\nClick here to open iSu download page</string>
     <string name="update_checking">Checking&#8230; It may take a few seconds.</string>
@@ -72,7 +72,7 @@
     <string name="service_per_app">iSu App monitor</string>
     <string name="per_app_title_isu">Select the apps that will deactivate SU when started</string>
     <string name="per_app_title_su">Select the apps that will activate SU when started</string>
-    <string name="accessibility_service_desc">A Service to monitor when foreground app starts and activate or deactivate SU.\nBe aware some apps may be too fast and the service ativate or deactivate SU too late, on this case is recomende to use a manual change, via the app it widget or tile.</string>
+    <string name="accessibility_service_desc">A Service to monitor when a foreground app starts then, activate or deactivate SU.\nBe aware some apps may be too fast and the service ativate or deactivate SU too late, on this case is recommended to use a manual change, via the app it widget or tile.</string>
     <string name="activate_selinux">SELinux Set to Enforcing</string>
     <string name="deactivate_selinux">SELinux Set to Permissive</string>
     <string name="per_app_default_deactivate">Deactivate SU to any app if SU is activated</string>
@@ -81,14 +81,14 @@
     <string name="auto_restart_su_summary">If this switch is on, will automatic active SU when leave the app that deactivated SU</string>
     <string name="auto_restart_isu">Automatic Re-Deactivate SU</string>
     <string name="auto_restart_isu_summary">If this switch is on, will automatic deactivate SU when leave the app that activated SU</string>
-    <string name="auto_restart_vice_versa">Atomatic activate and deactivate can\'t be enable at the same time</string>
+    <string name="auto_restart_vice_versa">Automatic activate and deactivate can\'t be enable at the same time</string>
     <string name="per_app_click">Click to</string>
     <string name="per_app_active">Activate SU</string>
     <string name="per_app_deactive">Deactivate SU</string>
     <string name="per_app_dontcare">Don\'t Care List</string>
-    <string name="per_app_dontcare_summary">Select the apps that will not have effect to App monitor, when the app start.\nHow this works:\nSelect apps that are nor Root nor UnRoot apps, and are used by or are displayed above a Root or UnRoot app, example Keyboard or function overlay apps</string>
+    <string name="per_app_dontcare_summary">Select the apps that will have no effect to App monitor, when it start.\nHow this works:\nSelect apps that are nor Root nor UnRoot apps, and are used by or are displayed above a Root or UnRoot app, example Keyboard or function overlay apps like volume apps</string>
     <string name="monitor_delay">Monitor delay</string>
-    <string name="monitor_delay_summary">Monitor will delay for chosen time (current %s) when SU is change by widget, tile or controls</string>
+    <string name="monitor_delay_summary">App monitor will delay by the chosen time (current %s) when SU is change by widget, tile or controls</string>
     <string name="monitor_warning">App monitor accessibility service is disabled\nTo use this service is need to enable it in \u0022system settings accessibility\u0022 \nClick here to open accessibility</string>
     <string name="monitor_ok">App monitor accessibility service is enable in \u0022system settings accessibility\u0022 \nClick here to open accessibility</string>
 
@@ -98,25 +98,25 @@
     <string name="props_ok">Known safe value</string>
     <string name="props_nok">Known unsafe value</string>
     <string name="props_unknown">Unknown value</string>
-    <string name="props_unknown_summary">Yours device doesn\'t have this prop, this doesn\'t means a problem</string>
+    <string name="props_unknown_summary">Props with unknown are props that yours device doesn\'t have, this doesn\'t means a problem</string>
     <string name="safe">Safe value</string>
     <string name="unsafe">Unsafe value</string>
     <string name="unsafe_toast">Not recommended, if you really need to change, do it individually</string>
     <string name="force_all_summary">Click on the below to force all Known Props to the chosen value:</string>
     <string name="know_prop_list">Known props list</string>
     <string name="special_props">Special Props</string>
-    <string name="special_props_summary">\nIf after the change of a special prop and a reboot the new value is reverted to original ROM value you need request the developer of the ROM to fix it</string>
+    <string name="special_props_summary">\nIf after a change of a special prop and one reboot the new value is reverted to original ROM value you need request the developer of the ROM to fix it</string>
     <string name="fingerprint_dialog_title">Choose an option:</string>
     <string name="fingerprint_dialog_summary">Known safe:\nKnown Safe value for this prop for a nexus device\n\nPersonalized:\nEdit current value or Write a new value for this prop (example yours device stock ROM value for this)</string>
     <string name="fingerprint_dialog_know_safe">Known safe</string>
     <string name="fingerprint_dialog_personalized">Personalized</string>
     <string name="fingerprint_dialog_personalized_title">Set new value for\n</string>
-    <string name="fingerprint_dialog_result">Be aware to apply the changes is need a reboot!</string>
+    <string name="fingerprint_dialog_result">Be aware to apply the changes is need one reboot!</string>
     <string name="fingerprint_apply">\n\n*The value has changed reboot to apply</string>
     <string name="edited_text">The Personalized value can\'t be empty change not accepted</string>
     <string name="equals_values">No changes made, new value equal current ROM value!</string>
 
-    <string name="edit">edit</string>
+    <string name="edit">Edit</string>
     <string name="props_any_edit_dialog_title">Props to edit</string>
     <string name="props_any_edit_dialog_summary">Forcing a prop to build.prop in most case make it persistent after boot, but is possible that some android tool overwrite the value during boot up that is way iSu will apply changes after boot</string>
     <string name="props_any_edit_dialog_force_bp">Force this prop to build.prop</string>
@@ -128,7 +128,6 @@
     <string name="edited_text_sumary">\nSome props may only have a result after a reboot</string>
     <string name="empty">\n%s</string>
     <string name="ro_props">Read Only editor</string>
-    <string name="props_any">Edit</string>
     <string name="props_any_summary">List all ro.props and select some to edit</string>
     <string name="props_any_list">List</string>
     <string name="props_any_list_summary">List yours changes to ro.props</string>
@@ -140,7 +139,7 @@
     <string name="apply">Apply</string>
     <string name="cancel">Cancel</string>
     <string name="setting_all">Setting all %s to a \n</string>
-    <string name="fingerprint_help">\n\nYours current ro.build.fingerprint is the same as yours ro.bootimage.build.fingerprint\nThis on a custom ROM means you are not using an authentic ro.build.fingerprint and that may be a reason for a safety net fail</string>
+    <string name="fingerprint_help">\n\nYours current ro.build.fingerprint has the same value as yours ro.bootimage.build.fingerprint\nThis on a custom ROM means you are not using an authentic ro.build.fingerprint and that is a known reason for a safety net fail</string>
 
     <!--Widget-->
     <string name="horizontal">Horizontal</string>
@@ -178,7 +177,7 @@
     <string name="dev_info">Developer information:</string>
     <string name="git_summary">This is an open source application check it on my github\ngithub.com/bhb27/isu</string>
     <string name="version">Version:</string>
-    <string name="version_summary">A simple app to deactivate SU at will and pass safety verification for some apps, today it works only on SU binary of CM/LOS base ROM\'s.</string>
+    <string name="version_summary">A simple app to help rooted devices to pass safety verification</string>
     <string name="xda_summary">XDA support forum site</string>
     <string name="no_email_client">There is none email client installed on the device.</string>
     <string name="no_browser">There is none web browser installed on the device.</string>

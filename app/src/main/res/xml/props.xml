@@ -23,11 +23,11 @@
         android:key="props_ro"
         android:title="@string/ro_props">
         <Preference
-            android:key="props_any"
-            android:title="@string/props_any"
+            android:key="props_ro_edit"
+            android:title="@string/edit"
             android:summary="@string/props_any_summary" />
         <Preference
-            android:key="props_any_list"
+            android:key="props_ro_list"
             android:title="@string/props_any_list"
             android:summary="@string/props_any_list_summary" />
     </PreferenceCategory>

@@ -159,7 +159,7 @@ Preference.OnPreferenceChangeListener {
             });
         }
 
-        mPropsAny = (Preference) findPreference("props_any");
+        mPropsAny = (Preference) findPreference("props_ro_edit");
         mPropsAny.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -168,7 +168,7 @@ Preference.OnPreferenceChangeListener {
             }
         });
 
-        mPropsAnyList = (Preference) findPreference("props_any_list");
+        mPropsAnyList = (Preference) findPreference("props_ro_list");
         mPropsAnyList.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {

@@ -94,7 +94,6 @@
     <string name="fingerprint_apply">\n\n*Wartość została zmieniona, uruchom ponownie, aby zastosować zmiany</string>
     <string name="edited_text">Spersonalizowana wartość nie może być pusta, zmiana nie będzie zaakceptowana</string>
     <string name="equals_values">Nie wprowadzono zmian, nowa wartość jest taka sama jak obecna ROM-u!</string>
-    <string name="props_any">Lista wszystkich ro.props, wybierz jakieś do edytowania</string>
     <string name="edit">edytuj</string>
     <string name="props_any_edit_dialog_title">Props do edytowania</string>
     <string name="props_any_edit_dialog_summary">Wymuszanie zmian Prop do build prop w większości przypadków zostaje po uruchomieniu, ale jest taka możliwość, że niektóre narządzia androida nadpiszą wartość podczas uruchomiania, właśnie tak iSu zastosuje zmiany po uruchomieniu</string>

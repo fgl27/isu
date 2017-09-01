@@ -84,7 +84,6 @@
     <string name="fingerprint_apply">\n\n*Der Wert wurde geändert, zum Anwenden rebooten</string>
     <string name="edited_text">Der personalisierte Wert kann nicht leer sein. Änderung wurde nicht akzeptiert</string>
     <string name="equals_values">Es wurden keine Änderungen vorgenommen, der neue Wert ist gleich dem Originalwert der ROM!</string>
-    <string name="props_any">Zeige alle ro.props und wähle einige zum Ändern</string>
     <string name="edit">Bearbeiten</string>
     <string name="props_any_edit_dialog_title">Zu bearbeitende Props</string>
     <string name="props_any_edit_dialog_summary">Wenn eine Prop auf die build.prop gezwungen wird, bleibt sie in den meisten Fällen auch nach dem Booten erhalten. Aber es ist möglich, dass manche Android-Tools den Wert während des Bootens überschreiben. Deshalb wendet iSu die Änderungen erst nach dem Booten an.</string>
