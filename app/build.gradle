@@ -10,6 +10,10 @@ android {
         targetSdkVersion 26
         versionCode 49
         versionName "5.9"
+        ndk {
+            moduleName 'zipadjust'
+            abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
+        }
     }
     buildTypes {
         release {
@@ -25,6 +29,11 @@ android {
     dexOptions {
         preDexLibraries = true
     }
+    externalNativeBuild {
+        cmake {
+            path 'src/main/jni/CMakeLists.txt'
+        }
+    }
     lintOptions {
         abortOnError false
 	disable 'UnsafeNativeCodeLocation', //UnsafeNativeCodeLocation: Native code outside library directory libsupol and supolicy
@@ -32,7 +41,9 @@ android {
 		'IconMissingDensityFolder', //IconMissingDensityFolder: Missing density folder
                 'ProtectedPermissions', //ProtectedPermissions: Using system app permission
                 'ExportedReceiver', // easy tasker support need to have a exporte receiver
-                'PluralsCandidate' //the string start at a plural
+                'PluralsCandidate', //the string start at a plural
+                'TrustAllX509TrustManager', //zip libs
+                'InvalidPackage' //zip libs
     }
     productFlavors {
     }
@@ -59,4 +70,6 @@ dependencies {
     api 'org.zeroturnaround:zt-zip:1.12'
     api 'com.squareup.okhttp3:okhttp:3.8.1'
     api 'com.afollestad.material-dialogs:core:0.9.4.7'
+    api 'org.bouncycastle:bcprov-jdk15on:1.58'
+    api 'org.bouncycastle:bcpkix-jdk15on:1.58'
 }

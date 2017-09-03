@@ -11,3 +11,6 @@ local.properties
 
 # Misc
 .DS_Store
+
+#libs
+app/.externalNativeBuild

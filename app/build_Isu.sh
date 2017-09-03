@@ -9,9 +9,12 @@ echo -e "\n Script start $(date)\n";
 # the rest must work without problems
 
 # Folders Folder= yours app main folder, SDK_FOLDER android sdk folder
+#ndk lincense fix go to folder sdk/tool/bin and ./sdkmanager --update
+#ndk download https://developer.android.com/ndk/downloads/index.html extrac to $NDK_DIR
 FOLDER="$HOME"/android/isu;
 SDK_FOLDER="$HOME"/android/sdk;
 SDK_DIR="sdk.dir=$SDK_FOLDER";
+NDK_DIR="ndk.dir=$SDK_FOLDER/ndk";
 
 # app sign key
 #Generate and use a sign key https://developer.android.com/studio/publish/app-signing.html
@@ -54,6 +57,17 @@ ZIPNAME_PERMISSIVE=iSu_kernel_Reboot_Support_V_"$VERSION"_and_up_Permissive;
 
 #making start here...
 
+contains() {
+    string="$1"
+    substring="$2"
+    if test "${string#*$substring}" != "$string"
+    then
+        return 0    # $substring is in $string
+    else
+        return 1    # $substring is not in $string
+    fi
+}
+
 cd "$FOLDER" || exit;
 
 if [ ! -e ./local.properties ]; then
@@ -61,13 +75,19 @@ if [ ! -e ./local.properties ]; then
 \n local.properties done starting the build";
 	touch "$FOLDER".local.properties;
 	echo "$SDK_DIR" > local.properties;
+	echo "$NDK_DIR" >> local.properties;
 fi;
-localproperties=$(cat < local.properties | head -n1);
-if [ "$localproperties" != "$SDK_DIR" ]; then
+
+localproperties=$(echo $(cat local.properties));
+localOK=0;
+contains "$localproperties" "$NDK_DIR" && contains "$localproperties" "$SDK_DIR" && localOK=1;
+
+if [ "$localOK" == 0 ]; then
 	echo -e "\nSDK folder set as \n$SDK_DIR in the script \nbut local.properties file content is\n$localproperties\nfix it using script value";
 	rm -rf .local.properties;
 	touch "$FOLDER".local.properties;
 	echo "$SDK_DIR" > local.properties;
+	echo "$NDK_DIR" >> local.properties;
 fi;
 
 ./gradlew clean

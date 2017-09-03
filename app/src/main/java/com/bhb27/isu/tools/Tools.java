@@ -65,6 +65,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.lang.ref.WeakReference;
 import java.security.GeneralSecurityException;
+import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -245,6 +246,27 @@ public class Tools implements Constants {
             }
         }
 
+    }
+
+    public static String genPackageName(String prefix, int length) {
+        StringBuilder builder = new StringBuilder(length);
+        builder.append(prefix);
+        length -= prefix.length();
+        SecureRandom random = new SecureRandom();
+        String base = "abcdefghijklmnopqrstuvwxyz";
+        String alpha = base + base.toUpperCase(Locale.US);
+        String full = alpha + "0123456789..........";
+        char next, prev = '\0';
+        for (int i = 0; i < length; ++i) {
+            if (prev == '.' || i == length - 1 || i == 0) {
+                next = alpha.charAt(random.nextInt(alpha.length()));
+            } else {
+                next = full.charAt(random.nextInt(full.length()));
+            }
+            builder.append(next);
+            prev = next;
+        }
+        return builder.toString();
     }
 
     public static void subackup(String executableFilePath, Context context) {
