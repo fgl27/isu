@@ -33,6 +33,12 @@
     <string name="update_checking">Checking&#8230; It may take a few seconds.</string>
     <string name="generate_log">Generate a log</string>
     <string name="help">Help</string>
+    <string name="hide">Hide</string>
+    <string name="hide_title">Hide iSu</string>
+    <string name="hide_generating">Installing (%d&#176; try), this will take a moment&#8230;</string>
+    <string name="hide_summary">Some applications can identify that iSu is installed and prevent use or access of they content, this function can prevent others applications from see iSu</string>
+    <string name="hide_fail">Hide process fail tree times, contact the developer with logs</string>
+    <string name="hide_success">Hide process end with success, new iSu package id %s</string>
 
     <!-- controls -->
     <string name="su_switch">Change SU state</string>

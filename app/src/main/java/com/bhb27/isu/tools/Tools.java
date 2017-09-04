@@ -129,10 +129,71 @@ public class Tools implements Constants {
         RootUtils.closeISU();
     }
 
-    public static void generate(Context context) {
-        File unhideAPK = new File(context.getCacheDir(), "unhide.apk");
-        String pkg = ZipUtils.generateUnhide(context, unhideAPK);
-        DoAToast(pkg, context);
+    public static void HideDialog(Context context) {
+        new AlertDialog.Builder(context, R.style.AlertDialogStyle)
+            .setTitle(context.getString(R.string.hide_title))
+            .setMessage(context.getString(R.string.hide_summary))
+            .setPositiveButton(context.getString(R.string.ok),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    new HideTask(context).execute();
+                    }
+                })
+            .setNegativeButton(context.getString(R.string.cancel),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        return;
+                    }
+                }).show();
+    }
+
+    public static class HideTask extends AsyncTask < Void, Void, String > {
+        private MaterialDialog progressDialog;
+        private WeakReference < Context > contextRef;
+        private boolean su = SuBinary();
+        public HideTask(Context context) {
+            contextRef = new WeakReference < > (context);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Context mContext = contextRef.get();
+            progressDialog = new MaterialDialog.Builder(mContext)
+                .title(mContext.getString(R.string.hide_title))
+                .content(String.format(mContext.getString(R.string.hide_generating), getInt("hide_app_count", 1, mContext)))
+                .progress(true, 0)
+                .canceledOnTouchOutside(false)
+                .show();
+        }
+
+        @Override
+        protected String doInBackground(Void...params) {
+            Context mContext = contextRef.get();
+            boolean su = SuBinary();
+            String hide_app = "hide.apk"; 
+            File hideAPK = new File(mContext.getCacheDir(), hide_app);
+            String pkg = ZipUtils.generateUnhide(mContext, hideAPK).replace("\0", "");
+            runCommand("pm install -r /" + mContext.getCacheDir() + "/" + hide_app, su, mContext);
+            saveString("hide_app_name", pkg, mContext);
+            int tryes = getInt("hide_app_count", 1, mContext);
+            saveInt("hide_app_count", (tryes + 1), mContext);
+            return pkg;
+        }
+
+        @Override
+        protected void onPostExecute(String pkg) {
+            super.onPostExecute(pkg);
+            Context mContext = contextRef.get();
+            String app_instaled = ("" + runCommand("pm list packages | grep " + pkg + " | cut -d: -f2", su, mContext));
+            progressDialog.dismiss();
+
+            if (app_instaled.contains(pkg)) SimpleDialog(String.format(mContext.getString(R.string.hide_success), pkg), mContext);
+            else if (getInt("hide_app_count", 1, mContext) <= 3) new HideTask(mContext).execute();
+            else SimpleDialog(mContext.getString(R.string.hide_fail), mContext);
+        }
     }
 
     @SuppressWarnings("deprecation")
@@ -450,7 +511,6 @@ public class Tools implements Constants {
         runCommand(Constants.SETENFORCE + (isChecked ? " 1" : " 0"), SuBinary(), context);
         Log.d(TAG, "Change SELinux isChecked = " + isChecked + " State = " + getSELinuxStatus(context));
         updateAllWidgetsLayouts(context);
-   generate(context);
         closeSU();
     }
 
@@ -817,6 +877,14 @@ public class Tools implements Constants {
 
     public static void saveLong(String name, long value, Context context) {
         context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit().putLong(name, value).apply();
+    }
+
+    public static int getInt(String name, int defaults, Context context) {
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(name, defaults);
+    }
+
+    public static void saveInt(String name, int value, Context context) {
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit().putInt(name, value).apply();
     }
 
     public static void logStatus(Context context) {

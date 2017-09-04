@@ -49,6 +49,15 @@
             android:persistent="false" />
     </PreferenceCategory>
     <PreferenceCategory
+        android:key="checks_hide"
+        android:title="@string/hide">
+        <Preference
+            android:key="hide"
+            android:title="@string/hide_title"
+            android:summary="@string/hide_summary"
+            android:persistent="false" />
+    </PreferenceCategory>
+    <PreferenceCategory
         android:key="safety"
         android:title="@string/safety_net">
         <Preference

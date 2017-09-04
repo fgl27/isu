@@ -80,7 +80,6 @@ public class ZipUtils {
     private static final String UNHIDE_NAME = "unhide.apk";
     private static final String TAG = "isuhide";
     private static final String app_name = "com.bhb27.isu";
-    private static final String app_name_zero = "c\0o\0m\0.\0b\0h\0b\0" + "2\0"+ "7\0.\0i\0s\0u\0";
 
     private static final String ANDROID_MANIFEST = "AndroidManifest.xml";
     private static final byte[] COM_PKG_NAME = (app_name + "\0").getBytes();
@@ -103,7 +102,6 @@ public class ZipUtils {
         String pkg = "";
         Log.d(TAG, "try start ");
         try {
-            //            JarInputStream source = new JarInputStream(context.getAssets().open(UNHIDE_NAME));
             JarInputStream source = new JarInputStream(new FileInputStream(new File(Tools.runCommand("pm path " + ISU_APK + "| head -n1 | cut -d: -f2", Tools.SuBinary(), context))));
             JarOutputStream dest = new JarOutputStream(new FileOutputStream(temp));
             JarEntry entry;
@@ -153,6 +151,7 @@ public class ZipUtils {
             e.printStackTrace();
             return pkg;
         }
+        Log.d(TAG, "pkg " + pkg);
         return pkg;
     }
 

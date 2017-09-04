@@ -44,7 +44,7 @@ import com.bhb27.isu.tools.Tools;
 
 public class Checks extends PreferenceFragment {
 
-    private Preference mSuStatus, mRebootStatus, mSafetyNet, mLog, mSafetyNet_remove, mChecksView, mUpdate, mUpdate_remove, mHelp;
+    private Preference mSuStatus, mRebootStatus, mSafetyNet, mLog, mSafetyNet_remove, mChecksView, mUpdate, mUpdate_remove, mHelp, mHide;
     private PreferenceCategory mChecks, mSafety, mChecksUpdates;
     private String suVersion, executableFilePath, result;
     private int image;
@@ -115,14 +115,11 @@ public class Checks extends PreferenceFragment {
             }
         } else mChecks.removePreference(mRebootStatus);
 
-        mLog = (Preference) findPreference("check_log");
-        mLog.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        mHide = (Preference) findPreference("hide");
+        mHide.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                if (check_writeexternalstorage())
-                    new Tools.LogToZip(getActivity()).execute();
-                else
-                    Tools.DoAToast(getString(R.string.cant_generating), getActivity());
+                Tools.HideDialog(getActivity());
                 return true;
             }
         });
@@ -138,6 +135,18 @@ public class Checks extends PreferenceFragment {
                 mSafety.addPreference(mSafetyNet_remove);
                 checkSafetyNet();
                 Tools.logStatus(getActivity());
+                return true;
+            }
+        });
+
+        mLog = (Preference) findPreference("check_log");
+        mLog.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                if (check_writeexternalstorage())
+                    new Tools.LogToZip(getActivity()).execute();
+                else
+                    Tools.DoAToast(getString(R.string.cant_generating), getActivity());
                 return true;
             }
         });
