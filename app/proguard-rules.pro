@@ -31,15 +31,10 @@
 -dontnote android.widget.Toolbar
 -dontnote android.support.v7.widget.Toolbar
 
--keep class org.spongycastle.** { *; }
--dontwarn javax.naming.**
-
 # zeroturnaround
+-keep class org.slf4j.** { *; }
 -dontwarn org.slf4j.**
 -dontwarn org.zeroturnaround.zip.**
-
-# retrolambda
--dontwarn java.lang.invoke.*
 
 # squareup.okhttp3
 -dontwarn okhttp3.**
