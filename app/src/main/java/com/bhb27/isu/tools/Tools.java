@@ -72,7 +72,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 import com.bhb27.isu.BuildConfig;
 import com.bhb27.isu.Start;
@@ -81,7 +80,7 @@ import com.bhb27.isu.perapp.PerAppMonitor;
 import com.bhb27.isu.perapp.Per_App;
 import com.bhb27.isu.perapp.PropDB;
 import com.bhb27.isu.tools.RootFile;
-import com.bhb27.isu.tools.RootUtils;
+import com.bhb27.isu.tools.ZipUtils;
 import com.bhb27.isu.widgetservice.Widgeth;
 import com.bhb27.isu.widgetservice.Widgetv;
 import com.bhb27.isu.widgetservice.Widgetsu;
@@ -128,6 +127,12 @@ public class Tools implements Constants {
     public static void closeSU() {
         RootUtils.closeSU();
         RootUtils.closeISU();
+    }
+
+    public static void generate(Context context) {
+        File unhideAPK = new File(context.getCacheDir(), "unhide.apk");
+        String pkg = ZipUtils.generateUnhide(context, unhideAPK);
+        DoAToast(pkg, context);
     }
 
     @SuppressWarnings("deprecation")
@@ -246,27 +251,6 @@ public class Tools implements Constants {
             }
         }
 
-    }
-
-    public static String genPackageName(String prefix, int length) {
-        StringBuilder builder = new StringBuilder(length);
-        builder.append(prefix);
-        length -= prefix.length();
-        SecureRandom random = new SecureRandom();
-        String base = "abcdefghijklmnopqrstuvwxyz";
-        String alpha = base + base.toUpperCase(Locale.US);
-        String full = alpha + "0123456789..........";
-        char next, prev = '\0';
-        for (int i = 0; i < length; ++i) {
-            if (prev == '.' || i == length - 1 || i == 0) {
-                next = alpha.charAt(random.nextInt(alpha.length()));
-            } else {
-                next = full.charAt(random.nextInt(full.length()));
-            }
-            builder.append(next);
-            prev = next;
-        }
-        return builder.toString();
     }
 
     public static void subackup(String executableFilePath, Context context) {
@@ -466,6 +450,7 @@ public class Tools implements Constants {
         runCommand(Constants.SETENFORCE + (isChecked ? " 1" : " 0"), SuBinary(), context);
         Log.d(TAG, "Change SELinux isChecked = " + isChecked + " State = " + getSELinuxStatus(context));
         updateAllWidgetsLayouts(context);
+   generate(context);
         closeSU();
     }
 
@@ -698,27 +683,76 @@ public class Tools implements Constants {
     }
 
     public static char ChangeLetter(char letter) {
-        char[] randon_char = ("abcdefghijklmnopqrstuvw‌​xyz").toCharArray();
+        String base = "abcdefghijklmnopqrstuvwyz";
+        base = base + base.toUpperCase(Locale.US);
+        char[] randon_char = base.toCharArray();
         char mod_string;
         while (true) {
-            mod_string = randon_char[new Random().nextInt(randon_char.length)];
+            mod_string = randon_char[new SecureRandom().nextInt(randon_char.length)];
             if (!String.valueOf(mod_string).equals(String.valueOf(letter)))
                 return mod_string;
         }
     }
 
     public static String random4() {
-        char[] randon_char = ("abcdefghijklmnopqrtvw‌​xyz").toCharArray();
+        String base = "abcdefghijklmnopqrtuvwxyz";
+        base = base + base.toUpperCase(Locale.US);
+        char[] randon_char = base.toCharArray();
         String mod_string;
         while (true) {
             mod_string = "";
             for (int i = 0; i < 5; i++) {
-                mod_string = mod_string + String.valueOf(randon_char[new Random().nextInt(randon_char.length)]);
+                mod_string = mod_string + String.valueOf(randon_char[new SecureRandom().nextInt(randon_char.length)]);
             }
             if (runShell("which " + mod_string).isEmpty())
                 break;
         }
         return mod_string;
+    }
+
+    public static String appStringAddZeros(String app_com) {
+        char[] change = app_com.toCharArray();
+        String mod_string = "";
+        for (int i = 0; i < change.length; ++i) {
+            mod_string += change[i];
+            mod_string += "\0";
+        }
+        return mod_string;
+    }
+
+    public static String appStringMod(String app_com, boolean zeros) {
+        char[] change = app_com.toCharArray();
+        String mod_string = "";
+        for (int i = 0; i < change.length; ++i) {
+            if (String.valueOf(change[i]).equals(".") || i < 4) // i < 4 preserve com. or org. from app name
+                 mod_string += change[i];
+            else
+                mod_string += ChangeLetter(change[i]);
+            if (zeros)
+                mod_string += "\0";
+        }
+        return mod_string;
+    }
+
+    public static int FindOffSet(byte xml[], byte[] COM_PKG_NAME) {
+        int offset = -1;
+        // Linear search pattern offset
+        for (int i = 0; i < xml.length; ++i) {
+            boolean match = true;
+            for (int j = 0; j < COM_PKG_NAME.length; ++j) {
+                if (xml[i + j] != COM_PKG_NAME[j]) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match) {
+                offset = i;
+                break;
+            }
+        }
+        if (offset < 0)
+            Log.d(TAG, "offset < 0");
+        return offset;
     }
 
     public static boolean SuBinary() {

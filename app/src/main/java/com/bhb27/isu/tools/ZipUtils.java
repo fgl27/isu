@@ -59,6 +59,8 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import java.util.regex.Pattern;
 
+import android.util.Log;
+import com.bhb27.isu.BuildConfig;
 import com.bhb27.isu.tools.Tools;
 import com.bhb27.isu.tools.Constants;
 
@@ -71,13 +73,17 @@ public class ZipUtils {
     // File name in assets
     private static final String PUBLIC_KEY_NAME = "public.certificate.x509.pem";
     private static final String PRIVATE_KEY_NAME = "private.key.pk8";
-    private static final String UNHIDE_APK = "unhide.apk";
+    private static final String ISU_APK = BuildConfig.APPLICATION_ID;
 
     private static final String CERT_SF_NAME = "META-INF/CERT.SF";
     private static final String CERT_SIG_NAME = "META-INF/CERT.%s";
+    private static final String UNHIDE_NAME = "unhide.apk";
+    private static final String TAG = "isuhide";
+    private static final String app_name = "com.bhb27.isu";
+    private static final String app_name_zero = "c\0o\0m\0.\0b\0h\0b\0" + "2\0"+ "7\0.\0i\0s\0u\0";
 
     private static final String ANDROID_MANIFEST = "AndroidManifest.xml";
-    private static final byte[] UNHIDE_PKG_NAME = "com.topjohnwu.unhide\0".getBytes();
+    private static final byte[] COM_PKG_NAME = (app_name + "\0").getBytes();
 
     private static Provider sBouncyCastleProvider;
     // bitmasks for which hash algorithms we need the manifest to include.
@@ -95,8 +101,10 @@ public class ZipUtils {
     public static String generateUnhide(Context context, File output) {
         File temp = new File(context.getCacheDir(), "temp.apk");
         String pkg = "";
+        Log.d(TAG, "try start ");
         try {
-            JarInputStream source = new JarInputStream(context.getAssets().open(UNHIDE_APK));
+            //            JarInputStream source = new JarInputStream(context.getAssets().open(UNHIDE_NAME));
+            JarInputStream source = new JarInputStream(new FileInputStream(new File(Tools.runCommand("pm path " + ISU_APK + "| head -n1 | cut -d: -f2", Tools.SuBinary(), context))));
             JarOutputStream dest = new JarOutputStream(new FileOutputStream(temp));
             JarEntry entry;
             int size;
@@ -105,37 +113,34 @@ public class ZipUtils {
                 dest.putNextEntry(new JarEntry(entry.getName()));
                 if (TextUtils.equals(entry.getName(), ANDROID_MANIFEST)) {
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    while((size = source.read(buffer)) != -1) {
+                    while ((size = source.read(buffer)) > 0) {
                         baos.write(buffer, 0, size);
                     }
-                    int offset = -1;
+
                     byte xml[] = baos.toByteArray();
+                    boolean need_zero = false;
+                    int offset = Tools.FindOffSet(xml, COM_PKG_NAME);
 
-                    // Linear search pattern offset
-                    for (int i = 0; i < xml.length - UNHIDE_PKG_NAME.length; ++i) {
-                        boolean match = true;
-                        for (int j = 0; j < UNHIDE_PKG_NAME.length; ++j) {
-                            if (xml[i + j] != UNHIDE_PKG_NAME[j]) {
-                                match = false;
-                                break;
-                            }
-                        }
-                        if (match) {
-                            offset = i;
-                            break;
-                        }
+                    if (offset < 0) {
+                        Log.d(TAG, "offset < 0 try appModZeros");
+                        byte[] COM_PKG_NAME_ZERO = (Tools.appStringAddZeros(app_name)).getBytes();
+                        offset = Tools.FindOffSet(xml, COM_PKG_NAME_ZERO);
+                        need_zero = true;
                     }
-                    if (offset < 0)
+                    if (offset < 0) {
+                        Log.d(TAG, "offset < 0 again return");
                         return "";
+                    }
 
+                    Log.d(TAG, "offset " + offset + " leg " + COM_PKG_NAME.length);
                     // Patch binary XML with new package name
-                    pkg = Tools.genPackageName("com.", UNHIDE_PKG_NAME.length - 1);
+                    pkg = Tools.appStringMod(app_name, need_zero);
                     for (int i = 0; i < pkg.length(); ++i) {
                         xml[offset + i] = (byte) pkg.charAt(i);
                     }
                     dest.write(xml);
                 } else {
-                    while((size = source.read(buffer)) != -1) {
+                    while ((size = source.read(buffer)) > 0) {
                         dest.write(buffer, 0, size);
                     }
                 }

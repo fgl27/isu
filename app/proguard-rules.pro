@@ -47,3 +47,7 @@
 
 # afollestad.material-dialogs
 -dontnote com.afollestad.materialdialogs.**
+
+# BouncyCastle
+-keep class org.bouncycastle.** { *; }
+-dontwarn javax.naming.**
