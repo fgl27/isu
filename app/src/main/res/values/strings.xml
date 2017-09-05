@@ -35,7 +35,7 @@
     <string name="help">Help</string>
     <string name="hide">Hide</string>
     <string name="hide_title">Hide iSu</string>
-    <string name="hide_generating">Installing (%d&#176; try), this will take a moment&#8230;</string>
+    <string name="hide_generating">Installing fake iSu (%d&#176; try), this will take a moment&#8230;</string>
     <string name="hide_summary">Some applications can identify that iSu is installed and prevent use or access of they content, this function can prevent others applications from see iSu, by creating a fake version of the app that is harder to be detected</string>
     <string name="hide_isu">\n\nHide iSu?</string>
     <string name="fake">Fake</string>
@@ -44,6 +44,8 @@
     <string name="is_hide">iSu is in \u0022HideMod\u0022, if you choose to revert this state click here</string>
     <string name="unhide_title">Unhide iSu</string>
     <string name="unhide_summary">UnHide iSu? and uninstall This fake version?</string>
+    <string name="not_hide">Running as Fake iSu but original iSu is not hidden, click here to fix it</string>
+    <string name="hiding_isu">Hiding original iSu&#8230;</string>
 
     <!-- controls -->
     <string name="su_switch">Change SU state</string>

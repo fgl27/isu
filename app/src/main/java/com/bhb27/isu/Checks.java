@@ -48,7 +48,7 @@ public class Checks extends PreferenceFragment {
     private PreferenceCategory mChecks, mSafety, mChecksUpdates;
     private String suVersion, executableFilePath, result;
     private int image;
-    private boolean isCMSU, rootAccess, update_removed;
+    private boolean isCMSU, rootAccess, update_removed, appId, isu_hide;
     public SafetyNetHelper.Result SNCheckResult;
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
@@ -116,19 +116,7 @@ public class Checks extends PreferenceFragment {
         } else mChecks.removePreference(mRebootStatus);
 
         mHide = (Preference) findPreference("hide");
-        boolean appId = (BuildConfig.APPLICATION_ID).equals(getActivity().getPackageName());
-        if (!appId) {
-            mHide.setIcon(R.drawable.exclamation);
-            mHide.setSummary(getString(R.string.is_hide));
-        }
-        mHide.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if (!appId) Tools.UnHideDialog(getActivity());
-                else Tools.HideDialog(getActivity());
-                return true;
-            }
-        });
+        updateHidePref(getActivity());
 
         mSafetyNet_remove = (Preference) findPreference("safety_net_remove");
         mSafetyNet_remove.setLayoutResource(R.layout.preference_progressbar);
@@ -181,6 +169,7 @@ public class Checks extends PreferenceFragment {
             Tools.updateMain(getActivity(), (String.format(getString(R.string.reloading), getString(R.string.su_access))));
         }
         new Tools.CheckUpdate(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
+        updateHidePref(getActivity());
     }
 
     @Override
@@ -247,6 +236,31 @@ public class Checks extends PreferenceFragment {
         mSafetyNet.setIcon(image);
     }
 
+    public void updateHidePref(Context context) {
+        appId = (BuildConfig.APPLICATION_ID).equals(getActivity().getPackageName());
+        isu_hide = ("" + Tools.runCommand("pm list packages | grep " + BuildConfig.APPLICATION_ID + " | cut -d: -f2", Tools.SuBinary(), getActivity())).contains(BuildConfig.APPLICATION_ID);
+        if (!appId) {
+            if (isu_hide) {
+                mHide.setIcon(R.drawable.warning);
+                mHide.setSummary(getString(R.string.not_hide));
+            } else {
+                mHide.setIcon(R.drawable.exclamation);
+                mHide.setSummary(getString(R.string.is_hide));
+            }
+        }	
+        mHide.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                if (!appId && isu_hide) {
+                    Tools.DoAToast(getString(R.string.hiding_isu), getActivity());
+                    Tools.runCommand("pm hide " + BuildConfig.APPLICATION_ID, Tools.SuBinary(), context);
+                    updateHidePref(getActivity());
+                } else if (!appId) Tools.UnHideDialog(getActivity());
+                else Tools.HideDialog(getActivity());
+                return true;
+            }
+        });
+    }
 
     @TargetApi(23 | 24 | 25)
     private boolean check_writeexternalstorage() {
