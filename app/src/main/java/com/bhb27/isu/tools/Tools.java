@@ -129,18 +129,61 @@ public class Tools implements Constants {
         RootUtils.closeISU();
     }
 
-    public static void HideDialog(Context context) {
+    public static void HideiSu(Context context) {
+        boolean su = SuBinary();
+        runCommand("pm unhide " + BuildConfig.APPLICATION_ID, su, context);
+        runCommand("am start -n " + BuildConfig.APPLICATION_ID + "/" + BuildConfig.APPLICATION_ID + ".Start", su, context);
+        runCommand("pm uninstall " +  context.getPackageName(), SuBinary(), context);
+    }
+
+    public static void SimpleHideDialog(String message, Context context) {
         new AlertDialog.Builder(context, R.style.AlertDialogStyle)
-            .setTitle(context.getString(R.string.hide_title))
-            .setMessage(context.getString(R.string.hide_summary))
-            .setPositiveButton(context.getString(R.string.ok),
+            .setMessage(message)
+            .setNegativeButton(context.getString(R.string.dismiss),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        boolean su = SuBinary();
+                        runCommand("am start -n " + readString("hide_app_name", null, context) + "/" + BuildConfig.APPLICATION_ID + ".Start", su, context);
+                        runCommand("pm hide " + BuildConfig.APPLICATION_ID, su, context);
+                        return;
+                    }
+                }).show();
+    }
+
+    public static void HideDialog(Context context) {
+        new AlertDialog.Builder(context, R.style.AlertDialogStyle)
+            .setTitle(context.getString(R.string.hide_title))
+            .setMessage(context.getString(R.string.hide_summary) + context.getString(R.string.hide_isu))
+            .setNeutralButton(context.getString(R.string.ok),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    saveInt("hide_app_count", 1, context);
                     new HideTask(context).execute();
                     }
                 })
-            .setNegativeButton(context.getString(R.string.cancel),
+            .setPositiveButton(context.getString(R.string.cancel),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        return;
+                    }
+                }).show();
+    }
+
+    public static void UnHideDialog(Context context) {
+        new AlertDialog.Builder(context, R.style.AlertDialogStyle)
+            .setTitle(context.getString(R.string.unhide_title))
+            .setMessage(context.getString(R.string.unhide_summary))
+            .setNeutralButton(context.getString(R.string.ok),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Tools.HideiSu(context);
+                    }
+                })
+            .setPositiveButton(context.getString(R.string.cancel),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -190,7 +233,7 @@ public class Tools implements Constants {
             String app_instaled = ("" + runCommand("pm list packages | grep " + pkg + " | cut -d: -f2", su, mContext));
             progressDialog.dismiss();
 
-            if (app_instaled.contains(pkg)) SimpleDialog(String.format(mContext.getString(R.string.hide_success), pkg), mContext);
+            if (app_instaled.contains(pkg)) SimpleHideDialog(String.format(mContext.getString(R.string.hide_success), pkg), mContext);
             else if (getInt("hide_app_count", 1, mContext) <= 3) new HideTask(mContext).execute();
             else SimpleDialog(mContext.getString(R.string.hide_fail), mContext);
         }
@@ -221,6 +264,7 @@ public class Tools implements Constants {
     }
 
     public static void patches(String executableFilePath, Context context) {
+            saveBoolean("run_boot", true, context);
             PatchSepolicy(executableFilePath, context);
             extractBusybox(executableFilePath, context);
             WriteSettings(context);
@@ -547,7 +591,7 @@ public class Tools implements Constants {
 
     public static void WriteSettings(Context context) {
         if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") != PackageManager.PERMISSION_GRANTED)
-            runCommand("pm grant com.bhb27.isu android.permission.WRITE_SECURE_SETTINGS", SuBinary(), context);
+            runCommand("pm grant " + context.getPackageName() + " android.permission.WRITE_SECURE_SETTINGS", SuBinary(), context);
     }
 
     public static void FakeSelinux(Context context) {

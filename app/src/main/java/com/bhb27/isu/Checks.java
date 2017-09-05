@@ -116,10 +116,16 @@ public class Checks extends PreferenceFragment {
         } else mChecks.removePreference(mRebootStatus);
 
         mHide = (Preference) findPreference("hide");
+        boolean appId = (BuildConfig.APPLICATION_ID).equals(getActivity().getPackageName());
+        if (!appId) {
+            mHide.setIcon(R.drawable.exclamation);
+            mHide.setSummary(getString(R.string.is_hide));
+        }
         mHide.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Tools.HideDialog(getActivity());
+                if (!appId) Tools.UnHideDialog(getActivity());
+                else Tools.HideDialog(getActivity());
                 return true;
             }
         });

@@ -48,7 +48,6 @@ public class MainService extends Service {
         Context context = this;
         boolean run = Tools.getBoolean("run_boot", false, context);
         if (!Tools.PatchesDone(context) || !run) Tools.patches(getFilesDir().getPath() + "/", context);
-        if (!run) Tools.saveBoolean("run_boot", true, context);
         Log.d(TAG, " Run " + run);
         Tools.closeSU();
         stopSelf();

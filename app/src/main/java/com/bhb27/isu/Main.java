@@ -43,6 +43,7 @@ import android.support.design.widget.TabLayout;
 import java.lang.ref.WeakReference;
 
 import com.bhb27.isu.AboutActivity;
+import com.bhb27.isu.BuildConfig;
 import com.bhb27.isu.Checks;
 import com.bhb27.isu.Controls;
 import com.bhb27.isu.Monitor;
@@ -53,7 +54,7 @@ import com.bhb27.isu.tools.Tools;
 public class Main extends FragmentActivity {
 
     public static WeakReference<FragmentActivity> FragmentActivityWeakReference;
-    private TextView mAbout;
+    private TextView mAbout, mFake;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     @Override
@@ -80,6 +81,10 @@ public class Main extends FragmentActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
+
+        mFake = (TextView) findViewById(R.id.fake);
+        if (!(BuildConfig.APPLICATION_ID).equals(getApplicationContext().getPackageName()))
+            mFake.setText(getString(R.string.fake));
 
         mAbout = (TextView) findViewById(R.id.about);
         mAbout.setOnClickListener(new View.OnClickListener() {
