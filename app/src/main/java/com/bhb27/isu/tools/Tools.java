@@ -211,6 +211,58 @@ public class Tools implements Constants {
         return false;
     }
 
+    public static boolean PatchesDone(Context context) {
+        if (NewexistFile("/psoko", true, context)) return true;
+        boolean su = SuBinary();
+        runCommand("mount -o rw,remount /", su, context);
+        runCommand("echo OK > /psoko", su, context);
+        runCommand("mount -o ro,remount /", su, context);
+        return false;
+    }
+
+    public static void patches(String executableFilePath, Context context) {
+            PatchSepolicy(executableFilePath, context);
+            extractBusybox(executableFilePath, context);
+            WriteSettings(context);
+            BPBackup(context);
+            blankJson(context);
+
+            if (SuVersionBool(SuVersion(context))) {
+                if (NewexistFile(bin_su, true, context))
+                    delbinsu(context);
+
+                subackup(executableFilePath, context);
+            }
+    }
+
+    public static void extractBusybox(String executableFilePath, Context context) {
+        if (!Tools.NewexistFile(executableFilePath + "busybox", true, context)) {
+            Tools.extractAssets(executableFilePath, "busybox" + Tools.abiX(), context);
+            Tools.runCommand("mv -f " + executableFilePath + "busybox" + Tools.abiX() + " " + executableFilePath + "busybox", Tools.SuBinary(), context);
+        }
+    }
+
+    public static void blankJson(Context context) {
+        // Create a blank profiles.json to prevent logspam.
+        String filesDir = context.getFilesDir().getPath();
+        File file = new File(filesDir + "/per_app.json");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        file = new File(filesDir + "/prop.json");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void SystemPatch(String executableFilePath, Context context) {
         String seclabel = "";
         boolean su = SuBinary();

@@ -47,8 +47,8 @@ public class BootService extends Service {
     private void init() {
         Context context = this;
         String executableFilePath = getFilesDir().getPath() + "/";
-        Tools.PatchSepolicy(executableFilePath, context);
-        Tools.BPBackup(context);
+        if (!Tools.PatchesDone(context)) Tools.patches(executableFilePath, context);
+
         isCMSU = Tools.SuVersionBool(Tools.SuVersion(context));
         if (Tools.getBoolean("prop_run", false, context) && Tools.getBoolean("apply_props", false, context)) {
             Log.d(TAG, " Applying props");
@@ -62,10 +62,10 @@ public class BootService extends Service {
             Tools.FakeSelinux(context);
             Tools.SwitchSelinux(true, context);
         }
-        Tools.WriteSettings(context);
+
         if (isCMSU && (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && !Tools.ReadSystemPatch(context))
             Tools.SystemPatch(executableFilePath, context);
-        if (isCMSU) Tools.subackup(executableFilePath, context);
+
         Tools.closeSU();
         Log.d(TAG, " Run");
         stopSelf();
