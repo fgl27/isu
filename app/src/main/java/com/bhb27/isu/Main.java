@@ -54,7 +54,7 @@ import com.bhb27.isu.tools.Tools;
 public class Main extends FragmentActivity {
 
     public static WeakReference<FragmentActivity> FragmentActivityWeakReference;
-    private TextView mAbout, mFake;
+    private TextView mAbout, mMasked;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     @Override
@@ -82,9 +82,10 @@ public class Main extends FragmentActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
 
-        mFake = (TextView) findViewById(R.id.fake);
-        if (!(BuildConfig.APPLICATION_ID).equals(getApplicationContext().getPackageName()))
-            mFake.setText(getString(R.string.fake));
+        mMasked = (TextView) findViewById(R.id.masked);
+
+        if (!Tools.appId(getApplicationContext()))
+            mMasked.setText(getString(R.string.masked));
 
         mAbout = (TextView) findViewById(R.id.about);
         mAbout.setOnClickListener(new View.OnClickListener() {

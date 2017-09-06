@@ -64,6 +64,7 @@ import java.io.OutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.ref.WeakReference;
+import java.nio.channels.FileChannel;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
 import java.text.DateFormat;
@@ -75,6 +76,7 @@ import java.util.Locale;
 
 import com.bhb27.isu.BuildConfig;
 import com.bhb27.isu.Start;
+import com.bhb27.isu.StartMasked;
 import com.bhb27.isu.R;
 import com.bhb27.isu.perapp.PerAppMonitor;
 import com.bhb27.isu.perapp.Per_App;
@@ -129,6 +131,10 @@ public class Tools implements Constants {
         RootUtils.closeISU();
     }
 
+    public static boolean appId(Context context) {
+       return (BuildConfig.APPLICATION_ID).equals(context.getPackageName());
+    }
+
     public static void HideiSu(Context context) {
         boolean su = SuBinary();
         runCommand("pm unhide " + BuildConfig.APPLICATION_ID, su, context);
@@ -145,7 +151,7 @@ public class Tools implements Constants {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         boolean su = SuBinary();
-                        runCommand("am start -n " + readString("hide_app_name", null, context) + "/" + BuildConfig.APPLICATION_ID + ".Start", su, context);
+                        runCommand("am start -n " + readString("hide_app_name", null, context) + "/" + BuildConfig.APPLICATION_ID + ".StartMasked", su, context);
                         runCommand("pm hide " + BuildConfig.APPLICATION_ID, su, context);
                         return;
                     }
@@ -154,6 +160,7 @@ public class Tools implements Constants {
 
     public static void HideDialog(Context context) {
         new AlertDialog.Builder(context, R.style.AlertDialogStyle)
+            .setCancelable(false)
             .setTitle(context.getString(R.string.hide_title))
             .setMessage(context.getString(R.string.hide_summary) + context.getString(R.string.hide_isu))
             .setNeutralButton(context.getString(R.string.ok),
@@ -161,7 +168,7 @@ public class Tools implements Constants {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                     saveInt("hide_app_count", 1, context);
-                    new HideTask(context).execute();
+                    context.startActivity(new Intent(context, StartMasked.class));
                     }
                 })
             .setPositiveButton(context.getString(R.string.cancel),
@@ -236,8 +243,21 @@ public class Tools implements Constants {
 
             if (app_instaled.contains(pkg)) SimpleHideDialog(String.format(mContext.getString(R.string.hide_success), pkg), mContext);
             else if (getInt("hide_app_count", 1, mContext) <= 3) new HideTask(mContext).execute();
-            else SimpleDialog(mContext.getString(R.string.hide_fail), mContext);
+            else SimpleDialogFail(mContext.getString(R.string.hide_fail), mContext);
         }
+    }
+
+    public static void SimpleDialogFail(String message, Context context) {
+        new AlertDialog.Builder(context, R.style.AlertDialogStyle)
+            .setMessage(message)
+            .setNegativeButton(context.getString(R.string.dismiss),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    context.startActivity(new Intent(context, Start.class));
+                        return;
+                    }
+                }).show();
     }
 
     @SuppressWarnings("deprecation")
@@ -265,19 +285,18 @@ public class Tools implements Constants {
     }
 
     public static void patches(String executableFilePath, Context context) {
-            saveBoolean("run_boot", true, context);
-            PatchSepolicy(executableFilePath, context);
-            extractBusybox(executableFilePath, context);
-            WriteSettings(context);
-            BPBackup(context);
-            blankJson(context);
+        saveBoolean("run_boot", true, context);
+        PatchSepolicy(executableFilePath, context);
+        extractBusybox(executableFilePath, context);
+        WriteSettings(context);
+        BPBackup(context);
+        blankJson(context);
+        if (SuVersionBool(SuVersion(context))) {
+            if (NewexistFile(bin_su, true, context))
+                delbinsu(context);
 
-            if (SuVersionBool(SuVersion(context))) {
-                if (NewexistFile(bin_su, true, context))
-                    delbinsu(context);
-
-                subackup(executableFilePath, context);
-            }
+            subackup(executableFilePath, context);
+        }
     }
 
     public static void extractBusybox(String executableFilePath, Context context) {
@@ -433,6 +452,19 @@ public class Tools implements Constants {
         if (RootUtils.rootAccessiSu(context))
             return true;
         return false;
+    }
+
+   public static void restoreBackup(Context context) {
+       String data_folder = context.getFilesDir().getParentFile().getAbsolutePath();
+       String FilePath = context.getFilesDir().getPath() + "/";
+       String[] OriginaliSuFile = data_folder.split("com");
+       boolean su = SuBinary();
+       runCommand("cat " + OriginaliSuFile[0] + "com.bhb27.isu/files/per_app.json > " + FilePath + "/per_app.json", su, context);
+       runCommand("cat " + OriginaliSuFile[0] + "com.bhb27.isu/files/prop.json > " + FilePath + "/prop.json", su, context);
+   }
+
+   public static void updateMasked(Context context) {
+        boolean su = SuBinary();
     }
 
     public static void SimpleDialog(String message, Context context) {

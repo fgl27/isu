@@ -35,17 +35,18 @@
     <string name="help">Help</string>
     <string name="hide">Hide</string>
     <string name="hide_title">Hide iSu</string>
-    <string name="hide_generating">Installing fake iSu (%d&#176; try), this will take a moment&#8230;</string>
-    <string name="hide_summary">Some applications can identify that iSu is installed and prevent use or access of they content, this function can prevent others applications from see iSu, by creating a fake version of the app that is harder to be detected</string>
+    <string name="hide_generating">Installing masked iSu (%d&#176; try), this will take a moment&#8230;</string>
+    <string name="hide_summary">Some applications can identify that iSu is installed and prevent use or access of they content, this function can prevent others applications from see iSu, by creating a masked version of the app that is harder to be detected by others applications</string>
     <string name="hide_isu">\n\nHide iSu?</string>
-    <string name="fake">Fake</string>
+    <string name="masked">Masked</string>
     <string name="hide_fail">Hide process fail tree times, contact the developer with logs</string>
     <string name="hide_success">Hide process end with success, new iSu package id %s</string>
-    <string name="is_hide">iSu is in \u0022HideMod\u0022, if you choose to revert this state click here</string>
+    <string name="is_hide">iSu is in \u0022Masked Mod\u0022, if you choose to revert this state click here</string>
     <string name="unhide_title">Unhide iSu</string>
-    <string name="unhide_summary">UnHide iSu? and uninstall This fake version?</string>
-    <string name="not_hide">Running as Fake iSu but original iSu is not hidden, click here to fix it</string>
+    <string name="unhide_summary">UnHide iSu? and uninstall This masked version?</string>
+    <string name="not_hide">Running as Masked iSu but original iSu is not hidden, click here to fix it</string>
     <string name="hiding_isu">Hiding original iSu&#8230;</string>
+    <string name="request_access">iSu will request ROOT and or Storage access please give so we can proceed, if you give click on dismiss</string>
 
     <!-- controls -->
     <string name="su_switch">Change SU state</string>

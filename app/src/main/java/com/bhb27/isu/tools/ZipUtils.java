@@ -151,7 +151,7 @@ public class ZipUtils {
             e.printStackTrace();
             return pkg;
         }
-        Log.d(TAG, "pkg " + pkg);
+        Log.d(TAG, "pkg " + pkg.replace("\0", ""));
         return pkg;
     }
 

@@ -138,7 +138,6 @@ if [ -e "$OUT_FOLDER"/"$APP_FINAL_NAME" ]; then
 
 	echo -e "\nApp saved at $OUT_FOLDER"/"$APP_FINAL_NAME\n"
 fi;
-rm -rf build_log.txt
 echo -e "*** Build END ***"
 echo -e "\nTotal elapsed time of the script: $(echo "($END - $START) / 60"|bc ):$(echo "(($END - $START) - (($END - $START) / 60) * 60)"|bc ) (minutes:seconds).\n";
 exit 1;

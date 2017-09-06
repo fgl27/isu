@@ -237,7 +237,7 @@ public class Checks extends PreferenceFragment {
     }
 
     public void updateHidePref(Context context) {
-        appId = (BuildConfig.APPLICATION_ID).equals(getActivity().getPackageName());
+        appId = Tools.appId(context);
         isu_hide = ("" + Tools.runCommand("pm list packages | grep " + BuildConfig.APPLICATION_ID + " | cut -d: -f2", Tools.SuBinary(), getActivity())).contains(BuildConfig.APPLICATION_ID);
         if (!appId) {
             if (isu_hide) {

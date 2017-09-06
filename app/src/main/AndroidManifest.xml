@@ -32,6 +32,10 @@
             android:theme="@style/AppTheme" />
 
         <activity
+            android:name=".StartMasked"
+            android:theme="@style/SplashTheme" />
+
+        <activity
             android:name=".AboutActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 

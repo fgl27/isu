@@ -21,5 +21,9 @@
         <item name="android:windowBackground">@drawable/start</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogStyle</item>
     </style>
 </resources>
