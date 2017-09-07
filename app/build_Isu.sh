@@ -32,7 +32,9 @@ SIGN=1;
 KEY_FOLDER="$HOME"/android/temp/sign/fgl.key;
 KEY_PASS=$(</"$HOME"/android/temp/sign/pass);
 
-# make kernel_zip
+#build the app?
+BAPP=1;
+# make kernel_zip?
 MKZIP=0;
 # make zip only used if you have the need to make a zip of this a flash zip template is need
 # Auto sign zip Download from my folder link below extract and set the folder below on yours machine
@@ -52,6 +54,7 @@ APP_FINAL_NAME=iSu_$VERSION.apk;
 
 #kernel_zip
 ANYKERNEL="$FOLDER"/kernel_zip/AnyKernel2/;
+ZIPNAME_UNIVERSAL=iSu_kernel_Reboot_Support_V_"$VERSION"_and_up;
 ZIPNAME_ENFORCE=iSu_kernel_Reboot_Support_V_"$VERSION"_and_up_Enforcing;
 ZIPNAME_PERMISSIVE=iSu_kernel_Reboot_Support_V_"$VERSION"_and_up_Permissive;
 
@@ -90,18 +93,20 @@ if [ "$localOK" == 0 ]; then
 	echo "$NDK_DIR" >> local.properties;
 fi;
 
-./gradlew clean
-echo -e "\n The above is just the cleaning build start now\n";
-rm -rf app/build/outputs/apk/**
-./gradlew build 2>&1 | tee build_log.txt
+if [ $BAPP == 1 ]; then
+	./gradlew clean
+	echo -e "\n The above is just the cleaning build start now\n";
+	rm -rf app/build/outputs/apk/**
+	./gradlew build 2>&1 | tee build_log.txt
 
-if [ ! -e ./app/build/outputs/apk/release/app-release-unsigned.apk ]; then
-	echo -e "\nApp not build$\n"
-	exit 1;
-elif [ $SIGN == 1 ]; then
-	jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -storepass "$KEY_PASS" -keystore "$KEY_FOLDER" "$OUT_FOLDER"/app-release-unsigned.apk Felipe_Leon
-	"$ZIPALIGN_FOLDER" -v 4 "$OUT_FOLDER"/app-release-unsigned.apk "$OUT_FOLDER"/"$APP_FINAL_NAME"
-	cp "$OUT_FOLDER"/"$APP_FINAL_NAME" "$OUT_FOLDER"/isu"$(date +%s)".apk
+	if [ ! -e ./app/build/outputs/apk/release/app-release-unsigned.apk ]; then
+		echo -e "\nApp not build$\n"
+		exit 1;
+	elif [ $SIGN == 1 ]; then
+		jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -storepass "$KEY_PASS" -keystore "$KEY_FOLDER" "$OUT_FOLDER"/app-release-unsigned.apk Felipe_Leon
+		"$ZIPALIGN_FOLDER" -v 4 "$OUT_FOLDER"/app-release-unsigned.apk "$OUT_FOLDER"/"$APP_FINAL_NAME"
+		cp "$OUT_FOLDER"/"$APP_FINAL_NAME" "$OUT_FOLDER"/isu"$(date +%s)".apk
+	fi;
 fi;
 
 if [ $MKZIP == 1 ]; then
@@ -122,9 +127,19 @@ if [ $MKZIP == 1 ]; then
 	rm -rf ./ZipScriptSign/"$ZIPNAME_PERMISSIVE".zip
 	mv "$ANYKERNEL"/"$ZIPNAME_PERMISSIVE"-signed.zip "$ANYKERNEL"/"$ZIPNAME_PERMISSIVE".zip
 
+	echo -e "\nKernel reboot support Universal\n"
+	sed -i '/	setenforce 0/c\	#setenforce 1\;' "$ANYKERNEL"/ramdisk/sbin/restart.sh;
+	sed -i '/dopermissive=1/c\dopermissive=0\;' "$ANYKERNEL"/anykernel.sh;
+	cd "$ANYKERNEL"/ || exit
+	zip -r9 "$ZIPNAME_UNIVERSAL" ./** -x README .gitignore ./**.zip tools/su*
+	"$ZIP_SIGN_FOLDER"/sign.sh test  "$ANYKERNEL"/"$ZIPNAME_UNIVERSAL".zip
+	rm -rf ./ZipScriptSign/"$ZIPNAME_UNIVERSAL".zip
+	mv "$ANYKERNEL"/"$ZIPNAME_UNIVERSAL"-signed.zip "$ANYKERNEL"/"$ZIPNAME_UNIVERSAL".zip
+
 	echo -e "\ncleaning sed\n"
-	sed -i '/	setenforce 0/c\	setenforce 1\;' "$ANYKERNEL"/ramdisk/sbin/restart.sh;
-	cd -
+	sed -i '/	#setenforce 1/c\	setenforce 1\;' "$ANYKERNEL"/ramdisk/sbin/restart.sh;
+	sed -i '/dopermissive=0/c\dopermissive=1\;' "$ANYKERNEL"/anykernel.sh;
+	cd "$FOLDER" || exit;
 fi;
 
 END2="$(date)";

@@ -14,12 +14,14 @@ on property:persist.sys.root_access=1
 on property:persist.sys.root_access=3
     start su_daemon
 
-# isupatch56
+# isupatch60
 on boot
     start restartb
+    start restartsb
 
 on property:sys.boot_completed=1
     start restartc
+    start restartsc
 
 service restartc  /system/bin/sh /sbin/restart.sh boot_completed
     class main
@@ -31,6 +33,21 @@ service restartc  /system/bin/sh /sbin/restart.sh boot_completed
 service restartb  /system/bin/sh /sbin/restart.sh boot
     class main
     user root
+    seclabel u:r:sudaemon:s0
+    disabled
+    oneshot
+
+service restartsc  /system/bin/sh /sbin/restart.sh boot_completed
+    class main
+    user root
+    seclabel u:r:sudaemon:s0
+    disabled
+    oneshot
+
+service restartsb  /system/bin/sh /sbin/restart.sh boot
+    class main
+    user root
     seclabel u:r:init:s0
     disabled
     oneshot
+
