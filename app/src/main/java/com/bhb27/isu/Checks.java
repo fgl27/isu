@@ -48,7 +48,7 @@ public class Checks extends PreferenceFragment {
     private PreferenceCategory mChecks, mSafety, mChecksUpdates;
     private String suVersion, executableFilePath, result;
     private int image;
-    private boolean isCMSU, rootAccess, update_removed, appId, isu_hide;
+    private boolean isCMSU, rootAccess, update_removed, appId, isu_hide, needpUp;
     public SafetyNetHelper.Result SNCheckResult;
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
@@ -75,7 +75,6 @@ public class Checks extends PreferenceFragment {
         mRebootStatus = (Preference) findPreference("reboot_status");
 
         mUpdate = (Preference) findPreference("update");
-        updateStateNoInternet();
 
         mUpdate_remove = (Preference) findPreference("update_remove");
         mUpdate_remove.setLayoutResource(R.layout.preference_progressbar_two);
@@ -162,9 +161,18 @@ public class Checks extends PreferenceFragment {
             getActivity().registerReceiver(saveRunReceiver, new IntentFilter("saveRunReceiver"));
         } catch (NullPointerException ignored) {}
 
-        new Tools.CheckUpdate(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
-
-
+        appId = Tools.appId(getActivity());
+        if (!appId) {
+            needpUp = Tools.NeedUpdate(getActivity());
+            if (needpUp)
+                updateStateMasked();
+            else {
+                new Tools.CheckUpdate(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
+            }
+        } else {
+            updateStateNoInternet();
+            new Tools.CheckUpdate(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
+        }
         boolean run = Tools.getBoolean("run_boot", false, getActivity());
         if (!Tools.PatchesDone(getActivity()) || !run) getActivity().startService(new Intent(getActivity(), MainService.class));
     }
@@ -176,8 +184,6 @@ public class Checks extends PreferenceFragment {
             rootAccess = Tools.rootAccess(getActivity());
             Tools.updateMain(getActivity(), (String.format(getString(R.string.reloading), getString(R.string.su_access))));
         }
-        new Tools.CheckUpdate(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
-        updateHidePref(getActivity());
     }
 
     @Override
@@ -257,19 +263,28 @@ public class Checks extends PreferenceFragment {
                 mHide.setIcon(R.drawable.warning);
                 mHide.setSummary(getString(R.string.not_hide));
             } else {
-                mHide.setIcon(R.drawable.exclamation);
-                mHide.setSummary(getString(R.string.is_hide));
+                needpUp = Tools.NeedUpdate(context);
+                if (needpUp) {
+                    mHide.setIcon(R.drawable.warning);
+                    mHide.setSummary(getString(R.string.need_update));
+                } else {
+                    mHide.setIcon(R.drawable.exclamation);
+                    mHide.setSummary(getString(R.string.is_hide));
+                }
             }
-        }	
+        }
         mHide.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 if (!appId && isu_hide) {
-                    Tools.DoAToast(getString(R.string.hiding_isu), getActivity());
                     Tools.runCommand("pm hide " + BuildConfig.APPLICATION_ID, Tools.SuBinary(), context);
                     updateHidePref(getActivity());
-                } else if (!appId) Tools.UnHideDialog(getActivity());
-                else Tools.HideDialog(getActivity());
+                } else if (!appId) {
+		        if (needpUp)
+		            Tools.UpHideDialog(getActivity());
+		        else
+		            Tools.UnHideDialog(getActivity());
+		} else Tools.HideDialog(getActivity());
                 return true;
             }
         });
@@ -312,8 +327,8 @@ public class Checks extends PreferenceFragment {
         String version = Tools.readString("last_app_version", null, getActivity());
         String link = Tools.readString("last_app_link", null, getActivity());
         if (version != null && !version.isEmpty() && link != null && !link.isEmpty()) {
-            double versionDownload = Float.valueOf(version);
-            double versionApp = Float.valueOf(BuildConfig.VERSION_NAME);
+            double versionDownload = (Math.floor(Float.valueOf(version) * 100) / 100);
+            double versionApp = (Math.floor(Float.valueOf(BuildConfig.VERSION_NAME) * 100) / 100);
             if (versionDownload > versionApp) {
                 mUpdate.setSummary(String.format(getString(R.string.update_summary_out), version) + " " + BuildConfig.VERSION_NAME + getString(R.string.update_link));
                 mUpdate.setIcon(R.drawable.warning);
@@ -336,6 +351,18 @@ public class Checks extends PreferenceFragment {
                 });
             }
         } else updateStateNoInternet();
+    }
+
+    private void updateStateMasked() {
+        mUpdate.setSummary(getString(R.string.update_use_hide));
+        mUpdate.setIcon(R.drawable.interrogation);
+        mUpdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Tools.DoAToast(getString(R.string.update_use_hide), getActivity());
+                return true;
+            }
+        });
     }
 
     private void updateStateNoInternet() {

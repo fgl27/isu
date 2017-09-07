@@ -132,10 +132,14 @@ public class ZipUtils {
 
                     Log.d(TAG, "offset " + offset + " leg " + COM_PKG_NAME.length);
                     // Patch binary XML with new package name
-                    pkg = Tools.appStringMod(app_name, need_zero);
-                    for (int i = 0; i < pkg.length(); ++i) {
-                        xml[offset + i] = (byte) pkg.charAt(i);
-                    }
+                    if (Tools.appInstaled(context)) {
+                        if (need_zero)
+                            pkg = Tools.appStringAddZeros(Tools.readString("hide_app_name", null, context));
+                        else
+                            pkg = Tools.readString("hide_app_name", null, context);
+                    } else
+                        pkg = Tools.appStringMod(app_name, need_zero);
+                    System.arraycopy(pkg.getBytes(), 0, xml, offset, pkg.length());
                     dest.write(xml);
                 } else {
                     while ((size = source.read(buffer)) > 0) {

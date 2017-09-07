@@ -19,15 +19,10 @@
  */
 package com.bhb27.isu;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.Manifest;
 import android.os.Bundle;
 import android.os.Build;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import com.bhb27.isu.Start;
@@ -35,68 +30,20 @@ import com.bhb27.isu.tools.Tools;
 
 public class StartMasked extends AppCompatActivity {
 
-    private boolean appId, rootAccess;
-    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
+    private boolean appId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Context SMcontext = this;
         appId = Tools.appId(SMcontext);
-        rootAccess = Tools.rootAccess(SMcontext);
-        check(SMcontext);
-    }
 
-    private void check(Context context) {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (!checkWStorage()) {
-                request_writeexternalstorage();
-                SimpleDialog(getString(R.string.request_access), context);
-            } else if (!rootAccess) {
-                rootAccess = Tools.rootAccess(context);
-                SimpleDialog(getString(R.string.request_access), context);
-            } else action(context);
-        } else {
-            if (!rootAccess) check(context);
-            else action(context);
-        }
-    }
-
-    private void action(Context context) {
-        appId = Tools.appId(context);
-        if (!appId) {
-            context.startActivity(new Intent(context, Start.class));
+        if (appId)
+           new Tools.HideTask(SMcontext).execute();
+        else {
+            SMcontext.startActivity(new Intent(SMcontext, Main.class).setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
             finish();
-        } else {
-           new Tools.HideTask(context).execute();
         }
     }
 
-    @TargetApi(23 | 24 | 25)
-    private boolean checkWStorage() {
-        int hasWriteExternalPermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        return hasWriteExternalPermission == PackageManager.PERMISSION_GRANTED;
-    }
-
-    @TargetApi(23 | 24 | 25)
-    private void request_writeexternalstorage() {
-        requestPermissions(new String[] {
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            },
-            REQUEST_CODE_ASK_PERMISSIONS);
-    }
-
-    public void SimpleDialog(String message, Context context) {
-        new AlertDialog.Builder(context, R.style.AlertDialogStyle)
-            .setCancelable(false)
-            .setMessage(message)
-            .setNegativeButton(context.getString(R.string.dismiss),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        check(context);
-                        return;
-                    }
-                }).show();
-    }
 }

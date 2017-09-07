@@ -31,6 +31,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageInfo;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
@@ -200,6 +201,32 @@ public class Tools implements Constants {
                 }).show();
     }
 
+    public static void UpHideDialog(Context context) {
+        new AlertDialog.Builder(context, R.style.AlertDialogStyle)
+            .setTitle(context.getString(R.string.need_update_title))
+            .setMessage(context.getString(R.string.need_update_summary))
+            .setNeutralButton(context.getString(R.string.ok),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Tools.UpHideiSu(context);
+                    }
+                })
+            .setPositiveButton(context.getString(R.string.cancel),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        return;
+                    }
+                }).show();
+    }
+
+    public static void UpHideiSu(Context context) {
+        boolean su = SuBinary();
+        runCommand("pm unhide " + BuildConfig.APPLICATION_ID, su, context);
+        runCommand("am start -n " + BuildConfig.APPLICATION_ID + "/" + BuildConfig.APPLICATION_ID + ".StartMasked", su, context);
+    }
+
     public static class HideTask extends AsyncTask < Void, Void, String > {
         private MaterialDialog progressDialog;
         private WeakReference < Context > contextRef;
@@ -241,10 +268,41 @@ public class Tools implements Constants {
             String app_instaled = ("" + runCommand("pm list packages | grep " + pkg + " | cut -d: -f2", su, mContext));
             progressDialog.dismiss();
 
-            if (app_instaled.contains(pkg)) SimpleHideDialog(String.format(mContext.getString(R.string.hide_success), pkg), mContext);
-            else if (getInt("hide_app_count", 1, mContext) <= 3) new HideTask(mContext).execute();
+            if (app_instaled.contains(pkg)) {
+               saveInt("hide_app_count", 1, mContext);
+               SimpleHideDialog(String.format(mContext.getString(R.string.hide_success), pkg), mContext);
+            } else if (getInt("hide_app_count", 1, mContext) <= 3) new HideTask(mContext).execute();
             else SimpleDialogFail(mContext.getString(R.string.hide_fail), mContext);
         }
+    }
+
+    public static boolean appInstaled(Context context) {
+         String pkg = readString("hide_app_name", "not", context);
+         String app_instaled = ("" + runCommand("pm list packages | grep " + pkg + " | cut -d: -f2", SuBinary(), context));
+         Log.d(TAG, "appInstaled pkg " + pkg + " app_instaled " + app_instaled + " state " + app_instaled.contains(pkg));
+         if (app_instaled.contains(pkg)) return true;
+         return false;
+    }
+
+    public static boolean NeedUpdate(Context context) {
+        boolean su = SuBinary();
+        String sdcard = Environment.getExternalStorageDirectory().getPath();
+        String temp_app = sdcard + "/temp.apk";
+        String app_folder = runCommand("pm path " + context.getPackageName() + "| head -n1 | cut -d: -f2", su, context);
+        String[] OriginaliSuApk = app_folder.split("com");
+        runCommand("cp -f " + OriginaliSuApk[0] + "com.bhb27.isu*/base.apk /" + temp_app, su, context);
+        double this_versionApp = Float.valueOf(BuildConfig.VERSION_NAME);
+        double versionApp = 0;
+        if (NewexistFile(temp_app, true, context)) {
+            PackageManager pm = context.getPackageManager();
+            PackageInfo info = pm.getPackageArchiveInfo(temp_app, 0);
+            versionApp = Float.valueOf(info.versionName);
+        } else
+            versionApp = Float.valueOf(BuildConfig.VERSION_NAME);
+        runCommand("rm -rf /" + temp_app, su, context);
+        if (versionApp > this_versionApp) return true;
+        if (versionApp <= this_versionApp) return false;
+        return false;
     }
 
     public static void SimpleDialogFail(String message, Context context) {
@@ -254,7 +312,7 @@ public class Tools implements Constants {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                    context.startActivity(new Intent(context, Start.class));
+                        context.startActivity(new Intent(context, Start.class));
                         return;
                     }
                 }).show();

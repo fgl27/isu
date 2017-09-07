@@ -45,8 +45,10 @@
     <string name="unhide_title">Unhide iSu</string>
     <string name="unhide_summary">UnHide iSu? and uninstall This masked version?</string>
     <string name="not_hide">Running as Masked iSu but original iSu is not hidden, click here to fix it</string>
-    <string name="hiding_isu">Hiding original iSu&#8230;</string>
-    <string name="request_access">iSu will request ROOT and or Storage access please give so we can proceed, if you give click on dismiss</string>
+    <string name="need_update">Original iSu version is updated in relation to masked iSu, click here to update from original iSu</string>
+    <string name="need_update_title">Update Masked</string>
+    <string name="need_update_summary">Click OK to update Masked from original, Update?</string>
+    <string name="update_use_hide">Use Hide iSu to update the app</string>
 
     <!-- controls -->
     <string name="su_switch">Change SU state</string>
