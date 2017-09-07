@@ -178,7 +178,6 @@ Preference.OnPreferenceChangeListener {
         });
 
         Tools.saveBoolean("prop_run", true, getActivity());
-        updateState();
     }
 
     @Override

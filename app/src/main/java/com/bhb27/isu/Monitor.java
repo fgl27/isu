@@ -70,7 +70,6 @@ Preference.OnPreferenceChangeListener {
         mAutoRestartSU.setOnPreferenceChangeListener(this);
         mAutoRestartISU.setOnPreferenceChangeListener(this);
 
-        updateState();
     }
 
     @Override

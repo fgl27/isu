@@ -147,7 +147,7 @@ public class Tools implements Constants {
         new AlertDialog.Builder(context, R.style.AlertDialogStyle)
             .setCancelable(false)
             .setMessage(message)
-            .setNegativeButton(context.getString(R.string.dismiss),
+            .setNegativeButton(context.getString(R.string.ok),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -288,7 +288,7 @@ public class Tools implements Constants {
         boolean su = SuBinary();
         String sdcard = Environment.getExternalStorageDirectory().getPath();
         String temp_app = sdcard + "/temp.apk";
-        String app_folder = runCommand("pm path " + context.getPackageName() + "| head -n1 | cut -d: -f2", su, context);
+        String app_folder = "" + runCommand("pm path " + context.getPackageName() + "| head -n1 | cut -d: -f2", su, context);
         String[] OriginaliSuApk = app_folder.split("com");
         runCommand("cp -f " + OriginaliSuApk[0] + "com.bhb27.isu*/base.apk /" + temp_app, su, context);
         double this_versionApp = Float.valueOf(BuildConfig.VERSION_NAME);

@@ -96,9 +96,6 @@ public class Main extends FragmentActivity {
             }
         });
         check_writeexternalstorage();
-        try {
-            this.registerReceiver(updateMainReceiver, new IntentFilter("updateMainReceiver"));
-        } catch (NullPointerException ignored) {}
     }
 
     @Override

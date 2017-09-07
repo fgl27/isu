@@ -51,7 +51,6 @@ Preference.OnPreferenceChangeListener {
         mSettingsView = (Preference) findPreference("settings_view");
         mSettingsForceEnglish = (SwitchPreference) findPreference("forceenglish");
         mSettingsForceEnglish.setOnPreferenceChangeListener(this);
-        update();
 
         mSettingsSU = (PreferenceCategory) findPreference("su_settings_pref");
         mSettingsMonitor = (PreferenceCategory) findPreference("monitor_settings");

@@ -86,7 +86,6 @@ Preference.OnPreferenceChangeListener {
             }
         });
 
-        updateState();
     }
 
     @Override

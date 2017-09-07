@@ -48,7 +48,7 @@ public class Checks extends PreferenceFragment {
     private PreferenceCategory mChecks, mSafety, mChecksUpdates;
     private String suVersion, executableFilePath, result;
     private int image;
-    private boolean isCMSU, rootAccess, update_removed, appId, isu_hide, needpUp;
+    private boolean isCMSU, rootAccess, update_removed, appId, isu_hide, needpUp, FirstStart;
     public SafetyNetHelper.Result SNCheckResult;
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
@@ -59,6 +59,7 @@ public class Checks extends PreferenceFragment {
         addPreferencesFromResource(R.xml.checks);
         rootAccess = Tools.rootAccess(getActivity());
         executableFilePath = getActivity().getFilesDir().getPath() + "/";
+        FirstStart = false;
 
         suVersion = Tools.SuVersion(getActivity());
         isCMSU = Tools.SuVersionBool(suVersion);
@@ -115,7 +116,6 @@ public class Checks extends PreferenceFragment {
         } else mChecks.removePreference(mRebootStatus);
 
         mHide = (Preference) findPreference("hide");
-        updateHidePref(getActivity());
 
         mSafetyNet_remove = (Preference) findPreference("safety_net_remove");
         mSafetyNet_remove.setLayoutResource(R.layout.preference_progressbar);
@@ -175,15 +175,25 @@ public class Checks extends PreferenceFragment {
         }
         boolean run = Tools.getBoolean("run_boot", false, getActivity());
         if (!Tools.PatchesDone(getActivity()) || !run) getActivity().startService(new Intent(getActivity(), MainService.class));
+        updateHidePref(getActivity());
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (rootAccess != Tools.rootAccess(getActivity())) {
-            rootAccess = Tools.rootAccess(getActivity());
-            Tools.updateMain(getActivity(), (String.format(getString(R.string.reloading), getString(R.string.su_access))));
-        }
+        if (FirstStart) {
+            if (rootAccess != Tools.rootAccess(getActivity())) {
+                rootAccess = Tools.rootAccess(getActivity());
+                Tools.updateMain(getActivity(), (String.format(getString(R.string.reloading), getString(R.string.su_access))));
+            }
+            appId = Tools.appId(getActivity());
+            if (!appId) {
+                needpUp = Tools.NeedUpdate(getActivity());
+                if (needpUp)
+                    updateStateMasked();
+            }
+            updateHidePref(getActivity());
+        } else FirstStart = true;
     }
 
     @Override
@@ -263,7 +273,6 @@ public class Checks extends PreferenceFragment {
                 mHide.setIcon(R.drawable.warning);
                 mHide.setSummary(getString(R.string.not_hide));
             } else {
-                needpUp = Tools.NeedUpdate(context);
                 if (needpUp) {
                     mHide.setIcon(R.drawable.warning);
                     mHide.setSummary(getString(R.string.need_update));
