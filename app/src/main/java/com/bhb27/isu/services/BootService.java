@@ -45,7 +45,7 @@ public class BootService extends Service {
     }
 
     private void init() {
-        Context context = this;
+        Context context = getApplicationContext();
         String executableFilePath = getFilesDir().getPath() + "/";
         if (!Tools.PatchesDone(context)) Tools.patches(executableFilePath, context);
 

@@ -45,10 +45,10 @@ public class MainService extends Service {
     }
 
     private void init() {
-        Context context = this;
-        boolean run = Tools.getBoolean("run_boot", false, context);
-        if (!Tools.PatchesDone(context) || !run) Tools.patches(getFilesDir().getPath() + "/", context);
-        Log.d(TAG, " Run " + run);
+        Context context = getApplicationContext();
+        Tools.SendBroadcast("saveRunReceiver", context);
+        Tools.patches(getFilesDir().getPath() + "/", context);
+        Log.d(TAG, " Run ");
         Tools.closeSU();
         stopSelf();
     }

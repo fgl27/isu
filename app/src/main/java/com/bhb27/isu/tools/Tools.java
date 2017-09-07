@@ -285,7 +285,6 @@ public class Tools implements Constants {
     }
 
     public static void patches(String executableFilePath, Context context) {
-        saveBoolean("run_boot", true, context);
         PatchSepolicy(executableFilePath, context);
         extractBusybox(executableFilePath, context);
         WriteSettings(context);
@@ -454,19 +453,6 @@ public class Tools implements Constants {
         return false;
     }
 
-   public static void restoreBackup(Context context) {
-       String data_folder = context.getFilesDir().getParentFile().getAbsolutePath();
-       String FilePath = context.getFilesDir().getPath() + "/";
-       String[] OriginaliSuFile = data_folder.split("com");
-       boolean su = SuBinary();
-       runCommand("cat " + OriginaliSuFile[0] + "com.bhb27.isu/files/per_app.json > " + FilePath + "/per_app.json", su, context);
-       runCommand("cat " + OriginaliSuFile[0] + "com.bhb27.isu/files/prop.json > " + FilePath + "/prop.json", su, context);
-   }
-
-   public static void updateMasked(Context context) {
-        boolean su = SuBinary();
-    }
-
     public static void SimpleDialog(String message, Context context) {
         new AlertDialog.Builder(context, R.style.AlertDialogStyle)
             .setMessage(message)
@@ -503,7 +489,7 @@ public class Tools implements Constants {
             ClearAllNotification(context);
         } else {
             if (!AppMonitor)
-                killapp(Constants.PAY, context);
+                killapp(PAY, context);
             RootUtils.runCommand("mv -f " + xbin_su + " " + "/system/xbin/" + readString("cmiyc", null, context));
             if (getBoolean("isu_notification", false, context))
                 DoNotification(context);
@@ -637,7 +623,7 @@ public class Tools implements Constants {
     }
 
     public static void SwitchSelinux(boolean isChecked, Context context) {
-        runCommand(Constants.SETENFORCE + (isChecked ? " 1" : " 0"), SuBinary(), context);
+        runCommand(SETENFORCE + (isChecked ? " 1" : " 0"), SuBinary(), context);
         Log.d(TAG, "Change SELinux isChecked = " + isChecked + " State = " + getSELinuxStatus(context));
         updateAllWidgetsLayouts(context);
         closeSU();
@@ -763,13 +749,13 @@ public class Tools implements Constants {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 
         Intent yesReceiver = new Intent();
-        yesReceiver.setAction(Constants.YES_ACTION);
+        yesReceiver.setAction(YES_ACTION);
         PendingIntent pendingIntentYes = PendingIntent.getBroadcast(context, 12345, yesReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Action actionyes = new NotificationCompat.Action.Builder(R.drawable.yes, context.getString(R.string.yes), pendingIntentYes).build();
         notification.addAction(actionyes);
 
         Intent dismissReceiver = new Intent();
-        dismissReceiver.setAction(Constants.DISSMISS_ACTION);
+        dismissReceiver.setAction(DISSMISS_ACTION);
         PendingIntent pendingIntentno = PendingIntent.getBroadcast(context, 12345, dismissReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Action actionno = new NotificationCompat.Action.Builder(R.drawable.dismiss, context.getString(R.string.dismiss), pendingIntentno).build();
         notification.addAction(actionno);
@@ -1077,7 +1063,6 @@ public class Tools implements Constants {
             if (value != null && !value.isEmpty())
                 saveString(props[i], getprop(props[i]), context);
         }
-        saveBoolean("prop_run", true, context);
     }
 
     public static void applyprop(Context context, String path) {
@@ -1303,7 +1288,7 @@ public class Tools implements Constants {
                 runCommand("echo '" + propjson + "' >> " + isuconfig, su, mContext);
                 runCommand("cat " + executableFilePath + "prop.json >> " + isuconfig, su, mContext);
                 runCommand("echo '" + prefs + "' >> " + isuconfig, su, mContext);
-                runCommand("cat " + data_folder + "/shared_prefs/" + Constants.PREF_NAME + ".xml >> " + isuconfig, su, mContext);
+                runCommand("cat " + data_folder + "/shared_prefs/" + PREF_NAME + ".xml >> " + isuconfig, su, mContext);
                 runCommand("echo '" + paths + "' >> " + isuconfig, su, mContext);
                 runCommand("echo '" + log_folder + "' >> " + isuconfig, su, mContext);
                 runCommand("echo '" + data_folder + "' >> " + isuconfig, su, mContext);
@@ -1322,7 +1307,7 @@ public class Tools implements Constants {
                 runShellCommand("echo '" + propjson + "' >> " + isuconfig);
                 runShellCommand("cat " + executableFilePath + "prop.json >> " + isuconfig);
                 runShellCommand("echo '" + prefs + "' >> " + isuconfig);
-                runShellCommand("cat " + data_folder + "/shared_prefs/" + Constants.PREF_NAME + ".xml >> " + isuconfig);
+                runShellCommand("cat " + data_folder + "/shared_prefs/" + PREF_NAME + ".xml >> " + isuconfig);
                 runShellCommand("echo '" + paths + "' >> " + isuconfig);
                 runShellCommand("echo '" + log_folder + "' >> " + isuconfig);
                 runShellCommand("echo '" + data_folder + "' >> " + isuconfig);
@@ -1336,14 +1321,14 @@ public class Tools implements Constants {
                 ZipUtil.pack(new File(sdcard + "/iSu_Logs/tmpziplog"), new File(zip_file));
                 ZipUtil.unpackEntry(new File(zip_file), "logcat.txt", new File(tmplogcat));
                 if (compareFiles(logcat, tmplogcat, true, mContext)) {
-                    Log.d(Constants.TAG, "ziped logcat.txt is ok");
+                    Log.d(TAG, "ziped logcat.txt is ok");
                     if (canSU)
                         runCommand("rm -rf " + log_temp_folder, su, mContext);
                     else
                         runShellCommand("rm -rf " + log_temp_folder);
                     break;
                 } else {
-                    Log.d(Constants.TAG, "logcat.txt is nok");
+                    Log.d(TAG, "logcat.txt is nok");
                     if (canSU) {
                         runCommand("rm -rf " + zip_file, su, mContext);
                         runCommand("rm -rf " + tmplogcat, su, mContext);

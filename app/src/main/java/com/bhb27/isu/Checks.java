@@ -157,8 +157,16 @@ public class Checks extends PreferenceFragment {
         try {
             getActivity().registerReceiver(updateChecksReceiver, new IntentFilter("updateChecksReceiver"));
         } catch (NullPointerException ignored) {}
+
+        try {
+            getActivity().registerReceiver(saveRunReceiver, new IntentFilter("saveRunReceiver"));
+        } catch (NullPointerException ignored) {}
+
         new Tools.CheckUpdate(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
-        getActivity().startService(new Intent(getActivity(), MainService.class));
+
+
+        boolean run = Tools.getBoolean("run_boot", false, getActivity());
+        if (!Tools.PatchesDone(getActivity()) || !run) getActivity().startService(new Intent(getActivity(), MainService.class));
     }
 
     @Override
@@ -178,6 +186,11 @@ public class Checks extends PreferenceFragment {
         try {
             getActivity().unregisterReceiver(updateChecksReceiver);
         } catch (IllegalArgumentException ignored) {}
+
+        try {
+            getActivity().unregisterReceiver(saveRunReceiver);
+        } catch (IllegalArgumentException ignored) {}
+
         Tools.closeSU();
     }
 
@@ -340,4 +353,14 @@ public class Checks extends PreferenceFragment {
         });
     }
 
+    private final BroadcastReceiver saveRunReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+           saveR();
+        }
+    };
+
+    public void saveR() {
+        Tools.saveBoolean("run_boot", true, getActivity());
+    }
 }

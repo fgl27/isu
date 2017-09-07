@@ -65,8 +65,6 @@ public class StartMasked extends AppCompatActivity {
     private void action(Context context) {
         appId = Tools.appId(context);
         if (!appId) {
-            Tools.blankJson(context);
-            Tools.restoreBackup(context);
             context.startActivity(new Intent(context, Start.class));
             finish();
         } else {
