@@ -510,8 +510,6 @@ public class Tools implements Constants {
     }
 
     public static boolean rootAccess(Context context) {
-        if (runShell("getprop persist.sys.root_access").equals("0"))
-            return false;
         if (RootUtils.rootAccess())
             return true;
         if (RootUtils.rootAccessiSu(context))

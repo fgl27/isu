@@ -110,6 +110,8 @@ Preference.OnPreferenceChangeListener {
         if (!isCMSU) {
             updatePrefs(false);
             mMonitor.removePreference(mMonitorWarning);
+            if (!Tools.rootAccess(getActivity()))
+                mMonitorView.setSummary(getString(R.string.device_not_root));
         } else {
             mMonitor.removePreference(mMonitorView);
             mMonitor.addPreference(mMonitorWarning);

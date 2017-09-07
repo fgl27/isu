@@ -35,13 +35,14 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
         // only run if the app has run before and main has extracted asserts
         String action = intent.getAction();
         boolean run_boot = Tools.getBoolean("run_boot", false, context);
-        if (Intent.ACTION_BOOT_COMPLETED.equals(action) && run_boot) {
+        boolean rootAccess = Tools.rootAccess(context);
+        if (Intent.ACTION_BOOT_COMPLETED.equals(action) && rootAccess && run_boot) {
             context.startService(new Intent(context, BootService.class));
             Log.d(TAG, " Started action " + action + " run_boot " + run_boot);
            if (Tools.getBoolean("apply_su", false, context) && Tools.SuVersionBool(Tools.SuVersion(context)))
                context.startService(new Intent(context, SuService.class));
         } else
-            Log.d(TAG, "Not Started action " + action + " run_boot " + run_boot);
+            Log.d(TAG, "Not Started action " + action + " rootAccess " + rootAccess + " run_boot " + run_boot);
 
     }
 }

@@ -41,7 +41,7 @@ Preference.OnPreferenceChangeListener {
     private Preference mControlsView, mTasker;
     private PreferenceCategory mControls;
     private String suVersion;
-    private boolean isCMSU;
+    private boolean isCMSU, rootAccess;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -50,6 +50,7 @@ Preference.OnPreferenceChangeListener {
 
         suVersion = Tools.SuVersion(getActivity());
         isCMSU = Tools.SuVersionBool(suVersion);
+        rootAccess = Tools.rootAccess(getActivity());
 
         mControls = (PreferenceCategory) findPreference("controls_su");
 
@@ -91,6 +92,7 @@ Preference.OnPreferenceChangeListener {
     @Override
     public void onResume() {
         super.onResume();
+        rootAccess = Tools.rootAccess(getActivity());
         updateState();
     }
 
@@ -133,40 +135,40 @@ Preference.OnPreferenceChangeListener {
     }
 
     private void updateState() {
-        if (mSuSwitch != null) {
+        if (rootAccess) {
             if (!isCMSU) {
                 mSuSwitch.setEnabled(false);
                 mSuSwitch.setSummary(getString(R.string.su_not_supported));
             } else {
+                mControls.removePreference(mControlsView);
                 boolean su = Tools.SuBinary();
                 mSuSwitch.setChecked(su);
                 mSuSwitch.setSummary(su ? getString(R.string.activated) :
                     getString(R.string.deactivated));
             }
-        }
 
-        if (mSelSwitch != null) {
             boolean selinux = Tools.isSELinuxActive(getActivity());
             mSelSwitch.setChecked(selinux);
             mSelSwitch.setSummary(selinux ? getString(R.string.enforcing) :
                 getString(R.string.permissive));
-        }
 
-        if (mDebug != null) {
             boolean anddebug = Tools.AndroidDebugState(getActivity());
             mDebug.setChecked(anddebug);
             mDebug.setSummary(anddebug ? getString(R.string.enable) :
                 getString(R.string.disable));
+
+            try {
+                getActivity().registerReceiver(updateControlsReceiver, new IntentFilter("updateControlsReceiver"));
+            } catch (NullPointerException ignored) {}
+        } else {
+            mControlsView.setSummary(getString(R.string.device_not_root));
+            mSuSwitch.setEnabled(false);
+            mSelSwitch.setEnabled(false);
+            mFakeSelSwitch.setEnabled(false);
+            mDebug.setEnabled(false);
+            mTasker.setEnabled(false);
         }
 
-        try {
-            getActivity().registerReceiver(updateControlsReceiver, new IntentFilter("updateControlsReceiver"));
-        } catch (NullPointerException ignored) {}
-
-        if (!isCMSU)
-            mSuSwitch.setEnabled(false);
-        else
-            mControls.removePreference(mControlsView);
     }
 
     private final BroadcastReceiver updateControlsReceiver = new BroadcastReceiver() {

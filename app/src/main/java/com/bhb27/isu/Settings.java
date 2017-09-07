@@ -38,7 +38,7 @@ Preference.OnPreferenceChangeListener {
     private String suVersion;
     private boolean isCMSU;
     private Preference mSettingsView;
-    private PreferenceCategory mSettingsPref, mSettingsSU, mSettingsMonitor, mSettingsNotifications, mSettingsSelinux, mSettingsDebug;
+    private PreferenceCategory mSettingsPref, mSettingsSU, mSettingsMonitor, mSettingsNotifications, mSettingsSelinux, mSettingsDebug, mSettingsProps;
     private ListPreference mApplySuDelay, mApplyMonitorDelay;
     private SwitchPreference mSettingsForceEnglish;
 
@@ -57,6 +57,7 @@ Preference.OnPreferenceChangeListener {
         mSettingsNotifications = (PreferenceCategory) findPreference("notifications_settings_pref");
         mSettingsSelinux = (PreferenceCategory) findPreference("selinux_settings_pref");
         mSettingsDebug = (PreferenceCategory) findPreference("anddebug_settings_pref");
+        mSettingsProps = (PreferenceCategory) findPreference("props_settings_pref");
 
         mApplySuDelay = (ListPreference) findPreference("apply_su_delay");
         mApplyMonitorDelay = (ListPreference) findPreference("allow_delay");
@@ -93,6 +94,10 @@ Preference.OnPreferenceChangeListener {
             mSettingsNotifications.setEnabled(false);
             mSettingsSelinux.setEnabled(false);
             mSettingsDebug.setEnabled(false);
+            if (!Tools.rootAccess(getActivity())) {
+                mSettingsView.setSummary(getString(R.string.device_not_root));
+                mSettingsProps.setEnabled(false);
+            }
         } else
             mSettingsPref.removePreference(mSettingsView);
     }

@@ -39,6 +39,8 @@ import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatCheckBox;
 
 import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceCategory;
+import android.support.v7.preference.PreferenceScreen;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference.OnPreferenceChangeListener;
 import android.support.v14.preference.PreferenceFragment;
@@ -59,7 +61,9 @@ Preference.OnPreferenceChangeListener {
     private String executableFilePath, suVersion;
     private ListPreference[] props = new ListPreference[Constants.props.length];
     private Preference mBuildFingerprint, mForceAllSafe, mForceAllUnsafe, mForceAllUnknown, mPropsAny, mPropsAnyList;
-    private boolean isCMSU;
+    private PreferenceCategory mPropsRemoveCat, mPropsEdit, mPropsSpecial, mPropsKnown, mPropsKnownList;
+    private PreferenceScreen mPropsScreen;
+    private boolean isCMSU, rootAccess;
     private AlertDialog.Builder mPerAppDialog;
     private Drawable originalIcon;
 
@@ -67,6 +71,16 @@ Preference.OnPreferenceChangeListener {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         getPreferenceManager().setSharedPreferencesName(Constants.PREF_NAME);
         addPreferencesFromResource(R.xml.props);
+        rootAccess = Tools.rootAccess(getActivity());
+
+        mPropsScreen = (PreferenceScreen) findPreference("props_pref_screen");
+
+        mPropsRemoveCat = (PreferenceCategory) findPreference("props_remove");
+
+        mPropsEdit = (PreferenceCategory) findPreference("props_ro");
+        mPropsSpecial = (PreferenceCategory) findPreference("props_special");
+        mPropsKnown = (PreferenceCategory) findPreference("know_props");
+        mPropsKnownList = (PreferenceCategory) findPreference("know_props_list");
 
         suVersion = Tools.SuVersion(getActivity());
         isCMSU = Tools.SuVersionBool(suVersion);
@@ -183,6 +197,7 @@ Preference.OnPreferenceChangeListener {
     @Override
     public void onResume() {
         super.onResume();
+        rootAccess = Tools.rootAccess(getActivity());
         updateState();
     }
 
@@ -281,39 +296,47 @@ Preference.OnPreferenceChangeListener {
     };
 
     private void updateState() {
-        String[] value = new String[Constants.props.length];
-        String summary = "";
-        for (int i = 0; i < Constants.props.length; i++) {
-            value[i] = Tools.getprop(Constants.props[i]);
-            if (value[i] == null || value[i].isEmpty()) {
-                props[i].setValue("");
-                summary = getString(R.string.unknown);
-                props[i].setSummary(summary);
-                props[i].setIcon(R.drawable.interrogation);
-            } else {
-                props[i].setValue(value[i]);
-                summary = value[i];
-                props[i].setSummary(summary);
-                props[i].setIcon(summary.equals(Constants.props_OK[i]) ? R.drawable.ok : R.drawable.warning);
+        if (rootAccess) {
+            mPropsScreen.removePreference(mPropsRemoveCat);
+            String[] value = new String[Constants.props.length];
+            String summary = "";
+            for (int i = 0; i < Constants.props.length; i++) {
+                value[i] = Tools.getprop(Constants.props[i]);
+                if (value[i] == null || value[i].isEmpty()) {
+                    props[i].setValue("");
+                    summary = getString(R.string.unknown);
+                    props[i].setSummary(summary);
+                    props[i].setIcon(R.drawable.interrogation);
+                } else {
+                    props[i].setValue(value[i]);
+                    summary = value[i];
+                    props[i].setSummary(summary);
+                    props[i].setIcon(summary.equals(Constants.props_OK[i]) ? R.drawable.ok : R.drawable.warning);
+                }
             }
-        }
-        String BuildFingerprint = Build.FINGERPRINT;
-        String RoBuildFingerprint = Tools.getprop(Constants.robuildfingerprint);
-        if (Tools.getprop(Constants.robuildfingerprint).equals(Tools.getprop(Constants.robootbuildfingerprint))) {
-            mBuildFingerprint.setSummary(Build.FINGERPRINT + getString(R.string.fingerprint_help));
-            // use setIcon(Drawable) instead of setIcon(int) to avoid falls back to the previously-set in a new Drawable that is null
-            mBuildFingerprint.setIcon(ContextCompat.getDrawable(getActivity(), R.drawable.warning));
-        } else if (RoBuildFingerprint.equals(BuildFingerprint)) {
-            mBuildFingerprint.setSummary(Build.FINGERPRINT);
-            mBuildFingerprint.setIcon(originalIcon);
-        } else {
-            mBuildFingerprint.setSummary(RoBuildFingerprint + getString(R.string.fingerprint_apply));
-            mBuildFingerprint.setIcon(ContextCompat.getDrawable(getActivity(), R.drawable.exclamation));
-        }
+            String BuildFingerprint = Build.FINGERPRINT;
+            String RoBuildFingerprint = Tools.getprop(Constants.robuildfingerprint);
+            if (Tools.getprop(Constants.robuildfingerprint).equals(Tools.getprop(Constants.robootbuildfingerprint))) {
+                mBuildFingerprint.setSummary(Build.FINGERPRINT + getString(R.string.fingerprint_help));
+                // use setIcon(Drawable) instead of setIcon(int) to avoid falls back to the previously-set in a new Drawable that is null
+                mBuildFingerprint.setIcon(ContextCompat.getDrawable(getActivity(), R.drawable.warning));
+            } else if (RoBuildFingerprint.equals(BuildFingerprint)) {
+                mBuildFingerprint.setSummary(Build.FINGERPRINT);
+                mBuildFingerprint.setIcon(originalIcon);
+            } else {
+                mBuildFingerprint.setSummary(RoBuildFingerprint + getString(R.string.fingerprint_apply));
+                mBuildFingerprint.setIcon(ContextCompat.getDrawable(getActivity(), R.drawable.exclamation));
+            }
 
-        try {
-            getActivity().registerReceiver(updatePropsReceiver, new IntentFilter("updatePropsReceiver"));
-        } catch (NullPointerException ignored) {}
+            try {
+                getActivity().registerReceiver(updatePropsReceiver, new IntentFilter("updatePropsReceiver"));
+            } catch (NullPointerException ignored) {}
+        } else {
+            mPropsEdit.setEnabled(false);
+            mPropsSpecial.setEnabled(false);
+            mPropsKnown.setEnabled(false);
+            mPropsKnownList.setEnabled(false);
+        }
     }
 
     private void AnyPropDialog() {

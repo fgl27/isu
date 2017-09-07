@@ -24,9 +24,11 @@ import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
+import android.os.Build;
 
 import com.bhb27.isu.tools.Tools;
 import com.bhb27.isu.tools.Constants;
@@ -49,7 +51,14 @@ public class PerAppMonitor extends AccessibilityService {
         context = this;
         accessibilityId = this.getServiceInfo().getId();
 
-        if (event.getEventType() != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED || event.getPackageName() == null)
+        if (Build.VERSION.SDK_INT >= 24) {
+            if (!Tools.rootAccess(context)) {
+                Log.d(TAG, " disableSelf");
+                disableSelf();
+            }
+        }
+
+        if (!Tools.rootAccess(context) || event.getEventType() != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED || event.getPackageName() == null)
             return;
 
         //delay check after su was changed using another tool

@@ -18,7 +18,16 @@
  * along with iSu.  If not, see <http://www.gnu.org/licenses/>.
  *
  */-->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" xmlns:settings="http://schemas.android.com/apk/res/com.android.settings">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" xmlns:settings="http://schemas.android.com/apk/res/com.android.settings" android:key="props_pref_screen">
+    <PreferenceCategory
+        android:key="props_remove"
+        android:title="@string/props">
+        <Preference
+            android:key="prop_view"
+            android:summary="@string/device_not_root"
+            android:icon="@drawable/warning"
+            android:persistent="false" />
+    </PreferenceCategory>
     <PreferenceCategory
         android:key="props_ro"
         android:title="@string/ro_props">
@@ -62,7 +71,7 @@
             android:summary="@string/props_unknown_summary" />
     </PreferenceCategory>
     <PreferenceCategory
-        android:key="props"
+        android:key="know_props_list"
         android:title="@string/know_prop_list">
         <Preference
             android:key="props_summary"

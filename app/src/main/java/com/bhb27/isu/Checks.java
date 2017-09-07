@@ -48,7 +48,7 @@ public class Checks extends PreferenceFragment {
     private PreferenceCategory mChecks, mSafety, mChecksUpdates;
     private String suVersion, executableFilePath, result;
     private int image;
-    private boolean isCMSU, rootAccess, update_removed, appId, isu_hide, needpUp, FirstStart, isuinstaled;
+    private boolean isCMSU, rootAccess, update_removed, appId, isu_hide, needpUp, FirstStart, isuinstaled, run;
     public SafetyNetHelper.Result SNCheckResult;
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
@@ -113,7 +113,11 @@ public class Checks extends PreferenceFragment {
                     }
                 });
             }
-        } else mChecks.removePreference(mRebootStatus);
+        } else { 
+          if (!rootAccess)
+              mChecksView.setSummary(getString(R.string.device_not_root));
+          mChecks.removePreference(mRebootStatus);
+        }
 
         mHide = (Preference) findPreference("hide");
 
@@ -162,7 +166,7 @@ public class Checks extends PreferenceFragment {
         } catch (NullPointerException ignored) {}
 
         appId = Tools.appId(getActivity());
-        if (!appId) {
+        if (rootAccess && !appId) {
             needpUp = Tools.NeedUpdate(getActivity());
             if (needpUp)
                 updateStateMasked();
@@ -173,8 +177,8 @@ public class Checks extends PreferenceFragment {
             updateStateNoInternet();
             new Tools.CheckUpdate(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
         }
-        boolean run = Tools.getBoolean("run_boot", false, getActivity());
-        if (!Tools.PatchesDone(getActivity()) || !run) getActivity().startService(new Intent(getActivity(), MainService.class));
+        run = Tools.getBoolean("run_boot", false, getActivity());
+        if (rootAccess && (!Tools.PatchesDone(getActivity()) || !run)) getActivity().startService(new Intent(getActivity(), MainService.class));
         updateHidePref(getActivity());
     }
 
@@ -187,11 +191,13 @@ public class Checks extends PreferenceFragment {
                 Tools.updateMain(getActivity(), (String.format(getString(R.string.reloading), getString(R.string.su_access))));
             }
             appId = Tools.appId(getActivity());
-            if (!appId) {
+            if (rootAccess && !appId) {
                 needpUp = Tools.NeedUpdate(getActivity());
                 if (needpUp)
                     updateStateMasked();
             }
+            run = Tools.getBoolean("run_boot", false, getActivity());
+            if (rootAccess && (!Tools.PatchesDone(getActivity()) || !run)) getActivity().startService(new Intent(getActivity(), MainService.class));
             updateHidePref(getActivity());
         } else FirstStart = true;
     }
@@ -266,41 +272,46 @@ public class Checks extends PreferenceFragment {
     }
 
     public void updateHidePref(Context context) {
-        appId = Tools.appId(context);
-        isu_hide = ("" + Tools.runCommand("pm list packages | grep " + BuildConfig.APPLICATION_ID + " | cut -d: -f2", Tools.SuBinary(), getActivity())).contains(BuildConfig.APPLICATION_ID);
-        if (!appId) {
-            if (isu_hide) {
-                mHide.setIcon(R.drawable.warning);
-                mHide.setSummary(getString(R.string.not_hide));
-            } else {
-                isuinstaled = Tools.isuInstaled(context);
-                if (needpUp) {
+        if (!rootAccess) {
+            mHide.setEnabled(false);
+            mHide.setSummary(getString(R.string.device_not_root));
+        } else {
+            appId = Tools.appId(context);
+            isu_hide = ("" + Tools.runCommand("pm list packages | grep " + BuildConfig.APPLICATION_ID + " | cut -d: -f2", Tools.SuBinary(), getActivity())).contains(BuildConfig.APPLICATION_ID);
+            if (!appId) {
+                if (isu_hide) {
                     mHide.setIcon(R.drawable.warning);
-                    mHide.setSummary(getString(R.string.need_update));
-                } else  if (!isuinstaled) {
-                    mHide.setIcon(R.drawable.warning);
-                    mHide.setSummary(getString(R.string.isu_not_instaled));
+                    mHide.setSummary(getString(R.string.not_hide));
                 } else {
-                    mHide.setIcon(R.drawable.exclamation);
-                    mHide.setSummary(getString(R.string.is_hide));
+                    isuinstaled = Tools.isuInstaled(context);
+                    if (needpUp) {
+                        mHide.setIcon(R.drawable.warning);
+                        mHide.setSummary(getString(R.string.need_update));
+                    } else if (!isuinstaled) {
+                        mHide.setIcon(R.drawable.warning);
+                        mHide.setSummary(getString(R.string.isu_not_instaled));
+                    } else {
+                        mHide.setIcon(R.drawable.exclamation);
+                        mHide.setSummary(getString(R.string.is_hide));
+                    }
                 }
             }
+            mHide.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    if (!appId && isu_hide) {
+                        Tools.runCommand("pm hide " + BuildConfig.APPLICATION_ID, Tools.SuBinary(), context);
+                        updateHidePref(getActivity());
+                    } else if (!appId) {
+                        if (needpUp)
+                            Tools.UpHideDialog(getActivity());
+                        else if (isuinstaled)
+                            Tools.UnHideDialog(getActivity());
+                    } else Tools.HideDialog(getActivity());
+                    return true;
+                }
+            });
         }
-        mHide.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                if (!appId && isu_hide) {
-                    Tools.runCommand("pm hide " + BuildConfig.APPLICATION_ID, Tools.SuBinary(), context);
-                    updateHidePref(getActivity());
-                } else if (!appId) {
-		        if (needpUp)
-		            Tools.UpHideDialog(getActivity());
-		        else if (isuinstaled)
-		            Tools.UnHideDialog(getActivity());
-		} else Tools.HideDialog(getActivity());
-                return true;
-            }
-        });
     }
 
     @TargetApi(23 | 24 | 25)
@@ -401,6 +412,7 @@ public class Checks extends PreferenceFragment {
     };
 
     public void saveR() {
-        Tools.saveBoolean("run_boot", true, getActivity());
+        if (Tools.rootAccess(getActivity()))
+            Tools.saveBoolean("run_boot", true, getActivity());
     }
 }
