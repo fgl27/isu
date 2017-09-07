@@ -48,7 +48,7 @@ public class Checks extends PreferenceFragment {
     private PreferenceCategory mChecks, mSafety, mChecksUpdates;
     private String suVersion, executableFilePath, result;
     private int image;
-    private boolean isCMSU, rootAccess, update_removed, appId, isu_hide, needpUp, FirstStart;
+    private boolean isCMSU, rootAccess, update_removed, appId, isu_hide, needpUp, FirstStart, isuinstaled;
     public SafetyNetHelper.Result SNCheckResult;
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
@@ -273,9 +273,13 @@ public class Checks extends PreferenceFragment {
                 mHide.setIcon(R.drawable.warning);
                 mHide.setSummary(getString(R.string.not_hide));
             } else {
+                isuinstaled = Tools.isuInstaled(context);
                 if (needpUp) {
                     mHide.setIcon(R.drawable.warning);
                     mHide.setSummary(getString(R.string.need_update));
+                } else  if (!isuinstaled) {
+                    mHide.setIcon(R.drawable.warning);
+                    mHide.setSummary(getString(R.string.isu_not_instaled));
                 } else {
                     mHide.setIcon(R.drawable.exclamation);
                     mHide.setSummary(getString(R.string.is_hide));
@@ -291,7 +295,7 @@ public class Checks extends PreferenceFragment {
                 } else if (!appId) {
 		        if (needpUp)
 		            Tools.UpHideDialog(getActivity());
-		        else
+		        else if (isuinstaled)
 		            Tools.UnHideDialog(getActivity());
 		} else Tools.HideDialog(getActivity());
                 return true;

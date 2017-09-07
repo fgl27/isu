@@ -227,6 +227,12 @@ public class Tools implements Constants {
         runCommand("am start -n " + BuildConfig.APPLICATION_ID + "/" + BuildConfig.APPLICATION_ID + ".StartMasked", su, context);
     }
 
+    public static boolean isuInstaled(Context context) {
+        String app_instaled = ("" + runCommand("pm list packages | grep " + BuildConfig.APPLICATION_ID + " | cut -d: -f2", SuBinary(), context));
+        if (app_instaled.contains(BuildConfig.APPLICATION_ID)) return true;
+        return false;
+    }
+
     public static class HideTask extends AsyncTask < Void, Void, String > {
         private MaterialDialog progressDialog;
         private WeakReference < Context > contextRef;
@@ -285,23 +291,25 @@ public class Tools implements Constants {
     }
 
     public static boolean NeedUpdate(Context context) {
-        boolean su = SuBinary();
-        String sdcard = Environment.getExternalStorageDirectory().getPath();
-        String temp_app = sdcard + "/temp.apk";
-        String app_folder = "" + runCommand("pm path " + context.getPackageName() + "| head -n1 | cut -d: -f2", su, context);
-        String[] OriginaliSuApk = app_folder.split("com");
-        runCommand("cp -f " + OriginaliSuApk[0] + "com.bhb27.isu*/base.apk /" + temp_app, su, context);
-        double this_versionApp = Float.valueOf(BuildConfig.VERSION_NAME);
-        double versionApp = 0;
-        if (NewexistFile(temp_app, true, context)) {
-            PackageManager pm = context.getPackageManager();
-            PackageInfo info = pm.getPackageArchiveInfo(temp_app, 0);
-            versionApp = Float.valueOf(info.versionName);
-        } else
-            versionApp = Float.valueOf(BuildConfig.VERSION_NAME);
-        runCommand("rm -rf /" + temp_app, su, context);
-        if (versionApp > this_versionApp) return true;
-        if (versionApp <= this_versionApp) return false;
+        if (isuInstaled(context)) {
+            boolean su = SuBinary();
+            String sdcard = Environment.getExternalStorageDirectory().getPath();
+            String temp_app = sdcard + "/temp.apk";
+            String app_folder = "" + runCommand("pm path " + context.getPackageName() + "| head -n1 | cut -d: -f2", su, context);
+            String[] OriginaliSuApk = app_folder.split("com");
+            runCommand("cp -f " + OriginaliSuApk[0] + "com.bhb27.isu*/base.apk /" + temp_app, su, context);
+            double this_versionApp = Float.valueOf(BuildConfig.VERSION_NAME);
+            double versionApp = 0;
+            if (NewexistFile(temp_app, true, context)) {
+                PackageManager pm = context.getPackageManager();
+                PackageInfo info = pm.getPackageArchiveInfo(temp_app, 0);
+                versionApp = Float.valueOf(info.versionName);
+            } else
+                versionApp = Float.valueOf(BuildConfig.VERSION_NAME);
+            runCommand("rm -rf /" + temp_app, su, context);
+            if (versionApp > this_versionApp) return true;
+            if (versionApp <= this_versionApp) return false;
+        }
         return false;
     }
 

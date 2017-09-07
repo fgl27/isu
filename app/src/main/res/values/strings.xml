@@ -49,6 +49,7 @@
     <string name="need_update_title">Update Masked</string>
     <string name="need_update_summary">Click OK to update Masked from original, Update?</string>
     <string name="update_use_hide">Use Hide iSu to update the app</string>
+    <string name="isu_not_instaled">iSu not installed can\'t revert to original</string>
 
     <!-- controls -->
     <string name="su_switch">Change SU state</string>
