@@ -117,12 +117,12 @@ public class RootFile {
     }
 
     public boolean exists() {
-        String output = RootUtils.runCommand("[ -e '" + file + "' ] && echo true");
+        String output = RootUtils.runCommand("files=(" + file + ") && [ -e \"${files[0]}\" ] && echo true");
         return output != null && output.contains("true");
     }
 
     public boolean Iexists(Context context) {
-        String output = RootUtils.runICommand("[ -e '" + file + "' ] && echo true", context);
+        String output = RootUtils.runICommand("files=(" + file + ") && [ -e \"${files[0]}\" ] && echo true", context);
         return output != null && output.contains("true");
     }
 
