@@ -39,8 +39,8 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
         if (Intent.ACTION_BOOT_COMPLETED.equals(action) && rootAccess && run_boot) {
             context.startService(new Intent(context, BootService.class));
             Log.d(TAG, " Started action " + action + " run_boot " + run_boot);
-           if (Tools.getBoolean("apply_su", false, context) && Tools.SuVersionBool(Tools.SuVersion(context)))
-               context.startService(new Intent(context, SuService.class));
+            if (Tools.getBoolean("apply_su", false, context) && Tools.SuVersionBool(Tools.SuVersion(context)))
+                context.startService(new Intent(context, SuService.class));
         } else
             Log.d(TAG, "Not Started action " + action + " rootAccess " + rootAccess + " run_boot " + run_boot);
 

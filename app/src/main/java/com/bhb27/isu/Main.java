@@ -53,7 +53,7 @@ import com.bhb27.isu.tools.Tools;
 
 public class Main extends FragmentActivity {
 
-    public static WeakReference<FragmentActivity> FragmentActivityWeakReference;
+    public static WeakReference < FragmentActivity > FragmentActivityWeakReference;
     private TextView mAbout, mMasked;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
@@ -65,7 +65,7 @@ public class Main extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FragmentActivityWeakReference = new WeakReference<FragmentActivity>(this);
+        FragmentActivityWeakReference = new WeakReference < FragmentActivity > (this);
 
         setContentView(R.layout.main);
         String cmiyc = Tools.readString("cmiyc", null, this);

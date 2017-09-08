@@ -133,14 +133,14 @@ public class Tools implements Constants {
     }
 
     public static boolean appId(Context context) {
-       return (BuildConfig.APPLICATION_ID).equals(context.getPackageName());
+        return (BuildConfig.APPLICATION_ID).equals(context.getPackageName());
     }
 
     public static void HideiSu(Context context) {
         boolean su = SuBinary();
         runCommand("pm unhide " + BuildConfig.APPLICATION_ID, su, context);
         runCommand("am start -n " + BuildConfig.APPLICATION_ID + "/" + BuildConfig.APPLICATION_ID + ".Start", su, context);
-        runCommand("pm uninstall " +  context.getPackageName(), SuBinary(), context);
+        runCommand("pm uninstall " + context.getPackageName(), SuBinary(), context);
     }
 
     public static void SimpleHideDialog(String message, Context context) {
@@ -168,8 +168,8 @@ public class Tools implements Constants {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                    saveInt("hide_app_count", 1, context);
-                    context.startActivity(new Intent(context, StartMasked.class));
+                        saveInt("hide_app_count", 1, context);
+                        context.startActivity(new Intent(context, StartMasked.class));
                     }
                 })
             .setPositiveButton(context.getString(R.string.cancel),
@@ -258,7 +258,7 @@ public class Tools implements Constants {
         protected String doInBackground(Void...params) {
             Context mContext = contextRef.get();
             boolean su = SuBinary();
-            String hide_app = "hide.apk"; 
+            String hide_app = "hide.apk";
             File hideAPK = new File(mContext.getCacheDir(), hide_app);
             String pkg = ZipUtils.generateUnhide(mContext, hideAPK).replace("\0", "");
             runCommand("pm install -r /" + mContext.getCacheDir() + "/" + hide_app, su, mContext);
@@ -276,19 +276,19 @@ public class Tools implements Constants {
             progressDialog.dismiss();
 
             if (app_instaled.contains(pkg)) {
-               saveInt("hide_app_count", 1, mContext);
-               SimpleHideDialog(String.format(mContext.getString(R.string.hide_success), pkg), mContext);
+                saveInt("hide_app_count", 1, mContext);
+                SimpleHideDialog(String.format(mContext.getString(R.string.hide_success), pkg), mContext);
             } else if (getInt("hide_app_count", 1, mContext) <= 3) new HideTask(mContext).execute();
             else SimpleDialogFail(mContext.getString(R.string.hide_fail), mContext);
         }
     }
 
     public static boolean appInstaled(Context context) {
-         String pkg = readString("hide_app_name", "not", context);
-         String app_instaled = ("" + runCommand("pm list packages | grep " + pkg + " | cut -d: -f2", SuBinary(), context));
-         Log.d(TAG, "appInstaled pkg " + pkg + " app_instaled " + app_instaled + " state " + app_instaled.contains(pkg));
-         if (app_instaled.contains(pkg)) return true;
-         return false;
+        String pkg = readString("hide_app_name", "not", context);
+        String app_instaled = ("" + runCommand("pm list packages | grep " + pkg + " | cut -d: -f2", SuBinary(), context));
+        Log.d(TAG, "appInstaled pkg " + pkg + " app_instaled " + app_instaled + " state " + app_instaled.contains(pkg));
+        if (app_instaled.contains(pkg)) return true;
+        return false;
     }
 
     public static boolean NeedUpdate(Context context) {
@@ -678,7 +678,7 @@ public class Tools implements Constants {
     }
 
     public static void SetAndroidDebugRoot(boolean value, Context context) {
-       resetprop(context.getFilesDir().getPath() + "/", "service.adb.root", (value ? "1" : "0" ), context, false);
+        resetprop(context.getFilesDir().getPath() + "/", "service.adb.root", (value ? "1" : "0"), context, false);
     }
 
     public static void WriteSettings(Context context) {
@@ -988,7 +988,7 @@ public class Tools implements Constants {
         String mod_string = "";
         for (int i = 0; i < change.length; ++i) {
             if (String.valueOf(change[i]).equals(".") || i < 4) // i < 4 preserve com. or org. from app name
-                 mod_string += change[i];
+                mod_string += change[i];
             else
                 mod_string += ChangeLetter(change[i]);
             if (zeros)
@@ -1118,10 +1118,10 @@ public class Tools implements Constants {
         String bootdfgp = getprop(robootbuildfingerprint);
         String buildfgp = getprop(robuildfingerprint);
         if (bootdfgp.equals(buildfgp)) {
-                if (red.isEmpty())
-                    red = robootbuildfingerprint + "=" + robuildfingerprint;
-                else
-                    red = ", " + robootbuildfingerprint + "=" + robuildfingerprint;
+            if (red.isEmpty())
+                red = robootbuildfingerprint + "=" + robuildfingerprint;
+            else
+                red = ", " + robootbuildfingerprint + "=" + robuildfingerprint;
         }
         return red;
     }

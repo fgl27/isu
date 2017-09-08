@@ -65,9 +65,9 @@ import com.bhb27.isu.tools.Tools;
 import com.bhb27.isu.tools.Constants;
 
 /*
-* Modified from from AOSP(Marshmallow) SignAPK.java
-* From magiskmanager
-* */
+ * Modified from from AOSP(Marshmallow) SignAPK.java
+ * From magiskmanager
+ * */
 
 public class ZipUtils {
     // File name in assets
@@ -77,7 +77,6 @@ public class ZipUtils {
 
     private static final String CERT_SF_NAME = "META-INF/CERT.SF";
     private static final String CERT_SIG_NAME = "META-INF/CERT.%s";
-    private static final String UNHIDE_NAME = "unhide.apk";
     private static final String TAG = "isuhide";
     private static final String app_name = "com.bhb27.isu";
 
@@ -159,78 +158,6 @@ public class ZipUtils {
         return pkg;
     }
 
-    public static void removeTopFolder(InputStream in, File output) throws IOException {
-        try {
-            JarInputStream source = new JarInputStream(in);
-            JarOutputStream dest = new JarOutputStream(new FileOutputStream(output));
-            JarEntry entry;
-            String path;
-            int size;
-            byte buffer[] = new byte[4096];
-            while ((entry = source.getNextJarEntry()) != null) {
-                // Remove the top directory from the path
-                path = entry.getName().substring(entry.getName().indexOf("/") + 1);
-                // If it's the top folder, ignore it
-                if (path.isEmpty()) {
-                    continue;
-                }
-                // Don't include placeholder
-                if (path.equals("system/placeholder")) {
-                    continue;
-                }
-                dest.putNextEntry(new JarEntry(path));
-                while((size = source.read(buffer)) != -1) {
-                    dest.write(buffer, 0, size);
-                }
-            }
-            source.close();
-            dest.close();
-            in.close();
-        } catch (IOException e) {
-            Log.d(Constants.TAG, " removeTopFolder IO error!");
-            throw e;
-        }
-    }
-
-    public static void unzip(File zip, File folder, String path, boolean junkPath) throws Exception {
-        InputStream in = new FileInputStream(zip);
-        unzip(in, folder, path, junkPath);
-        in.close();
-    }
-
-    public static void unzip(InputStream zip, File folder, String path, boolean junkPath) throws Exception {
-        byte data[] = new byte[4096];
-        try {
-            JarInputStream zipfile = new JarInputStream(zip);
-            JarEntry entry;
-            while ((entry = zipfile.getNextJarEntry()) != null) {
-                if (!entry.getName().startsWith(path) || entry.isDirectory()){
-                    // Ignore directories, only create files
-                    continue;
-                }
-                String name;
-                if (junkPath) {
-                    name = entry.getName().substring(entry.getName().lastIndexOf('/') + 1);
-                } else {
-                    name = entry.getName();
-                }
-                Log.d(Constants.TAG, " Extracting " + entry);
-                File dest = new File(folder, name);
-                dest.getParentFile().mkdirs();
-                FileOutputStream out = new FileOutputStream(dest);
-                int count;
-                while ((count = zipfile.read(data)) != -1) {
-                    out.write(data, 0, count);
-                }
-                out.flush();
-                out.close();
-            }
-        } catch(Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
-
     public static void signZip(Context context, File input, File output, boolean minSign) {
         int alignment = 4;
         JarFile inputJar = null;
@@ -250,7 +177,7 @@ public class ZipUtils {
             if (minSign) {
                 ZipUtils.signWholeFile(input, publicKey, privateKey, outputFile);
             } else {
-                inputJar = new JarFile(input, false);  // Don't verify.
+                inputJar = new JarFile(input, false); // Don't verify.
                 JarOutputStream outputJar = new JarOutputStream(outputFile);
                 // For signing .apks, use the maximum compression to make
                 // them as small as possible (since they live forever on
@@ -284,13 +211,13 @@ public class ZipUtils {
     private static int getDigestAlgorithm(X509Certificate cert) {
         String sigAlg = cert.getSigAlgName().toUpperCase(Locale.US);
         if ("SHA1WITHRSA".equals(sigAlg) ||
-                "MD5WITHRSA".equals(sigAlg)) {     // see "HISTORICAL NOTE" above.
+            "MD5WITHRSA".equals(sigAlg)) { // see "HISTORICAL NOTE" above.
             return USE_SHA1;
         } else if (sigAlg.startsWith("SHA256WITH")) {
             return USE_SHA256;
         } else {
             throw new IllegalArgumentException("unsupported signature algorithm \"" + sigAlg +
-                    "\" in cert [" + cert.getSubjectDN());
+                "\" in cert [" + cert.getSubjectDN());
         }
     }
     /** Returns the expected signature algorithm for this key type. */
@@ -311,10 +238,10 @@ public class ZipUtils {
     }
     // Files matching this pattern are not copied to the output.
     private static Pattern stripPattern =
-            Pattern.compile("^(META-INF/((.*)[.](SF|RSA|DSA|EC)|com/android/otacert))|(" +
-                    Pattern.quote(JarFile.MANIFEST_NAME) + ")$");
+        Pattern.compile("^(META-INF/((.*)[.](SF|RSA|DSA|EC)|com/android/otacert))|(" +
+            Pattern.quote(JarFile.MANIFEST_NAME) + ")$");
     private static X509Certificate readPublicKey(InputStream input)
-            throws IOException, GeneralSecurityException {
+    throws IOException, GeneralSecurityException {
         try {
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             return (X509Certificate) cf.generateCertificate(input);
@@ -325,7 +252,7 @@ public class ZipUtils {
 
     /** Read a PKCS#8 format private key. */
     private static PrivateKey readPrivateKey(InputStream input)
-            throws IOException, GeneralSecurityException {
+    throws IOException, GeneralSecurityException {
         try {
             byte[] buffer = new byte[4096];
             int size = input.read(buffer);
@@ -349,7 +276,7 @@ public class ZipUtils {
      * necessary.
      */
     private static Manifest addDigestsToManifest(JarFile jar, int hashes)
-            throws IOException, GeneralSecurityException {
+    throws IOException, GeneralSecurityException {
         Manifest input = jar.getManifest();
         Manifest output = new Manifest();
         Attributes main = output.getMainAttributes();
@@ -372,15 +299,15 @@ public class ZipUtils {
         // We sort the input entries by name, and add them to the
         // output manifest in sorted order.  We expect that the output
         // map will be deterministic.
-        TreeMap<String, JarEntry> byName = new TreeMap<String, JarEntry>();
-        for (Enumeration<JarEntry> e = jar.entries(); e.hasMoreElements(); ) {
+        TreeMap < String, JarEntry > byName = new TreeMap < String, JarEntry > ();
+        for (Enumeration < JarEntry > e = jar.entries(); e.hasMoreElements();) {
             JarEntry entry = e.nextElement();
             byName.put(entry.getName(), entry);
         }
         for (JarEntry entry: byName.values()) {
             String name = entry.getName();
             if (!entry.isDirectory() &&
-                    (stripPattern == null || !stripPattern.matcher(name).matches())) {
+                (stripPattern == null || !stripPattern.matcher(name).matches())) {
                 InputStream data = jar.getInputStream(entry);
                 while ((num = data.read(buffer)) > 0) {
                     if (md_sha1 != null) md_sha1.update(buffer, 0, num);
@@ -391,11 +318,11 @@ public class ZipUtils {
                 attr = attr != null ? new Attributes(attr) : new Attributes();
                 if (md_sha1 != null) {
                     attr.putValue("SHA1-Digest",
-                            new String(Base64.encode(md_sha1.digest()), "ASCII"));
+                        new String(Base64.encode(md_sha1.digest()), "ASCII"));
                 }
                 if (md_sha256 != null) {
                     attr.putValue("SHA-256-Digest",
-                            new String(Base64.encode(md_sha256.digest()), "ASCII"));
+                        new String(Base64.encode(md_sha256.digest()), "ASCII"));
                 }
                 output.getEntries().put(name, attr);
             }
@@ -428,34 +355,34 @@ public class ZipUtils {
     }
     /** Write a .SF file with a digest of the specified manifest. */
     private static void writeSignatureFile(Manifest manifest, OutputStream out,
-                                           int hash)
-            throws IOException, GeneralSecurityException {
+        int hash)
+    throws IOException, GeneralSecurityException {
         Manifest sf = new Manifest();
         Attributes main = sf.getMainAttributes();
         main.putValue("Signature-Version", "1.0");
         main.putValue("Created-By", "1.0 (Android SignApk)");
         MessageDigest md = MessageDigest.getInstance(
-                hash == USE_SHA256 ? "SHA256" : "SHA1");
+            hash == USE_SHA256 ? "SHA256" : "SHA1");
         PrintStream print = new PrintStream(
-                new DigestOutputStream(new ByteArrayOutputStream(), md),
-                true, "UTF-8");
+            new DigestOutputStream(new ByteArrayOutputStream(), md),
+            true, "UTF-8");
         // Digest of the entire manifest
         manifest.write(print);
         print.flush();
         main.putValue(hash == USE_SHA256 ? "SHA-256-Digest-Manifest" : "SHA1-Digest-Manifest",
-                new String(Base64.encode(md.digest()), "ASCII"));
-        Map<String, Attributes> entries = manifest.getEntries();
-        for (Map.Entry<String, Attributes> entry : entries.entrySet()) {
+            new String(Base64.encode(md.digest()), "ASCII"));
+        Map < String, Attributes > entries = manifest.getEntries();
+        for (Map.Entry < String, Attributes > entry: entries.entrySet()) {
             // Digest of the manifest stanza for this entry.
             print.print("Name: " + entry.getKey() + "\r\n");
-            for (Map.Entry<Object, Object> att : entry.getValue().entrySet()) {
+            for (Map.Entry < Object, Object > att: entry.getValue().entrySet()) {
                 print.print(att.getKey() + ": " + att.getValue() + "\r\n");
             }
             print.print("\r\n");
             print.flush();
             Attributes sfAttr = new Attributes();
             sfAttr.putValue(hash == USE_SHA256 ? "SHA-256-Digest" : "SHA1-Digest-Manifest",
-                    new String(Base64.encode(md.digest()), "ASCII"));
+                new String(Base64.encode(md.digest()), "ASCII"));
             sf.getEntries().put(entry.getKey(), sfAttr);
         }
         CountOutputStream cout = new CountOutputStream(out);
@@ -471,26 +398,26 @@ public class ZipUtils {
     }
     /** Sign data and write the digital signature to 'out'. */
     private static void writeSignatureBlock(
-            CMSTypedData data, X509Certificate publicKey, PrivateKey privateKey,
-            OutputStream out)
-            throws IOException,
-            CertificateEncodingException,
-            OperatorCreationException,
-            CMSException {
-        ArrayList<X509Certificate> certList = new ArrayList<>(1);
+        CMSTypedData data, X509Certificate publicKey, PrivateKey privateKey,
+        OutputStream out)
+    throws IOException,
+    CertificateEncodingException,
+    OperatorCreationException,
+    CMSException {
+        ArrayList < X509Certificate > certList = new ArrayList < > (1);
         certList.add(publicKey);
         JcaCertStore certs = new JcaCertStore(certList);
         CMSSignedDataGenerator gen = new CMSSignedDataGenerator();
         ContentSigner signer = new JcaContentSignerBuilder(getSignatureAlgorithm(publicKey))
-                .setProvider(sBouncyCastleProvider)
-                .build(privateKey);
+            .setProvider(sBouncyCastleProvider)
+            .build(privateKey);
         gen.addSignerInfoGenerator(
-                new JcaSignerInfoGeneratorBuilder(
-                        new JcaDigestCalculatorProviderBuilder()
-                                .setProvider(sBouncyCastleProvider)
-                                .build())
-                        .setDirectSignature(true)
-                        .build(signer, publicKey));
+            new JcaSignerInfoGeneratorBuilder(
+                new JcaDigestCalculatorProviderBuilder()
+                .setProvider(sBouncyCastleProvider)
+                .build())
+            .setDirectSignature(true)
+            .build(signer, publicKey));
         gen.addCertificates(certs);
         CMSSignedData sigData = gen.generate(data, false);
         ASN1InputStream asn1 = new ASN1InputStream(sigData.getEncoded());
@@ -503,12 +430,12 @@ public class ZipUtils {
      * reduce variation in the output file and make incremental OTAs
      * more efficient.
      */
-    private static void copyFiles(Manifest manifest, JarFile in, JarOutputStream out,
-                                  long timestamp, int alignment) throws IOException {
+    private static void copyFiles(Manifest manifest, JarFile in , JarOutputStream out,
+        long timestamp, int alignment) throws IOException {
         byte[] buffer = new byte[4096];
         int num;
-        Map<String, Attributes> entries = manifest.getEntries();
-        ArrayList<String> names = new ArrayList<String>(entries.keySet());
+        Map < String, Attributes > entries = manifest.getEntries();
+        ArrayList < String > names = new ArrayList < String > (entries.keySet());
         Collections.sort(names);
         boolean firstEntry = true;
         long offset = 0L;
@@ -518,8 +445,8 @@ public class ZipUtils {
         // DEFLATED).  This groups all the stored entries together at
         // the start of the file and makes it easier to do alignment
         // on them (since only stored entries are aligned).
-        for (String name : names) {
-            JarEntry inEntry = in.getJarEntry(name);
+        for (String name: names) {
+            JarEntry inEntry = in .getJarEntry(name);
             JarEntry outEntry = null;
             if (inEntry.getMethod() != JarEntry.STORED) continue;
             // Preserve the STORED method of the input entry.
@@ -547,7 +474,7 @@ public class ZipUtils {
                 offset += needed;
             }
             out.putNextEntry(outEntry);
-            InputStream data = in.getInputStream(inEntry);
+            InputStream data = in .getInputStream(inEntry);
             while ((num = data.read(buffer)) > 0) {
                 out.write(buffer, 0, num);
                 offset += num;
@@ -557,15 +484,15 @@ public class ZipUtils {
         // Copy all the non-STORED entries.  We don't attempt to
         // maintain the 'offset' variable past this point; we don't do
         // alignment on these entries.
-        for (String name : names) {
-            JarEntry inEntry = in.getJarEntry(name);
+        for (String name: names) {
+            JarEntry inEntry = in .getJarEntry(name);
             JarEntry outEntry = null;
             if (inEntry.getMethod() == JarEntry.STORED) continue;
             // Create a new entry so that the compressed len is recomputed.
             outEntry = new JarEntry(name);
             outEntry.setTime(timestamp);
             out.putNextEntry(outEntry);
-            InputStream data = in.getInputStream(inEntry);
+            InputStream data = in .getInputStream(inEntry);
             while ((num = data.read(buffer)) > 0) {
                 out.write(buffer, 0, num);
             }
@@ -619,8 +546,8 @@ public class ZipUtils {
     }
 
     private static void signWholeFile(File input, X509Certificate publicKey,
-                                      PrivateKey privateKey, OutputStream outputStream)
-            throws Exception {
+        PrivateKey privateKey, OutputStream outputStream)
+    throws Exception {
         ByteArrayOutputStream temp = new ByteArrayOutputStream();
         // put a readable message and a null char at the start of the
         // archive comment, so that tools that display the comment
@@ -637,10 +564,10 @@ public class ZipUtils {
         // end-of-central-directory record will be 22 bytes long, so
         // we expect to find the EOCD marker 22 bytes from the end.
         byte[] zipData = cmsFile.getTail();
-        if (zipData[zipData.length-22] != 0x50 ||
-                zipData[zipData.length-21] != 0x4b ||
-                zipData[zipData.length-20] != 0x05 ||
-                zipData[zipData.length-19] != 0x06) {
+        if (zipData[zipData.length - 22] != 0x50 ||
+            zipData[zipData.length - 21] != 0x4b ||
+            zipData[zipData.length - 20] != 0x05 ||
+            zipData[zipData.length - 19] != 0x06) {
             throw new IllegalArgumentException("zip data already has an archive comment");
         }
         int total_size = temp.size() + 6;
@@ -669,8 +596,8 @@ public class ZipUtils {
         // odds of producing this sequence by chance are very low, but
         // let's catch it here if it does.
         byte[] b = temp.toByteArray();
-        for (int i = 0; i < b.length-3; ++i) {
-            if (b[i] == 0x50 && b[i+1] == 0x4b && b[i+2] == 0x05 && b[i+3] == 0x06) {
+        for (int i = 0; i < b.length - 3; ++i) {
+            if (b[i] == 0x50 && b[i + 1] == 0x4b && b[i + 2] == 0x05 && b[i + 3] == 0x06) {
                 throw new IllegalArgumentException("found spurious EOCD header at " + i);
             }
         }
@@ -680,9 +607,9 @@ public class ZipUtils {
         temp.writeTo(outputStream);
     }
     private static void signFile(Manifest manifest, JarFile inputJar,
-                                 X509Certificate publicKey, PrivateKey privateKey,
-                                 JarOutputStream outputJar)
-            throws Exception {
+        X509Certificate publicKey, PrivateKey privateKey,
+        JarOutputStream outputJar)
+    throws Exception {
         // Assume the certificate is valid for at least an hour.
         long timestamp = publicKey.getNotBefore().getTime() + 3600L * 1000;
         // MANIFEST.MF
@@ -703,6 +630,6 @@ public class ZipUtils {
         je.setTime(timestamp);
         outputJar.putNextEntry(je);
         writeSignatureBlock(new CMSProcessableByteArray(signedData),
-                publicKey, privateKey, outputJar);
+            publicKey, privateKey, outputJar);
     }
 }

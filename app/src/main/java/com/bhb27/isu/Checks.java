@@ -113,10 +113,10 @@ public class Checks extends PreferenceFragment {
                     }
                 });
             }
-        } else { 
-          if (!rootAccess)
-              mChecksView.setSummary(getString(R.string.device_not_root));
-          mChecks.removePreference(mRebootStatus);
+        } else {
+            if (!rootAccess)
+                mChecksView.setSummary(getString(R.string.device_not_root));
+            mChecks.removePreference(mRebootStatus);
         }
 
         mHide = (Preference) findPreference("hide");
@@ -245,13 +245,13 @@ public class Checks extends PreferenceFragment {
                 image = R.drawable.ok;
             else {
                 image = R.drawable.warning;
-                result += "\n\n" ;
+                result += "\n\n";
                 if (isCMSU && rootAccess) {
                     boolean su = Tools.SuBinary();
                     result += getString(R.string.su_state) + (su ? getString(R.string.fail_reason) + ": " : ": ");
                     result += (su ? getString(R.string.activated) : getString(R.string.deactivated)) + "\n";
-               } 
-               if (rootAccess) {
+                }
+                if (rootAccess) {
                     selinux = Tools.isSELinuxActive(getActivity());
                     result += getString(R.string.selinux_state) + (!selinux ? getString(R.string.fail_reason) + ": " : ": ");
                     result += (selinux ? getString(R.string.enforcing) : getString(R.string.permissive)) + "\n";
@@ -418,7 +418,7 @@ public class Checks extends PreferenceFragment {
     private final BroadcastReceiver saveRunReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-           saveR();
+            saveR();
         }
     };
 

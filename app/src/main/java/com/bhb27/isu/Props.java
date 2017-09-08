@@ -541,10 +541,10 @@ Preference.OnPreferenceChangeListener {
             super.onPreExecute();
             Context mContext = contextRef.get();
             progressDialog = new MaterialDialog.Builder(mContext)
-            .title(mContext.getString(R.string.app_name))
-            .progress(true, 0)
-            .canceledOnTouchOutside(false)
-            .show();
+                .title(mContext.getString(R.string.app_name))
+                .progress(true, 0)
+                .canceledOnTouchOutside(false)
+                .show();
         }
 
         @Override

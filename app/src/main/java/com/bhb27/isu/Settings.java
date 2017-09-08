@@ -70,13 +70,13 @@ Preference.OnPreferenceChangeListener {
         }
         mApplySuDelay.setEntries(entriesSuDelay);
         mApplySuDelay.setEntryValues(entryValuesSuDelay);
-        
+
         CharSequence[] entriesMonitorDelay = new CharSequence[7];
         CharSequence[] entryValuesMonitorDelay = new CharSequence[7];
-         for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 7; i++) {
             if (i == 0) {
                 entriesMonitorDelay[i] = getString(R.string.disable);
-                entryValuesMonitorDelay[i] = String.valueOf(i);                
+                entryValuesMonitorDelay[i] = String.valueOf(i);
             } else {
                 entriesMonitorDelay[i] = (String.format(getString(R.string.apply_su_delay_summary), ((i) * 5)));
                 entryValuesMonitorDelay[i] = String.valueOf((i) * 5000);

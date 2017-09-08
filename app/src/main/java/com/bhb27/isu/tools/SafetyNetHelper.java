@@ -41,10 +41,10 @@ implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.Connectio
             return;
         // Connect Google Service
         mGoogleApiClient = new GoogleApiClient.Builder(mActivity)
-                .enableAutoManage(mActivity, this)
-                .addApi(SafetyNet.API)
-                .addConnectionCallbacks(this)
-                .build();
+            .enableAutoManage(mActivity, this)
+            .addApi(SafetyNet.API)
+            .addConnectionCallbacks(this)
+            .build();
         mGoogleApiClient.connect();
         isRunning = true;
     }
@@ -81,7 +81,7 @@ implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.Connectio
 
         // Call SafetyNet
         SafetyNet.SafetyNetApi.attest(mGoogleApiClient, nonce)
-            .setResultCallback(result -> {
+            .setResultCallback(result-> {
                 Status status = result.getStatus();
                 if (status.isSuccess()) {
                     String json = new String(Base64.decode(result.getJwsResult().split("\\.")[1], Base64.DEFAULT));

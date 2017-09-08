@@ -39,7 +39,7 @@ public class StartMasked extends AppCompatActivity {
         appId = Tools.appId(SMcontext);
 
         if (appId)
-           new Tools.HideTask(SMcontext).execute();
+            new Tools.HideTask(SMcontext).execute();
         else {
             SMcontext.startActivity(new Intent(SMcontext, Main.class).setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT));
             finish();
