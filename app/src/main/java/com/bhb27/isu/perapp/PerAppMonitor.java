@@ -45,20 +45,20 @@ public class PerAppMonitor extends AccessibilityService {
     long time = System.currentTimeMillis(), SwitchSuDelay, delaysResult = 0, bootTime = 0;
     private int systemdelay = 3500, allowdelay = 0;
     private Context context;
+    private boolean isCMSU;
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         context = this;
         accessibilityId = this.getServiceInfo().getId();
+        isCMSU = Tools.SuVersionBool(Tools.SuVersion(context));
 
-        if (Build.VERSION.SDK_INT >= 24) {
-            if (!Tools.rootAccess(context)) {
+        if (Build.VERSION.SDK_INT >= 24 && !isCMSU) {
                 Log.d(TAG, " disableSelf");
                 disableSelf();
-            }
         }
 
-        if (!Tools.rootAccess(context) || event.getEventType() != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED || event.getPackageName() == null)
+        if (!isCMSU || event.getEventType() != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED || event.getPackageName() == null)
             return;
 
         //delay check after su was changed using another tool
