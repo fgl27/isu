@@ -1,5 +1,5 @@
 #!/system/bin/sh
-# simple service to make shore SU is in place after a reboot that the user has disable it without this no SU after boot
+# simple service to make sure SU is in place after a reboot that the user has disabled it without this no SU after boot
 mount -o rw,remount /system
 # Isu Reboot support
 if [ -e /system/bin/temp_su ]; then
@@ -16,7 +16,12 @@ if [ ! -e /system/xbin/su ]; then
 
 	su_daemon=$(getprop persist.sys.root_access);
 	if [ $su_daemon -gt 0 ]; then
-	        start su_daemon
+		if [ $su_daemon -eq 1 ]; then
+		        start su_daemon
+		fi
+		if [ $su_daemon -eq 3 ]; then
+		        start su_daemon
+		fi
 	fi
 # Isu Reboot support end
 fi

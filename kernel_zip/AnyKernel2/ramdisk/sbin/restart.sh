@@ -1,6 +1,6 @@
 #!/system/bin/sh
 
-# simple service to make shore SU is in place after a reboot that the user has disable it without this no SU after boot
+# simple service to make sure SU is in place after a reboot that the user has disabled it without this no SU after boot
 
 # service example do it on boot to reboot and mv works
 #on boot 
@@ -28,7 +28,12 @@ if [ "$1" = "boot" ]; then
 
 		su_daemon=$(getprop persist.sys.root_access);
 		if [ $su_daemon -gt 0 ]; then
-			start su_daemon
+			if [ $su_daemon -eq 1 ]; then
+				start su_daemon
+			fi
+			if [ $su_daemon -eq 3 ]; then
+				start su_daemon
+			fi
 		fi
 	# Isu Reboot support end
 	fi
