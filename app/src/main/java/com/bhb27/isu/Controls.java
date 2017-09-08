@@ -37,7 +37,7 @@ import com.bhb27.isu.tools.Tools;
 public class Controls extends PreferenceFragment implements
 Preference.OnPreferenceChangeListener {
 
-    private SwitchPreference mSuSwitch, mSelSwitch, mFakeSelSwitch, mDebug;
+    private SwitchPreference mSuSwitch, mSelSwitch, mFakeSelSwitch, mDebug, mDebugRoot;
     private Preference mControlsView, mTasker;
     private PreferenceCategory mControls;
     private String suVersion;
@@ -65,6 +65,9 @@ Preference.OnPreferenceChangeListener {
 
         mDebug = (SwitchPreference) findPreference("android_debug");
         mDebug.setOnPreferenceChangeListener(this);
+
+        mDebugRoot = (SwitchPreference) findPreference("android_debug_root");
+        mDebugRoot.setOnPreferenceChangeListener(this);
 
         mControlsView = (Preference) findPreference("controls_view");
 
@@ -130,6 +133,11 @@ Preference.OnPreferenceChangeListener {
             Tools.AndroidDebugSet(isChecked, getActivity());
         }
 
+        if (preference == mDebugRoot) {
+            boolean isChecked = (Boolean) objValue;
+            Tools.SetAndroidDebugRoot(isChecked, getActivity());
+        }
+
         updateState();
         return true;
     }
@@ -157,6 +165,11 @@ Preference.OnPreferenceChangeListener {
             mDebug.setSummary(anddebug ? getString(R.string.enable) :
                 getString(R.string.disable));
 
+            boolean anddebugRoot = Tools.AndroidDebugRoot();
+            mDebugRoot.setChecked(anddebugRoot);
+            mDebugRoot.setSummary(anddebugRoot ? getString(R.string.enable) :
+                getString(R.string.disable));
+
             try {
                 getActivity().registerReceiver(updateControlsReceiver, new IntentFilter("updateControlsReceiver"));
             } catch (NullPointerException ignored) {}
@@ -166,6 +179,7 @@ Preference.OnPreferenceChangeListener {
             mSelSwitch.setEnabled(false);
             mFakeSelSwitch.setEnabled(false);
             mDebug.setEnabled(false);
+            mDebugRoot.setEnabled(false);
             mTasker.setEnabled(false);
         }
 

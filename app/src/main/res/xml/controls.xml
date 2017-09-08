@@ -54,6 +54,10 @@
             android:key="android_debug"
             android:defaultValue="false"
             android:title="@string/anddebug_change" />
+        <SwitchPreference
+            android:key="android_debug_root"
+            android:defaultValue="false"
+            android:title="@string/adb_state_root_state" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="tasker_pref"

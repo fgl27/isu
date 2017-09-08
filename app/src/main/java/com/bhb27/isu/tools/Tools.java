@@ -670,9 +670,15 @@ public class Tools implements Constants {
     }
 
     public static boolean AndroidDebugState(Context context) {
-        if (context.checkCallingOrSelfPermission("android.permission.WRITE_SECURE_SETTINGS") == PackageManager.PERMISSION_GRANTED)
-            return (Settings.Global.getInt(context.getContentResolver(), Settings.Global.ADB_ENABLED, 0) != 0);
-        return false;
+        return (Settings.Global.getInt(context.getContentResolver(), Settings.Global.ADB_ENABLED, 0) != 0);
+    }
+
+    public static boolean AndroidDebugRoot() {
+        return getprop("service.adb.root").contains("1");
+    }
+
+    public static void SetAndroidDebugRoot(boolean value, Context context) {
+       resetprop(context.getFilesDir().getPath() + "/", "service.adb.root", (value ? "1" : "0" ), context, false);
     }
 
     public static void WriteSettings(Context context) {
@@ -850,6 +856,21 @@ public class Tools implements Constants {
     public static String getSELinuxStatus(Context context) {
         String result = "";
         result = runCommand(GETENFORCE, SuBinary(), context);
+        if (result != null) {
+            if (result.equals("Enforcing")) return "Enforcing";
+            else if (result.equals("Permissive")) return "Permissive";
+        }
+        return "Unknown Status";
+    }
+
+    public static boolean isSELinuxActiveNoROOT() {
+        if (getSELinuxStatusNoRoot().equals("Enforcing")) return true;
+        return false;
+    }
+
+    public static String getSELinuxStatusNoRoot() {
+        String result = "";
+        result = runShell(GETENFORCE);
         if (result != null) {
             if (result.equals("Enforcing")) return "Enforcing";
             else if (result.equals("Permissive")) return "Permissive";

@@ -231,6 +231,8 @@ public class Checks extends PreferenceFragment {
             image = R.drawable.interrogation;
             result = SNCheckResult.errmsg;
         } else {
+            boolean adbRoot = Tools.AndroidDebugRoot() && Tools.AndroidDebugState(getActivity());
+            boolean selinux = false;
             boolean pass = (SNCheckResult.ctsProfile && SNCheckResult.basicIntegrity);
             String pass_result = (pass ? " " + getString(R.string.safetyNet_pass) : " " + getString(R.string.safetyNet_fail));
             String cts_result = (SNCheckResult.ctsProfile ? " " + getString(R.string.safetyNet_pass) : " " + getString(R.string.safetyNet_fail));
@@ -243,22 +245,31 @@ public class Checks extends PreferenceFragment {
                 image = R.drawable.ok;
             else {
                 image = R.drawable.warning;
-                if (isCMSU) {
+                result += "\n\n" ;
+                if (isCMSU && rootAccess) {
                     boolean su = Tools.SuBinary();
-                    boolean selinux = Tools.isSELinuxActive(getActivity());
-                    result += "\n\n" + getString(R.string.su_state) + (su ? getString(R.string.fail_reason) + ":" : ":");
+                    result += getString(R.string.su_state) + (su ? getString(R.string.fail_reason) + ": " : ": ");
                     result += (su ? getString(R.string.activated) : getString(R.string.deactivated)) + "\n";
-
-                    result += getString(R.string.selinux_state) + (!selinux ? getString(R.string.fail_reason) + ":" : ":");
+               } 
+               if (rootAccess) {
+                    selinux = Tools.isSELinuxActive(getActivity());
+                    result += getString(R.string.selinux_state) + (!selinux ? getString(R.string.fail_reason) + ": " : ": ");
                     result += (selinux ? getString(R.string.enforcing) : getString(R.string.permissive)) + "\n";
 
-                    result += getString(R.string.adb_state) + ": ";
-                    result += (Tools.AndroidDebugState(getActivity()) ? getString(R.string.activated) : getString(R.string.deactivated)) + "\n";
+                } else {
+                    result += getString(R.string.su_state) + ": ";
+                    result += getString(R.string.device_not_root) + "\n";
 
-                    String redprops = Tools.redProps();
-                    result += getString(R.string.props) + (!redprops.isEmpty() ? getString(R.string.fail_reason) + ":" : ":");
-                    result += (redprops.isEmpty() ? getString(R.string.props_status_good) : " " + redprops);
+                    selinux = Tools.isSELinuxActiveNoROOT();
+                    result += getString(R.string.selinux_state) + (!selinux ? getString(R.string.fail_reason) + ": " : ": ");
+                    result += (selinux ? getString(R.string.enforcing) : getString(R.string.permissive)) + "\n";
                 }
+                result += getString(R.string.adb_state_root) + (adbRoot ? getString(R.string.fail_reason) + ": " : ": ");
+                result += (adbRoot ? getString(R.string.running) : getString(R.string.not_running)) + "\n";
+
+                String redprops = Tools.redProps();
+                result += getString(R.string.props) + (!redprops.isEmpty() ? getString(R.string.fail_reason) + ": " : ": ");
+                result += (redprops.isEmpty() ? getString(R.string.props_status_good) : " " + redprops);
             }
         }
         update();
