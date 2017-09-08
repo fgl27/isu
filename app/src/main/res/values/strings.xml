@@ -40,14 +40,14 @@
     <string name="hide_isu">\n\nHide iSu?</string>
     <string name="masked">Masked</string>
     <string name="hide_fail">Hide process fail tree times, contact the developer with logs</string>
-    <string name="hide_success">Hide process end with success, new iSu package id %s</string>
+    <string name="hide_success">Hide process end with success, new iSu package id %s\n\niSu and Masked iSu don\'t share the same data be aware is need to reconfigure the masked app (setting, per app monitor etc)</string>
     <string name="is_hide">iSu is in \u0022Masked Mod\u0022, if you choose to revert this state click here</string>
     <string name="unhide_title">Unhide iSu</string>
     <string name="unhide_summary">UnHide iSu? and uninstall This masked version?</string>
     <string name="not_hide">Running as Masked iSu but original iSu is not hidden, click here to fix it</string>
     <string name="need_update">Original iSu version is updated in relation to masked iSu, click here to update from original iSu</string>
     <string name="need_update_title">Update Masked</string>
-    <string name="need_update_summary">Click OK to update Masked from original, Update?</string>
+    <string name="need_update_summary">Click OK to update Masked from original, if after the update process the app is not updated please try again.\nUpdate?</string>
     <string name="update_use_hide">Use Hide iSu to update the app</string>
     <string name="isu_not_instaled">iSu not installed can\'t revert to original</string>
 

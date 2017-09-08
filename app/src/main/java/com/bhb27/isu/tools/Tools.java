@@ -257,6 +257,7 @@ public class Tools implements Constants {
         @Override
         protected String doInBackground(Void...params) {
             Context mContext = contextRef.get();
+            Tools.SwitchSu(true, false, mContext);
             boolean su = SuBinary();
             String hide_app = "hide.apk";
             File hideAPK = new File(mContext.getCacheDir(), hide_app);
