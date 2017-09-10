@@ -23,6 +23,7 @@ import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder;
 import org.bouncycastle.util.encoders.Base64;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -102,7 +103,7 @@ public class ZipUtils {
         Log.d(TAG, "try start ");
         try {
             JarInputStream source = new JarInputStream(new FileInputStream(new File(Tools.runCommand("pm path " + ISU_APK + "| head -n1 | cut -d: -f2", Tools.SuBinary(), context))));
-            JarOutputStream dest = new JarOutputStream(new FileOutputStream(temp));
+            JarOutputStream dest = new JarOutputStream(new BufferedOutputStream(new FileOutputStream(temp)));
             JarEntry entry;
             int size;
             byte buffer[] = new byte[4096];
@@ -161,7 +162,7 @@ public class ZipUtils {
     public static void signZip(Context context, File input, File output, boolean minSign) {
         int alignment = 4;
         JarFile inputJar = null;
-        FileOutputStream outputFile = null;
+        BufferedOutputStream outputFile = null;
         int hashes = 0;
         try {
             X509Certificate publicKey = readPublicKey(context.getAssets().open(PUBLIC_KEY_NAME));
@@ -173,7 +174,7 @@ public class ZipUtils {
             long timestamp = publicKey.getNotBefore().getTime() + 3600L * 1000;
             PrivateKey privateKey = readPrivateKey(context.getAssets().open(PRIVATE_KEY_NAME));
 
-            outputFile = new FileOutputStream(output);
+            outputFile = new BufferedOutputStream(new FileOutputStream(output));
             if (minSign) {
                 ZipUtils.signWholeFile(input, publicKey, privateKey, outputFile);
             } else {
