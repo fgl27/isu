@@ -48,7 +48,7 @@ public class Checks extends PreferenceFragment {
     private PreferenceCategory mChecks, mSafety, mChecksUpdates;
     private String suVersion, executableFilePath, result;
     private int image;
-    private boolean isCMSU, rootAccess, update_removed, appId, isu_hide, needpUp, FirstStart, isuinstaled, run;
+    private boolean isCMSU, rootAccess, temprootAccess, update_removed, appId, isu_hide, needpUp = false, FirstStart, isuinstaled, run;
     public SafetyNetHelper.Result SNCheckResult;
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
@@ -165,18 +165,8 @@ public class Checks extends PreferenceFragment {
             getActivity().registerReceiver(saveRunReceiver, new IntentFilter("saveRunReceiver"));
         } catch (NullPointerException ignored) {}
 
-        appId = Tools.appId(getActivity());
-        if (rootAccess && !appId) {
-            needpUp = Tools.NeedUpdate(getActivity());
-            if (needpUp)
-                updateStateMasked();
-            else {
-                new Tools.CheckUpdate(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
-            }
-        } else {
-            updateStateNoInternet();
-            new Tools.CheckUpdate(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
-        }
+        new Tools.CheckUpdate(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
+
         run = Tools.getBoolean("run_boot", false, getActivity());
         if (rootAccess && (!Tools.PatchesDone(getActivity()) || !run)) getActivity().startService(new Intent(getActivity(), MainService.class));
         updateHidePref(getActivity());
@@ -186,19 +176,14 @@ public class Checks extends PreferenceFragment {
     public void onResume() {
         super.onResume();
         if (FirstStart) {
-            if (rootAccess != Tools.rootAccess(getActivity())) {
-                rootAccess = Tools.rootAccess(getActivity());
+            temprootAccess = Tools.rootAccess(getActivity());
+            if (rootAccess != temprootAccess) {
+                rootAccess = temprootAccess;
                 Tools.updateMain(getActivity(), (String.format(getString(R.string.reloading), getString(R.string.su_access))));
             }
-            appId = Tools.appId(getActivity());
-            if (rootAccess && !appId) {
-                needpUp = Tools.NeedUpdate(getActivity());
-                if (needpUp)
-                    updateStateMasked();
-            }
+            updateHidePref(getActivity());
             run = Tools.getBoolean("run_boot", false, getActivity());
             if (rootAccess && (!Tools.PatchesDone(getActivity()) || !run)) getActivity().startService(new Intent(getActivity(), MainService.class));
-            updateHidePref(getActivity());
         } else FirstStart = true;
     }
 
@@ -288,13 +273,15 @@ public class Checks extends PreferenceFragment {
             mHide.setSummary(getString(R.string.device_not_root));
         } else {
             appId = Tools.appId(context);
-            isu_hide = ("" + Tools.runCommand("pm list packages | grep " + BuildConfig.APPLICATION_ID + " | cut -d: -f2", Tools.SuBinary(), getActivity())).contains(BuildConfig.APPLICATION_ID);
             if (!appId) {
+                isu_hide = ("" + Tools.runCommand("pm list packages | grep " + BuildConfig.APPLICATION_ID + " | cut -d: -f2", Tools.SuBinary(), getActivity())).contains(BuildConfig.APPLICATION_ID);
                 if (isu_hide) {
                     mHide.setIcon(R.drawable.warning);
                     mHide.setSummary(getString(R.string.not_hide));
                 } else {
                     isuinstaled = Tools.isuInstaled(context);
+                    if (needpUp)
+                        needpUp = Tools.NeedUpdate(getActivity());
                     if (needpUp) {
                         mHide.setIcon(R.drawable.warning);
                         mHide.setSummary(getString(R.string.need_update));
@@ -365,6 +352,9 @@ public class Checks extends PreferenceFragment {
             double versionDownload = (Math.floor(Float.valueOf(version) * 100) / 100);
             double versionApp = (Math.floor(Float.valueOf(BuildConfig.VERSION_NAME) * 100) / 100);
             if (versionDownload > versionApp) {
+                appId = Tools.appId(getActivity());
+                if (rootAccess && !appId)
+                    needpUp = true;
                 mUpdate.setSummary(String.format(getString(R.string.update_summary_out), version) + " " + BuildConfig.VERSION_NAME + getString(R.string.update_link));
                 mUpdate.setIcon(R.drawable.warning);
                 mUpdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
