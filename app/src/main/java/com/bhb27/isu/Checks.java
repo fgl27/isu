@@ -46,9 +46,9 @@ public class Checks extends PreferenceFragment {
 
     private Preference mSuStatus, mRebootStatus, mSafetyNet, mLog, mSafetyNet_remove, mChecksView, mUpdate, mUpdate_remove, mHelp, mHide;
     private PreferenceCategory mChecks, mSafety, mChecksUpdates;
-    private String suVersion, executableFilePath, result;
+    private String suVersion, executableFilePath, result, version, link;
     private int image;
-    private boolean isCMSU, rootAccess, temprootAccess, update_removed, appId, isu_hide, needpUp = false, FirstStart, isuinstaled, run;
+    private boolean isCMSU, rootAccess, temprootAccess, update_removed, appId, isu_hide, needpUp = false, iSuisUp, FirstStart, isuinstaled, run;
     public SafetyNetHelper.Result SNCheckResult;
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
@@ -165,7 +165,10 @@ public class Checks extends PreferenceFragment {
             getActivity().registerReceiver(saveRunReceiver, new IntentFilter("saveRunReceiver"));
         } catch (NullPointerException ignored) {}
 
-        new Tools.CheckUpdate(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
+        if (needpUp)
+            updateStateMasked();
+        else
+            updateStateCheck();
 
         run = Tools.getBoolean("run_boot", false, getActivity());
         if (rootAccess && (!Tools.PatchesDone(getActivity()) || !run)) getActivity().startService(new Intent(getActivity(), MainService.class));
@@ -281,8 +284,8 @@ public class Checks extends PreferenceFragment {
                 } else {
                     isuinstaled = Tools.isuInstaled(context);
                     if (needpUp)
-                        needpUp = Tools.NeedUpdate(getActivity());
-                    if (needpUp) {
+                        iSuisUp = Tools.NeedUpdate(getActivity());
+                    if (iSuisUp) {
                         mHide.setIcon(R.drawable.warning);
                         mHide.setSummary(getString(R.string.need_update));
                     } else if (!isuinstaled) {
@@ -301,7 +304,7 @@ public class Checks extends PreferenceFragment {
                         Tools.runCommand("pm hide " + BuildConfig.APPLICATION_ID, Tools.SuBinary(), context);
                         updateHidePref(getActivity());
                     } else if (!appId) {
-                        if (needpUp)
+                        if (iSuisUp)
                             Tools.UpHideDialog(getActivity());
                         else if (isuinstaled)
                             Tools.UnHideDialog(getActivity());
@@ -309,6 +312,8 @@ public class Checks extends PreferenceFragment {
                     return true;
                 }
             });
+            if (!appId)
+                updateStateMasked();
         }
     }
 
@@ -346,25 +351,19 @@ public class Checks extends PreferenceFragment {
             mChecksUpdates.addPreference(mUpdate);
             update_removed = false;
         }
-        String version = Tools.readString("last_app_version", null, getActivity());
-        String link = Tools.readString("last_app_link", null, getActivity());
+        version = Tools.readString("last_app_version", null, getActivity());
+        link = Tools.readString("last_app_link", null, getActivity());
         if (version != null && !version.isEmpty() && link != null && !link.isEmpty()) {
             double versionDownload = (Math.floor(Float.valueOf(version) * 100) / 100);
             double versionApp = (Math.floor(Float.valueOf(BuildConfig.VERSION_NAME) * 100) / 100);
             if (versionDownload > versionApp) {
                 appId = Tools.appId(getActivity());
-                if (rootAccess && !appId)
+                if (rootAccess && !appId) {
                     needpUp = true;
-                mUpdate.setSummary(String.format(getString(R.string.update_summary_out), version) + " " + BuildConfig.VERSION_NAME + getString(R.string.update_link));
-                mUpdate.setIcon(R.drawable.warning);
-                mUpdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        Tools.browser(link, getActivity());
-                        return true;
-                    }
-                });
+                    updateHidePref(getActivity());
+                } else updateStateMasked();
             } else if (versionDownload <= versionApp) {
+                needpUp = false;
                 mUpdate.setSummary(getString(R.string.update_summary_up));
                 mUpdate.setIcon(R.drawable.ok);
                 mUpdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -379,15 +378,27 @@ public class Checks extends PreferenceFragment {
     }
 
     private void updateStateMasked() {
-        mUpdate.setSummary(getString(R.string.update_use_hide));
-        mUpdate.setIcon(R.drawable.interrogation);
-        mUpdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Tools.DoAToast(getString(R.string.update_use_hide), getActivity());
-                return true;
-            }
-        });
+        if (iSuisUp) {
+            mUpdate.setSummary(getString(R.string.update_use_hide));
+            mUpdate.setIcon(R.drawable.interrogation);
+            mUpdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Tools.DoAToast(getString(R.string.update_use_hide), getActivity());
+                    return true;
+                }
+            });
+        } else {
+            mUpdate.setSummary(String.format(getString(R.string.update_summary_out), version) + " " + BuildConfig.VERSION_NAME + getString(R.string.update_link));
+            mUpdate.setIcon(R.drawable.warning);
+            mUpdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Tools.browser(link, getActivity());
+                    return true;
+                }
+            });
+        }
     }
 
     private void updateStateNoInternet() {
@@ -396,13 +407,17 @@ public class Checks extends PreferenceFragment {
         mUpdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                update_removed = true;
-                mChecksUpdates.removePreference(mUpdate);
-                mChecksUpdates.addPreference(mUpdate_remove);
-                new Tools.CheckUpdate(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
+                updateStateCheck();
                 return true;
             }
         });
+    }
+
+    private void updateStateCheck() {
+        update_removed = true;
+        mChecksUpdates.removePreference(mUpdate);
+        mChecksUpdates.addPreference(mUpdate_remove);
+        new Tools.CheckUpdate(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
     }
 
     private final BroadcastReceiver saveRunReceiver = new BroadcastReceiver() {
