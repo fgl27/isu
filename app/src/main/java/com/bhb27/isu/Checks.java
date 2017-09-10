@@ -51,6 +51,8 @@ public class Checks extends PreferenceFragment {
     private boolean isCMSU, rootAccess, temprootAccess, update_removed, appId, isu_hide, needpUp = false, iSuisUp, FirstStart, isuinstaled, run;
     public SafetyNetHelper.Result SNCheckResult;
 
+    private AlertDialog Dial;
+
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     @Override
@@ -201,6 +203,7 @@ public class Checks extends PreferenceFragment {
             getActivity().unregisterReceiver(saveRunReceiver);
         } catch (IllegalArgumentException ignored) {}
 
+        if (Dial != null) Dial.dismiss();
         Tools.closeSU();
     }
 
@@ -305,10 +308,10 @@ public class Checks extends PreferenceFragment {
                         updateHidePref(getActivity());
                     } else if (!appId) {
                         if (iSuisUp)
-                            Tools.UpHideDialog(getActivity());
+                            UpHideDialog(getActivity());
                         else if (isuinstaled)
-                            Tools.UnHideDialog(getActivity());
-                    } else Tools.HideDialog(getActivity());
+                            UnHideDialog(getActivity());
+                    } else HideDialog(getActivity());
                     return true;
                 }
             });
@@ -430,5 +433,73 @@ public class Checks extends PreferenceFragment {
     public void saveR() {
         if (Tools.rootAccess(getActivity()))
             Tools.saveBoolean("run_boot", true, getActivity());
+    }
+
+    public void HideDialog(Context context) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context, R.style.AlertDialogStyle)
+            .setCancelable(false)
+            .setTitle(getString(R.string.hide_title))
+            .setMessage(getString(R.string.hide_summary) + getString(R.string.hide_isu))
+            .setNeutralButton(getString(R.string.ok),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Tools.saveInt("hide_app_count", 1, context);
+                        context.startActivity(new Intent(context, StartMasked.class));
+                    }
+                })
+            .setPositiveButton(getString(R.string.cancel),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        return;
+                    }
+                });
+        Dial = dialog.create();
+        Dial.show();
+    }
+
+    public void UnHideDialog(Context context) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context, R.style.AlertDialogStyle)
+            .setTitle(getString(R.string.unhide_title))
+            .setMessage(getString(R.string.unhide_summary))
+            .setNeutralButton(getString(R.string.ok),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Tools.HideiSu(context);
+                    }
+                })
+            .setPositiveButton(getString(R.string.cancel),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        return;
+                    }
+                });
+        Dial = dialog.create();
+        Dial.show();
+    }
+
+    public void UpHideDialog(Context context) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context, R.style.AlertDialogStyle)
+            .setTitle(getString(R.string.need_update_title))
+            .setMessage(getString(R.string.need_update_summary))
+            .setNeutralButton(getString(R.string.ok),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Tools.UpHideiSu(context);
+                    }
+                })
+            .setPositiveButton(getString(R.string.cancel),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        return;
+                    }
+                });
+        Dial = dialog.create();
+        Dial.show();
     }
 }

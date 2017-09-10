@@ -143,84 +143,6 @@ public class Tools implements Constants {
         runCommand("pm uninstall " + context.getPackageName(), SuBinary(), context);
     }
 
-    public static void SimpleHideDialog(String message, Context context) {
-        new AlertDialog.Builder(context, R.style.AlertDialogStyle)
-            .setCancelable(false)
-            .setMessage(message)
-            .setNegativeButton(context.getString(R.string.ok),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        boolean su = SuBinary();
-                        runCommand("am start -n " + readString("hide_app_name", null, context) + "/" + BuildConfig.APPLICATION_ID + ".StartMasked", su, context);
-                        runCommand("pm hide " + BuildConfig.APPLICATION_ID, su, context);
-                        return;
-                    }
-                }).show();
-    }
-
-    public static void HideDialog(Context context) {
-        new AlertDialog.Builder(context, R.style.AlertDialogStyle)
-            .setCancelable(false)
-            .setTitle(context.getString(R.string.hide_title))
-            .setMessage(context.getString(R.string.hide_summary) + context.getString(R.string.hide_isu))
-            .setNeutralButton(context.getString(R.string.ok),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        saveInt("hide_app_count", 1, context);
-                        context.startActivity(new Intent(context, StartMasked.class));
-                    }
-                })
-            .setPositiveButton(context.getString(R.string.cancel),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        return;
-                    }
-                }).show();
-    }
-
-    public static void UnHideDialog(Context context) {
-        new AlertDialog.Builder(context, R.style.AlertDialogStyle)
-            .setTitle(context.getString(R.string.unhide_title))
-            .setMessage(context.getString(R.string.unhide_summary))
-            .setNeutralButton(context.getString(R.string.ok),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Tools.HideiSu(context);
-                    }
-                })
-            .setPositiveButton(context.getString(R.string.cancel),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        return;
-                    }
-                }).show();
-    }
-
-    public static void UpHideDialog(Context context) {
-        new AlertDialog.Builder(context, R.style.AlertDialogStyle)
-            .setTitle(context.getString(R.string.need_update_title))
-            .setMessage(context.getString(R.string.need_update_summary))
-            .setNeutralButton(context.getString(R.string.ok),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Tools.UpHideiSu(context);
-                    }
-                })
-            .setPositiveButton(context.getString(R.string.cancel),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        return;
-                    }
-                }).show();
-    }
-
     public static void UpHideiSu(Context context) {
         boolean su = SuBinary();
         runCommand("pm unhide " + BuildConfig.APPLICATION_ID, su, context);
@@ -278,9 +200,9 @@ public class Tools implements Constants {
 
             if (app_instaled.contains(pkg)) {
                 saveInt("hide_app_count", 1, mContext);
-                SimpleHideDialog(String.format(mContext.getString(R.string.hide_success), pkg), mContext);
+                SendBroadcast("RunSimpleHideDialog", mContext);
             } else if (getInt("hide_app_count", 1, mContext) <= 3) new HideTask(mContext).execute();
-            else SimpleDialogFail(mContext.getString(R.string.hide_fail), mContext);
+            else SendBroadcast("RunSimpleDialogFail", mContext);
         }
     }
 
@@ -315,19 +237,6 @@ public class Tools implements Constants {
             if (versionApp <= this_versionApp) return false;
         }
         return false;
-    }
-
-    public static void SimpleDialogFail(String message, Context context) {
-        new AlertDialog.Builder(context, R.style.AlertDialogStyle)
-            .setMessage(message)
-            .setNegativeButton(context.getString(R.string.dismiss),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        context.startActivity(new Intent(context, Start.class));
-                        return;
-                    }
-                }).show();
     }
 
     @SuppressWarnings("deprecation")
