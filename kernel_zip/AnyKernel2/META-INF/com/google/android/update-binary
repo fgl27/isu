@@ -17,8 +17,8 @@ set_perm_recursive() {
   dirs=$(echo $* | $bb awk '{ print substr($0, index($0,$5)) }');
   for i in $dirs; do
     chown -R $1.$2 $i; chown -R $1:$2 $i;
-    find "$i" -type d -exec chmod $3 {} +;
-    find "$i" -type f -exec chmod $4 {} +;
+    $bb find "$i" -type d -exec chmod $3 {} +;
+    $bb find "$i" -type f -exec chmod $4 {} +;
   done;
 }
 file_getprop() { grep "^$2" "$1" | cut -d= -f2; }
@@ -37,7 +37,7 @@ abort() {
    rm -rf /tmp/anykernel;
  fi;
  umount /system;
- umount /data;
+ mount /data 2>/dev/null;
  exit; 
 }
 
@@ -51,6 +51,8 @@ if [ $? != 0 -o -z "$(ls /tmp/anykernel/tools)" ]; then
 fi;
 chmod -R 755 /tmp/anykernel/tools /tmp/anykernel/bin;
 bb=/tmp/anykernel/tools/busybox;
+chmod 755 $bb;
+$bb chmod -R 755 /tmp/anykernel/tools /tmp/anykernel/bin;
 
 mount -o ro /system;
 cp -rf /system/build.prop /tmp/anykernel/bp.sh;
@@ -217,7 +219,7 @@ if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.cleanup)" == 1 ]; then
 fi;
 
 umount /system;
-umount /data;
+umount /data 2>/dev/null;
 ui_print " ";
 ui_print "Done Enjoy!";
 

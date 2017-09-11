@@ -176,6 +176,35 @@ write_boot() {
   elif [ `wc -c < /tmp/anykernel/boot-new.img` -gt `wc -c < /tmp/anykernel/boot.img` ]; then
     ui_print " "; ui_print "New image larger than boot partition. Aborting..."; exit 1;
   fi;
+  if [ -f "$bin/BootSignature_Android.jar" -a -d "$bin/avb" ]; then
+    if [ -f "/system/system/bin/dalvikvm" ]; then
+      umount /system;
+      umount /system 2>/dev/null;
+      mkdir /system_root;
+      mount -o ro -t auto /dev/block/bootdevice/by-name/system$slot /system_root;
+      mount -o bind /system_root/system /system;
+    fi;
+    unset LD_LIBRARY_PATH;
+    pk8=`ls $bin/avb/*.pk8`;
+    cert=`ls $bin/avb/*.x509.*`;
+    /system/bin/dalvikvm -Xbootclasspath:/system/framework/core-oj.jar:/system/framework/core-libart.jar:/system/framework/conscrypt.jar:/system/framework/bouncycastle.jar -Xnodex2oat -Xnoimage-dex2oat -cp $bin/BootSignature_Android.jar com.android.verity.BootSignature /boot boot-new.img $pk8 $cert boot-new-signed.img;
+    if [ $? != 0 ]; then
+      ui_print " "; ui_print "Signing image failed. Aborting..."; exit 1;
+    fi;
+    mv -f boot-new-signed.img boot-new.img;
+    if [ -d "/system_root" ]; then
+      umount /system;
+      umount /system_root;
+      rmdir /system_root;
+      mount -o ro -t auto /system;
+    fi;
+  fi;
+  if [ -f "$bin/blobpack" ]; then
+    printf '-SIGNED-BY-SIGNBLOB-\00\00\00\00\00\00\00\00' > boot-new-signed.img;
+    $bin/blobpack tempblob LNX boot-new.img;
+    cat tempblob >> boot-new-signed.img;
+    mv -f boot-new-signed.img boot-new.img;
+  fi;
   if [ -f "/data/custom_boot_image_patch.sh" ]; then
     ash /data/custom_boot_image_patch.sh /tmp/anykernel/boot-new.img;
     if [ $? != 0 ]; then
@@ -254,7 +283,11 @@ replace_section() {
   begin=`grep -n "$2" $1 | head -n1 | cut -d: -f1`;
   for end in `grep -n "$3" $1 | cut -d: -f1`; do
     if [ "$begin" -lt "$end" ]; then
-      sed -i "/${2//\//\\/}/,/${3//\//\\/}/d" $1;
+      if [ "$3" == " " ]; then
+        sed -i "/${2//\//\\/}/,/^\s*$/d" $1;
+      else
+        sed -i "/${2//\//\\/}/,/${3//\//\\/}/d" $1;
+      fi;
       sed -i "${begin}s;^;${4}\n;" $1;
       break;
     fi;
@@ -266,7 +299,11 @@ remove_section() {
   begin=`grep -n "$2" $1 | head -n1 | cut -d: -f1`;
   for end in `grep -n "$3" $1 | cut -d: -f1`; do
     if [ "$begin" -lt "$end" ]; then
-      sed -i "/${2//\//\\/}/,/${3//\//\\/}/d" $1;
+      if [ "$3" == " " ]; then
+        sed -i "/${2//\//\\/}/,/^\s*$/d" $1;
+      else
+        sed -i "/${2//\//\\/}/,/${3//\//\\/}/d" $1;
+      fi;
       break;
     fi;
   done;
