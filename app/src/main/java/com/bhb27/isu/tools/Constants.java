@@ -36,7 +36,7 @@ public interface Constants {
     //e.g: allow { source1 source2 } { target1 target2 } permission-class { permission1 permission2 }
     //be aware if one thing from a bracket fail the line fail that is way is all separeted
     String[] MagiskPolicy = new String[] {
-        " --live \"allow default_prop sudaemon default_prop write \"",
+        " --live \"allow sudaemon default_prop file write \"",
         " --live \"allow shell sudaemon unix_stream_socket connectto \"",
         " --live \"allow shell superuser_device sock_file write \"",
         " --live \"allow untrusted_app superuser_device sock_file write \"",
