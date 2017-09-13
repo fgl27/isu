@@ -183,6 +183,7 @@ public class Tools implements Constants {
             boolean su = SuBinary();
             String hide_app = "hide.apk";
             File hideAPK = new File(mContext.getCacheDir(), hide_app);
+            Log.d(TAG, "generateUnhide start");
             String pkg = ZipUtils.generateUnhide(mContext, hideAPK).replace("\0", "");
             runCommand("pm install -r /" + mContext.getCacheDir() + "/" + hide_app, su, mContext);
             saveString("hide_app_name", pkg, mContext);
@@ -197,7 +198,7 @@ public class Tools implements Constants {
             Context mContext = contextRef.get();
             String app_instaled = ("" + runCommand("pm list packages | grep " + pkg + " | cut -d: -f2", su, mContext));
             progressDialog.dismiss();
-
+            Log.d(TAG, "generateUnhide end");
             if (app_instaled.contains(pkg)) {
                 saveInt("hide_app_count", 1, mContext);
                 SendBroadcast("RunSimpleHideDialog", mContext);
@@ -207,10 +208,12 @@ public class Tools implements Constants {
     }
 
     public static boolean appInstaled(Context context) {
-        String pkg = readString("hide_app_name", "not", context);
-        String app_instaled = ("" + runCommand("pm list packages | grep " + pkg + " | cut -d: -f2", SuBinary(), context));
-        Log.d(TAG, "appInstaled pkg " + pkg + " app_instaled " + app_instaled + " state " + app_instaled.contains(pkg));
-        if (app_instaled.contains(pkg)) return true;
+        String pkg = readString("hide_app_name", null, context);
+        if (pkg != null) {
+            String app_instaled = ("" + runCommand("pm list packages | grep " + pkg + " | cut -d: -f2", SuBinary(), context));
+            Log.d(TAG, "appInstaled pkg " + pkg + " app_instaled " + app_instaled + " state " + app_instaled.contains(pkg));
+            if (app_instaled.contains(pkg)) return true;
+        }
         return false;
     }
 

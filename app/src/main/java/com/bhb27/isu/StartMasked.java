@@ -79,13 +79,13 @@ public class StartMasked extends AppCompatActivity {
     public void SimpleHideDialog(Context context) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(context, R.style.AlertDialogStyle)
             .setCancelable(false)
-            .setMessage(String.format(getString(R.string.hide_success), Tools.readString("hide_app_name", "not", context)))
+            .setMessage(String.format(getString(R.string.hide_success), Tools.readString("hide_app_name", "", context)))
             .setNegativeButton(getString(R.string.ok),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         boolean su = Tools.SuBinary();
-                        Tools.runCommand("am start -n " + Tools.readString("hide_app_name", null, context) + "/" + BuildConfig.APPLICATION_ID + ".StartMasked", su, context);
+                        Tools.runCommand("am start -n " + Tools.readString("hide_app_name", "", context) + "/" + BuildConfig.APPLICATION_ID + ".StartMasked", su, context);
                         Tools.runCommand("pm hide " + BuildConfig.APPLICATION_ID, su, context);
                         return;
                     }
