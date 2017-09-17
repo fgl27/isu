@@ -17,6 +17,10 @@ ui_print() { echo -e "ui_print $1\nui_print" > $OUTFD; }
 # contains <string> <substring>
 contains() { test "${1#*$2}" != "$1" && return 0 || return 1; }
 
+mkmtkhdr=0;
+device_mdt=$(getprop | grep -i mediatek);
+contains $device_mdt "mediatek" && mkmtkhdr=1;
+contains $device_mdt "Mediatek" && mkmtkhdr=1;
 # dump boot and extract ramdisk
 dump_boot() {
 
@@ -31,6 +35,13 @@ dump_boot() {
   if [ -z "$block" ]; then
      if [ -e /tmp/recovery.log ]; then
         block=$(cat /tmp/recovery.log | grep /boot | grep /dev | head -n1 | awk '{print $3;}');
+        if [ "$mkmtkhdr" == 1 ]; then
+          blocksize=$(cat /tmp/recovery.log |grep /boot |grep Size | head -n1 | awk '{print $6;}' | grep MB)
+          if [ -n "$blocksize" ]; then 
+             ui_print "Detected size of boot device $blocksize"; 
+             blockcount=$(echo "$blocksize" | awk '{sub("MB","M"); print "bs="$0" count=1"}')
+          fi;
+        fi;
      fi;
   fi;
 
@@ -52,7 +63,9 @@ dump_boot() {
 
   if [ -f "$bin/nanddump" ]; then
     $bin/nanddump -f /tmp/anykernel/boot.img $block;
-  else
+  elif [ "$mkmtkhdr" == 1 ]; then
+    dd if=$block of=/tmp/anykernel/boot.img $blockcount
+  else 
     dd if=$block of=/tmp/anykernel/boot.img;
   fi;
   if [ -f "$bin/unpackelf" ]; then
@@ -64,7 +77,7 @@ dump_boot() {
   if [ $? != 0 ]; then
     ui_print "block = $block"; ui_print "Dumping/splitting image failed. Aborting..."; exit 1;
   fi;
-  if [ -f "$bin/mkmtkhdr" ]; then
+  if [ "$mkmtkhdr" == 1 ]; then
     dd bs=512 skip=1 conv=notrunc if=$split_img/boot.img-ramdisk.gz of=$split_img/temprd;
     mv -f $split_img/temprd $split_img/boot.img-ramdisk.gz;
   fi;
@@ -161,7 +174,7 @@ write_boot() {
   if [ $? != 0 ]; then
     ui_print " "; ui_print "Repacking ramdisk failed. Aborting..."; exit 1;
   fi;
-  if [ -f "$bin/mkmtkhdr" ]; then
+  if [ "$mkmtkhdr" == 1 ]; then
     cd /tmp/anykernel;
     $bin/mkmtkhdr --rootfs ramdisk-new.cpio.gz;
     mv -f ramdisk-new.cpio.gz-mtk ramdisk-new.cpio.gz;
@@ -254,7 +267,6 @@ vs985
   if [ "$lg" == 3 ]; then
     ui_print "bump image specific for LG G3";
     dd if=$bin/bump bs=1 count=32 >> /tmp/anykernel/boot-new.img;
-    dd if=/dev/zero of=$block;
   fi;
   if [ "$(strings /tmp/anykernel/boot.img | grep SEANDROIDENFORCE )" ]; then
     printf 'SEANDROIDENFORCE' >> /tmp/anykernel/boot-new.img;
@@ -262,6 +274,9 @@ vs985
   if [ -f "$bin/flash_erase" -a -f "$bin/nandwrite" ]; then
     $bin/flash_erase $block 0 0;
     $bin/nandwrite -p $block /tmp/anykernel/boot-new.img;
+  elif [ "$mkmtkhdr" == 1 ]; then
+    dd if=/dev/zero of=$block $blockcount
+    dd if=/tmp/anykernel/boot-new.img of=$block;
   else
     dd if=/dev/zero of=$block;
     dd if=/tmp/anykernel/boot-new.img of=$block;
