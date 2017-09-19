@@ -71,7 +71,6 @@ public class StartMasked extends AppCompatActivity {
             this.unregisterReceiver(RunSimpleDialogFail);
         } catch (IllegalArgumentException ignored) {}
 
-        if (Dial != null) Dial.dismiss();
         Tools.closeSU();
         finish();
     }
