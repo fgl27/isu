@@ -32,10 +32,8 @@ SIGN=1;
 KEY_FOLDER="$HOME"/android/temp/sign/fgl.key;
 KEY_PASS=$(</"$HOME"/android/temp/sign/pass);
 
-#build the app?
+#build the app BAPP=1 or kernel_zip BAPP=0?
 BAPP=1;
-# make kernel_zip?
-MKZIP=0;
 # make zip only used if you have the need to make a zip of this a flash zip template is need
 # Auto sign zip Download from my folder link below extract and set the folder below on yours machine
 # https://www.androidfilehost.com/?fid=312978532265364585
@@ -44,11 +42,11 @@ ZIP_SIGN_FOLDER="$HOME"/android/ZipScriptSign;
 #Bellow this line theoretically noting need to be changed
 
 # sdk tool and zipzlign path
-TOOLVERSION=$(grep buildToolsVersion "$FOLDER"/app/build.gradle | head -n1 | cut -d\" -f2);
+TOOLVERSION=$(grep buildTools "$FOLDER"/versions.gradle | head -n1 | cut -d\' -f2);
 ZIPALIGN_FOLDER=$SDK_FOLDER/build-tools/$TOOLVERSION/zipalign;
 
 # out app folder and out app name
-VERSION=$(grep versionName "$FOLDER"/app/build.gradle | head -n1 | cut -d\" -f2 | sed 's/\./_/');
+VERSION=$(grep publishVersion "$FOLDER"/versions.gradle | head -n1 | cut -d\' -f2 | sed 's/\./_/');
 OUT_FOLDER="$FOLDER"/app/build/outputs/apk/release;
 APP_FINAL_NAME=iSu_$VERSION.apk;
 
@@ -109,7 +107,7 @@ if [ $BAPP == 1 ]; then
 	fi;
 fi;
 
-if [ $MKZIP == 1 ]; then
+if [ $BAPP == 0 ]; then
 	echo -e "\nMaking the zips\n"
 
 	echo -e "\nKernel reboot support enforce\n"

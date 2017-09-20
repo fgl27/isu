@@ -1,0 +1,17 @@
+ext.versions = [
+        minSdk            : 21,
+        compileSdk        : 26,
+        buildTools        : '26.0.1',
+
+        publishVersion    : '6.2',
+        publishVersionCode: 52,
+
+        gradlePlugin      : '3.0.0-beta5',
+
+        supportLib        : '26.1.0',
+        safetynet         : '10.2.6',
+        ztzip             : '1.12',
+        okhttp            : '3.8.1',
+        materialdialogs   : '0.9.4.7',
+        bouncycastle      : '1.58'
+]

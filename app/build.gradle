@@ -1,15 +1,16 @@
+apply from: '../versions.gradle'
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
 
     defaultConfig {
         applicationId "com.bhb27.isu"
-        minSdkVersion 21
-        targetSdkVersion 26
-        versionCode 52
-        versionName "6.2"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.compileSdk
+        versionCode versions.publishVersionCode
+        versionName versions.publishVersion
         ndk {
             moduleName 'zipadjust'
             abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
@@ -61,15 +62,15 @@ repositories {
 }
 
 dependencies {
-    api 'com.android.support:support-v4:26.1.0'
-    api 'com.android.support:support-v13:26.1.0'
-    api 'com.android.support:appcompat-v7:26.1.0'
-    api 'com.android.support:preference-v14:26.1.0'
-    api 'com.android.support:design:26.1.0'
-    api 'com.google.android.gms:play-services-safetynet:10.2.6'
-    api 'org.zeroturnaround:zt-zip:1.12'
-    api 'com.squareup.okhttp3:okhttp:3.8.1'
-    api 'com.afollestad.material-dialogs:core:0.9.4.7'
-    api 'org.bouncycastle:bcprov-jdk15on:1.58'
-    api 'org.bouncycastle:bcpkix-jdk15on:1.58'
+    api 'com.android.support:support-v4:' + versions.supportLib
+    api 'com.android.support:support-v13:' + versions.supportLib
+    api 'com.android.support:appcompat-v7:' + versions.supportLib
+    api 'com.android.support:preference-v14:' + versions.supportLib
+    api 'com.android.support:design:' + versions.supportLib
+    api 'com.google.android.gms:play-services-safetynet:' + versions.safetynet
+    api 'org.zeroturnaround:zt-zip:' + versions.ztzip
+    api 'com.squareup.okhttp3:okhttp:' + versions.okhttp
+    api 'com.afollestad.material-dialogs:core:' + versions.materialdialogs
+    api 'org.bouncycastle:bcprov-jdk15on:' + versions.bouncycastle
+    api 'org.bouncycastle:bcpkix-jdk15on:' + versions.bouncycastle
 }
