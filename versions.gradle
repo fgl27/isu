@@ -6,13 +6,13 @@ ext.versions = [
         publishVersion    : '6.2',
         publishVersionCode: 52,
 
-        gradlePlugin      : '3.0.0-beta5',
+        gradlePlugin      : '3.0.0-beta6',
         benmanes         : '0.15.0',
 
         supportLib        : '26.1.0',
         safetynet         : '10.2.6',
         ztzip             : '1.12',
-        okhttp            : '3.8.1',
+        okhttp            : '3.9.0',
         materialdialogs   : '0.9.4.7',
         bouncycastle      : '1.58'
 ]

@@ -57,6 +57,7 @@ ZIPNAME_ENFORCE=iSu_kernel_Reboot_Support_V_"$VERSION"_and_up_Enforcing;
 ZIPNAME_PERMISSIVE=iSu_kernel_Reboot_Support_V_"$VERSION"_and_up_Permissive;
 
 #making start here...
+export GRADLEVERSION="App Gradle version $(grep distributionUrl ./gradle/wrapper/gradle-wrapper.properties | head -n1 | cut -d\/ -f5) $(echo -e "\n\n")";
 
 contains() {
     string="$1"
@@ -149,6 +150,7 @@ if [ -e "$OUT_FOLDER"/"$APP_FINAL_NAME" ]; then
 	echo -e "\nBuild deprecation:\n";
 	grep deprecation build_log.txt;
 	./gradlew dependencyUpdates
+	./gradlew -q gradleUpdates
 
 	echo -e "\nApp saved at $OUT_FOLDER"/"$APP_FINAL_NAME\n"
 fi;

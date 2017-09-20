@@ -27,3 +27,27 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+class GreetingTask extends DefaultTask {
+    @TaskAction
+    def greet() {
+        println System.getenv( 'GRADLEVERSION' )
+        println ''
+    }
+}
+
+task gradleUpdates(type: GreetingTask) {
+    doLast {
+    group = "wrapper"
+        ["nightly": "nightly",
+         "rc"     : "release-candidate",
+         "current": "current"].each {
+            def label = it.value
+            def version = new groovy.json.JsonSlurper().parseText(new URL("https://services.gradle.org/versions/${label}").text)
+            if (version.empty) {
+                throw new GradleException("Cannot update wrapper to '${label}' version as there is currently no version of that label")
+            }
+            println "${label} version: ${version.version} (downloadUrl: ${version.downloadUrl})"
+        }
+    }
+}
