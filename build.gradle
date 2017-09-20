@@ -8,6 +8,7 @@ buildscript {
         jcenter()
         mavenCentral()
         maven { url "https://maven.google.com" }
+        maven { url "https://jitpack.io" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:' + versions.gradlePlugin
@@ -20,6 +21,8 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        mavenCentral()
+        maven { url "https://maven.google.com" }
         maven { url "https://jitpack.io" }
     }
 }
@@ -29,15 +32,15 @@ task clean(type: Delete) {
 }
 
 class GreetingTask extends DefaultTask {
-    @TaskAction
-    def greet() {
-        println System.getenv( 'GRADLEVERSION' )
-        println ''
-    }
 }
 
 task gradleUpdates(type: GreetingTask) {
     doLast {
+    tasks.dependencyUpdates.execute()
+    println ''
+    print 'Gradlew Update check ('
+    print System.getenv( 'GRADLEVERSION' )
+    println '):'
     group = "wrapper"
         ["nightly": "nightly",
          "rc"     : "release-candidate",
@@ -47,7 +50,7 @@ task gradleUpdates(type: GreetingTask) {
             if (version.empty) {
                 throw new GradleException("Cannot update wrapper to '${label}' version as there is currently no version of that label")
             }
-            println "${label} version: ${version.version} (downloadUrl: ${version.downloadUrl})"
+            println " -${label} version: ${version.version} (downloadUrl: ${version.downloadUrl})"
         }
     }
 }
