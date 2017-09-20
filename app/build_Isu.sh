@@ -145,7 +145,7 @@ END2="$(date)";
 END=$(date +%s.%N);
 
 if [ -e "$OUT_FOLDER"/"$APP_FINAL_NAME" ]; then
-	./gradlew -q gradleUpdates
+	./gradlew -q gradleUpdates | sed '/jacoco/d'
 	echo -e "\nLint issues:\n";
 	grep issues build_log.txt;
 	echo -e "\nBuild deprecation:\n";
