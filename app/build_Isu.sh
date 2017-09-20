@@ -148,6 +148,7 @@ if [ -e "$OUT_FOLDER"/"$APP_FINAL_NAME" ]; then
 	grep issues build_log.txt;
 	echo -e "\nBuild deprecation:\n";
 	grep deprecation build_log.txt;
+	./gradlew dependencyUpdates
 
 	echo -e "\nApp saved at $OUT_FOLDER"/"$APP_FINAL_NAME\n"
 fi;

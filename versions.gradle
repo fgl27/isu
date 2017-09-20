@@ -7,6 +7,7 @@ ext.versions = [
         publishVersionCode: 52,
 
         gradlePlugin      : '3.0.0-beta5',
+        benmanes         : '0.15.0',
 
         supportLib        : '26.1.0',
         safetynet         : '10.2.6',
