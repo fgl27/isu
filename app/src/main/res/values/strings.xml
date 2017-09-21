@@ -70,7 +70,7 @@
     <string name="anddebug_change">Change Android debugging state</string>
     <string name="check_settings">Check SETTINGS for extra controls actions base on SU state</string>
     <string name="tasker_summary">iSu controls can be controlled via Tasker\nClick here to see how</string>
-    <string name="tasker_help">Use the bellow intents as a \u0022Action\u0022 in a new task (System - Send intent *):\n\n%s \n*Only thing to add or change on the new task is the \u0022Action\u0022 all the other option can be the default of tasker, in doubt check xda support forum link in about</string>
+    <string name="tasker_help">Use the bellow intents as a \u0022Action\u0022 in a new task (SystemSend intent *):\n\n%s \n*Only thing to add or change on the new task is the \u0022Action\u0022 all the other option can be the default of tasker, in doubt check xda support forum link in about</string>
     <string name="tasker_help_extra_description">Descriptions:\n\n</string>
     <string name="tasker_help_extra_state">Set to \u0022%s\u0022 state\n</string>
     <string name="tasker_help_inv">Always inverses the current state\n</string>
@@ -209,20 +209,23 @@
     <string name="no_email_client">There is none email client installed on the device.</string>
     <string name="no_browser">There is none web browser installed on the device.</string>
     <string name="app_license">iSu is licensed under the GNU General Public License v3.0, and uses following dependencies:</string>
-    <string name="appcompat_v7" translatable="false">Appcompat v7 Library (by google)</string>
-    <string name="support_v4" translatable="false">Support v4 Library (by google)</string>
-    <string name="support_v13" translatable="false">Support v13 Library (by google)</string>
-    <string name="preference_v14" translatable="false">Preference v14 Library (by google)</string>
-    <string name="design" translatable="false">Design Library (by google)</string>
-    <string name="play_safetynet" translatable="false">Play Services Safetynet Library (by google)</string>
-    <string name="ztzip" translatable="false">ZeroTurnaround ZIP Library (by zeroturnaround)</string>
-    <string name="okhttp" translatable="false">okhttp Library, HTTP+HTTP/2 client for Android and Java applications (by Square)</string>
-    <string name="material_dialogs" translatable="false">Material Dialogs Library, a beautiful, fluid, and customizable dialogs API (by Aidan Follestad)</string>
-    <string name="resetprop" translatable="false">Resetprop Binary, to Manipulate any system props (by John Wu aka topjohnwu)</string>
-    <string name="busybox" translatable="false">Busybox Binary, the Swiss Army Knife of Embedded Linux (by Denys Vlasenko, build by Chris Renshaw aka osm0sis)</string>
-    <string name="magiskpolicy" translatable="false">MagiskPolicy Binary, sepolicy injection utility (by John Wu aka topjohnwu)</string>
+    <string name="appcompat_v7">Appcompat v7 Library (by google)</string>
+    <string name="support_v4">Support v4 Library (by google)</string>
+    <string name="support_v13">Support v13 Library (by google)</string>
+    <string name="preference_v14">Preference v14 Library (by google)</string>
+    <string name="design">Design Library (by google)</string>
+    <string name="play_safetynet">Play Services Safetynet Library (by google)</string>
+    <string name="ztzip">ZeroTurnaround ZIP Library (by zeroturnaround)</string>
+    <string name="okhttp">okhttp Library, HTTP+HTTP/2 client for Android and Java applications (by Square)</string>
+    <string name="material_dialogs">Material Dialogs Library, a beautiful, fluid, and customizable dialogs API (by Aidan Follestad)</string>
+    <string name="resetprop">Resetprop Binary, to Manipulate any system props (by John Wu aka topjohnwu)</string>
+    <string name="busybox">Busybox Binary, the Swiss Army Knife of Embedded Linux (by Denys Vlasenko, build by Chris Renshaw aka osm0sis)</string>
+    <string name="magiskpolicy">MagiskPolicy Binary, sepolicy injection utility (by John Wu aka topjohnwu)</string>
+    <string name="bouncy_castle">Bouncy Castle, Crypto APIs (by bouncycastle.org)</string>
+    <string name="zipadjust">Zipadjust Library (From MagiskManager)</string>
+    <string name="gradle_version_plugin">Gradle Versions Plugin (by ben-manes)</string>
 
-    <!--  Maybe common to all languages -->
+    <!--  Probably common to all languages -->
     <string name="ok">OK</string>
     <string name="email">Email</string>
     <!--  translatable false  or common to all languages -->

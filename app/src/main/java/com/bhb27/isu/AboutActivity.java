@@ -35,8 +35,8 @@ import com.bhb27.isu.BuildConfig;
 
 public class AboutActivity extends Activity {
     // in order of appearance
-    TextView version_number, email, email_summary, xda, git, git_summary, app_license, appcompat_v7, busybox,
-    design, magiskpolicy, material_dialogs, okhttp, play_safetynet, preference_v14, resetprop, support_v4, support_v13, ztzip;
+    TextView version_number, email, email_summary, xda, git, git_summary, app_license, appcompat_v7, bouncy_castle, busybox,
+    design, gradle_version_plugin, magiskpolicy, material_dialogs, okhttp, play_safetynet, preference_v14, resetprop, support_v4, support_v13, zipadjust, ztzip;
     ImageView ic_gmail, ic_xda, ic_git;
     private String SUBJECT;
 
@@ -74,8 +74,10 @@ public class AboutActivity extends Activity {
 
         app_license = (TextView) findViewById(R.id.app_license);
         appcompat_v7 = (TextView) findViewById(R.id.appcompat_v7);
+        bouncy_castle = (TextView) findViewById(R.id.bouncy_castle);
         busybox = (TextView) findViewById(R.id.busybox);
         design = (TextView) findViewById(R.id.design);
+        gradle_version_plugin = (TextView) findViewById(R.id.gradle_version_plugin);
         magiskpolicy = (TextView) findViewById(R.id.magiskpolicy);
         material_dialogs = (TextView) findViewById(R.id.material_dialogs);
         okhttp = (TextView) findViewById(R.id.okhttp);
@@ -85,6 +87,7 @@ public class AboutActivity extends Activity {
         support_v4 = (TextView) findViewById(R.id.support_v4);
         support_v13 = (TextView) findViewById(R.id.support_v13);
         ztzip = (TextView) findViewById(R.id.ztzip);
+        zipadjust = (TextView) findViewById(R.id.zipadjust);
 
         email.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,6 +164,13 @@ public class AboutActivity extends Activity {
             }
         });
 
+        bouncy_castle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Tools.browser("https://www.bouncycastle.org/", AboutContext);
+            }
+        });
+
         busybox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,6 +182,13 @@ public class AboutActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Tools.browser("https://developer.android.com/topic/libraries/support-library/packages.html#design", AboutContext);
+            }
+        });
+
+        gradle_version_plugin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Tools.browser("https://github.com/ben-manes/gradle-versions-plugin#gradle-versions-plugin", AboutContext);
             }
         });
 
@@ -228,6 +245,13 @@ public class AboutActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Tools.browser("https://developer.android.com/topic/libraries/support-library/packages.html#v13", AboutContext);
+            }
+        });
+
+        zipadjust.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Tools.browser("https://github.com/topjohnwu/MagiskManager/tree/master/app/src/main/jni", AboutContext);
             }
         });
 

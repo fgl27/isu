@@ -164,6 +164,16 @@
             android:layout_gravity="center"
             android:gravity="center" />
         <TextView
+            android:id="@+id/bouncy_castle"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/text_white"
+            android:text="@string/bouncy_castle"
+            android:layout_gravity="center"
+            android:gravity="center" />
+        <TextView
             android:id="@+id/busybox"
             android:layout_marginTop="15dp"
             android:layout_width="wrap_content"
@@ -181,6 +191,16 @@
             android:textSize="15sp"
             android:textColor="@color/text_white"
             android:text="@string/design"
+            android:layout_gravity="center"
+            android:gravity="center" />
+        <TextView
+            android:id="@+id/gradle_version_plugin"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/text_white"
+            android:text="@string/gradle_version_plugin"
             android:layout_gravity="center"
             android:gravity="center" />
         <TextView
@@ -264,6 +284,16 @@
             android:layout_gravity="center"
             android:gravity="center" />
         <TextView
+            android:id="@+id/zipadjust"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/text_white"
+            android:text="@string/zipadjust"
+            android:layout_gravity="center"
+            android:gravity="center" />
+        <TextView
             android:id="@+id/ztzip"
             android:layout_marginTop="15dp"
             android:layout_width="wrap_content"
@@ -274,7 +304,7 @@
             android:layout_gravity="center"
             android:gravity="center" />
         <TextView
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="50dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/empty"
