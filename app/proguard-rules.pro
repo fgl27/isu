@@ -30,6 +30,8 @@
 -dontnote com.google.android.gms.**
 -dontnote android.widget.Toolbar
 -dontnote android.support.v7.widget.Toolbar
+-dontwarn javax.annotation.**
+-dontwarn org.codehaus.mojo.animal_sniffer.**
 
 # zeroturnaround
 -keep class org.slf4j.** { *; }

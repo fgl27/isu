@@ -169,7 +169,7 @@ if [ -e "$OUT_FOLDER"/"$APP_FINAL_NAME" ]; then
 		echo -e "${RED}$DEPRECATION${NC}";
 	fi;
 
-        UPDATEDEPENDENCIES=$(grep '\->' build_log.txt)
+        UPDATEDEPENDENCIES=$(grep ' \-> ' build_log.txt)
 	if [ -n "$UPDATEDEPENDENCIES" ]; then
 		echo -e "\n${CYAN}Dependencies that need update:\n${NC}";
 		echo -e "${RED}$UPDATEDEPENDENCIES${NC}";

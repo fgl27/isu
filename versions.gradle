@@ -10,7 +10,7 @@ ext.versions = [
         benmanes         : '0.15.0',
 
         supportLib        : '26.1.0',
-        safetynet         : '10.2.6',
+        safetynet         : '11.4.0',
         ztzip             : '1.12',
         okhttp            : '3.9.0',
         materialdialogs   : '0.9.4.7',

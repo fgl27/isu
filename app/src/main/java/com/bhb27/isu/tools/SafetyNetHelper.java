@@ -21,6 +21,7 @@ import java.security.SecureRandom;
 import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.R;
 
+@SuppressWarnings("deprecation")
 public abstract class SafetyNetHelper
 implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
