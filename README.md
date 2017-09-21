@@ -28,7 +28,7 @@ Clone the project and come in:
 
 ``` bash
 $ git clone git://github.com/bhb27/isu.git
-$ cd isu
+$ cd isu_folder_path
 $ ./gradlew build
 ```
 
@@ -55,7 +55,7 @@ I particularly prefer to use this .sh to build
 ## Credits
 
 * ROOT function of Kernel adiutor original 2015 version [by Grarak](https://github.com/Grarak/KernelAdiutor)
-* For the Kernel_reboot_support was used AnyKernel2 [by AnyKernel2](https://github.com/osm0sis/AnyKernel2)
+* For the Kernel_reboot_support was used AnyKernel2 as base [by AnyKernel2](https://github.com/osm0sis/AnyKernel2)
 * Appcompat v7 Library [by google](https://developer.android.com/topic/libraries/support-library/packages.html#v7-appcompat)
 * Busybox Binary, the Swiss Army Knife of Embedded Linux [by Denys Vlasenko, build by Chris Renshaw aka osm0sis](https://forum.xda-developers.com/showthread.php?t=2239421)
 * Design Library [by google](https://developer.android.com/topic/libraries/support-library/packages.html#design)
@@ -68,4 +68,7 @@ I particularly prefer to use this .sh to build
 * Support v4 Library [by google](https://developer.android.com/topic/libraries/support-library/packages.html#v4)
 * Support v13 Library [by google](https://developer.android.com/topic/libraries/support-library/packages.html#v13)
 * ZeroTurnaround ZIP Library [by zeroturnaround](https://github.com/zeroturnaround/zt-zip)
+* Gradle Versions Plugin [by ben-manes](https://github.com/ben-manes/gradle-versions-plugin#gradle-versions-plugin)
+* Bouncy Castle Crypto APIs [by bouncycastle.org](https://www.bouncycastle.org/)
+* Zipadjust Library [From MagiskManager](https://github.com/topjohnwu/MagiskManager/tree/master/app/src/main/jni)
 
