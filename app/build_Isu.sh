@@ -1,4 +1,10 @@
 #!/bin/bash
+#colors
+RED='\033[1;31m'
+CYAN='\033[1;36m' 
+GREEN='\033[1;32m' 
+YELLOW='\033[1;33m' 
+NC='\033[1m'
 #timer counter
 START=$(date +%s.%N);
 START2="$(date)";
@@ -57,8 +63,6 @@ ZIPNAME_ENFORCE=iSu_kernel_Reboot_Support_V_"$VERSION"_and_up_Enforcing;
 ZIPNAME_PERMISSIVE=iSu_kernel_Reboot_Support_V_"$VERSION"_and_up_Permissive;
 
 #making start here...
-export GRADLEVERSION="App Gradle version: $(grep distributionUrl ./gradle/wrapper/gradle-wrapper.properties | head -n1 | cut -d\/ -f5)$(echo -e "\n\n")";
-
 contains() {
     string="$1"
     substring="$2"
@@ -99,7 +103,7 @@ if [ $BAPP == 1 ]; then
 	./gradlew build 2>&1 | tee build_log.txt
 
 	if [ ! -e ./app/build/outputs/apk/release/app-release-unsigned.apk ]; then
-		echo -e "\nApp not build$\n"
+		echo -e "\n${RED}App not buil!\n${NC}";
 		exit 1;
 	elif [ $SIGN == 1 ]; then
 		jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -storepass "$KEY_PASS" -keystore "$KEY_FOLDER" "$OUT_FOLDER"/app-release-unsigned.apk Felipe_Leon
@@ -144,15 +148,41 @@ fi;
 END2="$(date)";
 END=$(date +%s.%N);
 
+#Build issues, deprecations and updates checker
 if [ -e "$OUT_FOLDER"/"$APP_FINAL_NAME" ]; then
-	./gradlew -q gradleUpdates | sed '/jacoco/d'
-	echo -e "\nLint issues:\n";
-	grep issues build_log.txt;
-	echo -e "\nBuild deprecation:\n";
-	grep deprecation build_log.txt;
+	echo "$(./gradlew -q gradleUpdates | sed '/jacoco/d')" >> build_log.txt
 
-	echo -e "\nApp saved at $OUT_FOLDER"/"$APP_FINAL_NAME\n"
+        ISSUES=$(grep issues build_log.txt | grep release)
+	if [ -n "$ISSUES" ]; then
+		NOISSUES=0;
+		contains "$ISSUES" ": 0 issues" && NOISSUES=1;
+		if [ $NOISSUES == 0 ]; then
+			echo -e "\n${CYAN}Lint issues:\n${NC}";
+			echo -e "${RED}$ISSUES${NC}";
+		fi;
+	fi;
+
+        DEPRECATION=$(grep deprecation build_log.txt)
+	if [ -n "$DEPRECATION" ]; then
+		echo -e "\n${CYAN}Build deprecation:\n${NC}";
+		echo -e "${RED}$DEPRECATION${NC}";
+	fi;
+
+        UPDATEDEPENDENCIES=$(grep '\->' build_log.txt)
+	if [ -n "$UPDATEDEPENDENCIES" ]; then
+		echo -e "\n${CYAN}Dependencies that need update:\n${NC}";
+		echo -e "${RED}$UPDATEDEPENDENCIES${NC}";
+	fi;
+
+        GRADLEVERSION=$(grep distributionUrl ./gradle/wrapper/gradle-wrapper.properties | head -n1 | cut -d\/ -f5)
+        LASTGRADLEVERSION=$(grep 'current version' build_log.txt  | head -n1 | cut -d\/ -f5| cut -d\) -f1)
+	if [ ! "$GRADLEVERSION" == "$LASTGRADLEVERSION" ]; then
+		echo -e "\n${CYAN}Gradlew need update current:\n${NC}";
+		echo -e "\n${RED}current $GRADLEVERSION latest $LASTGRADLEVERSION\n${NC}";
+	fi;
+
+	echo -e "\n${GREEN}App saved at $OUT_FOLDER"/"$APP_FINAL_NAME${NC}";
 fi;
-echo -e "*** Build END ***"
-echo -e "\nTotal elapsed time of the script: $(echo "($END - $START) / 60"|bc ):$(echo "(($END - $START) - (($END - $START) / 60) * 60)"|bc ) (minutes:seconds).\n";
+echo -e "\n${YELLOW}*** Build END ***\n";
+echo -e "Total elapsed time of the script: ${RED}$(echo "($END - $START) / 60"|bc ):$(echo "(($END - $START) - (($END - $START) / 60) * 60)"|bc ) ${YELLOW}(minutes:seconds).\n${NC}";
 exit 1;

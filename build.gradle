@@ -38,9 +38,6 @@ task gradleUpdates(type: GreetingTask) {
     doLast {
     tasks.dependencyUpdates.execute()
     println ''
-    print 'Gradlew Update check ('
-    print System.getenv( 'GRADLEVERSION' )
-    println '):'
     group = "wrapper"
         ["nightly": "nightly",
          "rc"     : "release-candidate",
