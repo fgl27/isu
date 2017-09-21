@@ -159,6 +159,7 @@ if [ -e "$OUT_FOLDER"/"$APP_FINAL_NAME" ]; then
 		if [ $NOISSUES == 0 ]; then
 			echo -e "\n${CYAN}Lint issues:\n${NC}";
 			echo -e "${RED}$ISSUES${NC}";
+			sensible-browser "$FOLDER"/app/build/reports/lint-results.html
 		fi;
 	fi;
 
