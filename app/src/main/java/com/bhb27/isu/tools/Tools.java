@@ -149,11 +149,12 @@ public class Tools implements Constants {
         runCommand("am start -n " + BuildConfig.APPLICATION_ID + "/" + BuildConfig.APPLICATION_ID + ".StartMasked", su, context);
     }
 
-    public static boolean isuInstaled(Context context) {
+    public static boolean isuInstalled(Context context) {
         boolean su = SuBinary();
         String app_folder = "" + runCommand("pm path " + context.getPackageName() + " | head -n1 | cut -d: -f2", su, context);
         String[] OriginaliSuApk = app_folder.split("com");
-        return NewexistFile(OriginaliSuApk[0] + "com.bhb27.isu*/base.apk", true, context);
+        return NewexistFile(OriginaliSuApk[0] + "com.bhb27.isu*/base.apk", true, context) ||
+            NewexistFile(OriginaliSuApk[0] + "com.bhb27.isu*.apk", true, context);
     }
 
     public static class HideTask extends AsyncTask < Void, Void, String > {
@@ -218,7 +219,7 @@ public class Tools implements Constants {
     }
 
     public static boolean NeedUpdate(Context context) {
-        if (isuInstaled(context)) {
+        if (isuInstalled(context)) {
             boolean su = SuBinary();
             String sdcard = Environment.getExternalStorageDirectory().getPath();
             String temp_app = sdcard + "/temp.apk";
