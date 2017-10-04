@@ -175,6 +175,12 @@ if [ -e "$OUT_FOLDER"/"$APP_FINAL_NAME" ]; then
 		echo -e "${RED}$UPDATEDEPENDENCIES${NC}";
 	fi;
 
+        ODDDEPENDECIES=$(./gradlew -q allDeps --configuration releaseUnitTestCompileClasspath | grep ' \-> ' -B 3)
+	if [ -n "$ODDDEPENDECIES" ]; then
+		echo -e "\n${CYAN}ODD Dependencies that need check:\n${NC}";
+		echo -e "${RED}$ODDDEPENDECIES${NC}";
+	fi;
+
         GRADLEVERSION=$(grep distributionUrl ./gradle/wrapper/gradle-wrapper.properties | head -n1 | cut -d\/ -f5)
         LASTGRADLEVERSION=$(grep 'current version' build_log.txt  | head -n1 | cut -d\/ -f5| cut -d\) -f1)
         LASTRCGRADLEVERSION=$(grep 'release-candidat' build_log.txt  | head -n1 | cut -d\/ -f5| cut -d\) -f1)

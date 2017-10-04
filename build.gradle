@@ -51,3 +51,7 @@ task gradleUpdates(type: GreetingTask) {
         }
     }
 }
+
+subprojects { //check dependecies that may cause error contains -> ./gradlew -q allDeps --configuration releaseUnitTestCompileClasspath | grep ' -> ' -B 3
+    task allDeps(type: DependencyReportTask) {}
+}

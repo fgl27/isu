@@ -68,10 +68,20 @@ dependencies {
     api 'com.android.support:appcompat-v7:' + versions.supportLib
     api 'com.android.support:preference-v14:' + versions.supportLib
     api 'com.android.support:design:' + versions.supportLib
-    api 'com.google.android.gms:play-services-safetynet:' + versions.safetynet
+    api 'com.google.android.gms:play-services-safetynet:' + versions.playservices
     api 'org.zeroturnaround:zt-zip:' + versions.ztzip
     api 'com.squareup.okhttp3:okhttp:' + versions.okhttp
-    api 'com.afollestad.material-dialogs:core:' + versions.materialdialogs
     api 'org.bouncycastle:bcprov-jdk15on:' + versions.bouncycastle
     api 'org.bouncycastle:bcpkix-jdk15on:' + versions.bouncycastle
+
+    // for out of date api
+    api 'com.android.support:support-annotations:' + versions.supportLib
+    api('com.afollestad.material-dialogs:core:' + versions.materialdialogs) {
+        transitive = false
+    }
+
+    api('me.zhanghai.android.materialprogressbar:library:' + versions.zhanghai) {
+        transitive = false
+    }
+
 }
