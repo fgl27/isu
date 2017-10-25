@@ -501,7 +501,7 @@ public class Tools implements Constants {
 
         long time = System.currentTimeMillis();
         if (!AppMonitor) {
-            saveLong(SWICH_DELAY, time, context);
+            saveLong(SWITCH_DELAY, time, context);
             WrFileSwitchSuDelay(context, time);
         }
         ChangeSUToast(isChecked, context, (isChecked ? context.getString(R.string.per_app_active) : context.getString(R.string.per_app_deactive)));

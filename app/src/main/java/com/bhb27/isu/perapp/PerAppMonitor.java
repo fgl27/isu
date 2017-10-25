@@ -64,7 +64,7 @@ public class PerAppMonitor extends AccessibilityService {
         //delay check after su was changed using another tool
         bootTime = SystemClock.elapsedRealtime();
         allowdelay = Integer.valueOf(Tools.readString("allow_delay", "0", context));
-        delaysResult = (Tools.getLong(Constants.SWICH_DELAY, 0, context) + allowdelay);
+        delaysResult = (Tools.getLong(Constants.SWITCH_DELAY, 0, context) + allowdelay);
         FileSwitchSuDelay = Tools.RoFileSwitchSuDelay(context) + allowdelay;
 
          Log.d(TAG, "FileSwitchSuDelay = " + FileSwitchSuDelay);

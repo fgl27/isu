@@ -16,7 +16,7 @@
     <string name="props_status_good">OK for Safety Net</string>
     <string name="su_not_cm">Current SU version or state is not supported.\nSome app functions only works with CM-SU</string>
     <string name="reboot_support">Reboot support</string>
-    <string name="reboot_support_missing">The reboot support is need to avoid you losing SU after a reboot with SU deactivated. In Android Nougat the app can add that support, in Marshmallow or older is need to flash a file, click on DOWNLOAD FOLDER below to download the latest version and flash it via recovery</string>
+    <string name="reboot_support_missing">The reboot support is needed to avoid losing SU after a reboot with SU deactivated. In Android Nougat the app can add that support, in Marshmallow or older it is needed to flash a file, click on DOWNLOAD FOLDER below to download the latest version and flash it via recovery</string>
     <string name="missing">Missing or out of date! Click here to understand</string>
     <string name="download_folder">Download Folder</string>
     <string name="checks_log">Generate a .zip with all logs that can help to understand fails, bugs, etc&#8230;</string>
@@ -70,7 +70,7 @@
     <string name="anddebug_change">Change Android debugging state</string>
     <string name="check_settings">Check SETTINGS for extra controls actions base on SU state</string>
     <string name="tasker_summary">iSu controls can be controlled via Tasker\nClick here to see how</string>
-    <string name="tasker_help">Use the bellow intents as a \u0022Action\u0022 in a new task (SystemSend intent *):\n\n%s \n*Only thing to add or change on the new task is the \u0022Action\u0022 all the other option can be the default of tasker, in doubt check xda support forum link in about</string>
+    <string name="tasker_help">Use the below intents as an \u0022Action\u0022 in a new task (SystemSend intent *):\n\n%s \n*Only thing to add or change on the new task is the \u0022Action\u0022 all the other options can be the default of tasker, in doubt check xda support forum link in about</string>
     <string name="tasker_help_extra_description">Descriptions:\n\n</string>
     <string name="tasker_help_extra_state">Set to \u0022%s\u0022 state\n</string>
     <string name="tasker_help_inv">Always inverses the current state\n</string>
@@ -78,13 +78,13 @@
     <!-- Settings -->
     <string name="notification_title">SU is deactivated, activate SU?</string>
     <string name="notification_switch">Show a notification when SU is deactivated</string>
-    <string name="toast_notification_switch">Show Toast notifications when changing SU</string>
+    <string name="toast_notification_switch">Show toast notifications when changing SU</string>
     <string name="yes">Yes</string>
     <string name="dismiss">Dismiss</string>
     <string name="notifications">Notifications</string>
     <string name="activate_anddebug">Activated Android debugging</string>
     <string name="deactivate_anddebug">Deactivated Android debugging</string>
-    <string name="not_available">Not Available</string>
+    <string name="not_available">Not available</string>
     <string name="apply_su">Deactivate SU at boot</string>
     <string name="apply_su_delay">Deactivate SU Delay</string>
     <string name="apply_su_delay_summary">%d seconds</string>
@@ -96,15 +96,15 @@
     <string name="service_per_app">iSu App monitor</string>
     <string name="per_app_title_isu">Select the apps that will deactivate SU when started</string>
     <string name="per_app_title_su">Select the apps that will activate SU when started</string>
-    <string name="accessibility_service_desc">A Service to monitor when a foreground app starts then, activate or deactivate SU.\nBe aware some apps may be too fast and the service ativate or deactivate SU too late, on this case is recommended to use a manual change, via the app it widget or tile.</string>
-    <string name="activate_selinux">SELinux Set to Enforcing</string>
-    <string name="deactivate_selinux">SELinux Set to Permissive</string>
+    <string name="accessibility_service_desc">A service to monitor when a foreground app starts and then activate or deactivate SU.\nBe aware some apps may be too fast and the service activates or deactivates SU too late, in this case it is recommended to use a manual change, via the app\'s widget or tile.</string>
+    <string name="activate_selinux">SELinux set to Enforcing</string>
+    <string name="deactivate_selinux">SELinux set to Permissive</string>
     <string name="per_app_default_deactivate">Deactivate SU to any app if SU is activated</string>
-    <string name="per_app_default_activate">Activated SU to any app if SU is deactivated</string>
+    <string name="per_app_default_activate">Activate SU to any app if SU is deactivated</string>
     <string name="auto_restart_su">Automatic Re-Activate SU</string>
-    <string name="auto_restart_su_summary">If this switch is on, will automatic active SU when leave the app that deactivated SU</string>
+    <string name="auto_restart_su_summary">If this switch is on, SU will be automatically actived when leaving the app that deactivated SU</string>
     <string name="auto_restart_isu">Automatic Re-Deactivate SU</string>
-    <string name="auto_restart_isu_summary">If this switch is on, will automatic deactivate SU when leave the app that activated SU</string>
+    <string name="auto_restart_isu_summary">If this switch is on, SU will be automatically deactivated when leaving the app that activated SU</string>
     <string name="auto_restart_vice_versa">Automatic activate and deactivate can\'t be enable at the same time</string>
     <string name="deactivate_list">Deactivate list</string>
     <string name="activate_list">Activate list</string>
@@ -114,9 +114,9 @@
     <string name="per_app_dontcare">Don\'t Care List</string>
     <string name="per_app_dontcare_summary">Select the apps that will have no effect to App monitor, when it start.\nHow this works:\nSelect apps that are nor Root nor UnRoot apps, and are used by or are displayed above a Root or UnRoot app, example Keyboard or function overlay apps like volume apps</string>
     <string name="monitor_delay">Monitor delay</string>
-    <string name="monitor_delay_summary">App monitor will delay by the chosen time (current %s) when SU is change by widget, tile or controls</string>
-    <string name="monitor_warning">App monitor accessibility service is disabled\nTo use this service is need to enable it in \u0022system settings accessibility\u0022 \nClick here to open accessibility</string>
-    <string name="monitor_ok">App monitor accessibility service is enable in \u0022system settings accessibility\u0022 \nClick here to open accessibility</string>
+    <string name="monitor_delay_summary">App monitor will delay by the chosen time (current %s) when SU is changed by widget, tile or controls</string>
+    <string name="monitor_warning">App monitor accessibility service is disabled\nTo use this service, it is needed to enable it in \u0022system settings accessibility\u0022 \nClick here to open accessibility</string>
+    <string name="monitor_ok">App monitor accessibility service is enabled in \u0022system settings accessibility\u0022 \nClick here to open accessibility</string>
 
     <!--Prop-->
     <string name="unknown">Unknown</string>
@@ -124,23 +124,23 @@
     <string name="props_ok">Known safe value</string>
     <string name="props_nok">Known unsafe value</string>
     <string name="props_unknown">Unknown value</string>
-    <string name="props_unknown_summary">Props with unknown are props that yours device doesn\'t have, this doesn\'t means a problem</string>
+    <string name="props_unknown_summary">Props with unknown are props that your device doesn\'t have, this doesn\'t mean that there\'s a problem</string>
     <string name="safe">Safe value</string>
     <string name="unsafe">Unsafe value</string>
     <string name="unsafe_toast">Not recommended, if you really need to change, do it individually</string>
-    <string name="force_all_summary">Click on the below to force all Known Props to the chosen value:</string>
+    <string name="force_all_summary">Click on the below to force all known Props to the chosen value:</string>
     <string name="know_prop_list">Known props list</string>
     <string name="special_props">Special Props</string>
     <string name="special_props_summary">\nIf after a change of a special prop and one reboot the new value is reverted to original ROM value you need request the developer of the ROM to fix it</string>
     <string name="fingerprint_dialog_title">Choose an option:</string>
-    <string name="fingerprint_dialog_summary">Known safe:\nKnown Safe value for this prop for a nexus device\n\nPersonalized:\nEdit current value or Write a new value for this prop (example yours device stock ROM value for this)</string>
+    <string name="fingerprint_dialog_summary">Known safe:\nKnown safe value for this prop for a nexus device\n\nPersonalized:\nEdit current value or write a new value for this prop (example your device stock ROM value for this)</string>
     <string name="fingerprint_dialog_know_safe">Known safe</string>
     <string name="fingerprint_dialog_personalized">Personalized</string>
     <string name="fingerprint_dialog_personalized_title">Set new value for\n</string>
-    <string name="fingerprint_dialog_result">Be aware to apply the changes is need one reboot!</string>
+    <string name="fingerprint_dialog_result">Be aware to apply the changes, a reboot is needed!</string>
     <string name="fingerprint_apply">\n\n*The value has changed reboot to apply</string>
-    <string name="edited_text">The Personalized value can\'t be empty change not accepted</string>
-    <string name="equals_values">No changes made, new value equal current ROM value!</string>
+    <string name="edited_text">The personalized value can\'t be empty change not accepted</string>
+    <string name="equals_values">No changes made, new value equal to current ROM value!</string>
 
     <string name="edit">Edit</string>
     <string name="props_any_edit_dialog_title">Props to edit</string>
