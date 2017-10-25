@@ -42,6 +42,7 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.RemoteViews;
@@ -463,6 +464,27 @@ public class Tools implements Constants {
         runCommand("mount -o ro,remount /system", su, context);
     }
 
+    public static long stringToLong(String number) {
+        if(TextUtils.isEmpty(number)){
+            return 0;
+        }
+        try {
+            return Long.parseLong(number);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public static void WrFileSwitchSuDelay(Context context, long time) {
+        String executableFilePath = context.getFilesDir().getPath() + "/";
+        runCommand("echo '" + time + "' > " + executableFilePath + "time", SuBinary(), context);
+    }
+
+    public static long RoFileSwitchSuDelay(Context context) {
+        String executableFilePath = context.getFilesDir().getPath() + "/";
+        return stringToLong(runCommand("cat " + executableFilePath + "time", SuBinary(), context));
+    }
+
     public static void SwitchSu(boolean isChecked, boolean AppMonitor, Context context) {
         runCommand("mount -o rw,remount /system", !isChecked, context);
         if (isChecked) {
@@ -476,8 +498,12 @@ public class Tools implements Constants {
                 DoNotification(context);
         }
         runCommand("mount -o ro,remount /system", isChecked, context);
-        if (!AppMonitor)
-            saveLong(SWICH_DELAY, System.currentTimeMillis(), context);
+
+        long time = System.currentTimeMillis();
+        if (!AppMonitor) {
+            saveLong(SWICH_DELAY, time, context);
+            WrFileSwitchSuDelay(context, time);
+        }
         ChangeSUToast(isChecked, context, (isChecked ? context.getString(R.string.per_app_active) : context.getString(R.string.per_app_deactive)));
         Log.d(TAG, "Change SU isChecked = " + isChecked + " SU path " +
             runCommand(isChecked ? "which su" : "which " + readString("cmiyc", null, context), isChecked, context));

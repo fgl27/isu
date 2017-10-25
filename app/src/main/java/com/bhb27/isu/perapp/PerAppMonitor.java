@@ -42,7 +42,7 @@ public class PerAppMonitor extends AccessibilityService {
     private static final String TAG = "iSu" + PerAppMonitor.class.getSimpleName();
     public static String accessibilityId, sPackageName;
     String last_package = "", last_profile = "", dont_profile = "";
-    long time = System.currentTimeMillis(), SwitchSuDelay, delaysResult = 0, bootTime = 0;
+    long time = System.currentTimeMillis(), delaysResult = 0, bootTime = 0, FileSwitchSuDelay = 0;
     private int systemdelay = 3500, allowdelay = 0;
     private Context context;
     private boolean isCMSU;
@@ -62,14 +62,19 @@ public class PerAppMonitor extends AccessibilityService {
             return;
 
         //delay check after su was changed using another tool
-        allowdelay = Integer.valueOf(Tools.readString("allow_delay", "0", context));
-        SwitchSuDelay = Tools.getLong(Constants.SWICH_DELAY, 0, context);
-        delaysResult = (SwitchSuDelay + allowdelay);
         bootTime = SystemClock.elapsedRealtime();
+        allowdelay = Integer.valueOf(Tools.readString("allow_delay", "0", context));
+        delaysResult = (Tools.getLong(Constants.SWICH_DELAY, 0, context) + allowdelay);
+        FileSwitchSuDelay = Tools.RoFileSwitchSuDelay(context) + allowdelay;
+
+         Log.d(TAG, "FileSwitchSuDelay = " + FileSwitchSuDelay);
 
         if (delaysResult > System.currentTimeMillis())
             Log.d(TAG, "current delay result " +
                 (delaysResult - System.currentTimeMillis()) + " mseconds");
+        else if (FileSwitchSuDelay > System.currentTimeMillis())
+            Log.d(TAG, "current delay result " +
+                (FileSwitchSuDelay - System.currentTimeMillis()) + " mseconds");
         else {
             sPackageName = event.getPackageName().toString();
             Log.d(TAG, "Package Name is " + sPackageName + " time " + (System.currentTimeMillis() - time));
