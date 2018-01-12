@@ -10,7 +10,7 @@ ext.versions = [
         benmanes          : '0.17.0',
 
         supportLib        : '27.0.2',
-        playservices      : '11.4.2',
+        playservices      : '11.8.0',
         ztzip             : '1.12',
         okhttp            : '3.9.1',
         materialdialogs   : '0.9.6.0',
