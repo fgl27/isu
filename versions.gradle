@@ -1,7 +1,7 @@
 ext.versions = [
         minSdk            : 21,
         compileSdk        : 27,
-        buildTools        : '27.0.0',
+        buildTools        : '27.0.3',
 
         publishVersion    : '6.4',
         publishVersionCode: 54,
@@ -9,11 +9,11 @@ ext.versions = [
         gradlePlugin      : '3.0.0',
         benmanes          : '0.17.0',
 
-        supportLib        : '27.0.0',
+        supportLib        : '27.0.2',
         playservices      : '11.4.2',
         ztzip             : '1.12',
-        okhttp            : '3.9.0',
-        materialdialogs   : '0.9.5.0',
+        okhttp            : '3.9.1',
+        materialdialogs   : '0.9.6.0',
         zhanghai          : '1.4.2',
-        bouncycastle      : '1.58'
+        bouncycastle      : '1.59'
 ]
