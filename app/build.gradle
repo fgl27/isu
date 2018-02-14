@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId "com.bhb27.isu"
         minSdkVersion versions.minSdk
-        targetSdkVersion versions.compileSdk
+        targetSdkVersion versions.maxSdk
         versionCode versions.publishVersionCode
         versionName versions.publishVersion
         ndk {
