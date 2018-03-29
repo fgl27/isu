@@ -36,7 +36,7 @@ import android.widget.Toolbar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v4.app.FragmentActivity;
-import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.TabLayout;
 
@@ -115,7 +115,7 @@ public class Main extends FragmentActivity {
         Tools.closeSU();
     }
 
-    public class TabsPagerAdapter extends FragmentPagerAdapter {
+    public class TabsPagerAdapter extends FragmentStatePagerAdapter {
 
         String titles[] = getTitles();
         private Fragment frags[] = new Fragment[titles.length];
