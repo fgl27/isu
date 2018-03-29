@@ -48,7 +48,7 @@ public class Checks extends PreferenceFragment {
     private PreferenceCategory mChecks, mSafety, mChecksUpdates;
     private String suVersion, executableFilePath, result, version, link;
     private int image;
-    private boolean isCMSU, rootAccess, temprootAccess, update_removed, appId, isu_hide, needpUp = false, iSuisUp, FirstStart, isuInstalled, run;
+    private boolean isCMSU, rootAccess, temprootAccess, update_removed, appId, isu_hide, needpUp, iSuisUp, FirstStart, isuInstalled, run;
     public SafetyNetHelper.Result SNCheckResult;
 
     private AlertDialog Dial;
@@ -142,10 +142,8 @@ public class Checks extends PreferenceFragment {
         mLog.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                if (check_writeexternalstorage())
-                    new Tools.LogToZip(getActivity()).execute();
-                else
-                    Tools.DoAToast(getString(R.string.cant_generating), getActivity());
+                if (check_writeexternalstorage()) new Tools.LogToZip(getActivity()).execute();
+                else Tools.DoAToast(getString(R.string.cant_generating), getActivity());
                 return true;
             }
         });
@@ -167,10 +165,7 @@ public class Checks extends PreferenceFragment {
             getActivity().registerReceiver(saveRunReceiver, new IntentFilter("saveRunReceiver"));
         } catch (NullPointerException ignored) {}
 
-        if (needpUp)
-            updateStateMasked();
-        else
-            updateStateCheck();
+        updateStateCheck();
 
         run = Tools.getBoolean("run_boot", false, getActivity());
         if (rootAccess && (!Tools.PatchesDone(getActivity()) || !run)) getActivity().startService(new Intent(getActivity(), MainService.class));
@@ -286,11 +281,14 @@ public class Checks extends PreferenceFragment {
                     mHide.setSummary(getString(R.string.not_hide));
                 } else {
                     isuInstalled = Tools.isuInstalled(context);
-                    if (needpUp)
-                        iSuisUp = Tools.NeedUpdate(getActivity());
-                    if (iSuisUp) {
-                        mHide.setIcon(R.drawable.warning);
-                        mHide.setSummary(getString(R.string.need_update));
+                    mHide.setTitle(getString(R.string.unhide_title));
+                    if (needpUp) iSuisUp = Tools.NeedUpdate(getActivity());
+                    if (needpUp) {
+                        if (iSuisUp) {
+                            mHide.setIcon(R.drawable.warning);
+                            mHide.setSummary(getString(R.string.need_update));
+                        }
+                        updateStateMasked(iSuisUp);
                     } else if (!isuInstalled) {
                         mHide.setIcon(R.drawable.warning);
                         mHide.setSummary(getString(R.string.isu_not_instaled));
@@ -315,8 +313,6 @@ public class Checks extends PreferenceFragment {
                     return true;
                 }
             });
-            if (!appId)
-                updateStateMasked();
         }
     }
 
@@ -337,7 +333,7 @@ public class Checks extends PreferenceFragment {
             if (hasWriteExternalPermission == PackageManager.PERMISSION_GRANTED) {
                 return true;
             }
-        }
+        } else return true;
         return false;
     }
 
@@ -364,7 +360,7 @@ public class Checks extends PreferenceFragment {
                 if (rootAccess && !appId) {
                     needpUp = true;
                     updateHidePref(getActivity());
-                } else updateStateMasked();
+                } else updateStateMasked(false);
             } else if (versionDownload <= versionApp) {
                 needpUp = false;
                 mUpdate.setSummary(getString(R.string.update_summary_up));
@@ -380,8 +376,8 @@ public class Checks extends PreferenceFragment {
         } else updateStateNoInternet();
     }
 
-    private void updateStateMasked() {
-        if (iSuisUp) {
+    private void updateStateMasked(boolean useHide) {
+        if (useHide) {
             mUpdate.setSummary(getString(R.string.update_use_hide));
             mUpdate.setIcon(R.drawable.interrogation);
             mUpdate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -444,6 +440,7 @@ public class Checks extends PreferenceFragment {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        Tools.SwitchSu(true, false, getActivity());
                         Tools.saveInt("hide_app_count", 1, context);
                         context.startActivity(new Intent(context, StartMasked.class));
                     }
@@ -467,6 +464,7 @@ public class Checks extends PreferenceFragment {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        Tools.SwitchSu(true, false, getActivity());
                         Tools.HideiSu(context);
                     }
                 })

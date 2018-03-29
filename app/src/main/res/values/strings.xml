@@ -48,7 +48,7 @@
     <string name="need_update">Original iSu version is updated in relation to masked iSu, click here to update from original iSu</string>
     <string name="need_update_title">Update Masked</string>
     <string name="need_update_summary">Click OK to update Masked from original, if after the update process the app is not updated please try again.\nUpdate?</string>
-    <string name="update_use_hide">Use Hide iSu to update the app</string>
+    <string name="update_use_hide">Use Unhide iSu to update the app</string>
     <string name="isu_not_instaled">iSu not installed can\'t revert to original</string>
 
     <!-- controls -->

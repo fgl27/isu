@@ -238,6 +238,7 @@ public class Tools implements Constants {
             } else
                 versionApp = Float.valueOf(BuildConfig.VERSION_NAME);
             runCommand("rm -rf /" + temp_app, su, context);
+
             if (versionApp > this_versionApp) return true;
             if (versionApp <= this_versionApp) return false;
         }
