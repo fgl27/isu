@@ -7,13 +7,13 @@ ext.versions = [
         publishVersion    : '6.5',
         publishVersionCode: 55,
 
-        gradlePlugin      : '3.0.0',
+        gradlePlugin      : '3.0.1',
         benmanes          : '0.17.0',
 
-        supportLib        : '27.0.2',
+        supportLib        : '27.1.0',
         playservices      : '11.8.0',
         ztzip             : '1.12',
-        okhttp            : '3.9.1',
+        okhttp            : '3.10.0',
         materialdialogs   : '0.9.6.0',
         zhanghai          : '1.4.2',
         bouncycastle      : '1.59'
