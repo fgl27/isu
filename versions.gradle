@@ -4,8 +4,8 @@ ext.versions = [
         compileSdk        : 27,
         buildTools        : '27.0.3',
 
-        publishVersion    : '6.6',
-        publishVersionCode: 56,
+        publishVersion    : '6.7',
+        publishVersionCode: 57,
 
         gradlePlugin      : '3.0.1',
         benmanes          : '0.17.0',
