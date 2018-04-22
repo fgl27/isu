@@ -1036,12 +1036,16 @@ public class Tools implements Constants {
             String value = getprop(props[i]);
             Log.d(TAG, props[i] + " = " + value + (value.equals(props_OK[i]) ? (value.isEmpty() ? " Empty" : " Green") : (value.isEmpty() ? " Empty" : " Red")));
         }
+        boolean su = SuBinary();
         String bootdfgp = getprop(robootbuildfingerprint);
         String buildfgp = getprop(robuildfingerprint);
+        String system = runCommand("cat /proc/mounts | grep system", su, context);
         Log.d(TAG, robootbuildfingerprint + " = " + bootdfgp);
         Log.d(TAG, robuildfingerprint + "           = " + buildfgp + (!bootdfgp.equals(buildfgp) ? " Green" : " Red"));
         Log.d(TAG, "Build.FINGERPRINT" + "              = " + Build.FINGERPRINT + (buildfgp.equals(Build.FINGERPRINT) ? " Green" : " Red"));
-        Log.d(TAG, "SU " + (SuBinary() ? context.getString(R.string.activated) : context.getString(R.string.deactivated)));
+        Log.d(TAG, "system = " + system + (system.contains("rw") ? " Red" : " Green"));
+        Log.d(TAG, "Build.FINGERPRINT" + "              = " + Build.FINGERPRINT + (buildfgp.equals(Build.FINGERPRINT) ? " Green" : " Red"));
+        Log.d(TAG, "SU " + (su ? context.getString(R.string.activated) : context.getString(R.string.deactivated)));
         Log.d(TAG, "SELinux " + getSELinuxStatus(context));
         Log.d(TAG, "ADB " + (AndroidDebugState(context) ? context.getString(R.string.activated) : context.getString(R.string.deactivated)));
     }
