@@ -710,9 +710,9 @@ public class Tools implements Constants {
             bp_prop_value = bp_prop_value + runCommand("cat system/build.prop | grep " + prop +
                 " | head -1 | cut -d= -f2", su, context);
             bp_prop = bp_prop + runCommand("cat system/build.prop | grep " + prop + " | head -1 | cut -d= -f1", su, context);
-            if (bp_prop.contains(prop) && !bp_prop_value.equals(value))
-                overwritebp(prop, bp_prop_value, prop, value, path, context);
-            else if (force)
+            if (bp_prop.contains(prop)) {
+                if (!bp_prop_value.equals(value)) overwritebp(prop, bp_prop_value, prop, value, path, context);
+            } else if (force)
                 forcewritebp(prop + "=" + value, context);
             Log.d(TAG, "prop = " + prop + " bp_prop_value = " + " value = " + value);
         }
