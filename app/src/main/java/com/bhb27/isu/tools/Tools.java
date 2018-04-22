@@ -1044,7 +1044,6 @@ public class Tools implements Constants {
         Log.d(TAG, robuildfingerprint + "           = " + buildfgp + (!bootdfgp.equals(buildfgp) ? " Green" : " Red"));
         Log.d(TAG, "Build.FINGERPRINT" + "              = " + Build.FINGERPRINT + (buildfgp.equals(Build.FINGERPRINT) ? " Green" : " Red"));
         Log.d(TAG, "system = " + system + (system.contains("rw") ? " Red" : " Green"));
-        Log.d(TAG, "Build.FINGERPRINT" + "              = " + Build.FINGERPRINT + (buildfgp.equals(Build.FINGERPRINT) ? " Green" : " Red"));
         Log.d(TAG, "SU " + (su ? context.getString(R.string.activated) : context.getString(R.string.deactivated)));
         Log.d(TAG, "SELinux " + getSELinuxStatus(context));
         Log.d(TAG, "ADB " + (AndroidDebugState(context) ? context.getString(R.string.activated) : context.getString(R.string.deactivated)));
