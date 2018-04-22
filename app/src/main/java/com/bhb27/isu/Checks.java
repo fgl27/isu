@@ -282,8 +282,8 @@ public class Checks extends PreferenceFragment {
                 } else {
                     isuInstalled = Tools.isuInstalled(context);
                     mHide.setTitle(getString(R.string.unhide_title));
-                    if (needpUp) iSuisUp = Tools.NeedUpdate(getActivity());
                     if (needpUp) {
+                        iSuisUp = Tools.NeedUpdate(getActivity());
                         if (iSuisUp) {
                             mHide.setIcon(R.drawable.warning);
                             mHide.setSummary(getString(R.string.need_update));
