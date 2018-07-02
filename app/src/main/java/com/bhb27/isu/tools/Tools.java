@@ -405,9 +405,9 @@ public class Tools implements Constants {
                 runCommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_superuser, su, context);
             } else {
                 runCommand("mount -o rw,remount /system", su, context);
-                runCommand("cp -f " + executableFilePath + filename + " /system/xbin/" + filename, su, context);
+                runCommand("cp -f " + executableFilePath + filename + " /system/xbin/" + filename + ".sh", su, context);
                 runCommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_restart, su, context);
-                runCommand("chmod 755 /system/xbin/restart", su, context);
+                runCommand("chmod 755 /system/xbin/restart.sh", su, context);
                 runCommand("mount -o ro,remount /system", su, context);
             }
         }
@@ -419,10 +419,10 @@ public class Tools implements Constants {
         runCommand("mount -o rw,remount /system", su, context);
         if (!NewexistFile("/data/backup_isu", true, context))
             runCommand("cp -f " + xbin_su + " /data/backup_isu", su, context);
-        if (!NewexistFile("/system/xbin/restart", true, context)) {
-            runCommand("cp -f " + executableFilePath + init_restart + " /system/xbin/restart", su, context);
+        if (!NewexistFile("/system/xbin/restart.sh", true, context)) {
+            runCommand("cp -f " + executableFilePath + init_restart + " /system/xbin/restart.sh", su, context);
         }
-        runCommand("chmod 755 /system/xbin/restart", su, context);
+        runCommand("chmod 755 /system/xbin/restart.sh", su, context);
         Log.d(TAG, "backup_restart = " + runCommand(executableFilePath + "busybox" + " ls -l /system/xbin/restart", su, context));
         Log.d(TAG, "backup_isu = " + runCommand(executableFilePath + "busybox" + " ls -l /data/backup_isu", su, context));
         runCommand("mount -o ro,remount /system", su, context);
