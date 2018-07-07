@@ -5,9 +5,9 @@ apply plugin: 'com.github.ben-manes.versions'
 buildscript {
     apply from: './versions.gradle'
     repositories {
+        maven { url "https://maven.google.com" }
         jcenter()
         mavenCentral()
-        maven { url "https://maven.google.com" }
         maven { url "https://jitpack.io" }
     }
     dependencies {
@@ -20,9 +20,9 @@ buildscript {
 
 allprojects {
     repositories {
+        maven { url "https://maven.google.com" }
         jcenter()
         mavenCentral()
-        maven { url "https://maven.google.com" }
         maven { url "https://jitpack.io" }
     }
 }
