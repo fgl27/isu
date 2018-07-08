@@ -33,16 +33,22 @@ import com.bhb27.isu.tools.Tools;
 @TargetApi(24)
 public class QuickTileSU extends TileService {
 
+    private Tile mTile;
+    private boolean su;
+
     @Override
     public void onStartListening() {
         super.onStartListening();
-        boolean su = (Tools.SuVersionBool(Tools.SuVersion(this)));
-        if (su) {
-            getQsTile().setLabel((Tools.SuBinary() ?
-                this.getString(R.string.activated) : this.getString(R.string.deactivated)));
-        } else
-            getQsTile().setLabel(this.getString(R.string.not_available));
-        getQsTile().updateTile();
+        mTile = getQsTile();
+        if (Tools.rootAccess(this) && Tools.SuVersionBool(Tools.SuVersion(this))) {
+                su = Tools.SuBinary();
+                mTile.setLabel((su ? this.getString(R.string.activated) : this.getString(R.string.deactivated)));
+                mTile.setState(su ? mTile.STATE_ACTIVE : mTile.STATE_INACTIVE);
+        } else {
+            mTile.setLabel(this.getString(R.string.not_available));
+            mTile.setState(mTile.STATE_UNAVAILABLE);
+        }
+        mTile.updateTile();
     }
 
     @Override
@@ -53,15 +59,18 @@ public class QuickTileSU extends TileService {
     @Override
     public void onClick() {
         super.onClick();
-        boolean su_version = (Tools.SuVersionBool(Tools.SuVersion(this)));
-        boolean su = Tools.SuBinary();
-        if (su_version) {
-            Tools.SwitchSu(!su, false, this);
-            getQsTile().setLabel((!su ?
-                this.getString(R.string.activated) : this.getString(R.string.deactivated)));
-            Tools.SendBroadcast("updateControlsReceiver", this);
-            getQsTile().updateTile();
+        mTile = getQsTile();
+        if (Tools.rootAccess(this) && Tools.SuVersionBool(Tools.SuVersion(this))) {
+                su = !Tools.SuBinary();
+                Tools.SwitchSu(su, false, this);
+                mTile.setLabel((su ? this.getString(R.string.activated) : this.getString(R.string.deactivated)));
+                mTile.setState(su ? mTile.STATE_ACTIVE : mTile.STATE_INACTIVE);
+                Tools.SendBroadcast("updateControlsReceiver", this);
+        } else {
+            mTile.setLabel(this.getString(R.string.not_available));
+            mTile.setState(mTile.STATE_UNAVAILABLE);
         }
+        mTile.updateTile();
     }
 
 }
