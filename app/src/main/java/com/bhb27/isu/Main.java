@@ -51,6 +51,7 @@ import com.bhb27.isu.Props;
 import com.bhb27.isu.Settings;
 import com.bhb27.isu.tools.Tools;
 
+@SuppressWarnings("deprecation")
 public class Main extends FragmentActivity {
 
     public static WeakReference < FragmentActivity > FragmentActivityWeakReference;

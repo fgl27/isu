@@ -39,8 +39,10 @@ import com.bhb27.isu.BuildConfig;
 import com.bhb27.isu.Main;
 import com.bhb27.isu.services.MainService;
 import com.bhb27.isu.tools.Constants;
-import com.bhb27.isu.tools.SafetyNetHelper;
 import com.bhb27.isu.tools.Tools;
+
+import com.scottyab.safetynet.SafetyNetHelper;
+import android.util.Log;
 
 public class Checks extends PreferenceFragment {
 
@@ -49,7 +51,6 @@ public class Checks extends PreferenceFragment {
     private String suVersion, executableFilePath, result, version, link;
     private int image;
     private boolean isCMSU, rootAccess, temprootAccess, update_removed, appId, isu_hide, needpUp, iSuisUp, FirstStart, isuInstalled, run;
-    public SafetyNetHelper.Result SNCheckResult;
 
     private AlertDialog Dial;
 
@@ -203,26 +204,44 @@ public class Checks extends PreferenceFragment {
     }
 
     public void checkSafetyNet() {
-        new SafetyNetHelper(Main.FragmentActivityWeakReference.get()) {
+    final SafetyNetHelper safetyNetHelper = new SafetyNetHelper("a key that is attached to the app");
+
+    safetyNetHelper.requestTest(getActivity(), new SafetyNetHelper.SafetyNetWrapperCallback() {
             @Override
-            public void handleResults(Result result) {
-                SNCheckResult = result;
-                updatesafety();
+            public void error(int errorCode, String msg) {
+                //handle and retry depending on errorCode
+                Log.e("isu", msg);
+                updatesafety(false, false, msg);
             }
-        }.requestTest();
+
+            @Override
+            public void success(boolean ctsProfileMatch, boolean basicIntegrity) {
+                updatesafety(ctsProfileMatch, basicIntegrity, null);
+                if (ctsProfileMatch) {
+                    //profile of the device running your app matches the profile of a device that has passed Android compatibility testing.
+                                    Log.e("isu", "ctsProfileMatch " + ctsProfileMatch);
+                } else if(basicIntegrity){
+                    //then the device running your app likely wasn't tampered with, but the device has not necessarily passed Android compatibility testing.
+                                    Log.e("isu", "basicIntegrity " + basicIntegrity);
+                } else {
+                    //handle fail, maybe warn user device is unsupported or in compromised state? (this is up to you!)
+                                    Log.e("isu", "all fail");
+                }
+            }
+        });
     }
 
-    public void updatesafety() {
-        if (SNCheckResult.failed) {
+    public void updatesafety(boolean ctsProfileMatch, boolean basicIntegrity, String msg) {
+        boolean pass = (ctsProfileMatch && basicIntegrity);
+        if (!pass) {
             image = R.drawable.interrogation;
-            result = SNCheckResult.errmsg;
+            result = msg;
         } else {
             boolean adbRoot = Tools.AndroidDebugRoot() && Tools.AndroidDebugState(getActivity());
             boolean selinux = false;
-            boolean pass = (SNCheckResult.ctsProfile && SNCheckResult.basicIntegrity);
             String pass_result = (pass ? " " + getString(R.string.safetyNet_pass) : " " + getString(R.string.safetyNet_fail));
-            String cts_result = (SNCheckResult.ctsProfile ? " " + getString(R.string.safetyNet_pass) : " " + getString(R.string.safetyNet_fail));
-            String basicI_result = (SNCheckResult.basicIntegrity ? " " + getString(R.string.safetyNet_pass) : " " + getString(R.string.safetyNet_fail));
+            String cts_result = (ctsProfileMatch ? " " + getString(R.string.safetyNet_pass) : " " + getString(R.string.safetyNet_fail));
+            String basicI_result = (basicIntegrity ? " " + getString(R.string.safetyNet_pass) : " " + getString(R.string.safetyNet_fail));
             result = getString(R.string.safetyNet_check_success) + pass_result;
             result += "\n" + ("ctsProfile: " + cts_result);
             result += "\n" + ("basicIntegrity: " + basicI_result);

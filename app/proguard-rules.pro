@@ -48,3 +48,9 @@
 # BouncyCastle
 -keep class org.bouncycastle.** { *; }
 -dontwarn javax.naming.**
+
+# safetynethelper
+-keep class com.scottyab.safetynet.SafetyNetHelper.** { *; }
+-keep class com.google.android.gms.safetynet.** { *; }
+
+
