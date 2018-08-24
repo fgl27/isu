@@ -5,7 +5,6 @@
     <string name="safety_net">Safety Check</string>
     <string name="safety_net_summary">Click to do a device safety check</string>
     <string name="safety_net_result">In green OK, in red NOK results</string>
-
     <string name="props_status_good">OK for Safety Net</string>
     <string name="su_not_cm">Current SU version or state is not supported.\nSome app functions only works with CM-SU</string>
     <string name="reboot_support">Reboot support</string>
