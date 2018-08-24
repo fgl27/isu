@@ -21,6 +21,7 @@ package com.bhb27.isu.tools;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -94,8 +95,6 @@ import org.zeroturnaround.zip.ZipUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
-import android.app.NotificationChannel;
 
 public class Tools implements Constants {
 
