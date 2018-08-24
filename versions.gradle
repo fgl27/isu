@@ -11,11 +11,9 @@ ext.versions = [
         benmanes          : '0.20.0',
 
         supportLib        : '27.1.1',
-        playservices      : '11.8.0',
         ztzip             : '1.13',
         okhttp            : '3.11.0',
         materialdialogs   : '0.9.6.0',
         zhanghai          : '1.4.2',
-        safetynethelper   : '0.3.0',
         bouncycastle      : '1.60'
 ]

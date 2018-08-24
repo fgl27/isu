@@ -52,12 +52,9 @@
         android:key="safety"
         android:title="@string/safety_net">
         <Preference
-            android:key="safety_net_remove"
-            android:persistent="false" />
-        <Preference
             android:key="safety_net"
             android:title="@string/safety_net"
-            android:summary="@string/safetyNet_untested"
+            android:summary="@string/safety_net_summary"
             android:persistent="false" />
     </PreferenceCategory>
     <PreferenceCategory

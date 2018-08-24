@@ -44,7 +44,8 @@ android {
                 'ExportedReceiver', // easy tasker support need to have a exporte receiver
                 'PluralsCandidate', //the string start at a plural
                 'TrustAllX509TrustManager', //zip libs
-                'InvalidPackage' //zip libs
+                'InvalidPackage', //zip libs
+                'SetTextI18n' //hardcoded settext
     }
     productFlavors {
     }
@@ -68,11 +69,9 @@ dependencies {
     api 'com.android.support:appcompat-v7:' + versions.supportLib
     api 'com.android.support:preference-v14:' + versions.supportLib
     api 'com.android.support:design:' + versions.supportLib
-    api 'com.google.android.gms:play-services-safetynet:' + versions.playservices
     api 'org.zeroturnaround:zt-zip:' + versions.ztzip
     api 'com.squareup.okhttp3:okhttp:' + versions.okhttp
     api 'org.bouncycastle:bcprov-jdk15on:' + versions.bouncycastle
     api 'org.bouncycastle:bcpkix-jdk15on:' + versions.bouncycastle
     api 'com.afollestad.material-dialogs:core:' + versions.materialdialogs
-    api 'com.github.scottyab:safetynethelper:' + versions.safetynethelper
 }

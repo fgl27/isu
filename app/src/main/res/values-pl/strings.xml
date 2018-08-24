@@ -3,11 +3,6 @@
 
     <!-- checks -->
     <string name="safety_net">Test Safety Net</string>
-    <string name="safetyNet_no_response">Nie można sprawdzić SafetyNet, brak internetu?</string>
-    <string name="safetyNet_fail">Niepowodzenie</string>
-    <string name="safetyNet_pass">Powodzenie</string>
-    <string name="safetyNet_untested">Nie testowano. Kliknij, aby przetestować</string>
-    <string name="safetyNet_testing">Testowanie&#8230; Jeśli zajmie to zbyt dużo czasu, kliknij ponownie!</string>
     <string name="su_not_cm">Obecny SU nie jest obsługiwany.\nNiektóre funkcje aplikacji działają tylko z CM-SU</string>
     <string name="reboot_support">Wsparcie ponownego uruchomienia</string>
     <string name="reboot_support_missing">Wsparcie ponownego uruchomienia jest wymagane, aby nie stracić SU po ponownym uruchomieniu urządzenia, gdy SU był wyłączony. W Androidzie Nougat aplikacja jest wspierana, w Marshmallow lub starszym wymagane jest zainstalowanie pliku (przez Recovery). Kliknij FOLDER POBIERANIA, aby uzyskać pliki</string>

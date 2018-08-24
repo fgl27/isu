@@ -26,14 +26,23 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.Manifest;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
 import android.support.v14.preference.PreferenceFragment;
-import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.LayoutInflater;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.bhb27.isu.BuildConfig;
 import com.bhb27.isu.Main;
@@ -41,16 +50,13 @@ import com.bhb27.isu.services.MainService;
 import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.tools.Tools;
 
-import com.scottyab.safetynet.SafetyNetHelper;
-import android.util.Log;
-
 public class Checks extends PreferenceFragment {
 
     private Preference mSuStatus, mRebootStatus, mSafetyNet, mLog, mSafetyNet_remove, mChecksView, mUpdate, mUpdate_remove, mHelp, mHide;
-    private PreferenceCategory mChecks, mSafety, mChecksUpdates;
-    private String suVersion, executableFilePath, result, version, link;
+    private PreferenceCategory mChecks, mChecksUpdates;
+    private String suVersion, executableFilePath, version, link;
     private int image;
-    private boolean isCMSU, rootAccess, temprootAccess, update_removed, appId, isu_hide, needpUp, iSuisUp, FirstStart, isuInstalled, run;
+    private boolean isCMSU, rootAccess, temprootAccess, update_removed, appId, isu_hide, needpUp, iSuisUp, FirstStart, isuInstalled, run, cancheckSafety = true;
 
     private AlertDialog Dial;
 
@@ -68,7 +74,6 @@ public class Checks extends PreferenceFragment {
         isCMSU = Tools.SuVersionBool(suVersion);
 
         mChecks = (PreferenceCategory) findPreference("checks_su");
-        mSafety = (PreferenceCategory) findPreference("safety");
         mChecksUpdates = (PreferenceCategory) findPreference("checks_update");
         mChecksView = (Preference) findPreference("checks_view");
 
@@ -124,17 +129,12 @@ public class Checks extends PreferenceFragment {
 
         mHide = (Preference) findPreference("hide");
 
-        mSafetyNet_remove = (Preference) findPreference("safety_net_remove");
-        mSafetyNet_remove.setLayoutResource(R.layout.preference_progressbar);
-        mSafety.removePreference(mSafetyNet_remove);
+
         mSafetyNet = (Preference) findPreference("safety_net");
         mSafetyNet.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                mSafety.removePreference(mSafetyNet);
-                mSafety.addPreference(mSafetyNet_remove);
-                checkSafetyNet();
-                Tools.logStatus(getActivity());
+                if (cancheckSafety) checkSafety();
                 return true;
             }
         });
@@ -203,88 +203,66 @@ public class Checks extends PreferenceFragment {
         Tools.closeSU();
     }
 
-    public void checkSafetyNet() {
-    final SafetyNetHelper safetyNetHelper = new SafetyNetHelper("a key that is attached to the app");
+    public void checkSafety() {
+        cancheckSafety = false;
+        boolean adbRoot = Tools.AndroidDebugRoot() && Tools.AndroidDebugState(getActivity()),
+            su = Tools.SuBinary(),
+            selinux,
+            system;
 
-    safetyNetHelper.requestTest(getActivity(), new SafetyNetHelper.SafetyNetWrapperCallback() {
-            @Override
-            public void error(int errorCode, String msg) {
-                //handle and retry depending on errorCode
-                Log.e("isu", msg);
-                updatesafety(false, false, msg);
-            }
+        ViewGroup base_parent = (ViewGroup) getActivity().findViewById(R.id.base_parent);
+        View alertLayout = LayoutInflater.from(getActivity()).inflate(R.layout.safety_check_dialog, base_parent, false);
 
-            @Override
-            public void success(boolean ctsProfileMatch, boolean basicIntegrity) {
-                updatesafety(ctsProfileMatch, basicIntegrity, null);
-                if (ctsProfileMatch) {
-                    //profile of the device running your app matches the profile of a device that has passed Android compatibility testing.
-                                    Log.e("isu", "ctsProfileMatch " + ctsProfileMatch);
-                } else if(basicIntegrity){
-                    //then the device running your app likely wasn't tampered with, but the device has not necessarily passed Android compatibility testing.
-                                    Log.e("isu", "basicIntegrity " + basicIntegrity);
-                } else {
-                    //handle fail, maybe warn user device is unsupported or in compromised state? (this is up to you!)
-                                    Log.e("isu", "all fail");
-                }
-            }
-        });
-    }
+        final TextView SU_textView = (TextView) alertLayout.findViewById(R.id.checkDialog_su);
+        final TextView Selinux_textView = (TextView) alertLayout.findViewById(R.id.checkDialog_Selinux);
+        final TextView adb_textView = (TextView) alertLayout.findViewById(R.id.checkDialog_adb);
+        final TextView system_textView = (TextView) alertLayout.findViewById(R.id.checkDialog_system);
+        final TextView props_textView = (TextView) alertLayout.findViewById(R.id.checkDialog_props);
 
-    public void updatesafety(boolean ctsProfileMatch, boolean basicIntegrity, String msg) {
-        boolean pass = (ctsProfileMatch && basicIntegrity);
-        if (!pass) {
-            image = R.drawable.interrogation;
-            result = msg;
-        } else {
-            boolean adbRoot = Tools.AndroidDebugRoot() && Tools.AndroidDebugState(getActivity());
-            boolean selinux = false;
-            String pass_result = (pass ? " " + getString(R.string.safetyNet_pass) : " " + getString(R.string.safetyNet_fail));
-            String cts_result = (ctsProfileMatch ? " " + getString(R.string.safetyNet_pass) : " " + getString(R.string.safetyNet_fail));
-            String basicI_result = (basicIntegrity ? " " + getString(R.string.safetyNet_pass) : " " + getString(R.string.safetyNet_fail));
-            result = getString(R.string.safetyNet_check_success) + pass_result;
-            result += "\n" + ("ctsProfile: " + cts_result);
-            result += "\n" + ("basicIntegrity: " + basicI_result);
-
-            if (pass)
-                image = R.drawable.ok;
-            else {
-                image = R.drawable.warning;
-                result += "\n\n";
-                if (isCMSU && rootAccess) {
-                    boolean su = Tools.SuBinary();
-                    result += getString(R.string.su_state) + (su ? getString(R.string.fail_reason) + ": " : ": ");
-                    result += (su ? getString(R.string.activated) : getString(R.string.deactivated)) + "\n";
-                }
-                if (rootAccess) {
-                    selinux = Tools.isSELinuxActive(getActivity());
-                    result += getString(R.string.selinux_state) + (!selinux ? getString(R.string.fail_reason) + ": " : ": ");
-                    result += (selinux ? getString(R.string.enforcing) : getString(R.string.permissive)) + "\n";
-
-                } else {
-                    result += getString(R.string.su_state) + ": ";
-                    result += getString(R.string.device_not_root) + "\n";
-
-                    selinux = Tools.isSELinuxActiveNoROOT();
-                    result += getString(R.string.selinux_state) + (!selinux ? getString(R.string.fail_reason) + ": " : ": ");
-                    result += (selinux ? getString(R.string.enforcing) : getString(R.string.permissive)) + "\n";
-                }
-                result += getString(R.string.adb_state_root) + (adbRoot ? getString(R.string.fail_reason) + ": " : ": ");
-                result += (adbRoot ? getString(R.string.running) : getString(R.string.not_running)) + "\n";
-
-                String redprops = Tools.redProps();
-                result += getString(R.string.props) + (!redprops.isEmpty() ? getString(R.string.fail_reason) + ": " : ": ");
-                result += (redprops.isEmpty() ? getString(R.string.props_status_good) : " " + redprops);
-            }
+        if (isCMSU && rootAccess) {
+            SU_textView.setText(getString(R.string.su_state) + ": " + (su ? getString(R.string.activated) : getString(R.string.deactivated)));
+            if (su) SU_textView.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
         }
-        update();
-    }
 
-    public void update() {
-        mSafety.removePreference(mSafetyNet_remove);
-        mSafety.addPreference(mSafetyNet);
-        mSafetyNet.setSummary(result);
-        mSafetyNet.setIcon(image);
+        if (rootAccess) {
+            selinux = Tools.isSELinuxActive(getActivity());
+
+            Selinux_textView.setText(getString(R.string.selinux_state) + ": " + (selinux ? getString(R.string.enforcing) : getString(R.string.permissive)));
+            if (!selinux) Selinux_textView.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+
+        } else {
+            SU_textView.setText(getString(R.string.su_state) + ": " + getString(R.string.device_not_root));
+
+            selinux = Tools.isSELinuxActiveNoROOT();
+
+            Selinux_textView.setText(getString(R.string.selinux_state) + ": " + (selinux ? getString(R.string.enforcing) : getString(R.string.permissive)));
+            if (!selinux) Selinux_textView.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+        }
+
+        adb_textView.setText(getString(R.string.adb_state_root) + ": " + (adbRoot ? getString(R.string.running) : getString(R.string.not_running)));
+        if (adbRoot) adb_textView.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+
+        if (rootAccess) {
+            system = Tools.runCommand("cat /proc/mounts | grep system", su, getActivity()).contains("rw");
+
+            system_textView.setText(getString(R.string.system_mouted) + ": " + (system ? getString(R.string.system_mouted_rw) : getString(R.string.system_mouted_ro)));
+            if (system) system_textView.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+        } else system_textView.setVisibility(View.GONE);
+
+        String redprops = Tools.redProps();
+
+        props_textView.setText(getString(R.string.props) + ": " + (!redprops.isEmpty() ? redprops : getString(R.string.props_status_good)));
+        if (!redprops.isEmpty()) props_textView.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+
+        new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle)
+            .setTitle(getString(R.string.safety_net))
+            .setMessage(getString(R.string.safety_net_result))
+            .setView(alertLayout)
+            .setPositiveButton(getString(R.string.dismiss), null)
+            .show();
+
+        cancheckSafety = true;
+        Tools.logStatus(getActivity());
     }
 
     public void updateHidePref(Context context) {

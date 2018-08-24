@@ -2,11 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- checks -->
     <string name="safety_net">SafetyNet Test</string>
-    <string name="safetyNet_no_response">SafetyNet-Abfrage nicht möglich, kein Internet?</string>
-    <string name="safetyNet_fail">Fehlgeschlagen</string>
-    <string name="safetyNet_pass">Bestanden</string>
-    <string name="safetyNet_untested">Ungetestet, zum Testen drücken</string>
-    <string name="safetyNet_testing">Testing&#8230; Wenn es zu lange dauert, erneut drücken!</string>
     <string name="su_not_cm">Aktuelles SU wird nicht unterstützt.\nEinige App-Funktionen benötigen CM-SU.</string>
     <string name="reboot_support">Reboot-Unterstützung</string>
     <string name="reboot_support_missing">Der Reboot Support wird benötigt, um den Verlust von SU bei Reboot mit deaktiviertem SU zu verhindern. In Android Nougat kann die App den Support selbst hinzufügen, in Marshmallow oder älteren Versionen muss eine Datei geflasht werden. Drücke auf "DOWNLOAD ORDNER", um die Dateien herunterzuladen</string>

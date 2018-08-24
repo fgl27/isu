@@ -47,7 +47,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/progresBar_title"
             android:layout_alignStart="@id/progresBar_title"
-            android:text="@string/safetyNet_testing"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="?android:attr/textColorSecondary"
             android:maxLines="4"

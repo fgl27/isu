@@ -1077,21 +1077,12 @@ public class Tools implements Constants {
         String red = "";
         for (int i = 0; i < props_fail_sf.length; i++) {
             String value = getprop(props_fail_sf[i]);
-            if (!value.isEmpty() && !value.equals(props_fail_sf_OK[i])) {
-                if (red.isEmpty())
-                    red = props_fail_sf[i] + "=" + value;
-                else
-                    red += ", " + props_fail_sf[i] + "=" + value;
-            }
+            if (!value.isEmpty() && !value.equals(props_fail_sf_OK[i])) red += "\n" + props_fail_sf[i] + "=" + value;
         }
         String bootdfgp = getprop(robootbuildfingerprint);
         String buildfgp = getprop(robuildfingerprint);
-        if (bootdfgp.equals(buildfgp)) {
-            if (red.isEmpty())
-                red = robootbuildfingerprint + "=" + robuildfingerprint;
-            else
-                red = ", " + robootbuildfingerprint + "=" + robuildfingerprint;
-        }
+        if (bootdfgp.equals(buildfgp)) red = "\n" + robootbuildfingerprint + "=" + robuildfingerprint;
+
         return red;
     }
 
