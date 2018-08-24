@@ -261,8 +261,8 @@ public class Checks extends PreferenceFragment {
             .setPositiveButton(getString(R.string.dismiss), null)
             .show();
 
-        cancheckSafety = true;
         Tools.logStatus(getActivity());
+        cancheckSafety = true;
     }
 
     public void updateHidePref(Context context) {
