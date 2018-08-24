@@ -95,6 +95,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import android.app.NotificationChannel;
+
 public class Tools implements Constants {
 
     public static String runCommand(String command, boolean su, Context context) {
@@ -495,8 +497,7 @@ public class Tools implements Constants {
             if (!AppMonitor)
                 killapp(PAY, context);
             RootUtils.runCommand("mv -f " + xbin_su + " " + "/system/xbin/" + readString("cmiyc", null, context));
-            if (getBoolean("isu_notification", false, context))
-                DoNotification(context);
+            if (getBoolean("isu_notification", false, context)) DoNotification(context);
         }
         runCommand("mount -o ro,remount /system", isChecked, context);
 
@@ -754,13 +755,26 @@ public class Tools implements Constants {
     }
 
     public static void DoNotification(Context context) {
+        final int NOTIFY_ID = 0;
+        String id = "iSu_SU_state";
+        String title = context.getString(R.string.notification_title);
 
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(context, "iSu_SU_state");
-        notification.setSmallIcon(R.drawable.ic_notification);
-        notification.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher));
-        notification.setContentTitle(context.getString(R.string.notification_title));
-        notification.setOngoing(true);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+
+        //Create a channel for oreo notification to work
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel mChannel = notificationManager.getNotificationChannel(id);
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            mChannel = new NotificationChannel(id, title, importance);
+            notificationManager.createNotificationChannel(mChannel);
+        }
+
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(context, id)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
+            .setContentTitle(title)
+            .setOngoing(true)
+            .setChannelId(id);
 
         Intent yesReceiver = new Intent();
         yesReceiver.setAction(YES_ACTION);
@@ -774,7 +788,7 @@ public class Tools implements Constants {
         NotificationCompat.Action actionno = new NotificationCompat.Action.Builder(R.drawable.dismiss, context.getString(R.string.dismiss), pendingIntentno).build();
         notification.addAction(actionno);
 
-        notificationManager.notify(10, notification.build());
+        notificationManager.notify(NOTIFY_ID, notification.build());
     }
 
     public static void ClearAllNotification(Context context) {
