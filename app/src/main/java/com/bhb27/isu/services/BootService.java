@@ -51,11 +51,11 @@ public class BootService extends Service {
         super.onCreate();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String title = getString(R.string.app_name);
+            String title = getString(R.string.props_apply_boot);
             mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
             NotificationChannel mChannel = mNotifyManager.getNotificationChannel(id);
-            mChannel = new NotificationChannel(id, title, NotificationManager.IMPORTANCE_LOW);
+            mChannel = new NotificationChannel(id, title, NotificationManager.IMPORTANCE_NONE);
             mNotifyManager.createNotificationChannel(mChannel);
             mBuilder = new NotificationCompat.Builder(this, id)
                 .setContentTitle(title)

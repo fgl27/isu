@@ -21,6 +21,7 @@ package com.bhb27.isu.services;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.content.Intent;
 import android.util.Log;
 
@@ -37,12 +38,13 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
         boolean run_boot = Tools.getBoolean("run_boot", false, context);
         boolean rootAccess = Tools.rootAccess(context);
         if (Intent.ACTION_BOOT_COMPLETED.equals(action) && rootAccess && run_boot) {
-            context.startService(new Intent(context, BootService.class));
+
+            ContextCompat.startForegroundService(context, new Intent(context, BootService.class));
+
             Log.d(TAG, " Started action " + action + " run_boot " + run_boot);
             if (Tools.getBoolean("apply_su", false, context) && Tools.SuVersionBool(Tools.SuVersion(context)))
-                context.startService(new Intent(context, SuService.class));
-        } else
-            Log.d(TAG, "Not Started action " + action + " rootAccess " + rootAccess + " run_boot " + run_boot);
+                ContextCompat.startForegroundService(context, new Intent(context, SuService.class));
 
+        } else Log.d(TAG, "Not Started action " + action + " rootAccess " + rootAccess + " run_boot " + run_boot);
     }
 }
