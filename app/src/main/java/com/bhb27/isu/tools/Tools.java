@@ -81,6 +81,7 @@ import com.bhb27.isu.BuildConfig;
 import com.bhb27.isu.Start;
 import com.bhb27.isu.StartMasked;
 import com.bhb27.isu.R;
+import com.bhb27.isu.notification.NotificationReceiver;
 import com.bhb27.isu.perapp.PerAppMonitor;
 import com.bhb27.isu.perapp.Per_App;
 import com.bhb27.isu.perapp.PropDB;
@@ -774,13 +775,17 @@ public class Tools implements Constants {
             .setOngoing(true)
             .setChannelId(id);
 
-        Intent yesReceiver = new Intent();
+        Intent yesReceiver = new Intent("com.bhb27.isu.notification.NotificationReceiver.YES_ACTION");
+        yesReceiver.putExtra(YES_ACTION, 100);
+        yesReceiver.setClass(context, NotificationReceiver.class);
         yesReceiver.setAction(YES_ACTION);
         PendingIntent pendingIntentYes = PendingIntent.getBroadcast(context, 12345, yesReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Action actionyes = new NotificationCompat.Action.Builder(R.drawable.yes, context.getString(R.string.yes), pendingIntentYes).build();
         notification.addAction(actionyes);
 
-        Intent dismissReceiver = new Intent();
+        Intent dismissReceiver = new Intent("com.bhb27.isu.notification.NotificationReceiver.DISSMISS_ACTION");
+        dismissReceiver.putExtra(YES_ACTION, 100);
+        dismissReceiver.setClass(context, NotificationReceiver.class);
         dismissReceiver.setAction(DISSMISS_ACTION);
         PendingIntent pendingIntentno = PendingIntent.getBroadcast(context, 12345, dismissReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Action actionno = new NotificationCompat.Action.Builder(R.drawable.dismiss, context.getString(R.string.dismiss), pendingIntentno).build();
