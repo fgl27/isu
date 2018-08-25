@@ -131,7 +131,6 @@
        </service>
 
        <service android:enabled="true" android:process=":background" android:name=".services.BootService" />
-       <service android:enabled="true" android:process=":background" android:name=".services.MainService" />
        <service android:enabled="true" android:process=":background" android:name=".services.SuService" />
 
     </application>

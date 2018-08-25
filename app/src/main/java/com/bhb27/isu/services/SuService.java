@@ -19,19 +19,28 @@
  */
 package com.bhb27.isu.services;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
+import android.os.Build;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.content.Intent;
 
 import java.io.File;
 import java.io.IOException;
 
+import com.bhb27.isu.R;
 import com.bhb27.isu.tools.Tools;
 
 public class SuService extends Service {
 
-    private static final String TAG = "iSu_SUService";
+    private NotificationManager mNotifyManager;
+    private NotificationCompat.Builder mBuilder;
+    private final int NOTIFY_ID = 101;
+    private static final String id = "iSu_SUService";
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -41,6 +50,22 @@ public class SuService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String title = getString(R.string.app_name);
+            mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            NotificationChannel mChannel = mNotifyManager.getNotificationChannel(id);
+            mChannel = new NotificationChannel(id, title, NotificationManager.IMPORTANCE_LOW);
+            mNotifyManager.createNotificationChannel(mChannel);
+            mBuilder = new NotificationCompat.Builder(this, id)
+                .setContentTitle(title)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setChannelId(id);
+
+            startForeground(NOTIFY_ID, mBuilder.build());
+        }
+
         init();
     }
 
@@ -52,7 +77,7 @@ public class SuService extends Service {
             Thread.currentThread().interrupt();
         }
         Tools.SwitchSu(false, false, this);
-        Log.d(TAG, " RUN sleep " + sleep);
+        Log.d(id, " RUN sleep " + sleep);
         stopSelf();
     }
 

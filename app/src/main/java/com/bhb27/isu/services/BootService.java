@@ -19,18 +19,26 @@
  */
 package com.bhb27.isu.services;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.os.Build;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.content.Intent;
 
+import com.bhb27.isu.R;
 import com.bhb27.isu.tools.Tools;
 
 public class BootService extends Service {
 
-    private static final String TAG = "iSu_services";
+    private NotificationManager mNotifyManager;
+    private NotificationCompat.Builder mBuilder;
+    private final int NOTIFY_ID = 101;
+    private static final String id = "iSu_BootService";
+
     private boolean isCMSU;
 
     @Override
@@ -41,6 +49,22 @@ public class BootService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String title = getString(R.string.app_name);
+            mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            NotificationChannel mChannel = mNotifyManager.getNotificationChannel(id);
+            mChannel = new NotificationChannel(id, title, NotificationManager.IMPORTANCE_LOW);
+            mNotifyManager.createNotificationChannel(mChannel);
+            mBuilder = new NotificationCompat.Builder(this, id)
+                .setContentTitle(title)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setChannelId(id);
+
+            startForeground(NOTIFY_ID, mBuilder.build());
+        }
+
         init();
     }
 
@@ -51,14 +75,14 @@ public class BootService extends Service {
 
         isCMSU = Tools.SuVersionBool(Tools.SuVersion(context));
         if (Tools.getBoolean("prop_run", false, context) && Tools.getBoolean("apply_props", false, context)) {
-            Log.d(TAG, " Applying props");
+            Log.d(id, " Applying props");
             Tools.applyprop(context, executableFilePath);
             Tools.applyDbProp(context, executableFilePath);
             if (isCMSU && Tools.readString("ro.debuggable", null, context).equals("0"))
                 Tools.stripadb(executableFilePath, context);
         }
         if (Tools.getBoolean("fake_selinux_switch", false, context)) {
-            Log.d(TAG, " fake_selinux");
+            Log.d(id, " fake_selinux");
             Tools.FakeSelinux(context);
             Tools.SwitchSelinux(true, context);
         }
@@ -67,7 +91,7 @@ public class BootService extends Service {
             Tools.SystemPatch(executableFilePath, context);
 
         Tools.closeSU();
-        Log.d(TAG, " Run");
+        Log.d(id, " Run");
         stopSelf();
     }
 

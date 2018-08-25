@@ -46,7 +46,6 @@ import android.widget.TextView;
 
 import com.bhb27.isu.BuildConfig;
 import com.bhb27.isu.Main;
-import com.bhb27.isu.services.MainService;
 import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.tools.Tools;
 
@@ -56,7 +55,7 @@ public class Checks extends PreferenceFragment {
     private PreferenceCategory mChecks, mChecksUpdates;
     private String suVersion, executableFilePath, version, link;
     private int image;
-    private boolean isCMSU, rootAccess, temprootAccess, update_removed, appId, isu_hide, needpUp, iSuisUp, FirstStart, isuInstalled, run, cancheckSafety = true;
+    private boolean isCMSU, rootAccess, temprootAccess, update_removed, appId, isu_hide, needpUp, iSuisUp, FirstStart, isuInstalled, cancheckSafety = true;
 
     private AlertDialog Dial;
 
@@ -162,14 +161,13 @@ public class Checks extends PreferenceFragment {
             getActivity().registerReceiver(updateChecksReceiver, new IntentFilter("updateChecksReceiver"));
         } catch (NullPointerException ignored) {}
 
-        try {
-            getActivity().registerReceiver(saveRunReceiver, new IntentFilter("saveRunReceiver"));
-        } catch (NullPointerException ignored) {}
-
         updateStateCheck();
 
-        run = Tools.getBoolean("run_boot", false, getActivity());
-        if (rootAccess && (!Tools.PatchesDone(getActivity()) || !run)) getActivity().startService(new Intent(getActivity(), MainService.class));
+
+        if (rootAccess && (!Tools.PatchesDone(getActivity()) || !Tools.getBoolean("run_boot", false, getActivity()))) {
+            Tools.patches(executableFilePath, getActivity());
+            Tools.saveBoolean("run_boot", true, getActivity());
+        }
         updateHidePref(getActivity());
     }
 
@@ -183,8 +181,11 @@ public class Checks extends PreferenceFragment {
                 Tools.updateMain(getActivity(), (String.format(getString(R.string.reloading), getString(R.string.su_access))));
             }
             updateHidePref(getActivity());
-            run = Tools.getBoolean("run_boot", false, getActivity());
-            if (rootAccess && (!Tools.PatchesDone(getActivity()) || !run)) getActivity().startService(new Intent(getActivity(), MainService.class));
+
+            if (rootAccess && (!Tools.PatchesDone(getActivity()) || !Tools.getBoolean("run_boot", false, getActivity()))) {
+                Tools.patches(executableFilePath, getActivity());
+                Tools.saveBoolean("run_boot", true, getActivity());
+            }
         } else FirstStart = true;
     }
 
@@ -193,10 +194,6 @@ public class Checks extends PreferenceFragment {
         super.onPause();
         try {
             getActivity().unregisterReceiver(updateChecksReceiver);
-        } catch (IllegalArgumentException ignored) {}
-
-        try {
-            getActivity().unregisterReceiver(saveRunReceiver);
         } catch (IllegalArgumentException ignored) {}
 
         if (Dial != null) Dial.dismiss();
@@ -414,18 +411,6 @@ public class Checks extends PreferenceFragment {
         mChecksUpdates.removePreference(mUpdate);
         mChecksUpdates.addPreference(mUpdate_remove);
         new Tools.CheckUpdate(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
-    }
-
-    private final BroadcastReceiver saveRunReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            saveR();
-        }
-    };
-
-    public void saveR() {
-        if (Tools.rootAccess(getActivity()))
-            Tools.saveBoolean("run_boot", true, getActivity());
     }
 
     public void HideDialog(Context context) {

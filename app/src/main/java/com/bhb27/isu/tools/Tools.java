@@ -754,7 +754,7 @@ public class Tools implements Constants {
     }
 
     public static void DoNotification(Context context) {
-        final int NOTIFY_ID = 0;
+        final int NOTIFY_ID = 1;
         String id = "iSu_SU_state";
         String title = context.getString(R.string.notification_title);
 
@@ -763,8 +763,7 @@ public class Tools implements Constants {
         //Create a channel for oreo notification to work
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel mChannel = notificationManager.getNotificationChannel(id);
-            int importance = NotificationManager.IMPORTANCE_LOW;
-            mChannel = new NotificationChannel(id, title, importance);
+            mChannel = new NotificationChannel(id, title, NotificationManager.IMPORTANCE_LOW);
             notificationManager.createNotificationChannel(mChannel);
         }
 
