@@ -24,6 +24,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.view.Gravity;
 
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.Preference.OnPreferenceChangeListener;
@@ -75,21 +80,51 @@ Preference.OnPreferenceChangeListener {
         mTasker.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                String options = Constants.TASKER_SU_ON + "\n" + Constants.TASKER_SU_OFF + "\n" + Constants.TASKER_SU_INV + "\n\n" +
-                    Constants.TASKER_SELINUX_ON + "\n" + Constants.TASKER_SELINUX_OFF + "\n" + Constants.TASKER_SELINUX_INV + "\n\n" +
-                    Constants.TASKER_DEBUG_ON + "\n" + Constants.TASKER_DEBUG_OFF + "\n" + Constants.TASKER_DEBUG_INV + "\n\n" +
-                    getString(R.string.tasker_help_extra_description) +
-                    "su = " + getString(R.string.su_switch) + "\n" +
-                    "selinux = " + getString(R.string.selinux_switch) + "\n" +
-                    "debug = " + getString(R.string.anddebug_change) + "\n\n" +
-                    "on = " + String.format(getString(R.string.tasker_help_extra_state), getString(R.string.activated)) +
-                    "off = " + String.format(getString(R.string.tasker_help_extra_state), getString(R.string.deactivated)) +
-                    "inverse = " + getString(R.string.tasker_help_inv);
-                Tools.SimpleDialog(String.format(getString(R.string.tasker_help), options), getActivity());
+                String isu_file = Tools.readString("cmiyc", null, getActivity());
+
+                String options = TaskerDialogText(getString(R.string.su_switch), Constants.TASKER_SU_ON,
+                        Constants.TASKER_SU_OFF, Constants.TASKER_SU_INV, isu_file) +
+                    TaskerDialogText(getString(R.string.selinux_switch), Constants.TASKER_SELINUX_ON,
+                        Constants.TASKER_SELINUX_OFF, Constants.TASKER_SELINUX_OFF, isu_file) +
+                    TaskerDialogText(getString(R.string.anddebug_change), Constants.TASKER_DEBUG_ON,
+                        Constants.TASKER_DEBUG_OFF, Constants.TASKER_DEBUG_INV, isu_file);
+
+                LinearLayout DialogLayout = new LinearLayout(getActivity());
+                DialogLayout.setOrientation(LinearLayout.VERTICAL);
+                DialogLayout.setGravity(Gravity.CENTER);
+                DialogLayout.setPadding(30, 20, 30, 20);
+
+                ScrollView scrollView = new ScrollView(getActivity());
+                scrollView.setPadding(0, 0, 0, 10);
+                DialogLayout.addView(scrollView);
+
+                TextView dialogText = new TextView(getActivity());
+                dialogText.setText(String.format(getString(R.string.tasker_help), options));
+                dialogText.setTextIsSelectable(true);
+                scrollView.addView(dialogText);
+
+                new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle)
+                    .setTitle(getString(R.string.tasker))
+                    .setView(DialogLayout)
+                    .setNegativeButton(getString(R.string.dismiss), null).show();
+
                 return true;
             }
         });
 
+    }
+
+    //Todo add a layout to the dialog to make the text more easy to understand/see
+    private String TaskerDialogText(String type, String cmdOn, String cmdOff, String cmdinv, String isu_file) {
+            return type + ":\n\n		" + getString(R.string.enable) + ":\n\n		" + "su -c 'am broadcast -a " +
+            cmdOn + " -n com.bhb27.isu/.tasker.TaskerReceiver' | " + isu_file + " -c 'am broadcast -a " +
+            cmdOn + " -n com.bhb27.isu/.tasker.TaskerReceiver'\n\n		" +
+            getString(R.string.disable) + ":\n\n		" + "su -c 'am broadcast -a " +
+            cmdOff + " -n com.bhb27.isu/.tasker.TaskerReceiver' | " + isu_file + " -c 'am broadcast -a " +
+            cmdOff + " -n com.bhb27.isu/.tasker.TaskerReceiver'\n\n		" +
+            getString(R.string.tasker_help_inv) + ":\n\n		" + "su -c 'am broadcast -a " +
+            cmdinv + " -n com.bhb27.isu/.tasker.TaskerReceiver' | " + isu_file + " -c 'am broadcast -a " +
+            cmdinv + " -n com.bhb27.isu/.tasker.TaskerReceiver'\n\n";
     }
 
     @Override

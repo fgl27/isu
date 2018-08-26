@@ -65,10 +65,8 @@
     <string name="anddebug_change">Change Android debugging state</string>
     <string name="check_settings">Check SETTINGS for extra controls actions base on SU state</string>
     <string name="tasker_summary">iSu controls can be controlled via Tasker\nClick here to see how</string>
-    <string name="tasker_help">Use the below intents as an \u0022Action\u0022 in a new task (SystemSend intent *):\n\n%s \n*Only thing to add or change on the new task is the \u0022Action\u0022 all the other options can be the default of tasker, in doubt check xda support forum link in about</string>
-    <string name="tasker_help_extra_description">Descriptions:\n\n</string>
-    <string name="tasker_help_extra_state">Set to \u0022%s\u0022 state\n</string>
-    <string name="tasker_help_inv">Always inverses the current state\n</string>
+    <string name="tasker_help">Use the below lines as the \u0022Command\u0022 of a new task \u0022Code - Run shell\u0022 don\'t change/enable \u0022Use Root\u0022 or any other option just set the command (the bellow text is selectable, scroll to see more):\n\n%s \nIf you clean up iSu data the commands will change and you must update the Tasker, in doubt check xda support forum link in about.</string>
+    <string name="tasker_help_inv">Inverse the state</string>
 
     <!-- Settings -->
     <string name="notification_title">SU is deactivated, activate SU?</string>

@@ -27,8 +27,6 @@
     <string name="check_settings">Sprawdź USTAWIENIA dla kontroli dodatkowych akcji w oparciu o stan SU</string>
     <string name="tasker_summary">iSu może być kontrolowany przez Tasker\nKliknij, aby zobaczyć jak</string>
     <string name="tasker_help">Use the bellow intents as a \u0022Action\u0022 in a new task (System - Send intent *):\n\n%s \n* 	Only thing to add or change on the new task is the \u0022Action\u0022 all the other option can be the default of tasker, in doubt check xda thread link in about</string>
-    <string name="tasker_help_extra_description">Opisy:\n\n</string>
-    <string name="tasker_help_extra_state">Ustaw na stan \u0022%s\u0022\n</string>
     <string name="tasker_help_inv">Zawsze odwróć aktualny stan\n</string>
 
     <!-- Settings -->

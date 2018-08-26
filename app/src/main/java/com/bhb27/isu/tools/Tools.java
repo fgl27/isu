@@ -441,13 +441,7 @@ public class Tools implements Constants {
     public static void SimpleDialog(String message, Context context) {
         new AlertDialog.Builder(context, R.style.AlertDialogStyle)
             .setMessage(message)
-            .setNegativeButton(context.getString(R.string.dismiss),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        return;
-                    }
-                }).show();
+            .setNegativeButton(context.getString(R.string.dismiss), null).show();
     }
 
     public static void killapp(String app, Context context) {
