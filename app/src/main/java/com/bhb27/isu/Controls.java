@@ -25,10 +25,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.LayoutInflater;
 
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.Preference.OnPreferenceChangeListener;
@@ -82,49 +82,55 @@ Preference.OnPreferenceChangeListener {
             public boolean onPreferenceClick(Preference preference) {
                 String isu_file = Tools.readString("cmiyc", null, getActivity());
 
-                String options = TaskerDialogText(getString(R.string.su_switch), Constants.TASKER_SU_ON,
-                        Constants.TASKER_SU_OFF, Constants.TASKER_SU_INV, isu_file) +
-                    TaskerDialogText(getString(R.string.selinux_switch), Constants.TASKER_SELINUX_ON,
-                        Constants.TASKER_SELINUX_OFF, Constants.TASKER_SELINUX_OFF, isu_file) +
-                    TaskerDialogText(getString(R.string.anddebug_change), Constants.TASKER_DEBUG_ON,
-                        Constants.TASKER_DEBUG_OFF, Constants.TASKER_DEBUG_INV, isu_file);
+                ViewGroup base_parent = (ViewGroup) getActivity().findViewById(R.id.base_parent);
+                View alertLayout = LayoutInflater.from(getActivity()).inflate(R.layout.tasker_dialog, base_parent, false);
 
-                LinearLayout DialogLayout = new LinearLayout(getActivity());
-                DialogLayout.setOrientation(LinearLayout.VERTICAL);
-                DialogLayout.setGravity(Gravity.CENTER);
-                DialogLayout.setPadding(30, 20, 30, 20);
+                final String[] cmds = new String[] {
+                        Constants.TASKER_SU_ON,
+                        Constants.TASKER_SU_OFF,
+                        Constants.TASKER_SU_INV,
+                        Constants.TASKER_SELINUX_ON,
+                        Constants.TASKER_SELINUX_OFF,
+                        Constants.TASKER_SELINUX_INV,
+                        Constants.TASKER_DEBUG_ON,
+                        Constants.TASKER_DEBUG_OFF,
+                        Constants.TASKER_DEBUG_INV
+                };
 
-                ScrollView scrollView = new ScrollView(getActivity());
-                scrollView.setPadding(0, 0, 0, 10);
-                DialogLayout.addView(scrollView);
+                final int[] cmdIDs = new int[] {
+                        R.id.TASKER_SU_ON,
+                        R.id.TASKER_SU_OFF,
+                        R.id.TASKER_SU_INV,
+                        R.id.TASKER_SELINUX_ON,
+                        R.id.TASKER_SELINUX_OFF,
+                        R.id.TASKER_SELINUX_INV,
+                        R.id.TASKER_DEBUG_ON,
+                        R.id.TASKER_DEBUG_OFF,
+                        R.id.TASKER_DEBUG_INV
+                };
 
-                TextView dialogText = new TextView(getActivity());
-                dialogText.setText(String.format(getString(R.string.tasker_help), options));
-                dialogText.setTextIsSelectable(true);
-                scrollView.addView(dialogText);
+                final TextView[] cmdText = new TextView[cmds.length];
+
+                for (int i = 0; i < cmds.length; i++) {
+                    cmdText[i] = (TextView) alertLayout.findViewById(cmdIDs[i]);
+                    cmdText[i].setText(TaskerDialogcmd(cmds[i], isu_file));
+                }
 
                 new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle)
                     .setTitle(getString(R.string.tasker))
-                    .setView(DialogLayout)
-                    .setNegativeButton(getString(R.string.dismiss), null).show();
+                    .setView(alertLayout)
+                    .setNegativeButton(getString(R.string.dismiss), null)
+                    .show();
 
                 return true;
             }
         });
-
     }
 
-    //Todo add a layout to the dialog to make the text more easy to understand/see
-    private String TaskerDialogText(String type, String cmdOn, String cmdOff, String cmdinv, String isu_file) {
-            return type + ":\n\n		" + getString(R.string.enable) + ":\n\n		" + "su -c 'am broadcast -a " +
-            cmdOn + " -n com.bhb27.isu/.tasker.TaskerReceiver' | " + isu_file + " -c 'am broadcast -a " +
-            cmdOn + " -n com.bhb27.isu/.tasker.TaskerReceiver'\n\n		" +
-            getString(R.string.disable) + ":\n\n		" + "su -c 'am broadcast -a " +
-            cmdOff + " -n com.bhb27.isu/.tasker.TaskerReceiver' | " + isu_file + " -c 'am broadcast -a " +
-            cmdOff + " -n com.bhb27.isu/.tasker.TaskerReceiver'\n\n		" +
-            getString(R.string.tasker_help_inv) + ":\n\n		" + "su -c 'am broadcast -a " +
-            cmdinv + " -n com.bhb27.isu/.tasker.TaskerReceiver' | " + isu_file + " -c 'am broadcast -a " +
-            cmdinv + " -n com.bhb27.isu/.tasker.TaskerReceiver'\n\n";
+    private String TaskerDialogcmd(String cmd, String isu_file) {
+            return "su -c 'am broadcast -a " +
+            cmd + " -n com.bhb27.isu/.tasker.TaskerReceiver' | " + isu_file + " -c 'am broadcast -a " +
+            cmd + " -n com.bhb27.isu/.tasker.TaskerReceiver'";
     }
 
     @Override

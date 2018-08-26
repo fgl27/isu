@@ -253,7 +253,6 @@ public class Checks extends PreferenceFragment {
 
         new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle)
             .setTitle(getString(R.string.safety_net))
-            .setMessage(getString(R.string.safety_net_result))
             .setView(alertLayout)
             .setPositiveButton(getString(R.string.dismiss), null)
             .show();

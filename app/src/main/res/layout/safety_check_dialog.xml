@@ -10,30 +10,43 @@
         android:layout_marginRight="20dp"
         android:orientation="vertical">
         <TextView
+            android:id="@+id/checkDialog_Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="@string/safety_net_result"
+            android:textColor="@color/text_black" />
+
+        <TextView
+            android:layout_marginTop="10dp"
             android:id="@+id/checkDialog_su"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textColor="@color/colorButtonGreenDark" />
         <TextView
+            android:layout_marginTop="5dp"
             android:id="@+id/checkDialog_Selinux"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textColor="@color/colorButtonGreenDark" />
         <TextView
+            android:layout_marginTop="5dp"
             android:id="@+id/checkDialog_adb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textColor="@color/colorButtonGreenDark" />
         <TextView
+            android:layout_marginTop="5dp"
             android:id="@+id/checkDialog_system"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textColor="@color/colorButtonGreenDark" />
         <TextView
+            android:layout_marginTop="5dp"
             android:id="@+id/checkDialog_props"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

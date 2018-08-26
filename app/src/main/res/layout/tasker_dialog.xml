@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/TaskerDialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/TaskerDialog_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="@string/tasker_help"
+            android:textColor="@color/text_black" />
+
+        <!-- Su start-->
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/TaskerDialog_SU"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="@string/su_switch"
+            android:layout_gravity="center|top"
+            android:textColor="@color/text_black" />
+
+        <TextView
+            android:id="@+id/TaskerDialog_SU_enable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="@string/enable"
+            android:textColor="@color/text_black" />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/TASKER_SU_ON"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textIsSelectable="true"
+            android:textColor="@color/text_black" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/TaskerDialog_SU_disable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="@string/disable"
+            android:textColor="@color/text_black" />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/TASKER_SU_OFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textIsSelectable="true"
+            android:textColor="@color/text_black" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/TaskerDialog_SU_inv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="@string/tasker_help_inv"
+            android:textColor="@color/text_black" />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/TASKER_SU_INV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textIsSelectable="true"
+            android:textColor="@color/text_black" />
+        <!-- Su end-->
+
+        <!-- Selinux start-->
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/TaskerDialog_Selinux"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="@string/selinux_switch"
+            android:layout_gravity="center|top"
+            android:textColor="@color/text_black" />
+
+        <TextView
+            android:id="@+id/TaskerDialog_Selinux_enable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="@string/enable"
+            android:textColor="@color/text_black" />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/TASKER_SELINUX_ON"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textIsSelectable="true"
+            android:textColor="@color/text_black" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/TaskerDialog_Selinux_disable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="@string/disable"
+            android:textColor="@color/text_black" />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/TASKER_SELINUX_OFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textIsSelectable="true"
+            android:textColor="@color/text_black" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/TaskerDialog_Selinux_inv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="@string/tasker_help_inv"
+            android:textColor="@color/text_black" />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/TASKER_SELINUX_INV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textIsSelectable="true"
+            android:textColor="@color/text_black" />
+        <!-- Selinux end-->
+
+        <!-- ADB start-->
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/TaskerDialog_ADB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="@string/anddebug_change"
+            android:layout_gravity="center|top"
+            android:textColor="@color/text_black" />
+
+        <TextView
+            android:id="@+id/TaskerDialog_ADB_enable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="@string/enable"
+            android:textColor="@color/text_black" />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/TASKER_DEBUG_ON"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textIsSelectable="true"
+            android:textColor="@color/text_black" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/TaskerDialog_ADB_disable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="@string/disable"
+            android:textColor="@color/text_black" />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/TASKER_DEBUG_OFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textIsSelectable="true"
+            android:textColor="@color/text_black" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/TaskerDialog_ADB_inv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="@string/tasker_help_inv"
+            android:textColor="@color/text_black" />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/TASKER_DEBUG_INV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textIsSelectable="true"
+            android:textColor="@color/text_black" />
+        <!-- ADB end-->
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:id="@+id/TaskerDialog_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="@string/tasker_help_end"
+            android:textColor="@color/text_black" />
+    </LinearLayout>
+</ScrollView>
