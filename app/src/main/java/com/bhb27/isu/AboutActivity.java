@@ -113,14 +113,14 @@ public class AboutActivity extends Activity {
         git.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Tools.browser("https://github.com/bhb27/isu", AboutContext);
+                Tools.browser("https://github.com/fgl27/isu", AboutContext);
             }
         });
 
         git_summary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Tools.browser("https://github.com/bhb27/isu", AboutContext);
+                Tools.browser("https://github.com/fgl27/isu", AboutContext);
             }
         });
 
@@ -146,14 +146,14 @@ public class AboutActivity extends Activity {
         ic_git.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Tools.browser("https://github.com/bhb27/isu", AboutContext);
+                Tools.browser("https://github.com/fgl27/isu", AboutContext);
             }
         });
 
         app_license.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Tools.browser("https://github.com/bhb27/isu/blob/master/LICENSE", AboutContext);
+                Tools.browser("https://github.com/fgl27/isu/blob/master/LICENSE", AboutContext);
             }
         });
 

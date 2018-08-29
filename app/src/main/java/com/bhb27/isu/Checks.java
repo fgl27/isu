@@ -409,7 +409,7 @@ public class Checks extends PreferenceFragment {
         update_removed = true;
         mChecksUpdates.removePreference(mUpdate);
         mChecksUpdates.addPreference(mUpdate_remove);
-        new Tools.CheckUpdate(getActivity()).execute("https://raw.githubusercontent.com/bhb27/scripts/master/etc/isuv.txt");
+        new Tools.CheckUpdate(getActivity()).execute("https://raw.githubusercontent.com/fgl27/scripts/master/etc/isuv.txt");
     }
 
     public void HideDialog(Context context) {
