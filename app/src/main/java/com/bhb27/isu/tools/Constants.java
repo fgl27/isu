@@ -31,6 +31,10 @@ public interface Constants {
     String GETENFORCE = "getenforce";
     String SETENFORCE = "setenforce";
 
+    int NOTIFY_ID_SU = 100;
+    int NOTIFY_ID_PROPS = 101;
+    int NOTIFY_ID_BOOT = 102;
+
     //"allow #source-class #target-class permission-class #permission" 
     //Sections marked with '#' can be replaced with collections in curly brackets
     //e.g: allow { source1 source2 } { target1 target2 } permission-class { permission1 permission2 }

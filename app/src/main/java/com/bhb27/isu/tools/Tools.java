@@ -160,6 +160,21 @@ public class Tools implements Constants {
             NewexistFile(OriginaliSuApk[0] + "com.bhb27.isu*.apk", true, context);
     }
 
+    @TargetApi(26)
+    public static NotificationCompat.Builder OreoNotify(String title, String id, Context context) {
+        NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        NotificationChannel mChannel = mNotifyManager.getNotificationChannel(id);
+        mChannel = new NotificationChannel(id, title, NotificationManager.IMPORTANCE_NONE);
+        mNotifyManager.createNotificationChannel(mChannel);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, id)
+            .setContentTitle(title)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setChannelId(id);
+
+        return mBuilder;
+    }
+
     public static class HideTask extends AsyncTask < Void, Void, String > {
         private MaterialDialog progressDialog;
         private WeakReference < Context > contextRef;
@@ -491,6 +506,7 @@ public class Tools implements Constants {
             if (!AppMonitor)
                 killapp(PAY, context);
             RootUtils.runCommand("mv -f " + xbin_su + " " + "/system/xbin/" + readString("cmiyc", null, context));
+Log.d(TAG, "isu_notification " + getBoolean("isu_notification", false, context));
             if (getBoolean("isu_notification", false, context)) DoNotification(context);
         }
         runCommand("mount -o ro,remount /system", isChecked, context);
@@ -749,7 +765,7 @@ public class Tools implements Constants {
     }
 
     public static void DoNotification(Context context) {
-        final int NOTIFY_ID = 1;
+Log.d(TAG, "DoNotification");
         String id = "iSu_SU_state";
         String title = context.getString(R.string.notification_title);
 
@@ -785,7 +801,7 @@ public class Tools implements Constants {
         NotificationCompat.Action actionno = new NotificationCompat.Action.Builder(R.drawable.dismiss, context.getString(R.string.dismiss), pendingIntentno).build();
         notification.addAction(actionno);
 
-        notificationManager.notify(NOTIFY_ID, notification.build());
+        notificationManager.notify(NOTIFY_ID_SU, notification.build());
     }
 
     public static void ClearAllNotification(Context context) {

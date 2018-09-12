@@ -1,7 +1,7 @@
 /*
  * Copyright (C) Felipe de Leon <fglfgl27@gmail.com>
  *
- * This file is part of iSu.
+ * context file is part of iSu.
  *
  * iSu is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
  */
 package com.bhb27.isu.services;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -38,12 +40,24 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
         boolean run_boot = Tools.getBoolean("run_boot", false, context);
         boolean rootAccess = Tools.rootAccess(context);
         if (Intent.ACTION_BOOT_COMPLETED.equals(action) && rootAccess && run_boot) {
+            Log.d(TAG, " Started action " + action + " run_boot " + run_boot);
+
+            if (Tools.getBoolean("prop_run", false, context) && Tools.getBoolean("apply_props", false, context))
+                ContextCompat.startForegroundService(context, new Intent(context, PropsService.class));
 
             ContextCompat.startForegroundService(context, new Intent(context, BootService.class));
 
-            Log.d(TAG, " Started action " + action + " run_boot " + run_boot);
-            if (Tools.getBoolean("apply_su", false, context) && Tools.SuVersionBool(Tools.SuVersion(context)))
-                ContextCompat.startForegroundService(context, new Intent(context, SuService.class));
+            if (Tools.getBoolean("apply_su", false, context) && Tools.SuVersionBool(Tools.SuVersion(context))) {
+
+                AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                Intent serviceIntent = new Intent("com.bhb27.isu.services.SuServiceReceiver.RUN");
+                serviceIntent.putExtra("RUN", 100);
+                serviceIntent.setClass(context, SuServiceReceiver.class);
+                serviceIntent.setAction("RUN");
+
+                PendingIntent pi = PendingIntent.getBroadcast(context, 100, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + Integer.valueOf(Tools.readString("apply_su_delay", "0", context)), pi);
+            }
 
         } else Log.d(TAG, "Not Started action " + action + " rootAccess " + rootAccess + " run_boot " + run_boot);
     }

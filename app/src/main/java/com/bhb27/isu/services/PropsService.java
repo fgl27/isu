@@ -30,13 +30,12 @@ import com.bhb27.isu.R;
 import com.bhb27.isu.tools.Constants;
 import com.bhb27.isu.tools.Tools;
 
-public class BootService extends Service {
+public class PropsService extends Service {
 
+    private final int NOTIFY_ID = Constants.NOTIFY_ID_PROPS;
     private Context context;
-    private final int NOTIFY_ID = Constants.NOTIFY_ID_BOOT;
-    private static final String id = "iSu_BootService";
-
     private boolean isCMSU;
+    private static final String id = "iSu_PropsService";
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -49,7 +48,7 @@ public class BootService extends Service {
         context = getApplicationContext();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            startForeground(NOTIFY_ID, Tools.OreoNotify(getString(R.string.reboot_support), id, context).build());
+            startForeground(NOTIFY_ID, Tools.OreoNotify(getString(R.string.props_apply_boot), id, context).build());
 
         init();
     }
@@ -57,17 +56,13 @@ public class BootService extends Service {
     private void init() {
         String executableFilePath = getFilesDir().getPath() + "/";
 
-        if (!Tools.PatchesDone(context)) Tools.patches(executableFilePath, context);
-
-        if (Tools.getBoolean("fake_selinux_switch", false, context)) {
-            Log.d(id, " fake_selinux");
-            Tools.FakeSelinux(context);
-            Tools.SwitchSelinux(true, context);
-        }
+        Log.d(id, " Applying props");
+        Tools.applyprop(context, executableFilePath);
+        Tools.applyDbProp(context, executableFilePath);
 
         if (Tools.SuVersionBool(Tools.SuVersion(context)) &&
-         (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && !Tools.ReadSystemPatch(context))
-            Tools.SystemPatch(executableFilePath, context);
+            Tools.readString("ro.debuggable", null, context).equals("0"))
+            Tools.stripadb(executableFilePath, context);
 
         Tools.closeSU();
         Log.d(id, " Run");

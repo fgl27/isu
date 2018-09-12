@@ -89,6 +89,12 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".services.SuServiceReceiver">
+            <intent-filter>
+                <action android:name="RUN"/>
+            </intent-filter>
+        </receiver>
+
         <receiver android:name=".notification.NotificationReceiver" android:exported="false" android:process=":background" >
             <intent-filter>
                 <action android:name="YES_ACTION"/>
@@ -131,7 +137,7 @@
        </service>
 
        <service android:enabled="true" android:process=":background" android:name=".services.BootService" />
-       <service android:enabled="true" android:process=":background" android:name=".services.SuService" />
+       <service android:enabled="true" android:process=":background" android:name=".services.PropsService" />
 
     </application>
 </manifest>
