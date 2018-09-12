@@ -506,7 +506,6 @@ public class Tools implements Constants {
             if (!AppMonitor)
                 killapp(PAY, context);
             RootUtils.runCommand("mv -f " + xbin_su + " " + "/system/xbin/" + readString("cmiyc", null, context));
-Log.d(TAG, "isu_notification " + getBoolean("isu_notification", false, context));
             if (getBoolean("isu_notification", false, context)) DoNotification(context);
         }
         runCommand("mount -o ro,remount /system", isChecked, context);
@@ -765,7 +764,6 @@ Log.d(TAG, "isu_notification " + getBoolean("isu_notification", false, context))
     }
 
     public static void DoNotification(Context context) {
-Log.d(TAG, "DoNotification");
         String id = "iSu_SU_state";
         String title = context.getString(R.string.notification_title);
 
