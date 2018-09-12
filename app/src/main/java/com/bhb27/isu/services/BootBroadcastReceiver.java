@@ -1,7 +1,7 @@
 /*
  * Copyright (C) Felipe de Leon <fglfgl27@gmail.com>
  *
- * context file is part of iSu.
+ * this file is part of iSu.
  *
  * iSu is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

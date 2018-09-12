@@ -66,7 +66,7 @@ public class BootService extends Service {
         }
 
         if (Tools.SuVersionBool(Tools.SuVersion(context)) &&
-         (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && !Tools.ReadSystemPatch(context))
+            (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) && !Tools.ReadSystemPatch(context))
             Tools.SystemPatch(executableFilePath, context);
 
         Tools.closeSU();

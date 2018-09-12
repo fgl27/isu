@@ -33,7 +33,7 @@ public class SuServiceReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, " Start");
+        Log.d(TAG, " Start");
         // only run if the app has run before and main has extracted asserts
         String action = intent.getAction();
 
