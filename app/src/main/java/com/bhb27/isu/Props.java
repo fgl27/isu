@@ -528,9 +528,10 @@ Preference.OnPreferenceChangeListener {
         updateState();
     }
 
-    private static class Execute extends AsyncTask < String, Void, Void > {
+    private static class Execute extends AsyncTask < String, String, Void > {
         private MaterialDialog progressDialog;
         private WeakReference < Context > contextRef;
+        private String progressText;
 
         public Execute(Context context) {
             contextRef = new WeakReference < > (context);
@@ -551,17 +552,24 @@ Preference.OnPreferenceChangeListener {
         protected Void doInBackground(String...params) {
             Context mContext = contextRef.get();
             String executableFilePath = mContext.getFilesDir().getPath() + "/";
+            progressText = String.format(mContext.getString(R.string.setting_all),
+                mContext.getString(R.string.know_props));
+
             if (params[0].equals("green")) {
-                progressDialog.setContent(String.format(mContext.getString(R.string.setting_all),
-                    mContext.getString(R.string.know_props)) + mContext.getString(R.string.safe) + "...");
+                progressText += mContext.getString(R.string.safe) + "...";
+                publishProgress(progressText);
                 Tools.resetallprop(executableFilePath, true, mContext);
                 Tools.stripadb(executableFilePath, mContext);
             } else if (params[0].equals("red")) {
-                progressDialog.setContent(String.format(mContext.getString(R.string.setting_all),
-                    mContext.getString(R.string.know_props)) + mContext.getString(R.string.unsafe) + "...");
+                progressText += mContext.getString(R.string.unsafe) + "...";
+                publishProgress(progressText);
                 Tools.resetallprop(executableFilePath, false, mContext);
             }
             return null;
+        }
+
+        protected void onProgressUpdate(String...progress) {
+            progressDialog.setContent(progressText);
         }
 
         @Override

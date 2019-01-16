@@ -18,7 +18,8 @@
  * along with iSu.  If not, see <http://www.gnu.org/licenses/>.
  *
  */-->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" xmlns:settings="http://schemas.android.com/apk/res/com.android.settings" android:key="settings_preferencescreen">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:key="settings_preferencescreen">
     <PreferenceCategory
         android:key="settings_pref"
         android:title="@string/application">
