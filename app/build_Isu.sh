@@ -100,7 +100,7 @@ if [ $BAPP == 1 ]; then
 	./gradlew clean
 	echo -e "\n The above is just the cleaning build start now\n";
 	rm -rf app/build/outputs/apk/**
-	./gradlew build 2>&1 | tee build_log.txt
+	./gradlew build 2>&1 --warning-mode all | tee build_log.txt
 
 	if [ ! -e ./app/build/outputs/apk/release/app-release-unsigned.apk ]; then
 		echo -e "\n${RED}App not buil!\n${NC}";

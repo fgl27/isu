@@ -36,7 +36,6 @@ class GreetingTask extends DefaultTask {
 
 task gradleUpdates(type: GreetingTask) {
     doLast {
-    tasks.dependencyUpdates.execute()
     println ''
     group = "wrapper"
         ["nightly": "nightly",
@@ -50,6 +49,7 @@ task gradleUpdates(type: GreetingTask) {
             println " -${label} version: ${version.version} (downloadUrl: ${version.downloadUrl})"
         }
     }
+    finalizedBy(dependencyUpdates)
 }
 
 dependencyUpdates.resolutionStrategy = {
