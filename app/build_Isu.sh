@@ -20,7 +20,7 @@ echo -e "\n Script start $(date)\n";
 FOLDER="$HOME"/android/isu;
 SDK_FOLDER="$HOME"/android/sdk;
 SDK_DIR="sdk.dir=$SDK_FOLDER";
-NDK_DIR="ndk.dir=$SDK_FOLDER/ndk";
+NDK_DIR="ndk.dir=$SDK_FOLDER/ndk-bundle";
 
 # app sign key
 #Generate and use a sign key https://developer.android.com/studio/publish/app-signing.html

@@ -680,11 +680,8 @@ public class Tools implements Constants {
     public static String abi() {
         String abi_version = getprop("ro.product.cpu.abi");
         String abi_version_2 = getprop("ro.product.cpu.abi2");
-        String abi_version_l = getprop("ro.product.cpu.abi");
         String abi_result = ""; //arm default
         if (abi_version.contains("x86") || abi_version_2.contains("x86")) abi_result = "x86";
-        else if (abi_version.contains("arm64") || abi_version_l.contains("arm64")) abi_result = "arm64";
-        else if (abi_version.contains("x86_64") || abi_version_l.contains("x86_64")) abi_result = "x64";
         return abi_result;
     }
 
