@@ -287,7 +287,8 @@ public class Tools implements Constants {
     }
 
     public static void patches(String executableFilePath, Context context) {
-        PatchSepolicy(executableFilePath, context);
+        Log.d("isu", " patches");
+        ExtractMagisk(executableFilePath, context);
         extractBusybox(executableFilePath, context);
         WriteSettings(context);
         BPBackup(context);
@@ -343,16 +344,21 @@ public class Tools implements Constants {
         runCommand("mount -o ro,remount /system", su, context);
     }
 
-    public static void PatchSepolicy(String executableFilePath, Context context) {
-        boolean su = SuBinary();
+    public static void ExtractMagisk(String executableFilePath, Context context) {
         if (!NewexistFile(executableFilePath + "magisk", true, context)) {
             extractAssets(executableFilePath, "magisk" + abi(), context);
-            runCommand("mv -f " + executableFilePath + "magisk" + abi() + " " + executableFilePath + "magisk", su, context);
+            runCommand("mv -f " + executableFilePath + "magisk" + abi() + " " + executableFilePath + "magisk", SuBinary(), context);
         }
+    }
+
+    //magiskpolicy is no longer part of magisk, it is in magiskinit
+    public static void PatchSepolicy(String executableFilePath, Context context) {
+        boolean su = SuBinary();
         runCommand("mount -o rw,remount /", su, context);
         for (int i = 0; i < MagiskPolicy.length; i++)
             Log.d(TAG, "PS " + i + " " + runCommand(executableFilePath + "magisk magiskpolicy " + MagiskPolicy[i], su, context));
         runCommand("mount -o ro,remount /", su, context);
+        Log.d("isu", " PatchSepolicy");
     }
 
     public static void updateAllWidgetsLayouts(Context context) {
