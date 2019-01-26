@@ -18,7 +18,7 @@
     <string name="su_switch">Mudar o estado do SU</string>
     <string name="su_state">Estado do SU</string>
     <string name="selinux_state">Estado do SELinux</string>
-    <string name="device_not_root">Acesso so Root não disponível</string>
+    <string name="device_not_root">Acesso Root não disponível</string>
     <string name="activated">Ativado</string>
     <string name="deactivated">Desativado</string>
     <string name="su_version">Versão do SU</string>
