@@ -22,10 +22,13 @@ public interface Constants {
     String bin_su = "/system/bin/su";
     String xbin_su = "/system/xbin/su";
 
-    String init_superuser = "superuser69";
-    String init_restart = "restart69";
     //TODO Always Update supersu init  when change below
-    String patchN = "isupatch69";
+    String patchversion = "69";
+
+    String init_superuser = "superuser" + patchversion;
+    String init_restart = "restart" + patchversion;
+    String patchN = "isupatch" + patchversion;
+    //M pathc is running from kernel_zip not from assets
     String patchM = "isupatch60";
 
     String GETENFORCE = "getenforce";

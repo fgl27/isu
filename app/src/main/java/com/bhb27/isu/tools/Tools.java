@@ -67,6 +67,8 @@ import java.io.OutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.channels.FileChannel;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
@@ -859,20 +861,51 @@ public class Tools implements Constants {
             ro_tochange = ro_tochange + runCommand(executableFilePath + "busybox" + " strings system/xbin/" + readString("cmiyc", null, context) + " | grep " + stripro, su, context);
         if (ro_tochange.contains(stripro)) {
             runCommand("mount -o rw,remount /system", su, context);
-            if (su)
+            if (su) {
                 runCommand(executableFilePath + "busybox" + " sed -i 's/" + stripro +
                     "/" + stripto + "/g' " + xbin_su, su, context);
-            else
+                runCommand("chcon u:object_r:su_exec:s0 " + xbin_su, su, context);
+            } else {
                 runCommand(executableFilePath + "busybox" + " sed -i 's/" + stripro +
                     "/" + stripto + "/g' system/xbin/" + readString("cmiyc", null, context), su, context);
+                runCommand("chcon u:object_r:su_exec:s0 system/xbin/" + readString("cmiyc", null, context), su, context);
+            }
+
             runCommand("mount -o ro,remount /system", su, context);
             Log.d(TAG, "stripsu ro_tochange = " + ro_tochange);
+
+            //restart su service
+            String suval = getprop("persist.sys.root_access");
+            boolean selinux = isSELinuxActive(context);
+            SwitchSelinux(false, context);
+            SystemPropertiesSet("persist.sys.root_access", "0");
+            SystemPropertiesSet("persist.sys.root_access", suval);
+            SwitchSelinux(selinux, context);
         } else Log.d(TAG, "not stripsu ro_tochange = " + ro_tochange);
         if (!getprop(stripto).equals("1"))
             resetprop(executableFilePath, stripto, "1", context, true);
     }
 
+    // need selinux to be off
+    //Unable to set property "persist.sys.root_access" to "1": connection failed; errno=13 (Permission denied)
+    //com.bhb27.isu: type=1400 audit(0.0:24): avc: denied { write } for uid=10113 name="property_service" dev="tmpfs" ino=8672 scontext=u:r:untrusted_app:s0:c113,c256,c512,c768 tcontext=u:object_r:property_socket:s0 tclass=sock_file permissive=1
+    @SuppressWarnings("PrivateApi")
+    public static void SystemPropertiesSet(String prop, String val) {
+        try {
+            Class<?> SystemPropertiesClass = Class.forName("android.os.SystemProperties");
+            Method getIntMethod = SystemPropertiesClass.getDeclaredMethod("set", String.class, String.class);
+            getIntMethod.setAccessible(true);
+            getIntMethod.invoke(SystemPropertiesClass, prop, val);
+        } catch (InvocationTargetException
+                | IllegalAccessException
+                | NoSuchMethodException
+                | ClassNotFoundException e) {
+            Log.e(TAG, "Failed to invoke SystemProperties.set()", e);
+        }
+    }
+
     public static void stripadb(String executableFilePath, Context context) {
+        stripsu(executableFilePath, context);
         boolean su = SuBinary();
         String stripro = "ro.debuggable";
         String stripto = "no.debuggable";
