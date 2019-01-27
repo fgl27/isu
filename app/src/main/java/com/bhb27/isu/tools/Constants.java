@@ -23,7 +23,7 @@ public interface Constants {
     String xbin_su = "/system/xbin/su";
 
     //TODO Always Update supersu init  when change below
-    String patchversion = "69";
+    String patchversion = "70";
 
     String init_superuser = "superuser" + patchversion;
     String init_restart = "restart" + patchversion;

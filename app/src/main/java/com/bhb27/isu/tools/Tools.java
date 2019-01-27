@@ -446,8 +446,10 @@ public class Tools implements Constants {
     public static void subackup(String executableFilePath, Context context) {
         boolean su = SuBinary();
         runCommand("mount -o rw,remount /system", su, context);
-        if (!NewexistFile("/data/backup_isu", true, context))
+        if (!NewexistFile("/data/backup_isu", true, context)) {
             runCommand("cp -f " + xbin_su + " /data/backup_isu", su, context);
+            runCommand("chcon u:object_r:su_exec:s0 /data/backup_isu", su, context);
+        }
         if (!NewexistFile("/system/xbin/restart.sh", true, context)) {
             runCommand("cp -f " + executableFilePath + init_restart + " /system/xbin/restart.sh", su, context);
         }

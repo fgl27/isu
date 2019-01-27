@@ -12,7 +12,8 @@ fi
 
 if [ ! -e /system/xbin/su ]; then
 	mv -f /data/backup_isu /system/xbin/su
-        chmod 0755 /system/xbin/su
+	chmod 0755 /system/xbin/su
+	chcon u:object_r:su_exec:s0 /system/xbin/su
 
 	su_daemon=$(getprop persist.sys.root_access);
 	if [ $su_daemon -gt 0 ]; then
