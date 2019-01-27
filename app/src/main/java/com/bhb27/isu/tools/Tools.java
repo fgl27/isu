@@ -351,6 +351,10 @@ public class Tools implements Constants {
             extractAssets(executableFilePath, "magisk" + abi(), context);
             runCommand("mv -f " + executableFilePath + "magisk" + abi() + " " + executableFilePath + "magisk", SuBinary(), context);
         }
+        if (!NewexistFile(executableFilePath + "magiskinit", true, context)) {
+            extractAssets(executableFilePath, "magiskinit" + abi(), context);
+            runCommand("mv -f " + executableFilePath + "magiskinit" + abi() + " " + executableFilePath + "magiskpolicy", SuBinary(), context);
+        }
     }
 
     //magiskpolicy is no longer part of magisk, it is in magiskinit
@@ -649,7 +653,7 @@ public class Tools implements Constants {
         String executableFilePath = context.getFilesDir().getPath() + "/";
         boolean su = SuBinary();
         runCommand("mount -o rw,remount /", su, context);
-        runCommand(executableFilePath + "magisk magiskpolicy --live \"permissive *\"", su, context);
+        runCommand(executableFilePath + "magiskpolicy --live \"permissive *\"", su, context);
         runCommand("mount -o ro,remount /", su, context);
         closeSU();
     }
