@@ -925,8 +925,19 @@ public class Tools implements Constants {
             runCommand(executableFilePath + "busybox" + " sed -i 's/" + stripro +
                 "/" + stripto + "/g' sbin/adbd", su, context);
             runCommand("mount -o ro,remount /", su, context);
-            Log.d(TAG, "stripadb ro_tochange = " + ro_tochange);
-        } else Log.d(TAG, "not stripadb ro_tochange = " + ro_tochange);
+            Log.d(TAG, "strip sbin adb ro_tochange = " + ro_tochange);
+        } else Log.d(TAG, "not strip sbin adb ro_tochange = " + ro_tochange);
+
+        ro_tochange = "" + runCommand(executableFilePath + "busybox" + " strings system/bin/adbd | grep " + stripro, su, context);
+
+        if (ro_tochange.contains(stripro)) {
+            runCommand("mount -o rw,remount /system", su, context);
+            runCommand(executableFilePath + "busybox" + " sed -i 's/" + stripro +
+                "/" + stripto + "/g' system/bin/adbd", su, context);
+            runCommand("chcon u:object_r:adbd_exec:s0 system/bin/adbd", su, context);
+            runCommand("mount -o ro,remount /system", su, context);
+            Log.d(TAG, "strip system adb ro_tochange = " + ro_tochange);
+        } else Log.d(TAG, "not strip system adb ro_tochange = " + ro_tochange);
     }
 
     public static void stripapp(String executableFilePath, String app, String[] strip_old, Context context) {
