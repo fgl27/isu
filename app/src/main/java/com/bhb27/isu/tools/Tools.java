@@ -778,7 +778,7 @@ public class Tools implements Constants {
         String id = "iSu_SU_state";
         String title = context.getString(R.string.notification_title);
 
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         //Create a channel for oreo notification to work
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
