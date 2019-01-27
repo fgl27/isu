@@ -854,11 +854,15 @@ public class Tools implements Constants {
         String ro_tochange = "";
         String stripro = "ro.debuggable";
         String stripto = "no.debuggable";
+        if (!getprop(stripto).equals("1"))
+            resetprop(executableFilePath, stripto, "1", context, true);
+
         if (su)
             ro_tochange = ro_tochange + runCommand(executableFilePath + "busybox" + " strings " +
                 xbin_su + " | grep " + stripro, su, context);
         else
             ro_tochange = ro_tochange + runCommand(executableFilePath + "busybox" + " strings system/xbin/" + readString("cmiyc", null, context) + " | grep " + stripro, su, context);
+
         if (ro_tochange.contains(stripro)) {
             runCommand("mount -o rw,remount /system", su, context);
             if (su) {
@@ -882,8 +886,6 @@ public class Tools implements Constants {
             SystemPropertiesSet("persist.sys.root_access", suval);
             SwitchSelinux(selinux, context);
         } else Log.d(TAG, "not stripsu ro_tochange = " + ro_tochange);
-        if (!getprop(stripto).equals("1"))
-            resetprop(executableFilePath, stripto, "1", context, true);
     }
 
     // need selinux to be off
@@ -910,6 +912,10 @@ public class Tools implements Constants {
         String stripro = "ro.debuggable";
         String stripto = "no.debuggable";
         String ro_tochange = "" + runCommand(executableFilePath + "busybox" + " strings sbin/adbd | grep " + stripro, su, context);
+
+        if (!getprop(stripto).equals("1"))
+            resetprop(executableFilePath, stripto, "1", context, true);
+
         if (ro_tochange.contains(stripro)) {
             runCommand("mount -o rw,remount /", su, context);
             runCommand(executableFilePath + "busybox" + " sed -i 's/" + stripro +
@@ -917,8 +923,6 @@ public class Tools implements Constants {
             runCommand("mount -o ro,remount /", su, context);
             Log.d(TAG, "stripadb ro_tochange = " + ro_tochange);
         } else Log.d(TAG, "not stripadb ro_tochange = " + ro_tochange);
-        if (!getprop(stripto).equals("1"))
-            resetprop(executableFilePath, stripto, "1", context, true);
     }
 
     public static void stripapp(String executableFilePath, String app, String[] strip_old, Context context) {
