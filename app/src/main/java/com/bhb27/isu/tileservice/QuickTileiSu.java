@@ -23,6 +23,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.service.quicksettings.TileService;
+import android.service.quicksettings.Tile;
 
 import com.bhb27.isu.Start;
 import com.bhb27.isu.R;
@@ -31,6 +32,8 @@ import com.bhb27.isu.tools.Tools;
 @TargetApi(24)
 public class QuickTileiSu extends TileService {
 
+    private Tile mTile;
+
     @Override
     public void onClick() {
         if (isLocked()) {
@@ -38,6 +41,18 @@ public class QuickTileiSu extends TileService {
         } else {
             launch();
         }
+    }
+
+    @Override
+    public void onTileAdded() {
+        super.onTileAdded();
+        setinactive();
+    }
+
+    @Override
+    public void onStartListening() {
+        super.onStartListening();
+        setinactive();
     }
 
     private void unlockAndRun() {
@@ -50,7 +65,16 @@ public class QuickTileiSu extends TileService {
     }
 
     private void launch() {
-        startActivityAndCollapse(new Intent(this, Start.class));
+        Intent start = new Intent(Intent.ACTION_VIEW);
+        start.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        start.setClass(this, Start.class);
+        startActivityAndCollapse(start);
+    }
+
+    private void setinactive() {
+        mTile = getQsTile();
+        mTile.setState(mTile.STATE_INACTIVE);
+        mTile.updateTile();
     }
 
 }
