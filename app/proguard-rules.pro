@@ -35,10 +35,15 @@
 
 # zeroturnaround
 -keep class org.slf4j.** { *; }
+-keepnames class org.slf4j.** { *; }
 -dontwarn org.slf4j.**
 -dontwarn org.zeroturnaround.zip.**
 
 # squareup.okhttp3
+-dontwarn okhttp3.**
+-dontnote okhttp3.**
+-keep class org.conscrypt.** { *; }
+-keepnames class org.conscrypt.** { *; }
 # A resource is loaded with a relative path so the package of this class must be preserved.
 -keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase.** { *; }
 # A resource is loaded with a relative path so the package of this class must be preserved.
