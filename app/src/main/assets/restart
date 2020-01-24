@@ -1,6 +1,7 @@
 #!/system/bin/sh
 # simple service to make sure SU is in place after a reboot that the user has disabled it without this no SU after boot
 mount -o rw,remount /system
+mount -o rw,remount /
 # Isu Reboot support
 if [ -e /system/bin/temp_su ]; then
 	rm -rf /system/bin/temp_su
@@ -34,5 +35,6 @@ fi
 
 echo 'isu_init: isu init.sh start boot ok' > /dev/kmsg;
 umount /system;
+mount -o ro,remount /
 exit
 

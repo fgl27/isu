@@ -120,8 +120,10 @@ public class Tools implements Constants {
         boolean su = SuBinary();
         if (!NewexistFile("/system/build.prop.isu_backup", true, context)) {
             runCommand("mount -o rw,remount /system", su, context);
+            runCommand("mount -o rw,remount /", su, context);
             runCommand("cp -f /system/build.prop /system/build.prop.isu_backup", su, context);
             runCommand("mount -o ro,remount /system", su, context);
+            runCommand("mount -o ro,remount /", su, context);
         }
     }
 
@@ -336,6 +338,7 @@ public class Tools implements Constants {
         boolean su = SuBinary();
         seclabel = runCommand("cat system/etc/init/superuser.rc | grep seclabel | head -1", su, context);
         runCommand("mount -o rw,remount /system", su, context);
+        runCommand("mount -o rw,remount /", su, context);
         runCommand("chmod 755" + executableFilePath + "restart", su, context);
         runCommand("cp -f " + executableFilePath + init_superuser + " /system/etc/init/superuser.rc", su, context);
         runCommand(executableFilePath + "busybox" + " sed -i '/seclabel/c\\    " + seclabel + "' system/etc/init/superuser.rc ", su, context);
@@ -344,6 +347,7 @@ public class Tools implements Constants {
         if (NewexistFile("/system/xbin/isush", true, context))
             runCommand("rm -rf /system/xbin/isush", su, context);
         runCommand("mount -o ro,remount /system", su, context);
+        runCommand("mount -o ro,remount /", su, context);
     }
 
     public static void ExtractMagisk(String executableFilePath, Context context) {
@@ -434,10 +438,12 @@ public class Tools implements Constants {
                 runCommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_superuser, su, context);
             } else {
                 runCommand("mount -o rw,remount /system", su, context);
+                runCommand("mount -o rw,remount /", su, context);
                 runCommand("cp -f " + executableFilePath + filename + " /system/xbin/" + filename + ".sh", su, context);
                 runCommand("mv -f " + executableFilePath + filename + " " + executableFilePath + init_restart, su, context);
                 runCommand("chmod 755 /system/xbin/restart.sh", su, context);
                 runCommand("mount -o ro,remount /system", su, context);
+                runCommand("mount -o ro,remount /", su, context);
             }
         }
 
@@ -446,6 +452,7 @@ public class Tools implements Constants {
     public static void subackup(String executableFilePath, Context context) {
         boolean su = SuBinary();
         runCommand("mount -o rw,remount /system", su, context);
+        runCommand("mount -o rw,remount /", su, context);
         if (!NewexistFile("/data/backup_isu", true, context)) {
             runCommand("cp -f " + xbin_su + " /data/backup_isu", su, context);
             runCommand("chcon u:object_r:su_exec:s0 /data/backup_isu", su, context);
@@ -457,6 +464,7 @@ public class Tools implements Constants {
         Log.d(TAG, "backup_restart = " + runCommand(executableFilePath + "busybox" + " ls -l /system/xbin/restart", su, context));
         Log.d(TAG, "backup_isu = " + runCommand(executableFilePath + "busybox" + " ls -l /data/backup_isu", su, context));
         runCommand("mount -o ro,remount /system", su, context);
+        runCommand("mount -o ro,remount /", su, context);
     }
 
     public static boolean rootAccess(Context context) {
@@ -486,8 +494,10 @@ public class Tools implements Constants {
     public static void delbinsu(Context context) {
         boolean su = SuBinary();
         runCommand("mount -o rw,remount /system", su, context);
+        runCommand("mount -o rw,remount /", su, context);
         runCommand("rm -rf " + bin_su, su, context);
         runCommand("mount -o ro,remount /system", su, context);
+        runCommand("mount -o ro,remount /", su, context);
     }
 
     public static long stringToLong(String number) {
@@ -513,6 +523,7 @@ public class Tools implements Constants {
 
     public static void SwitchSu(boolean isChecked, boolean AppMonitor, Context context) {
         runCommand("mount -o rw,remount /system", !isChecked, context);
+        runCommand("mount -o rw,remount /", !isChecked, context);
         if (isChecked) {
             RootUtils.runICommand("mv -f " + "/system/xbin/" + readString("cmiyc", null, context) + " " + xbin_su, context);
             ClearAllNotification(context);
@@ -523,6 +534,7 @@ public class Tools implements Constants {
             if (getBoolean("isu_notification", false, context)) DoNotification(context);
         }
         runCommand("mount -o ro,remount /system", isChecked, context);
+        runCommand("mount -o ro,remount /", isChecked, context);
 
         long time = System.currentTimeMillis();
         if (!AppMonitor) {
@@ -753,17 +765,21 @@ public class Tools implements Constants {
         String newvalue = newKey + "=" + newValue;
         String command = "old=" + oldvalue + " && " + "new=" + newvalue + " && " + path + "busybox" + " sed -i -r \"s%$old%$new%g\" " + BUILD_PROP;
         runCommand("mount -o rw,remount /system", su, context);
+        runCommand("mount -o rw,remount /", su, context);
         runCommand(command, su, context);
         runCommand("mount -o ro,remount /system", su, context);
+        runCommand("mount -o ro,remount /", su, context);
         Log.d(TAG, "overwritebp " + "old = " + oldvalue + " new = " + newvalue);
     }
 
     public static void forcewritebp(String propvalue, Context context) {
         boolean su = SuBinary();
         runCommand("mount -o rw,remount /system", su, context);
+        runCommand("mount -o rw,remount /", su, context);
         runCommand("echo '\n' >> " + BUILD_PROP, su, context);
         runCommand("echo " + propvalue + " >> " + BUILD_PROP, su, context);
         runCommand("mount -o ro,remount /system", su, context);
+        runCommand("mount -o ro,remount /", su, context);
         Log.d(TAG, "forcewritebp " + propvalue);
     }
 
@@ -871,6 +887,7 @@ public class Tools implements Constants {
 
         if (ro_tochange.contains(stripro)) {
             runCommand("mount -o rw,remount /system", su, context);
+            runCommand("mount -o rw,remount /", su, context);
             if (su) {
                 runCommand(executableFilePath + "busybox" + " sed -i 's/" + stripro +
                     "/" + stripto + "/g' " + xbin_su, su, context);
@@ -882,6 +899,7 @@ public class Tools implements Constants {
             }
 
             runCommand("mount -o ro,remount /system", su, context);
+            runCommand("mount -o ro,remount /", su, context);
             Log.d(TAG, "stripsu ro_tochange = " + ro_tochange);
 
             //restart su service
@@ -934,10 +952,12 @@ public class Tools implements Constants {
 
         if (ro_tochange.contains(stripro)) {
             runCommand("mount -o rw,remount /system", su, context);
+            runCommand("mount -o rw,remount /", su, context);
             runCommand(executableFilePath + "busybox" + " sed -i 's/" + stripro +
                 "/" + stripto + "/g' system/bin/adbd", su, context);
             runCommand("chcon u:object_r:adbd_exec:s0 system/bin/adbd", su, context);
             runCommand("mount -o ro,remount /system", su, context);
+            runCommand("mount -o ro,remount /", su, context);
             Log.d(TAG, "strip system adb ro_tochange = " + ro_tochange);
         } else Log.d(TAG, "not strip system adb ro_tochange = " + ro_tochange);
     }
