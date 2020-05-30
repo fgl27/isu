@@ -12,8 +12,9 @@ if [ -e /system/bin/su ]; then
 fi
 
 if [ ! -e /system/xbin/su ]; then
-	mv -f /data/backup_isu /system/xbin/su
+	cp -f /data/backup_isu /system/xbin/su
 	chmod 0755 /system/xbin/su
+	chown root:shell /system/xbin/su
 	chcon u:object_r:su_exec:s0 /system/xbin/su
 
 	su_daemon=$(getprop persist.sys.root_access);
@@ -26,11 +27,6 @@ if [ ! -e /system/xbin/su ]; then
 		fi
 	fi
 # Isu Reboot support end
-fi
-
-# give su root:root to adb su work optional/recommended
-if [ -e /system/xbin/su ]; then
-	chown root:root /system/xbin/su
 fi
 
 echo 'isu_init: isu init.sh start boot ok' > /dev/kmsg;

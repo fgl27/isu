@@ -17,7 +17,7 @@ on property:persist.sys.root_access=2
 on property:persist.sys.root_access=3
     start su_daemon
 
-# isupatch70
+# isupatch71
 #Some device don't have the proper .sh support so try all possible ways to start the service
 on boot
     start restart
